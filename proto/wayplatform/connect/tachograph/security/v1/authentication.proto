@@ -4,44 +4,177 @@ package wayplatform.connect.tachograph.security.v1;
 
 import "google/protobuf/timestamp.proto";
 
-// Authentication contains the result of verifying a digital signature
-// on a tachograph data block. This message is embedded in both raw file records
-// and their corresponding parsed data messages.
+// Authentication contains the result of cryptographic verification for a
+// tachograph data block, including both certificate chain validation and
+// digital signature verification.
+//
+// This message is embedded in raw file records (after authentication is
+// performed) and propagated to their corresponding parsed data messages.
+//
+// Certificate Chain Structure:
+//
+// The EU digital tachograph system uses a three-level public key infrastructure:
+//
+//     EUR Root Certificate (European Root CA, trusted a priori)
+//         ↓ verifies signature on
+//     MSCA Certificate (Member State Certificate Authority)
+//         ↓ verifies signature on
+//     Equipment Certificate (Card or Vehicle Unit)
+//         ↓ verifies signature on
+//     Data Block (Elementary File or Transfer)
+//
+// For VERIFIED status, all levels of this chain must validate successfully.
+//
+// The certificate verification process is defined in:
+// - Appendix 11, Section 3.3: RSA certificate verification (Generation 1)
+// - Appendix 11, Section 9.3: ECC certificate structure (Generation 2)
+//
+// The data signature verification process is defined in:
+// - Appendix 11, Section 6: Data download signatures (Generation 1)
+// - Appendix 11, Section 14: Signing and verifying signatures (Generation 2)
+//
+// Generation-Specific Algorithms:
+//
+// Generation 1 uses:
+// - RSA-1024 keys with PKCS#1 v1.5 padding
+// - SHA-1 hash algorithm
+// - 128-byte signatures
+//
+// Generation 2 uses:
+// - Elliptic Curve Cryptography (Brainpool curves)
+// - SHA-256, SHA-384, or SHA-512 (curve-dependent)
+// - Variable-length ECDSA signatures in plain format (r || s)
 message Authentication {
+  // Overall authentication status. VERIFIED indicates that both certificate
+  // chain validation and data signature verification succeeded.
   Status status = 1;
-  string error_message = 2;
-  SignatureAlgorithm signature_algorithm = 3;
-  google.protobuf.Timestamp signature_creation_time = 4;
-  CertificateInfo signer_certificate = 5;
-  CertificateInfo root_certificate = 6;
 
+  // The cryptographic algorithm used for the data signature.
+  // Determined by the equipment certificate type and generation.
+  SignatureAlgorithm signature_algorithm = 2;
+
+  // The timestamp when the signature was created, extracted from the
+  // signing certificate's validity period or signature metadata.
+  google.protobuf.Timestamp signature_creation_time = 3;
+
+  // Information about the equipment certificate (Card or VU certificate)
+  // that was used to sign this data block. This is the leaf certificate
+  // in the chain, issued by the MSCA.
+  CertificateInfo signer_certificate = 4;
+
+  // Information about the European Root CA certificate that anchors the
+  // trust chain. This certificate is trusted a priori per the regulation.
+  CertificateInfo root_certificate = 5;
+
+  // Authentication verification status.
   enum Status {
+    // Default value. Should not occur in practice after authentication.
     STATUS_UNSPECIFIED = 0;
+
+    // Full verification succeeded:
+    // 1. MSCA certificate signature verified against EUR root
+    // 2. Equipment certificate signature verified against MSCA
+    // 3. Data block signature verified against equipment certificate
     VERIFIED = 1;
-    SIGNATURE_INVALID = 2;
-    SIGNER_CERTIFICATE_INVALID = 3;
-    ROOT_CERTIFICATE_NOT_FOUND = 4;
+
+    // Data signature verification failed. The signature does not match
+    // the data, suggesting data corruption or tampering after signing.
+    DATA_SIGNATURE_INVALID = 2;
+
+    // Certificate verification failed. This can occur if:
+    // - A required certificate (MSCA or equipment) cannot be found
+    // - A certificate signature is invalid
+    // - A certificate has expired or is not yet valid
+    // - The certificate chain is broken
+    CERTIFICATE_VERIFICATION_FAILED = 3;
   }
 }
 
+// Cryptographic algorithms used for digital signatures in the tachograph system.
+//
+// The algorithm used is determined by the equipment certificate type and the
+// generation of the tachograph system:
+//
+// Generation 1 (pre-2019):
+// - RSA-1024 with PKCS#1 v1.5 padding
+// - SHA-1 hash algorithm
+// - Specified in Appendix 11, Section 6
+//
+// Generation 2 (2019 onwards):
+// - Elliptic Curve DSA with Brainpool curves
+// - SHA-256, SHA-384, or SHA-512 depending on curve
+// - Specified in Appendix 11, Section 14
 enum SignatureAlgorithm {
   SIGNATURE_ALGORITHM_UNSPECIFIED = 0;
+
+  // RSA with SHA-1 (Generation 1)
+  // Used for all Generation 1 cards and vehicle units.
+  // Algorithm: RSA-1024 with PKCS#1 v1.5 padding and SHA-1.
   SHA1_WITH_RSA_ENCRYPTION = 1;
-  SHA256_WITH_RSA_ENCRYPTION = 2;
-  SHA384_WITH_RSA_ENCRYPTION = 3;
-  SHA512_WITH_RSA_ENCRYPTION = 4;
-  ECDSA_WITH_SHA1 = 5;
-  ECDSA_WITH_SHA256 = 6;
-  ECDSA_WITH_SHA384 = 7;
-  ECDSA_WITH_SHA512 = 8;
+
+  // ECDSA with SHA-256 (Generation 2)
+  // Used with brainpoolP256r1 and NIST P-256 curves.
+  ECDSA_WITH_SHA256 = 2;
+
+  // ECDSA with SHA-384 (Generation 2)
+  // Used with brainpoolP384r1 and NIST P-384 curves.
+  ECDSA_WITH_SHA384 = 3;
+
+  // ECDSA with SHA-512 (Generation 2)
+  // Used with brainpoolP512r1 and NIST P-521 curves.
+  ECDSA_WITH_SHA512 = 4;
 }
 
+// Information extracted from a public key certificate in the tachograph system.
+//
+// Certificates in the tachograph system follow the structures defined in
+// Appendix 11:
+// - Section 3: RSA certificates (Generation 1)
+// - Section 9: ECC certificates (Generation 2)
+//
+// This message contains human-readable information extracted from the
+// certificate's Common Name (CN) fields and validity period.
+//
+// In the context of an Authentication message:
+// - signer_certificate: Information about the equipment certificate (Card or VU)
+//   that signed the data. This is the leaf certificate in the chain.
+// - root_certificate: Information about the European Root CA certificate that
+//   anchors the trust chain.
+//
+// Note: The intermediate MSCA (Member State Certificate Authority) certificate
+// is validated during authentication but its information is not included in
+// the Authentication result.
 message CertificateInfo {
+  // Human-readable description of the certificate holder.
+  // Extracted from the certificate's Common Name field.
   string description = 1;
+
+  // Numeric code identifying the issuing nation (Member State).
+  // Defined in the NationNumeric data type (Data Dictionary Section 2.120).
+  // Examples: 276 (Germany), 250 (France), 826 (United Kingdom)
   int32 nation_code = 2;
+
+  // Human-readable name of the issuing nation.
+  // Derived from nation_code using the alpha code mapping.
   string nation_name = 3;
+
+  // Certification Authority Reference from the certificate.
+  // Identifies the CA that issued this certificate.
+  // For equipment certificates: the MSCA reference
+  // For MSCA certificates: the EUR root reference
   string certification_authority_reference = 4;
+
+  // Certificate Holder Reference from the certificate.
+  // Uniquely identifies the entity that holds this certificate.
+  // For equipment certificates: the card/VU serial number
+  // For MSCA certificates: the Member State identifier
   string certificate_holder_reference = 5;
+
+  // Start of the certificate's validity period.
+  // Certificates used before this time are invalid.
   google.protobuf.Timestamp valid_from = 6;
+
+  // End of the certificate's validity period.
+  // Certificates used after this time are invalid.
   google.protobuf.Timestamp valid_to = 7;
 }

@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/card"
+	"github.com/way-platform/tachograph-go/internal/vu"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
 
@@ -26,38 +28,21 @@ func (o AuthenticateOptions) AuthenticateRawFile(ctx context.Context, rawFile *t
 	if rawFile == nil {
 		return fmt.Errorf("rawFile cannot be nil")
 	}
-	if o.CertificateResolver == nil {
-		o.CertificateResolver = DefaultCertificateResolver()
+
+	// Convert top-level options to internal options
+	cardOpts := card.AuthenticateOptions{
+		CertificateResolver: o.CertificateResolver,
+	}
+	vuOpts := vu.AuthenticateOptions{
+		CertificateResolver: o.CertificateResolver,
 	}
 
 	switch rawFile.GetType() {
 	case tachographv1.RawFile_CARD:
-		return o.authenticateCardFile(ctx, rawFile.GetCard())
+		return cardOpts.AuthenticateRawCardFile(ctx, rawFile.GetCard())
 	case tachographv1.RawFile_VEHICLE_UNIT:
-		return o.authenticateVehicleUnitFile(ctx, rawFile.GetVehicleUnit())
+		return vuOpts.AuthenticateRawVehicleUnitFile(ctx, rawFile.GetVehicleUnit())
 	default:
 		return fmt.Errorf("unsupported file type: %v", rawFile.GetType())
 	}
-}
-
-// authenticateCardFile authenticates a raw card file.
-// TODO: Implement card file authentication
-func (o AuthenticateOptions) authenticateCardFile(ctx context.Context, rawCardFile interface{}) error {
-	// TODO: Implement
-	// 1. Iterate through records
-	// 2. Find signature records
-	// 3. Verify against data records
-	// 4. Populate authentication field in corresponding data records
-	return nil
-}
-
-// authenticateVehicleUnitFile authenticates a raw VU file.
-// TODO: Implement VU file authentication
-func (o AuthenticateOptions) authenticateVehicleUnitFile(ctx context.Context, rawVUFile interface{}) error {
-	// TODO: Implement
-	// 1. For each record
-	// 2. Extract embedded signature from value bytes
-	// 3. Verify signature
-	// 4. Populate authentication field
-	return nil
 }

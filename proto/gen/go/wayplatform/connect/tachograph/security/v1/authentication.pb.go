@@ -21,18 +21,37 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Cryptographic algorithms used for digital signatures in the tachograph system.
+//
+// The algorithm used is determined by the equipment certificate type and the
+// generation of the tachograph system:
+//
+// Generation 1 (pre-2019):
+// - RSA-1024 with PKCS#1 v1.5 padding
+// - SHA-1 hash algorithm
+// - Specified in Appendix 11, Section 6
+//
+// Generation 2 (2019 onwards):
+// - Elliptic Curve DSA with Brainpool curves
+// - SHA-256, SHA-384, or SHA-512 depending on curve
+// - Specified in Appendix 11, Section 14
 type SignatureAlgorithm int32
 
 const (
 	SignatureAlgorithm_SIGNATURE_ALGORITHM_UNSPECIFIED SignatureAlgorithm = 0
-	SignatureAlgorithm_SHA1_WITH_RSA_ENCRYPTION        SignatureAlgorithm = 1
-	SignatureAlgorithm_SHA256_WITH_RSA_ENCRYPTION      SignatureAlgorithm = 2
-	SignatureAlgorithm_SHA384_WITH_RSA_ENCRYPTION      SignatureAlgorithm = 3
-	SignatureAlgorithm_SHA512_WITH_RSA_ENCRYPTION      SignatureAlgorithm = 4
-	SignatureAlgorithm_ECDSA_WITH_SHA1                 SignatureAlgorithm = 5
-	SignatureAlgorithm_ECDSA_WITH_SHA256               SignatureAlgorithm = 6
-	SignatureAlgorithm_ECDSA_WITH_SHA384               SignatureAlgorithm = 7
-	SignatureAlgorithm_ECDSA_WITH_SHA512               SignatureAlgorithm = 8
+	// RSA with SHA-1 (Generation 1)
+	// Used for all Generation 1 cards and vehicle units.
+	// Algorithm: RSA-1024 with PKCS#1 v1.5 padding and SHA-1.
+	SignatureAlgorithm_SHA1_WITH_RSA_ENCRYPTION SignatureAlgorithm = 1
+	// ECDSA with SHA-256 (Generation 2)
+	// Used with brainpoolP256r1 and NIST P-256 curves.
+	SignatureAlgorithm_ECDSA_WITH_SHA256 SignatureAlgorithm = 2
+	// ECDSA with SHA-384 (Generation 2)
+	// Used with brainpoolP384r1 and NIST P-384 curves.
+	SignatureAlgorithm_ECDSA_WITH_SHA384 SignatureAlgorithm = 3
+	// ECDSA with SHA-512 (Generation 2)
+	// Used with brainpoolP512r1 and NIST P-521 curves.
+	SignatureAlgorithm_ECDSA_WITH_SHA512 SignatureAlgorithm = 4
 )
 
 // Enum value maps for SignatureAlgorithm.
@@ -40,24 +59,16 @@ var (
 	SignatureAlgorithm_name = map[int32]string{
 		0: "SIGNATURE_ALGORITHM_UNSPECIFIED",
 		1: "SHA1_WITH_RSA_ENCRYPTION",
-		2: "SHA256_WITH_RSA_ENCRYPTION",
-		3: "SHA384_WITH_RSA_ENCRYPTION",
-		4: "SHA512_WITH_RSA_ENCRYPTION",
-		5: "ECDSA_WITH_SHA1",
-		6: "ECDSA_WITH_SHA256",
-		7: "ECDSA_WITH_SHA384",
-		8: "ECDSA_WITH_SHA512",
+		2: "ECDSA_WITH_SHA256",
+		3: "ECDSA_WITH_SHA384",
+		4: "ECDSA_WITH_SHA512",
 	}
 	SignatureAlgorithm_value = map[string]int32{
 		"SIGNATURE_ALGORITHM_UNSPECIFIED": 0,
 		"SHA1_WITH_RSA_ENCRYPTION":        1,
-		"SHA256_WITH_RSA_ENCRYPTION":      2,
-		"SHA384_WITH_RSA_ENCRYPTION":      3,
-		"SHA512_WITH_RSA_ENCRYPTION":      4,
-		"ECDSA_WITH_SHA1":                 5,
-		"ECDSA_WITH_SHA256":               6,
-		"ECDSA_WITH_SHA384":               7,
-		"ECDSA_WITH_SHA512":               8,
+		"ECDSA_WITH_SHA256":               2,
+		"ECDSA_WITH_SHA384":               3,
+		"ECDSA_WITH_SHA512":               4,
 	}
 )
 
@@ -83,14 +94,26 @@ func (x SignatureAlgorithm) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
+// Authentication verification status.
 type Authentication_Status int32
 
 const (
-	Authentication_STATUS_UNSPECIFIED         Authentication_Status = 0
-	Authentication_VERIFIED                   Authentication_Status = 1
-	Authentication_SIGNATURE_INVALID          Authentication_Status = 2
-	Authentication_SIGNER_CERTIFICATE_INVALID Authentication_Status = 3
-	Authentication_ROOT_CERTIFICATE_NOT_FOUND Authentication_Status = 4
+	// Default value. Should not occur in practice after authentication.
+	Authentication_STATUS_UNSPECIFIED Authentication_Status = 0
+	// Full verification succeeded:
+	// 1. MSCA certificate signature verified against EUR root
+	// 2. Equipment certificate signature verified against MSCA
+	// 3. Data block signature verified against equipment certificate
+	Authentication_VERIFIED Authentication_Status = 1
+	// Data signature verification failed. The signature does not match
+	// the data, suggesting data corruption or tampering after signing.
+	Authentication_DATA_SIGNATURE_INVALID Authentication_Status = 2
+	// Certificate verification failed. This can occur if:
+	// - A required certificate (MSCA or equipment) cannot be found
+	// - A certificate signature is invalid
+	// - A certificate has expired or is not yet valid
+	// - The certificate chain is broken
+	Authentication_CERTIFICATE_VERIFICATION_FAILED Authentication_Status = 3
 )
 
 // Enum value maps for Authentication_Status.
@@ -98,16 +121,14 @@ var (
 	Authentication_Status_name = map[int32]string{
 		0: "STATUS_UNSPECIFIED",
 		1: "VERIFIED",
-		2: "SIGNATURE_INVALID",
-		3: "SIGNER_CERTIFICATE_INVALID",
-		4: "ROOT_CERTIFICATE_NOT_FOUND",
+		2: "DATA_SIGNATURE_INVALID",
+		3: "CERTIFICATE_VERIFICATION_FAILED",
 	}
 	Authentication_Status_value = map[string]int32{
-		"STATUS_UNSPECIFIED":         0,
-		"VERIFIED":                   1,
-		"SIGNATURE_INVALID":          2,
-		"SIGNER_CERTIFICATE_INVALID": 3,
-		"ROOT_CERTIFICATE_NOT_FOUND": 4,
+		"STATUS_UNSPECIFIED":              0,
+		"VERIFIED":                        1,
+		"DATA_SIGNATURE_INVALID":          2,
+		"CERTIFICATE_VERIFICATION_FAILED": 3,
 	}
 )
 
@@ -133,17 +154,53 @@ func (x Authentication_Status) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Authentication contains the result of verifying a digital signature
-// on a tachograph data block. This message is embedded in both raw file records
-// and their corresponding parsed data messages.
+// Authentication contains the result of cryptographic verification for a
+// tachograph data block, including both certificate chain validation and
+// digital signature verification.
+//
+// This message is embedded in raw file records (after authentication is
+// performed) and propagated to their corresponding parsed data messages.
+//
+// Certificate Chain Structure:
+//
+// The EU digital tachograph system uses a three-level public key infrastructure:
+//
+//	EUR Root Certificate (European Root CA, trusted a priori)
+//	    ↓ verifies signature on
+//	MSCA Certificate (Member State Certificate Authority)
+//	    ↓ verifies signature on
+//	Equipment Certificate (Card or Vehicle Unit)
+//	    ↓ verifies signature on
+//	Data Block (Elementary File or Transfer)
+//
+// For VERIFIED status, all levels of this chain must validate successfully.
+//
+// The certificate verification process is defined in:
+// - Appendix 11, Section 3.3: RSA certificate verification (Generation 1)
+// - Appendix 11, Section 9.3: ECC certificate structure (Generation 2)
+//
+// The data signature verification process is defined in:
+// - Appendix 11, Section 6: Data download signatures (Generation 1)
+// - Appendix 11, Section 14: Signing and verifying signatures (Generation 2)
+//
+// Generation-Specific Algorithms:
+//
+// Generation 1 uses:
+// - RSA-1024 keys with PKCS#1 v1.5 padding
+// - SHA-1 hash algorithm
+// - 128-byte signatures
+//
+// Generation 2 uses:
+// - Elliptic Curve Cryptography (Brainpool curves)
+// - SHA-256, SHA-384, or SHA-512 (curve-dependent)
+// - Variable-length ECDSA signatures in plain format (r || s)
 type Authentication struct {
 	state                            protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Status                Authentication_Status  `protobuf:"varint,1,opt,name=status,enum=wayplatform.connect.tachograph.security.v1.Authentication_Status"`
-	xxx_hidden_ErrorMessage          *string                `protobuf:"bytes,2,opt,name=error_message,json=errorMessage"`
-	xxx_hidden_SignatureAlgorithm    SignatureAlgorithm     `protobuf:"varint,3,opt,name=signature_algorithm,json=signatureAlgorithm,enum=wayplatform.connect.tachograph.security.v1.SignatureAlgorithm"`
-	xxx_hidden_SignatureCreationTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=signature_creation_time,json=signatureCreationTime"`
-	xxx_hidden_SignerCertificate     *CertificateInfo       `protobuf:"bytes,5,opt,name=signer_certificate,json=signerCertificate"`
-	xxx_hidden_RootCertificate       *CertificateInfo       `protobuf:"bytes,6,opt,name=root_certificate,json=rootCertificate"`
+	xxx_hidden_SignatureAlgorithm    SignatureAlgorithm     `protobuf:"varint,2,opt,name=signature_algorithm,json=signatureAlgorithm,enum=wayplatform.connect.tachograph.security.v1.SignatureAlgorithm"`
+	xxx_hidden_SignatureCreationTime *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=signature_creation_time,json=signatureCreationTime"`
+	xxx_hidden_SignerCertificate     *CertificateInfo       `protobuf:"bytes,4,opt,name=signer_certificate,json=signerCertificate"`
+	xxx_hidden_RootCertificate       *CertificateInfo       `protobuf:"bytes,5,opt,name=root_certificate,json=rootCertificate"`
 	XXX_raceDetectHookData           protoimpl.RaceDetectHookData
 	XXX_presence                     [1]uint32
 	unknownFields                    protoimpl.UnknownFields
@@ -184,19 +241,9 @@ func (x *Authentication) GetStatus() Authentication_Status {
 	return Authentication_STATUS_UNSPECIFIED
 }
 
-func (x *Authentication) GetErrorMessage() string {
-	if x != nil {
-		if x.xxx_hidden_ErrorMessage != nil {
-			return *x.xxx_hidden_ErrorMessage
-		}
-		return ""
-	}
-	return ""
-}
-
 func (x *Authentication) GetSignatureAlgorithm() SignatureAlgorithm {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_SignatureAlgorithm
 		}
 	}
@@ -226,17 +273,12 @@ func (x *Authentication) GetRootCertificate() *CertificateInfo {
 
 func (x *Authentication) SetStatus(v Authentication_Status) {
 	x.xxx_hidden_Status = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
-}
-
-func (x *Authentication) SetErrorMessage(v string) {
-	x.xxx_hidden_ErrorMessage = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *Authentication) SetSignatureAlgorithm(v SignatureAlgorithm) {
 	x.xxx_hidden_SignatureAlgorithm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *Authentication) SetSignatureCreationTime(v *timestamppb.Timestamp) {
@@ -258,18 +300,11 @@ func (x *Authentication) HasStatus() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Authentication) HasErrorMessage() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
 func (x *Authentication) HasSignatureAlgorithm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
 func (x *Authentication) HasSignatureCreationTime() bool {
@@ -298,13 +333,8 @@ func (x *Authentication) ClearStatus() {
 	x.xxx_hidden_Status = Authentication_STATUS_UNSPECIFIED
 }
 
-func (x *Authentication) ClearErrorMessage() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_ErrorMessage = nil
-}
-
 func (x *Authentication) ClearSignatureAlgorithm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_SignatureAlgorithm = SignatureAlgorithm_SIGNATURE_ALGORITHM_UNSPECIFIED
 }
 
@@ -323,12 +353,22 @@ func (x *Authentication) ClearRootCertificate() {
 type Authentication_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Status                *Authentication_Status
-	ErrorMessage          *string
-	SignatureAlgorithm    *SignatureAlgorithm
+	// Overall authentication status. VERIFIED indicates that both certificate
+	// chain validation and data signature verification succeeded.
+	Status *Authentication_Status
+	// The cryptographic algorithm used for the data signature.
+	// Determined by the equipment certificate type and generation.
+	SignatureAlgorithm *SignatureAlgorithm
+	// The timestamp when the signature was created, extracted from the
+	// signing certificate's validity period or signature metadata.
 	SignatureCreationTime *timestamppb.Timestamp
-	SignerCertificate     *CertificateInfo
-	RootCertificate       *CertificateInfo
+	// Information about the equipment certificate (Card or VU certificate)
+	// that was used to sign this data block. This is the leaf certificate
+	// in the chain, issued by the MSCA.
+	SignerCertificate *CertificateInfo
+	// Information about the European Root CA certificate that anchors the
+	// trust chain. This certificate is trusted a priori per the regulation.
+	RootCertificate *CertificateInfo
 }
 
 func (b0 Authentication_builder) Build() *Authentication {
@@ -336,15 +376,11 @@ func (b0 Authentication_builder) Build() *Authentication {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Status != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_Status = *b.Status
 	}
-	if b.ErrorMessage != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
-		x.xxx_hidden_ErrorMessage = b.ErrorMessage
-	}
 	if b.SignatureAlgorithm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_SignatureAlgorithm = *b.SignatureAlgorithm
 	}
 	x.xxx_hidden_SignatureCreationTime = b.SignatureCreationTime
@@ -353,6 +389,25 @@ func (b0 Authentication_builder) Build() *Authentication {
 	return m0
 }
 
+// Information extracted from a public key certificate in the tachograph system.
+//
+// Certificates in the tachograph system follow the structures defined in
+// Appendix 11:
+// - Section 3: RSA certificates (Generation 1)
+// - Section 9: ECC certificates (Generation 2)
+//
+// This message contains human-readable information extracted from the
+// certificate's Common Name (CN) fields and validity period.
+//
+// In the context of an Authentication message:
+//   - signer_certificate: Information about the equipment certificate (Card or VU)
+//     that signed the data. This is the leaf certificate in the chain.
+//   - root_certificate: Information about the European Root CA certificate that
+//     anchors the trust chain.
+//
+// Note: The intermediate MSCA (Member State Certificate Authority) certificate
+// is validated during authentication but its information is not included in
+// the Authentication result.
 type CertificateInfo struct {
 	state                                      protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Description                     *string                `protobuf:"bytes,1,opt,name=description"`
@@ -572,13 +627,32 @@ func (x *CertificateInfo) ClearValidTo() {
 type CertificateInfo_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Description                     *string
-	NationCode                      *int32
-	NationName                      *string
+	// Human-readable description of the certificate holder.
+	// Extracted from the certificate's Common Name field.
+	Description *string
+	// Numeric code identifying the issuing nation (Member State).
+	// Defined in the NationNumeric data type (Data Dictionary Section 2.120).
+	// Examples: 276 (Germany), 250 (France), 826 (United Kingdom)
+	NationCode *int32
+	// Human-readable name of the issuing nation.
+	// Derived from nation_code using the alpha code mapping.
+	NationName *string
+	// Certification Authority Reference from the certificate.
+	// Identifies the CA that issued this certificate.
+	// For equipment certificates: the MSCA reference
+	// For MSCA certificates: the EUR root reference
 	CertificationAuthorityReference *string
-	CertificateHolderReference      *string
-	ValidFrom                       *timestamppb.Timestamp
-	ValidTo                         *timestamppb.Timestamp
+	// Certificate Holder Reference from the certificate.
+	// Uniquely identifies the entity that holds this certificate.
+	// For equipment certificates: the card/VU serial number
+	// For MSCA certificates: the Member State identifier
+	CertificateHolderReference *string
+	// Start of the certificate's validity period.
+	// Certificates used before this time are invalid.
+	ValidFrom *timestamppb.Timestamp
+	// End of the certificate's validity period.
+	// Certificates used after this time are invalid.
+	ValidTo *timestamppb.Timestamp
 }
 
 func (b0 CertificateInfo_builder) Build() *CertificateInfo {
@@ -614,20 +688,18 @@ var File_wayplatform_connect_tachograph_security_v1_authentication_proto protore
 
 const file_wayplatform_connect_tachograph_security_v1_authentication_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/security/v1/authentication.proto\x12*wayplatform.connect.tachograph.security.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb1\x05\n" +
+	"?wayplatform/connect/tachograph/security/v1/authentication.proto\x12*wayplatform.connect.tachograph.security.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf5\x04\n" +
 	"\x0eAuthentication\x12Y\n" +
-	"\x06status\x18\x01 \x01(\x0e2A.wayplatform.connect.tachograph.security.v1.Authentication.StatusR\x06status\x12#\n" +
-	"\rerror_message\x18\x02 \x01(\tR\ferrorMessage\x12o\n" +
-	"\x13signature_algorithm\x18\x03 \x01(\x0e2>.wayplatform.connect.tachograph.security.v1.SignatureAlgorithmR\x12signatureAlgorithm\x12R\n" +
-	"\x17signature_creation_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x15signatureCreationTime\x12j\n" +
-	"\x12signer_certificate\x18\x05 \x01(\v2;.wayplatform.connect.tachograph.security.v1.CertificateInfoR\x11signerCertificate\x12f\n" +
-	"\x10root_certificate\x18\x06 \x01(\v2;.wayplatform.connect.tachograph.security.v1.CertificateInfoR\x0frootCertificate\"\x85\x01\n" +
+	"\x06status\x18\x01 \x01(\x0e2A.wayplatform.connect.tachograph.security.v1.Authentication.StatusR\x06status\x12o\n" +
+	"\x13signature_algorithm\x18\x02 \x01(\x0e2>.wayplatform.connect.tachograph.security.v1.SignatureAlgorithmR\x12signatureAlgorithm\x12R\n" +
+	"\x17signature_creation_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x15signatureCreationTime\x12j\n" +
+	"\x12signer_certificate\x18\x04 \x01(\v2;.wayplatform.connect.tachograph.security.v1.CertificateInfoR\x11signerCertificate\x12f\n" +
+	"\x10root_certificate\x18\x05 \x01(\v2;.wayplatform.connect.tachograph.security.v1.CertificateInfoR\x0frootCertificate\"o\n" +
 	"\x06Status\x12\x16\n" +
 	"\x12STATUS_UNSPECIFIED\x10\x00\x12\f\n" +
-	"\bVERIFIED\x10\x01\x12\x15\n" +
-	"\x11SIGNATURE_INVALID\x10\x02\x12\x1e\n" +
-	"\x1aSIGNER_CERTIFICATE_INVALID\x10\x03\x12\x1e\n" +
-	"\x1aROOT_CERTIFICATE_NOT_FOUND\x10\x04\"\xf5\x02\n" +
+	"\bVERIFIED\x10\x01\x12\x1a\n" +
+	"\x16DATA_SIGNATURE_INVALID\x10\x02\x12#\n" +
+	"\x1fCERTIFICATE_VERIFICATION_FAILED\x10\x03\"\xf5\x02\n" +
 	"\x0fCertificateInfo\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x1f\n" +
 	"\vnation_code\x18\x02 \x01(\x05R\n" +
@@ -638,17 +710,13 @@ const file_wayplatform_connect_tachograph_security_v1_authentication_proto_rawDe
 	"\x1ccertificate_holder_reference\x18\x05 \x01(\tR\x1acertificateHolderReference\x129\n" +
 	"\n" +
 	"valid_from\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tvalidFrom\x125\n" +
-	"\bvalid_to\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\avalidTo*\x91\x02\n" +
+	"\bvalid_to\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\avalidTo*\x9c\x01\n" +
 	"\x12SignatureAlgorithm\x12#\n" +
 	"\x1fSIGNATURE_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1c\n" +
-	"\x18SHA1_WITH_RSA_ENCRYPTION\x10\x01\x12\x1e\n" +
-	"\x1aSHA256_WITH_RSA_ENCRYPTION\x10\x02\x12\x1e\n" +
-	"\x1aSHA384_WITH_RSA_ENCRYPTION\x10\x03\x12\x1e\n" +
-	"\x1aSHA512_WITH_RSA_ENCRYPTION\x10\x04\x12\x13\n" +
-	"\x0fECDSA_WITH_SHA1\x10\x05\x12\x15\n" +
-	"\x11ECDSA_WITH_SHA256\x10\x06\x12\x15\n" +
-	"\x11ECDSA_WITH_SHA384\x10\a\x12\x15\n" +
-	"\x11ECDSA_WITH_SHA512\x10\bB\xfc\x02\n" +
+	"\x18SHA1_WITH_RSA_ENCRYPTION\x10\x01\x12\x15\n" +
+	"\x11ECDSA_WITH_SHA256\x10\x02\x12\x15\n" +
+	"\x11ECDSA_WITH_SHA384\x10\x03\x12\x15\n" +
+	"\x11ECDSA_WITH_SHA512\x10\x04B\xfc\x02\n" +
 	".com.wayplatform.connect.tachograph.security.v1B\x13AuthenticationProtoP\x01Zhgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1;securityv1\xa2\x02\x04WCTS\xaa\x02*Wayplatform.Connect.Tachograph.Security.V1\xca\x02*Wayplatform\\Connect\\Tachograph\\Security\\V1\xe2\x026Wayplatform\\Connect\\Tachograph\\Security\\V1\\GPBMetadata\xea\x02.Wayplatform::Connect::Tachograph::Security::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_security_v1_authentication_proto_enumTypes = make([]protoimpl.EnumInfo, 2)

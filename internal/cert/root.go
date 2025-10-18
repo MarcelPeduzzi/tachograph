@@ -19,3 +19,13 @@ import (
 func Root() (*securityv1.RootCertificate, error) {
 	return security.UnmarshalRootCertificate(certcache.Root())
 }
+
+// RootGen2 returns the embedded Gen2 ERCA root certificate.
+//
+// The Gen2 ERCA root certificate is the trust anchor for the Gen2 tachograph PKI
+// hierarchy. It uses ECC/ECDSA and is self-signed.
+//
+// See Appendix 11, Section 9.1.2 "European Level" (Gen2).
+func RootGen2() (*securityv1.EccCertificate, error) {
+	return security.UnmarshalEccCertificate(certcache.RootG2())
+}

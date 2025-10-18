@@ -7,6 +7,7 @@
 package vuv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -34,14 +35,15 @@ const (
 //	    signatureRecordArray SignatureRecordArray
 //	}
 type DetailedSpeedGen2 struct {
-	state                  protoimpl.MessageState                   `protogen:"opaque.v1"`
-	xxx_hidden_SpeedBlocks *[]*DetailedSpeedGen2_DetailedSpeedBlock `protobuf:"bytes,1,rep,name=speed_blocks,json=speedBlocks"`
-	xxx_hidden_Signature   []byte                                   `protobuf:"bytes,2,opt,name=signature"`
-	xxx_hidden_RawData     []byte                                   `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                     protoimpl.MessageState                   `protogen:"opaque.v1"`
+	xxx_hidden_SpeedBlocks    *[]*DetailedSpeedGen2_DetailedSpeedBlock `protobuf:"bytes,1,rep,name=speed_blocks,json=speedBlocks"`
+	xxx_hidden_Signature      []byte                                   `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_RawData        []byte                                   `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Authentication *v1.Authentication                       `protobuf:"bytes,99,opt,name=authentication"`
+	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
+	XXX_presence              [1]uint32
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *DetailedSpeedGen2) Reset() {
@@ -92,6 +94,13 @@ func (x *DetailedSpeedGen2) GetRawData() []byte {
 	return nil
 }
 
+func (x *DetailedSpeedGen2) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *DetailedSpeedGen2) SetSpeedBlocks(v []*DetailedSpeedGen2_DetailedSpeedBlock) {
 	x.xxx_hidden_SpeedBlocks = &v
 }
@@ -101,7 +110,7 @@ func (x *DetailedSpeedGen2) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
 func (x *DetailedSpeedGen2) SetRawData(v []byte) {
@@ -109,7 +118,11 @@ func (x *DetailedSpeedGen2) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *DetailedSpeedGen2) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *DetailedSpeedGen2) HasSignature() bool {
@@ -126,6 +139,13 @@ func (x *DetailedSpeedGen2) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *DetailedSpeedGen2) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *DetailedSpeedGen2) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Signature = nil
@@ -134,6 +154,10 @@ func (x *DetailedSpeedGen2) ClearSignature() {
 func (x *DetailedSpeedGen2) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_RawData = nil
+}
+
+func (x *DetailedSpeedGen2) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type DetailedSpeedGen2_builder struct {
@@ -151,6 +175,9 @@ type DetailedSpeedGen2_builder struct {
 	// This field is preserved for data fidelity and lossless round-trips.
 	// It includes all data structures and the embedded signature.
 	RawData []byte
+	// Result of cryptographic signature authentication for this transfer.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 DetailedSpeedGen2_builder) Build() *DetailedSpeedGen2 {
@@ -159,13 +186,14 @@ func (b0 DetailedSpeedGen2_builder) Build() *DetailedSpeedGen2 {
 	_, _ = b, x
 	x.xxx_hidden_SpeedBlocks = &b.SpeedBlocks
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_RawData = b.RawData
 	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -271,11 +299,12 @@ var File_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen2_proto protoref
 
 const file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen2_proto_rawDesc = "" +
 	"\n" +
-	">wayplatform/connect/tachograph/vu/v1/detailed_speed_gen2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xab\x02\n" +
+	">wayplatform/connect/tachograph/vu/v1/detailed_speed_gen2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x8f\x03\n" +
 	"\x11DetailedSpeedGen2\x12m\n" +
 	"\fspeed_blocks\x18\x01 \x03(\v2J.wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2.DetailedSpeedBlockR\vspeedBlocks\x12\x1c\n" +
 	"\tsignature\x18\x02 \x01(\fR\tsignature\x12\x19\n" +
-	"\braw_data\x18\x03 \x01(\fR\arawData\x1an\n" +
+	"\braw_data\x18\x03 \x01(\fR\arawData\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1an\n" +
 	"\x12DetailedSpeedBlock\x129\n" +
 	"\n" +
 	"begin_date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tbeginDate\x12\x1d\n" +
@@ -287,16 +316,18 @@ var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen2_proto_msgTypes
 var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen2_proto_goTypes = []any{
 	(*DetailedSpeedGen2)(nil),                    // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2
 	(*DetailedSpeedGen2_DetailedSpeedBlock)(nil), // 1: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2.DetailedSpeedBlock
-	(*timestamppb.Timestamp)(nil),                // 2: google.protobuf.Timestamp
+	(*v1.Authentication)(nil),                    // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(*timestamppb.Timestamp)(nil),                // 3: google.protobuf.Timestamp
 }
 var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen2_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2.speed_blocks:type_name -> wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2.DetailedSpeedBlock
-	2, // 1: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2.DetailedSpeedBlock.begin_date:type_name -> google.protobuf.Timestamp
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2.DetailedSpeedBlock.begin_date:type_name -> google.protobuf.Timestamp
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen2_proto_init() }

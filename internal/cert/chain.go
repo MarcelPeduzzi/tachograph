@@ -38,6 +38,19 @@ func (r *ChainResolver) GetRootCertificate(ctx context.Context) (*securityv1.Roo
 	return nil, fmt.Errorf("failed to get root certificate: %w", errors.Join(errs...))
 }
 
+// GetEccRootCertificate implements [Resolver.GetEccRootCertificate].
+func (r *ChainResolver) GetEccRootCertificate(ctx context.Context) (*securityv1.EccCertificate, error) {
+	var errs []error
+	for _, resolver := range r.resolvers {
+		cert, err := resolver.GetEccRootCertificate(ctx)
+		if err == nil {
+			return cert, nil
+		}
+		errs = append(errs, err)
+	}
+	return nil, fmt.Errorf("failed to get Gen2 root certificate: %w", errors.Join(errs...))
+}
+
 // GetRsaCertificate implements [Resolver.GetRsaCertificate].
 func (r *ChainResolver) GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error) {
 	var errs []error

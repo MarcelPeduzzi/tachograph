@@ -8,6 +8,7 @@ package vuv1
 
 import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -47,6 +48,7 @@ type ActivitiesGen1 struct {
 	xxx_hidden_SpecificConditions *[]*v1.SpecificConditionRecord `protobuf:"bytes,6,rep,name=specific_conditions,json=specificConditions"`
 	xxx_hidden_Signature          []byte                         `protobuf:"bytes,7,opt,name=signature"`
 	xxx_hidden_RawData            []byte                         `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Authentication     *v11.Authentication            `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData        protoimpl.RaceDetectHookData
 	XXX_presence                  [1]uint32
 	unknownFields                 protoimpl.UnknownFields
@@ -142,13 +144,20 @@ func (x *ActivitiesGen1) GetRawData() []byte {
 	return nil
 }
 
+func (x *ActivitiesGen1) GetAuthentication() *v11.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *ActivitiesGen1) SetDateOfDay(v *timestamppb.Timestamp) {
 	x.xxx_hidden_DateOfDay = v
 }
 
 func (x *ActivitiesGen1) SetOdometerMidnightKm(v int32) {
 	x.xxx_hidden_OdometerMidnightKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
 }
 
 func (x *ActivitiesGen1) SetCardIwData(v []*v1.VuCardIWRecord) {
@@ -172,7 +181,7 @@ func (x *ActivitiesGen1) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
 }
 
 func (x *ActivitiesGen1) SetRawData(v []byte) {
@@ -180,7 +189,11 @@ func (x *ActivitiesGen1) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+}
+
+func (x *ActivitiesGen1) SetAuthentication(v *v11.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *ActivitiesGen1) HasDateOfDay() bool {
@@ -211,6 +224,13 @@ func (x *ActivitiesGen1) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
+func (x *ActivitiesGen1) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *ActivitiesGen1) ClearDateOfDay() {
 	x.xxx_hidden_DateOfDay = nil
 }
@@ -228,6 +248,10 @@ func (x *ActivitiesGen1) ClearSignature() {
 func (x *ActivitiesGen1) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_RawData = nil
+}
+
+func (x *ActivitiesGen1) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type ActivitiesGen1_builder struct {
@@ -265,6 +289,9 @@ type ActivitiesGen1_builder struct {
 	// This field is preserved for data fidelity and lossless round-trips.
 	// It includes all data structures and the embedded signature.
 	RawData []byte
+	// Result of cryptographic signature authentication for this transfer.
+	// Present when signature verification has been performed.
+	Authentication *v11.Authentication
 }
 
 func (b0 ActivitiesGen1_builder) Build() *ActivitiesGen1 {
@@ -273,7 +300,7 @@ func (b0 ActivitiesGen1_builder) Build() *ActivitiesGen1 {
 	_, _ = b, x
 	x.xxx_hidden_DateOfDay = b.DateOfDay
 	if b.OdometerMidnightKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
 		x.xxx_hidden_OdometerMidnightKm = *b.OdometerMidnightKm
 	}
 	x.xxx_hidden_CardIwData = &b.CardIwData
@@ -281,13 +308,14 @@ func (b0 ActivitiesGen1_builder) Build() *ActivitiesGen1 {
 	x.xxx_hidden_Places = &b.Places
 	x.xxx_hidden_SpecificConditions = &b.SpecificConditions
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
 		x.xxx_hidden_RawData = b.RawData
 	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -522,7 +550,7 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto protoreflect
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/vu/v1/activities_gen1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a<wayplatform/connect/tachograph/dd/v1/vu_card_iw_record.proto\"\xf0\x06\n" +
+	":wayplatform/connect/tachograph/vu/v1/activities_gen1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a<wayplatform/connect/tachograph/dd/v1/vu_card_iw_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xd4\a\n" +
 	"\x0eActivitiesGen1\x12:\n" +
 	"\vdate_of_day\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tdateOfDay\x120\n" +
 	"\x14odometer_midnight_km\x18\x02 \x01(\x05R\x12odometerMidnightKm\x12V\n" +
@@ -532,7 +560,8 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_rawDesc = 
 	"\x06places\x18\x05 \x03(\v2@.wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecordR\x06places\x12n\n" +
 	"\x13specific_conditions\x18\x06 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\x12specificConditions\x12\x1c\n" +
 	"\tsignature\x18\a \x01(\fR\tsignature\x12\x19\n" +
-	"\braw_data\x18\b \x01(\fR\arawData\x1a\xaf\x02\n" +
+	"\braw_data\x18\b \x01(\fR\arawData\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xaf\x02\n" +
 	"\vPlaceRecord\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12]\n" +
@@ -552,8 +581,9 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_goTypes = []
 	(*v1.VuCardIWRecord)(nil),          // 3: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord
 	(*v1.ActivityChangeInfo)(nil),      // 4: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 	(*v1.SpecificConditionRecord)(nil), // 5: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
-	(v1.EntryTypeDailyWorkPeriod)(0),   // 6: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
-	(v1.NationNumeric)(0),              // 7: wayplatform.connect.tachograph.dd.v1.NationNumeric
+	(*v11.Authentication)(nil),         // 6: wayplatform.connect.tachograph.security.v1.Authentication
+	(v1.EntryTypeDailyWorkPeriod)(0),   // 7: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
+	(v1.NationNumeric)(0),              // 8: wayplatform.connect.tachograph.dd.v1.NationNumeric
 }
 var file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_depIdxs = []int32{
 	2, // 0: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.date_of_day:type_name -> google.protobuf.Timestamp
@@ -561,14 +591,15 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_depIdxs = []
 	4, // 2: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.activity_changes:type_name -> wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 	1, // 3: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.places:type_name -> wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecord
 	5, // 4: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.specific_conditions:type_name -> wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
-	2, // 5: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecord.entry_time:type_name -> google.protobuf.Timestamp
-	6, // 6: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecord.entry_type:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
-	7, // 7: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecord.country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	6, // 5: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	2, // 6: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecord.entry_time:type_name -> google.protobuf.Timestamp
+	7, // 7: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecord.entry_type:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
+	8, // 8: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.PlaceRecord.country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_init() }

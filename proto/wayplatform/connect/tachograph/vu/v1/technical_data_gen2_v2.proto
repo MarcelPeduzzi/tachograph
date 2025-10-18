@@ -14,6 +14,7 @@ import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Technical Data for Generation 2, Version 2 VU downloads.
 //
@@ -300,6 +301,10 @@ message TechnicalDataGen2V2 {
   // This field is preserved for data fidelity and lossless round-trips.
   // It includes all data structures and the embedded signature.
   bytes raw_data = 9;
+
+  // Result of cryptographic signature authentication for this transfer.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }
 
 

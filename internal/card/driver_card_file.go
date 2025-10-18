@@ -101,6 +101,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			if signature != nil {
 				identification.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				identification.SetAuthentication(auth)
+			}
 
 			// Route to appropriate DF based on generation
 			switch efGeneration {
@@ -129,6 +133,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				if signature != nil {
 					appId.SetSignature(signature)
 				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					appId.SetAuthentication(auth)
+				}
 
 				// Extract file-level version from CardStructureVersion for subsequent EFs
 				// Generation comes from TLV tag appendix, but version is file-level
@@ -150,6 +158,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				}
 				if signature != nil {
 					appIdG2.SetSignature(signature)
+				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					appIdG2.SetAuthentication(auth)
 				}
 
 				// Extract file-level version from CardStructureVersion for subsequent EFs
@@ -176,6 +188,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			if signature != nil {
 				drivingLicenceInfo.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				drivingLicenceInfo.SetAuthentication(auth)
+			}
 
 			// Route to appropriate DF based on generation
 			switch efGeneration {
@@ -200,6 +216,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			}
 			if signature != nil {
 				eventsData.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				eventsData.SetAuthentication(auth)
 			}
 
 			// Route to appropriate DF based on generation
@@ -226,6 +246,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			if signature != nil {
 				faultsData.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				faultsData.SetAuthentication(auth)
+			}
 
 			// Route to appropriate DF based on generation
 			switch efGeneration {
@@ -250,6 +274,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			}
 			if signature != nil {
 				activityData.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				activityData.SetAuthentication(auth)
 			}
 
 			// Route to appropriate DF based on generation
@@ -279,6 +307,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				if signature != nil {
 					vehiclesUsed.SetSignature(signature)
 				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					vehiclesUsed.SetAuthentication(auth)
+				}
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
@@ -291,6 +323,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				}
 				if signature != nil {
 					vehiclesUsedG2.SetSignature(signature)
+				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					vehiclesUsedG2.SetAuthentication(auth)
 				}
 				if tachographG2DF == nil {
 					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
@@ -312,6 +348,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				if signature != nil {
 					places.SetSignature(signature)
 				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					places.SetAuthentication(auth)
+				}
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
@@ -324,6 +364,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				}
 				if signature != nil {
 					placesG2.SetSignature(signature)
+				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					placesG2.SetAuthentication(auth)
 				}
 				if tachographG2DF == nil {
 					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
@@ -341,6 +385,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			}
 			if signature != nil {
 				currentUsage.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				currentUsage.SetAuthentication(auth)
 			}
 
 			// Route to appropriate DF based on generation
@@ -366,6 +414,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			}
 			if signature != nil {
 				controlActivity.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				controlActivity.SetAuthentication(auth)
 			}
 
 			// Route to appropriate DF based on generation
@@ -395,6 +447,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				if signature != nil {
 					specificConditions.SetSignature(signature)
 				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					specificConditions.SetAuthentication(auth)
+				}
 
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
@@ -408,6 +464,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 				}
 				if signature != nil {
 					specificConditionsG2.SetSignature(signature)
+				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					specificConditionsG2.SetAuthentication(auth)
 				}
 
 				if tachographG2DF == nil {
@@ -452,6 +512,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			if signature != nil {
 				vehicleUnits.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				vehicleUnits.SetAuthentication(auth)
+			}
 
 			// Only Gen2
 			if tachographG2DF == nil {
@@ -467,6 +531,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			if signature != nil {
 				gnssPlaces.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				gnssPlaces.SetAuthentication(auth)
+			}
 
 			// Only Gen2
 			if tachographG2DF == nil {
@@ -481,6 +549,10 @@ func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, 
 			}
 			if signature != nil {
 				appIdV2.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				appIdV2.SetAuthentication(auth)
 			}
 
 			// Only Gen2

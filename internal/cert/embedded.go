@@ -24,6 +24,11 @@ func (r *EmbeddedResolver) GetRootCertificate(ctx context.Context) (*securityv1.
 	return Root()
 }
 
+// GetEccRootCertificate retrieves the Gen2 European Root CA certificate.
+func (r *EmbeddedResolver) GetEccRootCertificate(ctx context.Context) (*securityv1.EccCertificate, error) {
+	return RootGen2()
+}
+
 // GetRsaCertificate retrieves an RSA certificate by its CHR.
 func (r *EmbeddedResolver) GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error) {
 	data, ok := certcache.ReadG1(chr)

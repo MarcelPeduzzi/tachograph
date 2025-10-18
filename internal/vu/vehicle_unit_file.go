@@ -115,12 +115,20 @@ func unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Vehic
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Overview Gen1: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				overview.SetAuthentication(auth)
+			}
 			output.SetOverview(overview)
 
 		case vuv1.TransferType_ACTIVITIES_GEN1:
 			activities, err := unmarshalActivitiesGen1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Activities Gen1: %w", err)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				activities.SetAuthentication(auth)
 			}
 			output.SetActivities(append(output.GetActivities(), activities))
 
@@ -129,6 +137,10 @@ func unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Vehic
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Events and Faults Gen1: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				eventsAndFaults.SetAuthentication(auth)
+			}
 			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
 
 		case vuv1.TransferType_DETAILED_SPEED_GEN1:
@@ -136,12 +148,20 @@ func unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Vehic
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Detailed Speed Gen1: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				detailedSpeed.SetAuthentication(auth)
+			}
 			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
 
 		case vuv1.TransferType_TECHNICAL_DATA_GEN1:
 			technicalData, err := unmarshalTechnicalDataGen1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Technical Data Gen1: %w", err)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				technicalData.SetAuthentication(auth)
 			}
 			output.SetTechnicalData(append(output.GetTechnicalData(), technicalData))
 
@@ -164,12 +184,20 @@ func unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Overview Gen2 V1: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				overview.SetAuthentication(auth)
+			}
 			output.SetOverview(overview)
 
 		case vuv1.TransferType_ACTIVITIES_GEN2_V1:
 			activities, err := unmarshalActivitiesGen2V1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Activities Gen2 V1: %w", err)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				activities.SetAuthentication(auth)
 			}
 			output.SetActivities(append(output.GetActivities(), activities))
 
@@ -178,6 +206,10 @@ func unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Events and Faults Gen2 V1: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				eventsAndFaults.SetAuthentication(auth)
+			}
 			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
 
 		case vuv1.TransferType_DETAILED_SPEED_GEN2:
@@ -185,12 +217,20 @@ func unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Detailed Speed Gen2: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				detailedSpeed.SetAuthentication(auth)
+			}
 			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
 
 		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V1:
 			technicalData, err := unmarshalTechnicalDataGen2V1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Technical Data Gen2 V1: %w", err)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				technicalData.SetAuthentication(auth)
 			}
 			output.SetTechnicalData(append(output.GetTechnicalData(), technicalData))
 
@@ -218,12 +258,20 @@ func unmarshalVehicleUnitFileGen2V2(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Overview Gen2 V2: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				overview.SetAuthentication(auth)
+			}
 			output.SetOverview(overview)
 
 		case vuv1.TransferType_ACTIVITIES_GEN2_V2:
 			activities, err := unmarshalActivitiesGen2V2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Activities Gen2 V2: %w", err)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				activities.SetAuthentication(auth)
 			}
 			output.SetActivities(append(output.GetActivities(), activities))
 
@@ -232,6 +280,10 @@ func unmarshalVehicleUnitFileGen2V2(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Events and Faults Gen2 V2: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				eventsAndFaults.SetAuthentication(auth)
+			}
 			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
 
 		case vuv1.TransferType_DETAILED_SPEED_GEN2:
@@ -239,12 +291,20 @@ func unmarshalVehicleUnitFileGen2V2(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Detailed Speed Gen2: %w", err)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				detailedSpeed.SetAuthentication(auth)
+			}
 			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
 
 		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V2:
 			technicalData, err := unmarshalTechnicalDataGen2V2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Technical Data Gen2 V2: %w", err)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				technicalData.SetAuthentication(auth)
 			}
 			output.SetTechnicalData(append(output.GetTechnicalData(), technicalData))
 

@@ -7,6 +7,7 @@ import "wayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto";
 import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Events and Faults data for Generation 2, Version 2 VU downloads.
 //
@@ -265,6 +266,10 @@ message EventsAndFaultsGen2V2 {
   // This field is preserved for data fidelity and lossless round-trips.
   // It includes all data structures and the embedded signature.
   bytes raw_data = 7;
+
+  // Result of cryptographic signature authentication for this transfer.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }
 
 

@@ -15,6 +15,7 @@ import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/position_authentication_status.proto";
 import "wayplatform/connect/tachograph/dd/v1/previous_vehicle_info_g2.proto";
 import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Activities data for Generation 2, Version 2 VU downloads.
 //
@@ -351,5 +352,9 @@ message ActivitiesGen2V2 {
   // This field is preserved for data fidelity and lossless round-trips.
   // It includes all data structures and the embedded signature.
   bytes raw_data = 11;
+
+  // Result of cryptographic signature authentication for this transfer.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }
 

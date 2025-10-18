@@ -45,14 +45,20 @@ type CertificateIndex struct {
 	// CreateTime is when this index was created
 	CreateTime time.Time `json:"createTime"`
 
-	// Root is the European Root CA (ERCA) certificate that signs all member state certificates
-	Root *CertificateEntry `json:"root"`
+	// G1 contains Gen1 (RSA) certificates
+	G1 GenerationCertificates `json:"g1"`
 
-	// G1 contains Gen1 (RSA) member state certificates
-	G1 []CertificateEntry `json:"g1"`
+	// G2 contains Gen2 (ECC) certificates
+	G2 GenerationCertificates `json:"g2"`
+}
 
-	// G2 contains Gen2 (ECC) member state certificates
-	G2 []CertificateEntry `json:"g2"`
+// GenerationCertificates groups certificates for a single generation
+type GenerationCertificates struct {
+	// Root is the ERCA root certificate for this generation
+	Root CertificateEntry `json:"root"`
+
+	// MSCA contains all member state CA certificates for this generation
+	MSCA []CertificateEntry `json:"msca"`
 }
 
 // MarshalJSON implements custom JSON marshaling for CertificateIndex
@@ -114,68 +120,77 @@ func main() {
 		CreateTime: time.Now().UTC(),
 	}
 
-	// Download and save root certificate
-	log.Println("Downloading root certificate...")
+	// Download and process Gen1 certificates
+	log.Println("Downloading Gen1 root certificate...")
 	ercaCertData, err := downloadAndSaveRootCertificate(ctx, *outputDir)
 	if err != nil {
-		log.Fatalf("Failed to download root certificate: %v", err)
+		log.Fatalf("Failed to download Gen1 root: %v", err)
 	}
-	log.Printf("Root certificate saved (%d bytes)", len(ercaCertData))
+	log.Printf("Gen1 root certificate saved (%d bytes)", len(ercaCertData))
 
-	// Extract key identifier from root certificate (first 8 bytes)
-	// The root certificate is in raw format: [8 bytes key ID][128 bytes modulus][8 bytes exponent]
-	var ercaKeyID uint64
-	if len(ercaCertData) >= 8 {
-		ercaKeyID = binary.BigEndian.Uint64(ercaCertData[0:8])
-	}
-
-	// Set root certificate in index
-	// For the root certificate, CAR and CHR are the same (self-signed)
-	// Country is not set for the root certificate as it's the European-level CA
-	index.Root = &CertificateEntry{
+	ercaKeyID := binary.BigEndian.Uint64(ercaCertData[0:8])
+	index.G1.Root = CertificateEntry{
 		CAR:  fmt.Sprintf("%d", ercaKeyID),
-		CHR:  fmt.Sprintf("%d", ercaKeyID), // Self-signed
+		CHR:  fmt.Sprintf("%d", ercaKeyID),
 		URL:  "https://dtc.jrc.ec.europa.eu/erca_of_doc/EC_PK.zip",
 		Path: "root/EC_PK.bin",
 	}
-	log.Printf("Root certificate: %s (Key ID: %s)", index.Root.Path, index.Root.CAR)
+	log.Printf("Gen1 root certificate: %s (Key ID: %s)", index.G1.Root.Path, index.G1.Root.CAR)
 
-	// Extract public key components for signature recovery
 	ercaModulus, ercaExponent, err := extractERCA(ercaCertData)
 	if err != nil {
 		log.Fatalf("Failed to extract ERCA public key: %v", err)
 	}
 
-	// Build Gen1 certificate index
-	log.Println("Indexing and downloading Gen1 certificates...")
-	index.G1, err = indexAndDownloadGen1Certificates(ctx, *baseURL, *outputDir, *concurrency, ercaModulus, ercaExponent)
+	log.Println("Indexing and downloading Gen1 MSCA certificates...")
+	index.G1.MSCA, err = indexAndDownloadGen1Certificates(ctx, *baseURL, *outputDir, *concurrency, ercaModulus, ercaExponent)
 	if err != nil {
 		log.Fatalf("Failed to index Gen1 certificates: %v", err)
 	}
-	log.Printf("Downloaded %d Gen1 member state certificates", len(index.G1))
+	log.Printf("Downloaded %d Gen1 MSCA certificates", len(index.G1.MSCA))
 
-	// Build Gen2 certificate index
-	log.Println("Indexing and downloading Gen2 certificates...")
-	index.G2, err = indexAndDownloadGen2Certificates(ctx, *baseURL, *outputDir, *concurrency)
+	// Download and process Gen2 certificates
+	log.Println("Downloading Gen2 root certificate...")
+	ercaGen2Data, err := downloadAndSaveGen2RootCertificate(ctx, *outputDir)
+	if err != nil {
+		log.Fatalf("Failed to download Gen2 root: %v", err)
+	}
+	log.Printf("Gen2 root certificate saved (%d bytes)", len(ercaGen2Data))
+
+	gen2CHR, err := extractGen2RootCHR(ercaGen2Data)
+	if err != nil {
+		log.Fatalf("Failed to extract Gen2 root CHR: %v", err)
+	}
+
+	index.G2.Root = CertificateEntry{
+		CAR:  fmt.Sprintf("%d", gen2CHR),
+		CHR:  fmt.Sprintf("%d", gen2CHR),
+		URL:  "https://dtc.jrc.ec.europa.eu/ERCA_Gen2_Root_Certificate.zip",
+		Path: "root/ERCA_Gen2_Root_Certificate.bin",
+	}
+	log.Printf("Gen2 root certificate: %s (Key ID: %s)", index.G2.Root.Path, index.G2.Root.CAR)
+
+	log.Println("Indexing and downloading Gen2 MSCA certificates...")
+	index.G2.MSCA, err = indexAndDownloadGen2Certificates(ctx, *baseURL, *outputDir, *concurrency)
 	if err != nil {
 		log.Fatalf("Failed to index Gen2 certificates: %v", err)
 	}
-	log.Printf("Downloaded %d Gen2 member state certificates", len(index.G2))
+	log.Printf("Downloaded %d Gen2 MSCA certificates", len(index.G2.MSCA))
 
-	// Sort certificates by country (ascending) and expiration date (descending)
+	// Sort MSCA certificates
 	log.Println("Sorting certificate entries...")
-	sortCertificates(index.G1)
-	sortCertificates(index.G2)
+	sortCertificates(index.G1.MSCA)
+	sortCertificates(index.G2.MSCA)
 
-	// Write index to file
+	// Write index
 	indexPath := filepath.Join(*outputDir, "index.json")
 	if err := writeIndexFile(&index, indexPath); err != nil {
 		log.Fatalf("Failed to write index file: %v", err)
 	}
 
 	log.Printf("Certificate index written to %s", indexPath)
-	log.Printf("Total certificates: 1 root + %d Gen1 + %d Gen2",
-		len(index.G1), len(index.G2))
+	log.Printf("Total certificates: Gen1 (1 root + %d MSCA), Gen2 (1 root + %d MSCA)",
+		len(index.G1.MSCA), len(index.G2.MSCA))
 }
 
 // createDirectoryStructure creates the required directory structure for certificates
@@ -224,6 +239,23 @@ func downloadAndSaveRootCertificate(ctx context.Context, baseDir string) ([]byte
 	}
 
 	log.Printf("  Saved root certificate to %s", certPath)
+	return certData, nil
+}
+
+// downloadAndSaveGen2RootCertificate downloads the Gen2 ERCA root and saves it.
+func downloadAndSaveGen2RootCertificate(ctx context.Context, baseDir string) ([]byte, error) {
+	client := &http.Client{Timeout: 30 * time.Second}
+	certData, err := downloadERCAGen2(ctx, client)
+	if err != nil {
+		return nil, err
+	}
+
+	certPath := filepath.Join(baseDir, "root", "ERCA_Gen2_Root_Certificate.bin")
+	if err := os.WriteFile(certPath, certData, 0o644); err != nil {
+		return nil, fmt.Errorf("failed to write Gen2 root certificate: %w", err)
+	}
+
+	log.Printf("  Saved Gen2 root certificate to %s", certPath)
 	return certData, nil
 }
 
@@ -530,6 +562,60 @@ func downloadERCA(ctx context.Context, client *http.Client) ([]byte, error) {
 	return nil, fmt.Errorf("EC_PK.bin not found in ERCA ZIP")
 }
 
+// downloadERCAGen2 downloads the Gen2 ERCA root certificate from the EU DTC website.
+// The certificate is distributed as a ZIP file containing "ERCA Gen2 (1) Root Certificate.bin".
+func downloadERCAGen2(ctx context.Context, client *http.Client) ([]byte, error) {
+	const ercaGen2ZipURL = "https://dtc.jrc.ec.europa.eu/ERCA_Gen2_Root_Certificate.zip"
+
+	log.Println("  Downloading Gen2 ERCA root certificate ZIP...")
+	req, err := http.NewRequestWithContext(ctx, "GET", ercaGen2ZipURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Gen2 ERCA request: %w", err)
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to download Gen2 ERCA ZIP: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("Gen2 ERCA download failed with status %d", resp.StatusCode)
+	}
+
+	zipData, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read Gen2 ERCA ZIP: %w", err)
+	}
+
+	// Parse ZIP file
+	zipReader, err := zip.NewReader(bytes.NewReader(zipData), int64(len(zipData)))
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse Gen2 ERCA ZIP: %w", err)
+	}
+
+	// Extract "ERCA Gen2 (1) Root Certificate.bin" from ZIP
+	for _, file := range zipReader.File {
+		if file.Name == "ERCA Gen2 (1) Root Certificate.bin" {
+			rc, err := file.Open()
+			if err != nil {
+				return nil, fmt.Errorf("failed to open ERCA Gen2 root cert in ZIP: %w", err)
+			}
+			defer rc.Close()
+
+			certData, err := io.ReadAll(rc)
+			if err != nil {
+				return nil, fmt.Errorf("failed to read ERCA Gen2 root cert: %w", err)
+			}
+
+			log.Printf("  Successfully downloaded Gen2 ERCA certificate (%d bytes)", len(certData))
+			return certData, nil
+		}
+	}
+
+	return nil, fmt.Errorf("ERCA Gen2 (1) Root Certificate.bin not found in ZIP")
+}
+
 // extractERCA extracts the RSA public key from the ERCA root certificate.
 // The ERCA certificate is in a raw RSA public key format:
 // - Bytes 0-7: Key identifier (8 bytes)
@@ -693,6 +779,13 @@ func extractGen2CAR(certData []byte) (uint64, error) {
 
 	car := binary.BigEndian.Uint64(carRaw.Bytes)
 	return car, nil
+}
+
+// extractGen2RootCHR extracts the CHR from the Gen2 root certificate.
+// The Gen2 root is self-signed (CAR == CHR) and in ASN.1 format.
+// This is the same as extractGen2CHR since both parse the CHR field.
+func extractGen2RootCHR(certData []byte) (uint64, error) {
+	return extractGen2CHR(certData)
 }
 
 // extractGen2CHR extracts the Certificate Holder Reference from a Gen2 certificate.

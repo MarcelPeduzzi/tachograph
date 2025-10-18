@@ -31,6 +31,12 @@ func (c *Client) GetRootCertificate(ctx context.Context) (*securityv1.RootCertif
 	return nil, fmt.Errorf("not implemented")
 }
 
+// GetEccRootCertificate retrieves the Gen2 European Root CA certificate.
+func (c *Client) GetEccRootCertificate(ctx context.Context) (*securityv1.EccCertificate, error) {
+	// TODO: Implement
+	return nil, fmt.Errorf("not implemented")
+}
+
 // GetRsaCertificate retrieves an RSA certificate by its CHR.
 func (c *Client) GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error) {
 	index, err := certcache.LoadIndex()

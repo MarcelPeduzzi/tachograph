@@ -11,6 +11,9 @@ type Resolver interface {
 	// GetRootCertificate retrieves the European Root CA certificate.
 	GetRootCertificate(ctx context.Context) (*securityv1.RootCertificate, error)
 
+	// GetEccRootCertificate retrieves the Gen2 European Root CA certificate (ECC).
+	GetEccRootCertificate(ctx context.Context) (*securityv1.EccCertificate, error)
+
 	// GetRsaCertificate retrieves an RSA certificate (Generation 1) by its CHR.
 	GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error)
 

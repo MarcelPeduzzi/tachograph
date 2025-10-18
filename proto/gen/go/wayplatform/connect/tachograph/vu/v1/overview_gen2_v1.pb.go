@@ -8,6 +8,7 @@ package vuv1
 
 import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -58,6 +59,7 @@ type OverviewGen2V1 struct {
 	xxx_hidden_ControlActivities             *[]*OverviewGen2V1_ControlActivity    `protobuf:"bytes,11,rep,name=control_activities,json=controlActivities"`
 	xxx_hidden_Signature                     []byte                                `protobuf:"bytes,12,opt,name=signature"`
 	xxx_hidden_RawData                       []byte                                `protobuf:"bytes,13,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Authentication                *v11.Authentication                   `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData                   protoimpl.RaceDetectHookData
 	XXX_presence                             [1]uint32
 	unknownFields                            protoimpl.UnknownFields
@@ -190,12 +192,19 @@ func (x *OverviewGen2V1) GetRawData() []byte {
 	return nil
 }
 
+func (x *OverviewGen2V1) GetAuthentication() *v11.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *OverviewGen2V1) SetMemberStateCertificate(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_MemberStateCertificate = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 14)
 }
 
 func (x *OverviewGen2V1) SetVuCertificate(v []byte) {
@@ -203,7 +212,7 @@ func (x *OverviewGen2V1) SetVuCertificate(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_VuCertificate = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 14)
 }
 
 func (x *OverviewGen2V1) SetVehicleIdentificationNumber(v *v1.Ia5StringValue) {
@@ -224,12 +233,12 @@ func (x *OverviewGen2V1) SetDownloadablePeriod(v *v1.DownloadablePeriod) {
 
 func (x *OverviewGen2V1) SetDriverSlotCard(v v1.SlotCardType) {
 	x.xxx_hidden_DriverSlotCard = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 14)
 }
 
 func (x *OverviewGen2V1) SetCoDriverSlotCard(v v1.SlotCardType) {
 	x.xxx_hidden_CoDriverSlotCard = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 14)
 }
 
 func (x *OverviewGen2V1) SetDownloadActivities(v []*OverviewGen2V1_DownloadActivity) {
@@ -249,7 +258,7 @@ func (x *OverviewGen2V1) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 14)
 }
 
 func (x *OverviewGen2V1) SetRawData(v []byte) {
@@ -257,7 +266,11 @@ func (x *OverviewGen2V1) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 14)
+}
+
+func (x *OverviewGen2V1) SetAuthentication(v *v11.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *OverviewGen2V1) HasMemberStateCertificate() bool {
@@ -330,6 +343,13 @@ func (x *OverviewGen2V1) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
 }
 
+func (x *OverviewGen2V1) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *OverviewGen2V1) ClearMemberStateCertificate() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_MemberStateCertificate = nil
@@ -374,6 +394,10 @@ func (x *OverviewGen2V1) ClearSignature() {
 func (x *OverviewGen2V1) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
 	x.xxx_hidden_RawData = nil
+}
+
+func (x *OverviewGen2V1) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type OverviewGen2V1_builder struct {
@@ -429,6 +453,9 @@ type OverviewGen2V1_builder struct {
 	// This field is preserved for data fidelity and lossless round-trips.
 	// It includes all data structures and the embedded signature.
 	RawData []byte
+	// Result of cryptographic signature authentication for this transfer.
+	// Present when signature verification has been performed.
+	Authentication *v11.Authentication
 }
 
 func (b0 OverviewGen2V1_builder) Build() *OverviewGen2V1 {
@@ -436,11 +463,11 @@ func (b0 OverviewGen2V1_builder) Build() *OverviewGen2V1 {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.MemberStateCertificate != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 14)
 		x.xxx_hidden_MemberStateCertificate = b.MemberStateCertificate
 	}
 	if b.VuCertificate != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 14)
 		x.xxx_hidden_VuCertificate = b.VuCertificate
 	}
 	x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
@@ -448,24 +475,25 @@ func (b0 OverviewGen2V1_builder) Build() *OverviewGen2V1 {
 	x.xxx_hidden_CurrentDateTime = b.CurrentDateTime
 	x.xxx_hidden_DownloadablePeriod = b.DownloadablePeriod
 	if b.DriverSlotCard != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 14)
 		x.xxx_hidden_DriverSlotCard = *b.DriverSlotCard
 	}
 	if b.CoDriverSlotCard != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 14)
 		x.xxx_hidden_CoDriverSlotCard = *b.CoDriverSlotCard
 	}
 	x.xxx_hidden_DownloadActivities = &b.DownloadActivities
 	x.xxx_hidden_CompanyLocks = &b.CompanyLocks
 	x.xxx_hidden_ControlActivities = &b.ControlActivities
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 14)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 14)
 		x.xxx_hidden_RawData = b.RawData
 	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -1003,7 +1031,7 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_gen2_v1_proto protoreflec
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_gen2_v1_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/vu/v1/overview_gen2_v1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x88\x13\n" +
+	";wayplatform/connect/tachograph/vu/v1/overview_gen2_v1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xec\x13\n" +
 	"\x0eOverviewGen2V1\x128\n" +
 	"\x18member_state_certificate\x18\x01 \x01(\fR\x16memberStateCertificate\x12%\n" +
 	"\x0evu_certificate\x18\x02 \x01(\fR\rvuCertificate\x12x\n" +
@@ -1018,7 +1046,8 @@ const file_wayplatform_connect_tachograph_vu_v1_overview_gen2_v1_proto_rawDesc =
 	" \x03(\v2@.wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLockR\fcompanyLocks\x12s\n" +
 	"\x12control_activities\x18\v \x03(\v2D.wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivityR\x11controlActivities\x12\x1c\n" +
 	"\tsignature\x18\f \x01(\fR\tsignature\x12\x19\n" +
-	"\braw_data\x18\r \x01(\fR\arawData\x1a\xcf\x02\n" +
+	"\braw_data\x18\r \x01(\fR\arawData\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xcf\x02\n" +
 	"\x10DownloadActivity\x12E\n" +
 	"\x10downloading_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdownloadingTime\x12\x87\x01\n" +
 	"\x1ffull_card_number_and_generation\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12j\n" +
@@ -1049,9 +1078,10 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_gen2_v1_proto_goTypes = [
 	(*timestamppb.Timestamp)(nil),                // 6: google.protobuf.Timestamp
 	(*v1.DownloadablePeriod)(nil),                // 7: wayplatform.connect.tachograph.dd.v1.DownloadablePeriod
 	(v1.SlotCardType)(0),                         // 8: wayplatform.connect.tachograph.dd.v1.SlotCardType
-	(*v1.FullCardNumberAndGeneration)(nil),       // 9: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	(*v1.StringValue)(nil),                       // 10: wayplatform.connect.tachograph.dd.v1.StringValue
-	(*v1.ControlType)(nil),                       // 11: wayplatform.connect.tachograph.dd.v1.ControlType
+	(*v11.Authentication)(nil),                   // 9: wayplatform.connect.tachograph.security.v1.Authentication
+	(*v1.FullCardNumberAndGeneration)(nil),       // 10: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	(*v1.StringValue)(nil),                       // 11: wayplatform.connect.tachograph.dd.v1.StringValue
+	(*v1.ControlType)(nil),                       // 12: wayplatform.connect.tachograph.dd.v1.ControlType
 }
 var file_wayplatform_connect_tachograph_vu_v1_overview_gen2_v1_proto_depIdxs = []int32{
 	4,  // 0: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
@@ -1063,24 +1093,25 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_gen2_v1_proto_depIdxs = [
 	1,  // 6: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.download_activities:type_name -> wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.DownloadActivity
 	2,  // 7: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.company_locks:type_name -> wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock
 	3,  // 8: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.control_activities:type_name -> wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity
-	6,  // 9: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.DownloadActivity.downloading_time:type_name -> google.protobuf.Timestamp
-	9,  // 10: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.DownloadActivity.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	10, // 11: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.DownloadActivity.company_or_workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	6,  // 12: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
-	6,  // 13: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
-	10, // 14: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	10, // 15: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	9,  // 16: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.company_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	11, // 17: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.dd.v1.ControlType
-	6,  // 18: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
-	9,  // 19: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.control_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	6,  // 20: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
-	6,  // 21: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
-	22, // [22:22] is the sub-list for method output_type
-	22, // [22:22] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	9,  // 9: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	6,  // 10: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.DownloadActivity.downloading_time:type_name -> google.protobuf.Timestamp
+	10, // 11: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.DownloadActivity.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	11, // 12: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.DownloadActivity.company_or_workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	6,  // 13: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
+	6,  // 14: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
+	11, // 15: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	11, // 16: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	10, // 17: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.CompanyLock.company_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	12, // 18: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.dd.v1.ControlType
+	6,  // 19: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
+	10, // 20: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.control_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	6,  // 21: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
+	6,  // 22: wayplatform.connect.tachograph.vu.v1.OverviewGen2V1.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_overview_gen2_v1_proto_init() }

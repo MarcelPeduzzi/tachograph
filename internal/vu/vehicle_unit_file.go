@@ -111,35 +111,35 @@ func unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Vehic
 	for _, record := range rawFile.GetRecords() {
 		switch record.GetType() {
 		case vuv1.TransferType_OVERVIEW_GEN1:
-			overview, err := unmarshalOverviewGen1(record.GetValue())
+			overview, err := unmarshalOverviewGen1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Overview Gen1: %w", err)
 			}
 			output.SetOverview(overview)
 
 		case vuv1.TransferType_ACTIVITIES_GEN1:
-			activities, err := unmarshalActivitiesGen1(record.GetValue())
+			activities, err := unmarshalActivitiesGen1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Activities Gen1: %w", err)
 			}
 			output.SetActivities(append(output.GetActivities(), activities))
 
 		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN1:
-			eventsAndFaults, err := unmarshalEventsAndFaultsGen1(record.GetValue())
+			eventsAndFaults, err := unmarshalEventsAndFaultsGen1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Events and Faults Gen1: %w", err)
 			}
 			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
 
 		case vuv1.TransferType_DETAILED_SPEED_GEN1:
-			detailedSpeed, err := unmarshalDetailedSpeedGen1(record.GetValue())
+			detailedSpeed, err := unmarshalDetailedSpeedGen1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Detailed Speed Gen1: %w", err)
 			}
 			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
 
 		case vuv1.TransferType_TECHNICAL_DATA_GEN1:
-			technicalData, err := unmarshalTechnicalDataGen1(record.GetValue())
+			technicalData, err := unmarshalTechnicalDataGen1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Technical Data Gen1: %w", err)
 			}
@@ -160,35 +160,35 @@ func unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 	for _, record := range rawFile.GetRecords() {
 		switch record.GetType() {
 		case vuv1.TransferType_OVERVIEW_GEN2_V1:
-			overview, err := unmarshalOverviewGen2V1(record.GetValue())
+			overview, err := unmarshalOverviewGen2V1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Overview Gen2 V1: %w", err)
 			}
 			output.SetOverview(overview)
 
 		case vuv1.TransferType_ACTIVITIES_GEN2_V1:
-			activities, err := unmarshalActivitiesGen2V1(record.GetValue())
+			activities, err := unmarshalActivitiesGen2V1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Activities Gen2 V1: %w", err)
 			}
 			output.SetActivities(append(output.GetActivities(), activities))
 
 		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1:
-			eventsAndFaults, err := unmarshalEventsAndFaultsGen2V1(record.GetValue())
+			eventsAndFaults, err := unmarshalEventsAndFaultsGen2V1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Events and Faults Gen2 V1: %w", err)
 			}
 			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
 
 		case vuv1.TransferType_DETAILED_SPEED_GEN2:
-			detailedSpeed, err := unmarshalDetailedSpeedGen2(record.GetValue())
+			detailedSpeed, err := unmarshalDetailedSpeedGen2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Detailed Speed Gen2: %w", err)
 			}
 			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
 
 		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V1:
-			technicalData, err := unmarshalTechnicalDataGen2V1(record.GetValue())
+			technicalData, err := unmarshalTechnicalDataGen2V1(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Technical Data Gen2 V1: %w", err)
 			}
@@ -214,35 +214,35 @@ func unmarshalVehicleUnitFileGen2V2(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 			// output.SetDownloadInterfaceVersion(...)
 
 		case vuv1.TransferType_OVERVIEW_GEN2_V2:
-			overview, err := unmarshalOverviewGen2V2(record.GetValue())
+			overview, err := unmarshalOverviewGen2V2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Overview Gen2 V2: %w", err)
 			}
 			output.SetOverview(overview)
 
 		case vuv1.TransferType_ACTIVITIES_GEN2_V2:
-			activities, err := unmarshalActivitiesGen2V2(record.GetValue())
+			activities, err := unmarshalActivitiesGen2V2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Activities Gen2 V2: %w", err)
 			}
 			output.SetActivities(append(output.GetActivities(), activities))
 
 		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V2:
-			eventsAndFaults, err := unmarshalEventsAndFaultsGen2V2(record.GetValue())
+			eventsAndFaults, err := unmarshalEventsAndFaultsGen2V2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Events and Faults Gen2 V2: %w", err)
 			}
 			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
 
 		case vuv1.TransferType_DETAILED_SPEED_GEN2:
-			detailedSpeed, err := unmarshalDetailedSpeedGen2(record.GetValue())
+			detailedSpeed, err := unmarshalDetailedSpeedGen2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Detailed Speed Gen2: %w", err)
 			}
 			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
 
 		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V2:
-			technicalData, err := unmarshalTechnicalDataGen2V2(record.GetValue())
+			technicalData, err := unmarshalTechnicalDataGen2V2(record.GetData())
 			if err != nil {
 				return nil, fmt.Errorf("unmarshal Technical Data Gen2 V2: %w", err)
 			}

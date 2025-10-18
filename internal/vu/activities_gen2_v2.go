@@ -75,10 +75,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 		return nil, err
 	}
 
-	// SignatureRecordArray (last)
-	if err := skipRecordArray("Signature"); err != nil {
-		return nil, err
-	}
+	// SignatureRecordArray is now handled separately in raw parsing, not part of value
 
 	// Verify we consumed exactly the right amount of data
 	if offset != len(value) {
@@ -110,4 +107,3 @@ func appendActivitiesGen2V2(dst []byte, activities *vuv1.ActivitiesGen2V2) ([]by
 	// This would require constructing all RecordArrays from semantic data
 	return nil, fmt.Errorf("cannot marshal Activities Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
 }
-

@@ -43,10 +43,8 @@ func unmarshalEventsAndFaultsGen2V2(value []byte) (*vuv1.EventsAndFaultsGen2V2, 
 	if err := skipRecordArray("VuTimeAdjustment"); err != nil {
 		return nil, err
 	}
-	// SignatureRecordArray
-	if err := skipRecordArray("Signature"); err != nil {
-		return nil, err
-	}
+
+	// SignatureRecordArray is now handled separately in raw parsing, not part of value
 
 	if offset != len(value) {
 		return nil, fmt.Errorf("Events and Faults Gen2 V2 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
@@ -68,4 +66,3 @@ func appendEventsAndFaultsGen2V2(dst []byte, eventsAndFaults *vuv1.EventsAndFaul
 
 	return nil, fmt.Errorf("cannot marshal Events and Faults Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
 }
-

@@ -9,7 +9,7 @@ import (
 // ===== sizeOf Functions =====
 
 // sizeOfOverview dispatches to generation-specific size calculation.
-func sizeOfOverview(data []byte, transferType vuv1.TransferType) (int, error) {
+func sizeOfOverview(data []byte, transferType vuv1.TransferType) (totalSize, signatureSize int, err error) {
 	switch transferType {
 	case vuv1.TransferType_OVERVIEW_GEN1:
 		return sizeOfOverviewGen1(data)
@@ -18,7 +18,7 @@ func sizeOfOverview(data []byte, transferType vuv1.TransferType) (int, error) {
 	case vuv1.TransferType_OVERVIEW_GEN2_V2:
 		return sizeOfOverviewGen2V2(data)
 	default:
-		return 0, fmt.Errorf("unsupported transfer type for Overview: %v", transferType)
+		return 0, 0, fmt.Errorf("unsupported transfer type for Overview: %v", transferType)
 	}
 }
 
@@ -44,7 +44,7 @@ func sizeOfOverview(data []byte, transferType vuv1.TransferType) (int, error) {
 //   - VuControlActivityRecordFirstGen: 31 bytes (1 ControlType + 4 ControlTime + 18 ControlCardNumber + 4 DownloadPeriodBegin + 4 DownloadPeriodEnd)
 //
 // - Signature: 128 bytes (RSA)
-func sizeOfOverviewGen1(data []byte) (int, error) {
+func sizeOfOverviewGen1(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
 	// Fixed-size header sections (491 bytes total)
@@ -59,7 +59,7 @@ func sizeOfOverviewGen1(data []byte) (int, error) {
 
 	// VuCompanyLocksData: 1 byte count + variable records
 	if len(data[offset:]) < 1 {
-		return 0, fmt.Errorf("insufficient data for noOfLocks")
+		return 0, 0, fmt.Errorf("insufficient data for noOfLocks")
 	}
 	noOfLocks := data[offset]
 	offset += 1
@@ -71,7 +71,7 @@ func sizeOfOverviewGen1(data []byte) (int, error) {
 
 	// VuControlActivityData: 1 byte count + variable records
 	if len(data[offset:]) < 1 {
-		return 0, fmt.Errorf("insufficient data for noOfControls")
+		return 0, 0, fmt.Errorf("insufficient data for noOfControls")
 	}
 	noOfControls := data[offset]
 	offset += 1
@@ -82,181 +82,184 @@ func sizeOfOverviewGen1(data []byte) (int, error) {
 	offset += int(noOfControls) * vuControlActivityRecordSize
 
 	// Signature: 128 bytes for Gen1 RSA
-	offset += 128
+	const gen1SignatureSize = 128
+	offset += gen1SignatureSize
 
-	return offset, nil
+	return offset, gen1SignatureSize, nil
 }
 
 // sizeOfOverviewGen2V1 calculates size by parsing all Gen2 V1 RecordArrays.
 //
 // Gen2 uses RecordArray structures with 5-byte headers that include the size.
 // We parse each RecordArray header sequentially to determine the total size.
-func sizeOfOverviewGen2V1(data []byte) (int, error) {
+func sizeOfOverviewGen2V1(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
 	// MemberStateCertificateRecordArray
-	size, err := sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("MemberStateCertificateRecordArray: %w", err)
+	size, sizeErr := sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("MemberStateCertificateRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VUCertificateRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VUCertificateRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VUCertificateRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VehicleIdentificationNumberRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VehicleIdentificationNumberRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VehicleIdentificationNumberRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VehicleRegistrationIdentificationRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VehicleRegistrationIdentificationRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VehicleRegistrationIdentificationRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// CurrentDateTimeRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("CurrentDateTimeRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("CurrentDateTimeRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuDownloadablePeriodRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuDownloadablePeriodRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuDownloadablePeriodRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// CardSlotsStatusRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("CardSlotsStatusRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("CardSlotsStatusRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuDownloadActivityDataRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuDownloadActivityDataRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuDownloadActivityDataRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuCompanyLocksRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuCompanyLocksRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuCompanyLocksRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuControlActivityRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuControlActivityRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuControlActivityRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// SignatureRecordArray (last)
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("SignatureRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("SignatureRecordArray: %w", sizeErr)
 	}
+	signatureSizeGen2 := size
 	offset += size
 
-	return offset, nil
+	return offset, signatureSizeGen2, nil
 }
 
 // sizeOfOverviewGen2V2 calculates size by parsing all Gen2 V2 RecordArrays.
 //
 // Gen2 V2 has an additional VehicleRegistrationNumberRecordArray between
 // VehicleIdentificationNumberRecordArray and CurrentDateTimeRecordArray.
-func sizeOfOverviewGen2V2(data []byte) (int, error) {
+func sizeOfOverviewGen2V2(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
 	// MemberStateCertificateRecordArray
-	size, err := sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("MemberStateCertificateRecordArray: %w", err)
+	size, sizeErr := sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("MemberStateCertificateRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VUCertificateRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VUCertificateRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VUCertificateRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VehicleIdentificationNumberRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VehicleIdentificationNumberRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VehicleIdentificationNumberRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VehicleRegistrationNumberRecordArray (Gen2 V2 addition)
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VehicleRegistrationNumberRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VehicleRegistrationNumberRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// CurrentDateTimeRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("CurrentDateTimeRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("CurrentDateTimeRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuDownloadablePeriodRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuDownloadablePeriodRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuDownloadablePeriodRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// CardSlotsStatusRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("CardSlotsStatusRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("CardSlotsStatusRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuDownloadActivityDataRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuDownloadActivityDataRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuDownloadActivityDataRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuCompanyLocksRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuCompanyLocksRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuCompanyLocksRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// VuControlActivityRecordArray
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuControlActivityRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuControlActivityRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// SignatureRecordArray (last)
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("SignatureRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("SignatureRecordArray: %w", sizeErr)
 	}
+	signatureSizeGen2 := size
 	offset += size
 
-	return offset, nil
+	return offset, signatureSizeGen2, nil
 }

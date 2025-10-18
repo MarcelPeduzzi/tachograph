@@ -296,12 +296,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	}
 	overview.SetControlActivities(controlActivities)
 
-	// Signature (128 bytes - RSA for Gen1)
-	if offset+128 > len(value) {
-		return nil, fmt.Errorf("insufficient data for Signature")
-	}
-	overview.SetSignature(value[offset : offset+128])
-	offset += 128
+	// Signature is now handled separately in raw parsing, not part of value
 
 	// Verify we consumed exactly the right amount of data
 	if offset != len(value) {

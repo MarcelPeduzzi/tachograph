@@ -41,24 +41,30 @@ func UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.RawVehicleUnitFile, error) 
 		}
 
 		// Calculate size of value (including embedded signature)
-		valueSize, err := sizeOfTransferValue(data[offset:], transferType)
+		totalSize, sigSize, err := sizeOfTransferValue(data[offset:], transferType)
 		if err != nil {
 			return nil, fmt.Errorf("sizeOf failed for %v at offset %d: %w", transferType, offset, err)
 		}
 
-		// Extract value
-		if offset+valueSize > len(data) {
-			return nil, fmt.Errorf("insufficient data for %v value: need %d bytes, have %d", transferType, valueSize, len(data)-offset)
+		// Extract value bytes
+		if offset+totalSize > len(data) {
+			return nil, fmt.Errorf("insufficient data for %v value: need %d bytes, have %d", transferType, totalSize, len(data)-offset)
 		}
-		value := data[offset : offset+valueSize]
-		offset += valueSize
+		value := data[offset : offset+totalSize]
+		offset += totalSize
+
+		// Split data and signature
+		dataSize := totalSize - sigSize
+		recordData := value[:dataSize]
+		recordSignature := value[dataSize:]
 
 		// Create record
 		record := &vuv1.RawVehicleUnitFile_Record{}
 		record.SetTag(uint32(tag))
 		record.SetType(transferType)
 		record.SetGeneration(generationFromTransferType(transferType))
-		record.SetValue(value)
+		record.SetData(recordData)
+		record.SetSignature(recordSignature)
 
 		rawFile.SetRecords(append(rawFile.GetRecords(), record))
 	}
@@ -67,8 +73,9 @@ func UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.RawVehicleUnitFile, error) 
 }
 
 // sizeOfTransferValue dispatches to type-specific sizeOf functions.
-// This function calculates the total byte size of a transfer's value including signature.
-func sizeOfTransferValue(data []byte, transferType vuv1.TransferType) (int, error) {
+// Returns both the total byte size (including signature) and the signature size.
+// The data portion size can be calculated as: totalSize - signatureSize.
+func sizeOfTransferValue(data []byte, transferType vuv1.TransferType) (totalSize, signatureSize int, err error) {
 	switch transferType {
 	case vuv1.TransferType_DOWNLOAD_INTERFACE_VERSION:
 		return sizeOfDownloadInterfaceVersion(data, transferType)
@@ -85,7 +92,7 @@ func sizeOfTransferValue(data []byte, transferType vuv1.TransferType) (int, erro
 	case vuv1.TransferType_CARD_DOWNLOAD:
 		return sizeOfCardDownload(data, transferType)
 	default:
-		return 0, fmt.Errorf("unsupported transfer type: %v", transferType)
+		return 0, 0, fmt.Errorf("unsupported transfer type: %v", transferType)
 	}
 }
 

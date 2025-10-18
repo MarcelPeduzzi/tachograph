@@ -25,9 +25,14 @@ message RawVehicleUnitFile {
     // The application generation (Gen1 or Gen2), inferred from the tag.
     dd.v1.Generation generation = 3;
 
-    // The entire raw byte value of the record, including embedded signature.
-    // The signature is NOT separated - it remains part of this value.
-    bytes value = 4;
+    // The data portion of the record (signature removed).
+    // This is the content that was signed.
+    bytes data = 4;
+
+    // The signature bytes extracted from the end of the value.
+    // Generation 1: 128 bytes (RSA-1024 signature using PKCS#1 v1.5 with SHA-1)
+    // Generation 2: Variable length (ECDSA signature in plain format)
+    bytes signature = 5;
 
     // Result of cryptographic signature authentication for this record.
     // Present when signature verification has been performed.

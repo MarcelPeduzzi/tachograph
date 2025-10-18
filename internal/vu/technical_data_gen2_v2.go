@@ -48,9 +48,8 @@ func unmarshalTechnicalDataGen2V2(value []byte) (*vuv1.TechnicalDataGen2V2, erro
 	if err := skipRecordArray("SensorPaired"); err != nil {
 		return nil, err
 	}
-	if err := skipRecordArray("Signature"); err != nil {
-		return nil, err
-	}
+
+	// SignatureRecordArray is now handled separately in raw parsing, not part of value
 
 	if offset != len(value) {
 		return nil, fmt.Errorf("Technical Data Gen2 V2 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
@@ -72,4 +71,3 @@ func appendTechnicalDataGen2V2(dst []byte, technicalData *vuv1.TechnicalDataGen2
 
 	return nil, fmt.Errorf("cannot marshal Technical Data Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
 }
-

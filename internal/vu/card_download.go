@@ -18,7 +18,8 @@ import (
 // - Value: Variable length
 //
 // This function parses through the TLV records until all data is consumed.
-func sizeOfCardDownload(data []byte, transferType vuv1.TransferType) (int, error) {
+// Card downloads do not have a separate signature block, so signatureSize is always 0.
+func sizeOfCardDownload(data []byte, transferType vuv1.TransferType) (totalSize, signatureSize int, err error) {
 	offset := 0
 
 	// Parse TLV records until we've consumed all data
@@ -38,17 +39,17 @@ func sizeOfCardDownload(data []byte, transferType vuv1.TransferType) (int, error
 
 		// Check if we have enough data for this record
 		if offset+recordSize > len(data) {
-			return 0, fmt.Errorf("incomplete TLV record at offset %d: need %d bytes, have %d", offset, recordSize, len(data)-offset)
+			return 0, 0, fmt.Errorf("incomplete TLV record at offset %d: need %d bytes, have %d", offset, recordSize, len(data)-offset)
 		}
 
 		offset += recordSize
 	}
 
-	return offset, nil
+	// Card downloads have no signature block
+	return offset, 0, nil
 }
 
 // ===== Unmarshal Functions =====
 
 // unmarshalCardDownload parses a card download transfer.
 // The card download payload is raw TLV-formatted card data.
-

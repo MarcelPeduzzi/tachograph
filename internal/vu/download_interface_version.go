@@ -9,19 +9,20 @@ import (
 // ===== sizeOf Functions =====
 
 // sizeOfDownloadInterfaceVersion returns the size of the DownloadInterfaceVersion value.
-// This is a fixed 2-byte structure.
+// This is a fixed 2-byte structure with no signature.
 //
 // Binary Layout (2 bytes total):
 //   - generation: 1 byte
 //   - version: 1 byte
 //
 // See Appendix 7, Section 2.2.6.1.
-func sizeOfDownloadInterfaceVersion(data []byte, transferType vuv1.TransferType) (int, error) {
+func sizeOfDownloadInterfaceVersion(data []byte, transferType vuv1.TransferType) (totalSize, signatureSize int, err error) {
 	const lenDownloadInterfaceVersion = 2
 	if len(data) < lenDownloadInterfaceVersion {
-		return 0, fmt.Errorf("insufficient data for DownloadInterfaceVersion: need %d, have %d", lenDownloadInterfaceVersion, len(data))
+		return 0, 0, fmt.Errorf("insufficient data for DownloadInterfaceVersion: need %d, have %d", lenDownloadInterfaceVersion, len(data))
 	}
-	return lenDownloadInterfaceVersion, nil
+	// No signature for DownloadInterfaceVersion
+	return lenDownloadInterfaceVersion, 0, nil
 }
 
 // ===== Unmarshal Functions =====

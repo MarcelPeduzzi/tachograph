@@ -363,7 +363,7 @@ var File_wayplatform_connect_tachograph_card_v1_raw_card_file_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a9wayplatform/connect/tachograph/card/v1/content_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\"\x8c\x04\n" +
+	":wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1a9wayplatform/connect/tachograph/card/v1/content_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x8c\x04\n" +
 	"\vRawCardFile\x12T\n" +
 	"\arecords\x18\x01 \x03(\v2:.wayplatform.connect.tachograph.card.v1.RawCardFile.RecordR\arecords\x1a\xa6\x03\n" +
 	"\x06Record\x12\x10\n" +

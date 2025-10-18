@@ -32,10 +32,7 @@ func unmarshalDetailedSpeedGen2(value []byte) (*vuv1.DetailedSpeedGen2, error) {
 		return nil, err
 	}
 
-	// SignatureRecordArray
-	if err := skipRecordArray("Signature"); err != nil {
-		return nil, err
-	}
+	// SignatureRecordArray is now handled separately in raw parsing, not part of value
 
 	if offset != len(value) {
 		return nil, fmt.Errorf("Detailed Speed Gen2 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
@@ -57,4 +54,3 @@ func appendDetailedSpeedGen2(dst []byte, detailedSpeed *vuv1.DetailedSpeedGen2) 
 
 	return nil, fmt.Errorf("cannot marshal Detailed Speed Gen2 without raw_data (semantic marshalling not yet implemented)")
 }
-

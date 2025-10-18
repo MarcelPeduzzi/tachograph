@@ -11,14 +11,14 @@ import (
 // ===== sizeOf Functions =====
 
 // sizeOfDetailedSpeed dispatches to generation-specific size calculation.
-func sizeOfDetailedSpeed(data []byte, transferType vuv1.TransferType) (int, error) {
+func sizeOfDetailedSpeed(data []byte, transferType vuv1.TransferType) (totalSize, signatureSize int, err error) {
 	switch transferType {
 	case vuv1.TransferType_DETAILED_SPEED_GEN1:
 		return sizeOfDetailedSpeedGen1(data)
 	case vuv1.TransferType_DETAILED_SPEED_GEN2:
 		return sizeOfDetailedSpeedGen2(data)
 	default:
-		return 0, fmt.Errorf("unsupported transfer type for DetailedSpeed: %v", transferType)
+		return 0, 0, fmt.Errorf("unsupported transfer type for DetailedSpeed: %v", transferType)
 	}
 }
 
@@ -33,12 +33,12 @@ func sizeOfDetailedSpeed(data []byte, transferType vuv1.TransferType) (int, erro
 //   - speedsPerSecond: 60 bytes (60 Speed values, one per second)
 //
 // - Signature: 128 bytes (RSA)
-func sizeOfDetailedSpeedGen1(data []byte) (int, error) {
+func sizeOfDetailedSpeedGen1(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
 	// VuDetailedSpeedData: 2 bytes count + variable speed blocks
 	if len(data[offset:]) < 2 {
-		return 0, fmt.Errorf("insufficient data for noOfSpeedBlocks")
+		return 0, 0, fmt.Errorf("insufficient data for noOfSpeedBlocks")
 	}
 	noOfSpeedBlocks := binary.BigEndian.Uint16(data[offset:])
 	offset += 2
@@ -49,30 +49,32 @@ func sizeOfDetailedSpeedGen1(data []byte) (int, error) {
 	offset += int(noOfSpeedBlocks) * vuDetailedSpeedBlockSize
 
 	// Signature: 128 bytes for Gen1 RSA
-	offset += 128
+	const gen1SignatureSize = 128
+	offset += gen1SignatureSize
 
-	return offset, nil
+	return offset, gen1SignatureSize, nil
 }
 
 // sizeOfDetailedSpeedGen2 calculates size by parsing Gen2 RecordArrays.
-func sizeOfDetailedSpeedGen2(data []byte) (int, error) {
+func sizeOfDetailedSpeedGen2(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
 	// VuDetailedSpeedBlockRecordArray
-	size, err := sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("VuDetailedSpeedBlockRecordArray: %w", err)
+	size, sizeErr := sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuDetailedSpeedBlockRecordArray: %w", sizeErr)
 	}
 	offset += size
 
 	// SignatureRecordArray (last)
-	size, err = sizeOfRecordArray(data, offset)
-	if err != nil {
-		return 0, fmt.Errorf("SignatureRecordArray: %w", err)
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("SignatureRecordArray: %w", sizeErr)
 	}
+	signatureSizeGen2 := size
 	offset += size
 
-	return offset, nil
+	return offset, signatureSizeGen2, nil
 }
 
 // ===== Unmarshal Functions =====

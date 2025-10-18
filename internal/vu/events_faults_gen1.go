@@ -53,3 +53,4 @@ func appendEventsAndFaultsGen1(dst []byte, eventsAndFaults *vuv1.EventsAndFaults
 	// TODO: Implement marshalling from semantic fields
 	return nil, fmt.Errorf("cannot marshal Events and Faults Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
+

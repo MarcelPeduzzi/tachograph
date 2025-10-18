@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -45,7 +46,7 @@ type VehicleUnitsUsed struct {
 	xxx_hidden_VehicleUnitPointerNewestRecord int32                       `protobuf:"varint,1,opt,name=vehicle_unit_pointer_newest_record,json=vehicleUnitPointerNewestRecord"`
 	xxx_hidden_Records                        *[]*VehicleUnitsUsed_Record `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_Signature                      []byte                      `protobuf:"bytes,3,opt,name=signature"`
-	xxx_hidden_SignatureVerified              bool                        `protobuf:"varint,4,opt,name=signature_verified,json=signatureVerified"`
+	xxx_hidden_Authentication                 *v1.Authentication          `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
 	unknownFields                             protoimpl.UnknownFields
@@ -100,11 +101,11 @@ func (x *VehicleUnitsUsed) GetSignature() []byte {
 	return nil
 }
 
-func (x *VehicleUnitsUsed) GetSignatureVerified() bool {
+func (x *VehicleUnitsUsed) GetAuthentication() *v1.Authentication {
 	if x != nil {
-		return x.xxx_hidden_SignatureVerified
+		return x.xxx_hidden_Authentication
 	}
-	return false
+	return nil
 }
 
 func (x *VehicleUnitsUsed) SetVehicleUnitPointerNewestRecord(v int32) {
@@ -124,9 +125,8 @@ func (x *VehicleUnitsUsed) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
-func (x *VehicleUnitsUsed) SetSignatureVerified(v bool) {
-	x.xxx_hidden_SignatureVerified = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+func (x *VehicleUnitsUsed) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *VehicleUnitsUsed) HasVehicleUnitPointerNewestRecord() bool {
@@ -143,11 +143,11 @@ func (x *VehicleUnitsUsed) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *VehicleUnitsUsed) HasSignatureVerified() bool {
+func (x *VehicleUnitsUsed) HasAuthentication() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_Authentication != nil
 }
 
 func (x *VehicleUnitsUsed) ClearVehicleUnitPointerNewestRecord() {
@@ -160,9 +160,8 @@ func (x *VehicleUnitsUsed) ClearSignature() {
 	x.xxx_hidden_Signature = nil
 }
 
-func (x *VehicleUnitsUsed) ClearSignatureVerified() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_SignatureVerified = false
+func (x *VehicleUnitsUsed) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type VehicleUnitsUsed_builder struct {
@@ -197,8 +196,9 @@ type VehicleUnitsUsed_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
-	// Indicates if the signature has been successfully verified.
-	SignatureVerified *bool
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
@@ -214,10 +214,7 @@ func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Signature = b.Signature
 	}
-	if b.SignatureVerified != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
-		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
-	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -427,12 +424,12 @@ var File_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto protore
 
 const file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc5\x03\n" +
+	"?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xfa\x03\n" +
 	"\x10VehicleUnitsUsed\x12J\n" +
 	"\"vehicle_unit_pointer_newest_record\x18\x01 \x01(\x05R\x1evehicleUnitPointerNewestRecord\x12Y\n" +
 	"\arecords\x18\x02 \x03(\v2?.wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x12-\n" +
-	"\x12signature_verified\x18\x04 \x01(\bR\x11signatureVerified\x1a\xbc\x01\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xbc\x01\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12+\n" +
 	"\x11manufacturer_code\x18\x02 \x01(\x05R\x10manufacturerCode\x12\x1b\n" +
@@ -444,16 +441,18 @@ var file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_msgType
 var file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_goTypes = []any{
 	(*VehicleUnitsUsed)(nil),        // 0: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
 	(*VehicleUnitsUsed_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.Record
-	(*timestamppb.Timestamp)(nil),   // 2: google.protobuf.Timestamp
+	(*v1.Authentication)(nil),       // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(*timestamppb.Timestamp)(nil),   // 3: google.protobuf.Timestamp
 }
 var file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.records:type_name -> wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.Record.timestamp:type_name -> google.protobuf.Timestamp
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.Record.timestamp:type_name -> google.protobuf.Timestamp
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_init() }

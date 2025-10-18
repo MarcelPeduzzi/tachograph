@@ -3,14 +3,15 @@ edition = "2023";
 package wayplatform.connect.tachograph.v1;
 
 import "wayplatform/connect/tachograph/card/v1/driver_card_file.proto";
-import "wayplatform/connect/tachograph/card/v1/raw_card_file.proto";
 import "wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto";
 
-// Represents the entire content of a single parsed tachograph data file (e.g., .DDD, .C1B, .V1B).
+// Represents the entire content of a single fully parsed tachograph data file (e.g., .DDD, .C1B, .V1B).
 //
-// This message acts as a top-level container, providing a single, consistent type
-// for any kind of tachograph file. It uses a manually tagged union pattern, where the
-// `type` field indicates which of the specific file-type fields is populated.
+// This message contains only fully parsed, semantic data structures. For intermediate
+// raw parsing suitable for signature authentication, see RawFile.
+//
+// This message uses a manually tagged union pattern, where the `type` field indicates
+// which of the specific file-type fields is populated.
 message File {
   // The type of tachograph data file contained in this message. This acts as the
   // discriminator that tells the consumer which of the payload fields is valid.
@@ -36,11 +37,6 @@ message File {
   // This field is populated if and only if `type` is `COMPANY_CARD`.
   // wayplatform.connect.tachograph.card.v1.CompanyCardFile company_card = 6;
 
-  // The raw, uninterpreted content of a card file. This can be used as a
-  // fallback or for applications that need to do their own detailed parsing.
-  // This field is populated if and only if `type` is `RAW_CARD`.
-  wayplatform.connect.tachograph.card.v1.RawCardFile raw_card = 7;
-
   // Defines the possible types of a tachograph data file.
   enum Type {
     // The file type is unknown or not specified.
@@ -60,8 +56,5 @@ message File {
 
     // A file downloaded from a Company Card.
     COMPANY_CARD = 5;
-
-    // A raw, unparsed card file.
-    RAW_CARD = 6;
   }
 }

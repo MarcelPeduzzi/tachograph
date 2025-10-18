@@ -267,3 +267,4 @@ message EventsAndFaultsGen2V2 {
   bytes raw_data = 7;
 }
 
+

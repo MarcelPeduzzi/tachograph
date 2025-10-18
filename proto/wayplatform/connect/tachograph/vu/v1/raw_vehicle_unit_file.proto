@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/vu/v1/transfer_type.proto";
 
@@ -27,8 +28,13 @@ message RawVehicleUnitFile {
     // The entire raw byte value of the record, including embedded signature.
     // The signature is NOT separated - it remains part of this value.
     bytes value = 4;
+
+    // Result of cryptographic signature authentication for this record.
+    // Present when signature verification has been performed.
+    tachograph.security.v1.Authentication authentication = 99;
   }
 
   repeated Record records = 1;
 }
+
 

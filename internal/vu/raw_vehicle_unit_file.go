@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// unmarshalRawVehicleUnitFile performs the first parsing pass, identifying TV record
+// UnmarshalRawVehicleUnitFile performs the first parsing pass, identifying TV record
 // boundaries and extracting complete values including embedded signatures.
 //
 // This function does NOT parse the semantic content of records - it only slices the
@@ -22,7 +22,7 @@ import (
 //
 // The challenge of the TV format is that the length is not explicitly encoded - it must
 // be calculated by understanding the structure of each transfer type.
-func unmarshalRawVehicleUnitFile(data []byte) (*vuv1.RawVehicleUnitFile, error) {
+func UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.RawVehicleUnitFile, error) {
 	var rawFile vuv1.RawVehicleUnitFile
 	offset := 0
 

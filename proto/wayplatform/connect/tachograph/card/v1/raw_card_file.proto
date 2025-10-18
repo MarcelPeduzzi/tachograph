@@ -5,6 +5,7 @@ package wayplatform.connect.tachograph.card.v1;
 import "wayplatform/connect/tachograph/card/v1/content_type.proto";
 import "wayplatform/connect/tachograph/card/v1/elementary_file_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the low-level structure of a downloaded card file, containing a
 // sequence of raw Tag-Length-Value (TLV) records. This is the result of the
@@ -35,6 +36,10 @@ message RawCardFile {
 
     // The raw byte value of the record.
     bytes value = 6;
+
+    // Result of cryptographic signature authentication for this record.
+    // Present when signature verification has been performed.
+    tachograph.security.v1.Authentication authentication = 99;
   }
 
   // The sequence of TLV records from the downloaded file.

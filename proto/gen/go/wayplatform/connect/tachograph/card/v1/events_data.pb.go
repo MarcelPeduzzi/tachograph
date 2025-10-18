@@ -7,7 +7,8 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -51,14 +52,14 @@ const (
 // event_type field, allowing consumers to filter by type while maintaining the
 // temporal order in which events actually occurred.
 type EventsData struct {
-	state                        protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Events            *[]*EventsData_Record  `protobuf:"bytes,1,rep,name=events"`
-	xxx_hidden_Signature         []byte                 `protobuf:"bytes,2,opt,name=signature"`
-	xxx_hidden_SignatureVerified bool                   `protobuf:"varint,3,opt,name=signature_verified,json=signatureVerified"`
-	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
-	XXX_presence                 [1]uint32
-	unknownFields                protoimpl.UnknownFields
-	sizeCache                    protoimpl.SizeCache
+	state                     protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Events         *[]*EventsData_Record  `protobuf:"bytes,1,rep,name=events"`
+	xxx_hidden_Signature      []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_Authentication *v1.Authentication     `protobuf:"bytes,99,opt,name=authentication"`
+	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
+	XXX_presence              [1]uint32
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *EventsData) Reset() {
@@ -102,11 +103,11 @@ func (x *EventsData) GetSignature() []byte {
 	return nil
 }
 
-func (x *EventsData) GetSignatureVerified() bool {
+func (x *EventsData) GetAuthentication() *v1.Authentication {
 	if x != nil {
-		return x.xxx_hidden_SignatureVerified
+		return x.xxx_hidden_Authentication
 	}
-	return false
+	return nil
 }
 
 func (x *EventsData) SetEvents(v []*EventsData_Record) {
@@ -121,9 +122,8 @@ func (x *EventsData) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
-func (x *EventsData) SetSignatureVerified(v bool) {
-	x.xxx_hidden_SignatureVerified = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+func (x *EventsData) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *EventsData) HasSignature() bool {
@@ -133,11 +133,11 @@ func (x *EventsData) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *EventsData) HasSignatureVerified() bool {
+func (x *EventsData) HasAuthentication() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_Authentication != nil
 }
 
 func (x *EventsData) ClearSignature() {
@@ -145,9 +145,8 @@ func (x *EventsData) ClearSignature() {
 	x.xxx_hidden_Signature = nil
 }
 
-func (x *EventsData) ClearSignatureVerified() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_SignatureVerified = false
+func (x *EventsData) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type EventsData_builder struct {
@@ -163,8 +162,9 @@ type EventsData_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
-	// Indicates if the signature has been successfully verified.
-	SignatureVerified *bool
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 EventsData_builder) Build() *EventsData {
@@ -176,10 +176,7 @@ func (b0 EventsData_builder) Build() *EventsData {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_Signature = b.Signature
 	}
-	if b.SignatureVerified != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
-	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -196,13 +193,13 @@ func (b0 EventsData_builder) Build() *EventsData {
 //	    eventVehicleRegistration VehicleRegistrationIdentification
 //	}
 type EventsData_Record struct {
-	state                               protoimpl.MessageState                `protogen:"opaque.v1"`
-	xxx_hidden_Valid                    bool                                  `protobuf:"varint,1,opt,name=valid"`
-	xxx_hidden_EventType                v1.EventFaultType                     `protobuf:"varint,2,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.dd.v1.EventFaultType"`
-	xxx_hidden_EventBeginTime           *timestamppb.Timestamp                `protobuf:"bytes,4,opt,name=event_begin_time,json=eventBeginTime"`
-	xxx_hidden_EventEndTime             *timestamppb.Timestamp                `protobuf:"bytes,5,opt,name=event_end_time,json=eventEndTime"`
-	xxx_hidden_EventVehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,6,opt,name=event_vehicle_registration,json=eventVehicleRegistration"`
-	xxx_hidden_RawData                  []byte                                `protobuf:"bytes,7,opt,name=raw_data,json=rawData"`
+	state                               protoimpl.MessageState                 `protogen:"opaque.v1"`
+	xxx_hidden_Valid                    bool                                   `protobuf:"varint,1,opt,name=valid"`
+	xxx_hidden_EventType                v11.EventFaultType                     `protobuf:"varint,2,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.dd.v1.EventFaultType"`
+	xxx_hidden_EventBeginTime           *timestamppb.Timestamp                 `protobuf:"bytes,4,opt,name=event_begin_time,json=eventBeginTime"`
+	xxx_hidden_EventEndTime             *timestamppb.Timestamp                 `protobuf:"bytes,5,opt,name=event_end_time,json=eventEndTime"`
+	xxx_hidden_EventVehicleRegistration *v11.VehicleRegistrationIdentification `protobuf:"bytes,6,opt,name=event_vehicle_registration,json=eventVehicleRegistration"`
+	xxx_hidden_RawData                  []byte                                 `protobuf:"bytes,7,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
 	XXX_presence                        [1]uint32
 	unknownFields                       protoimpl.UnknownFields
@@ -241,13 +238,13 @@ func (x *EventsData_Record) GetValid() bool {
 	return false
 }
 
-func (x *EventsData_Record) GetEventType() v1.EventFaultType {
+func (x *EventsData_Record) GetEventType() v11.EventFaultType {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_EventType
 		}
 	}
-	return v1.EventFaultType(0)
+	return v11.EventFaultType(0)
 }
 
 func (x *EventsData_Record) GetEventBeginTime() *timestamppb.Timestamp {
@@ -264,7 +261,7 @@ func (x *EventsData_Record) GetEventEndTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *EventsData_Record) GetEventVehicleRegistration() *v1.VehicleRegistrationIdentification {
+func (x *EventsData_Record) GetEventVehicleRegistration() *v11.VehicleRegistrationIdentification {
 	if x != nil {
 		return x.xxx_hidden_EventVehicleRegistration
 	}
@@ -283,7 +280,7 @@ func (x *EventsData_Record) SetValid(v bool) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
-func (x *EventsData_Record) SetEventType(v v1.EventFaultType) {
+func (x *EventsData_Record) SetEventType(v v11.EventFaultType) {
 	x.xxx_hidden_EventType = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
@@ -296,7 +293,7 @@ func (x *EventsData_Record) SetEventEndTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_EventEndTime = v
 }
 
-func (x *EventsData_Record) SetEventVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
+func (x *EventsData_Record) SetEventVehicleRegistration(v *v11.VehicleRegistrationIdentification) {
 	x.xxx_hidden_EventVehicleRegistration = v
 }
 
@@ -357,7 +354,7 @@ func (x *EventsData_Record) ClearValid() {
 
 func (x *EventsData_Record) ClearEventType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_EventType = v1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED
+	x.xxx_hidden_EventType = v11.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED
 }
 
 func (x *EventsData_Record) ClearEventBeginTime() {
@@ -390,7 +387,7 @@ type EventsData_Record_builder struct {
 	// ASN.1 Definition:
 	//
 	//	EventFaultType ::= OCTET STRING (SIZE (1))
-	EventType *v1.EventFaultType
+	EventType *v11.EventFaultType
 	// The date and time of the beginning of the event.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -411,7 +408,7 @@ type EventsData_Record_builder struct {
 	// ASN.1 Definition:
 	//
 	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
-	EventVehicleRegistration *v1.VehicleRegistrationIdentification
+	EventVehicleRegistration *v11.VehicleRegistrationIdentification
 	// --- Field for a non-valid record (when valid = false) ---
 	// Holds the raw 24 bytes of the original record.
 	RawData []byte
@@ -443,12 +440,12 @@ var File_wayplatform_connect_tachograph_card_v1_events_data_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_events_data_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xcd\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x82\x05\n" +
 	"\n" +
 	"EventsData\x12Q\n" +
 	"\x06events\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x06events\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x12-\n" +
-	"\x12signature_verified\x18\x03 \x01(\bR\x11signatureVerified\x1a\x9e\x03\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\x9e\x03\n" +
 	"\x06Record\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12S\n" +
 	"\n" +
@@ -461,23 +458,25 @@ const file_wayplatform_connect_tachograph_card_v1_events_data_proto_rawDesc = ""
 
 var file_wayplatform_connect_tachograph_card_v1_events_data_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wayplatform_connect_tachograph_card_v1_events_data_proto_goTypes = []any{
-	(*EventsData)(nil),                           // 0: wayplatform.connect.tachograph.card.v1.EventsData
-	(*EventsData_Record)(nil),                    // 1: wayplatform.connect.tachograph.card.v1.EventsData.Record
-	(v1.EventFaultType)(0),                       // 2: wayplatform.connect.tachograph.dd.v1.EventFaultType
-	(*timestamppb.Timestamp)(nil),                // 3: google.protobuf.Timestamp
-	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	(*EventsData)(nil),                            // 0: wayplatform.connect.tachograph.card.v1.EventsData
+	(*EventsData_Record)(nil),                     // 1: wayplatform.connect.tachograph.card.v1.EventsData.Record
+	(*v1.Authentication)(nil),                     // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(v11.EventFaultType)(0),                       // 3: wayplatform.connect.tachograph.dd.v1.EventFaultType
+	(*timestamppb.Timestamp)(nil),                 // 4: google.protobuf.Timestamp
+	(*v11.VehicleRegistrationIdentification)(nil), // 5: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_events_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.EventsData.events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
-	3, // 2: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_begin_time:type_name -> google.protobuf.Timestamp
-	3, // 3: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_end_time:type_name -> google.protobuf.Timestamp
-	4, // 4: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.EventsData.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
+	4, // 3: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_begin_time:type_name -> google.protobuf.Timestamp
+	4, // 4: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_end_time:type_name -> google.protobuf.Timestamp
+	5, // 5: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_events_data_proto_init() }

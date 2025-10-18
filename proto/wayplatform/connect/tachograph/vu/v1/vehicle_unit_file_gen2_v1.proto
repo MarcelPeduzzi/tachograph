@@ -42,3 +42,4 @@ message VehicleUnitFileGen2V1 {
   repeated TechnicalDataGen2V1 technical_data = 5;
 }
 
+

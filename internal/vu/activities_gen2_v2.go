@@ -110,3 +110,4 @@ func appendActivitiesGen2V2(dst []byte, activities *vuv1.ActivitiesGen2V2) ([]by
 	// This would require constructing all RecordArrays from semantic data
 	return nil, fmt.Errorf("cannot marshal Activities Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
 }
+

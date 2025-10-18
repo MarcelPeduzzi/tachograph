@@ -138,3 +138,4 @@ func appendOverviewGen2V2(dst []byte, overview *vuv1.OverviewGen2V2) ([]byte, er
 	// This would require constructing all RecordArrays from semantic data
 	return nil, fmt.Errorf("cannot marshal Overview Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
 }
+

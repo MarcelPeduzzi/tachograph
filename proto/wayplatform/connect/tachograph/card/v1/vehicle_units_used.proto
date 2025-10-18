@@ -3,6 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_VehicleUnits_Used file, which contains data
 // about the vehicle units used by the card holder. This is a Gen2-only file.
@@ -102,6 +103,7 @@ message VehicleUnitsUsed {
   // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 3;
 
-  // Indicates if the signature has been successfully verified.
-  bool signature_verified = 4;
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

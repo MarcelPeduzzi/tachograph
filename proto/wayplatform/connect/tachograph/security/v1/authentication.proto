@@ -1,0 +1,47 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.security.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Authentication contains the result of verifying a digital signature
+// on a tachograph data block. This message is embedded in both raw file records
+// and their corresponding parsed data messages.
+message Authentication {
+  Status status = 1;
+  string error_message = 2;
+  SignatureAlgorithm signature_algorithm = 3;
+  google.protobuf.Timestamp signature_creation_time = 4;
+  CertificateInfo signer_certificate = 5;
+  CertificateInfo root_certificate = 6;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    VERIFIED = 1;
+    SIGNATURE_INVALID = 2;
+    SIGNER_CERTIFICATE_INVALID = 3;
+    ROOT_CERTIFICATE_NOT_FOUND = 4;
+  }
+}
+
+enum SignatureAlgorithm {
+  SIGNATURE_ALGORITHM_UNSPECIFIED = 0;
+  SHA1_WITH_RSA_ENCRYPTION = 1;
+  SHA256_WITH_RSA_ENCRYPTION = 2;
+  SHA384_WITH_RSA_ENCRYPTION = 3;
+  SHA512_WITH_RSA_ENCRYPTION = 4;
+  ECDSA_WITH_SHA1 = 5;
+  ECDSA_WITH_SHA256 = 6;
+  ECDSA_WITH_SHA384 = 7;
+  ECDSA_WITH_SHA512 = 8;
+}
+
+message CertificateInfo {
+  string description = 1;
+  int32 nation_code = 2;
+  string nation_name = 3;
+  string certification_authority_reference = 4;
+  string certificate_holder_reference = 5;
+  google.protobuf.Timestamp valid_from = 6;
+  google.protobuf.Timestamp valid_to = 7;
+}

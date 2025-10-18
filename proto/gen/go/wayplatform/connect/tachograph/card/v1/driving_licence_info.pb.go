@@ -8,6 +8,7 @@ package cardv1
 
 import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -47,7 +48,7 @@ type DrivingLicenceInfo struct {
 	xxx_hidden_DrivingLicenceIssuingNation    v1.NationNumeric       `protobuf:"varint,2,opt,name=driving_licence_issuing_nation,json=drivingLicenceIssuingNation,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
 	xxx_hidden_DrivingLicenceNumber           *v1.Ia5StringValue     `protobuf:"bytes,3,opt,name=driving_licence_number,json=drivingLicenceNumber"`
 	xxx_hidden_Signature                      []byte                 `protobuf:"bytes,4,opt,name=signature"`
-	xxx_hidden_SignatureVerified              bool                   `protobuf:"varint,5,opt,name=signature_verified,json=signatureVerified"`
+	xxx_hidden_Authentication                 *v11.Authentication    `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
 	unknownFields                             protoimpl.UnknownFields
@@ -109,11 +110,11 @@ func (x *DrivingLicenceInfo) GetSignature() []byte {
 	return nil
 }
 
-func (x *DrivingLicenceInfo) GetSignatureVerified() bool {
+func (x *DrivingLicenceInfo) GetAuthentication() *v11.Authentication {
 	if x != nil {
-		return x.xxx_hidden_SignatureVerified
+		return x.xxx_hidden_Authentication
 	}
-	return false
+	return nil
 }
 
 func (x *DrivingLicenceInfo) SetDrivingLicenceIssuingAuthority(v *v1.StringValue) {
@@ -137,9 +138,8 @@ func (x *DrivingLicenceInfo) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
-func (x *DrivingLicenceInfo) SetSignatureVerified(v bool) {
-	x.xxx_hidden_SignatureVerified = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+func (x *DrivingLicenceInfo) SetAuthentication(v *v11.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *DrivingLicenceInfo) HasDrivingLicenceIssuingAuthority() bool {
@@ -170,11 +170,11 @@ func (x *DrivingLicenceInfo) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *DrivingLicenceInfo) HasSignatureVerified() bool {
+func (x *DrivingLicenceInfo) HasAuthentication() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return x.xxx_hidden_Authentication != nil
 }
 
 func (x *DrivingLicenceInfo) ClearDrivingLicenceIssuingAuthority() {
@@ -195,9 +195,8 @@ func (x *DrivingLicenceInfo) ClearSignature() {
 	x.xxx_hidden_Signature = nil
 }
 
-func (x *DrivingLicenceInfo) ClearSignatureVerified() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_SignatureVerified = false
+func (x *DrivingLicenceInfo) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type DrivingLicenceInfo_builder struct {
@@ -242,8 +241,9 @@ type DrivingLicenceInfo_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
-	// Indicates if the signature has been successfully verified.
-	SignatureVerified *bool
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v11.Authentication
 }
 
 func (b0 DrivingLicenceInfo_builder) Build() *DrivingLicenceInfo {
@@ -260,10 +260,7 @@ func (b0 DrivingLicenceInfo_builder) Build() *DrivingLicenceInfo {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Signature = b.Signature
 	}
-	if b.SignatureVerified != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
-		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
-	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -271,13 +268,13 @@ var File_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xc5\x03\n" +
+	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xfa\x03\n" +
 	"\x12DrivingLicenceInfo\x12|\n" +
 	"!driving_licence_issuing_authority\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1edrivingLicenceIssuingAuthority\x12x\n" +
 	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12j\n" +
 	"\x16driving_licence_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x14drivingLicenceNumber\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x12-\n" +
-	"\x12signature_verified\x18\x05 \x01(\bR\x11signatureVerifiedB\xe4\x02\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17DrivingLicenceInfoProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
@@ -286,16 +283,18 @@ var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_goTyp
 	(*v1.StringValue)(nil),     // 1: wayplatform.connect.tachograph.dd.v1.StringValue
 	(v1.NationNumeric)(0),      // 2: wayplatform.connect.tachograph.dd.v1.NationNumeric
 	(*v1.Ia5StringValue)(nil),  // 3: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	(*v11.Authentication)(nil), // 4: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_issuing_authority:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	2, // 1: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_issuing_nation:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
 	3, // 2: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 3: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_init() }

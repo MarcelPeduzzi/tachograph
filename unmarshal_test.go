@@ -37,7 +37,11 @@ func TestUnmarshalFile_golden(t *testing.T) {
 				t.Fatalf("Failed to read DDD file %s: %v", path, err)
 			}
 			var actual string
-			file, err := UnmarshalFile(data)
+			rawFile, err := UnmarshalRawFile(data)
+			if err != nil {
+				t.Fatalf("UnmarshalRawFile() error = %v", err)
+			}
+			file, err := ParseRawFile(rawFile)
 			if err != nil {
 				// If parsing fails, use the error message as the golden content
 				actual = `{"error":"` + err.Error() + `"}`

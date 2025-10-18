@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
 
 // Represents the content of the EF_Specific_Conditions file for Generation 1.
@@ -57,6 +58,7 @@ message SpecificConditions {
   // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 3;
 
-  // Indicates if the signature has been successfully verified.
-  bool signature_verified = 4;
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

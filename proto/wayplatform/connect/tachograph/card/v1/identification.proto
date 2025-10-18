@@ -3,6 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/date.proto";
 import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
@@ -281,8 +282,7 @@ message Identification {
   // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 7;
 
-  // Indicates if the signature has been successfully verified.
-  // This field is populated by VerifyIdentification() and remains false
-  // if verification has not been performed or failed.
-  bool signature_verified = 8;
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

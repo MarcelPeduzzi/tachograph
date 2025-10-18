@@ -313,3 +313,4 @@ message EventsAndFaultsGen1 {
   bytes raw_data = 7;
 }
 
+

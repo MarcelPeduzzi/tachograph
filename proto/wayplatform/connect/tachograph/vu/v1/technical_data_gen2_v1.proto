@@ -279,3 +279,4 @@ message TechnicalDataGen2V1 {
   bytes raw_data = 8;
 }
 
+

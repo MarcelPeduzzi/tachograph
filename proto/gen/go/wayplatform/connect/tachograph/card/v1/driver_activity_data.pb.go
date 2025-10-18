@@ -7,7 +7,8 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -45,7 +46,7 @@ type DriverActivityData struct {
 	xxx_hidden_DailyRecords         *[]*DriverActivityData_DailyRecord `protobuf:"bytes,3,rep,name=daily_records,json=dailyRecords"`
 	xxx_hidden_RawData              []byte                             `protobuf:"bytes,5,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Signature            []byte                             `protobuf:"bytes,4,opt,name=signature"`
-	xxx_hidden_SignatureVerified    bool                               `protobuf:"varint,6,opt,name=signature_verified,json=signatureVerified"`
+	xxx_hidden_Authentication       *v1.Authentication                 `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
 	XXX_presence                    [1]uint32
 	unknownFields                   protoimpl.UnknownFields
@@ -114,11 +115,11 @@ func (x *DriverActivityData) GetSignature() []byte {
 	return nil
 }
 
-func (x *DriverActivityData) GetSignatureVerified() bool {
+func (x *DriverActivityData) GetAuthentication() *v1.Authentication {
 	if x != nil {
-		return x.xxx_hidden_SignatureVerified
+		return x.xxx_hidden_Authentication
 	}
-	return false
+	return nil
 }
 
 func (x *DriverActivityData) SetOldestDayRecordIndex(v int32) {
@@ -151,9 +152,8 @@ func (x *DriverActivityData) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
 }
 
-func (x *DriverActivityData) SetSignatureVerified(v bool) {
-	x.xxx_hidden_SignatureVerified = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+func (x *DriverActivityData) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *DriverActivityData) HasOldestDayRecordIndex() bool {
@@ -184,11 +184,11 @@ func (x *DriverActivityData) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *DriverActivityData) HasSignatureVerified() bool {
+func (x *DriverActivityData) HasAuthentication() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+	return x.xxx_hidden_Authentication != nil
 }
 
 func (x *DriverActivityData) ClearOldestDayRecordIndex() {
@@ -211,9 +211,8 @@ func (x *DriverActivityData) ClearSignature() {
 	x.xxx_hidden_Signature = nil
 }
 
-func (x *DriverActivityData) ClearSignatureVerified() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_SignatureVerified = false
+func (x *DriverActivityData) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type DriverActivityData_builder struct {
@@ -260,8 +259,9 @@ type DriverActivityData_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
-	// Indicates if the signature has been successfully verified.
-	SignatureVerified *bool
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 DriverActivityData_builder) Build() *DriverActivityData {
@@ -285,10 +285,7 @@ func (b0 DriverActivityData_builder) Build() *DriverActivityData {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
 		x.xxx_hidden_Signature = b.Signature
 	}
-	if b.SignatureVerified != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
-		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
-	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -308,15 +305,15 @@ func (b0 DriverActivityData_builder) Build() *DriverActivityData {
 //	    activityChangeInfo SET SIZE (1..1440) OF ActivityChangeInfo
 //	}
 type DriverActivityData_DailyRecord struct {
-	state                                   protoimpl.MessageState    `protogen:"opaque.v1"`
-	xxx_hidden_Valid                        bool                      `protobuf:"varint,1,opt,name=valid"`
-	xxx_hidden_ActivityPreviousRecordLength int32                     `protobuf:"varint,2,opt,name=activity_previous_record_length,json=activityPreviousRecordLength"`
-	xxx_hidden_ActivityRecordLength         int32                     `protobuf:"varint,3,opt,name=activity_record_length,json=activityRecordLength"`
-	xxx_hidden_ActivityRecordDate           *timestamppb.Timestamp    `protobuf:"bytes,4,opt,name=activity_record_date,json=activityRecordDate"`
-	xxx_hidden_ActivityDailyPresenceCounter *v1.BcdString             `protobuf:"bytes,5,opt,name=activity_daily_presence_counter,json=activityDailyPresenceCounter"`
-	xxx_hidden_ActivityDayDistance          int32                     `protobuf:"varint,6,opt,name=activity_day_distance,json=activityDayDistance"`
-	xxx_hidden_ActivityChangeInfo           *[]*v1.ActivityChangeInfo `protobuf:"bytes,7,rep,name=activity_change_info,json=activityChangeInfo"`
-	xxx_hidden_RawData                      []byte                    `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
+	state                                   protoimpl.MessageState     `protogen:"opaque.v1"`
+	xxx_hidden_Valid                        bool                       `protobuf:"varint,1,opt,name=valid"`
+	xxx_hidden_ActivityPreviousRecordLength int32                      `protobuf:"varint,2,opt,name=activity_previous_record_length,json=activityPreviousRecordLength"`
+	xxx_hidden_ActivityRecordLength         int32                      `protobuf:"varint,3,opt,name=activity_record_length,json=activityRecordLength"`
+	xxx_hidden_ActivityRecordDate           *timestamppb.Timestamp     `protobuf:"bytes,4,opt,name=activity_record_date,json=activityRecordDate"`
+	xxx_hidden_ActivityDailyPresenceCounter *v11.BcdString             `protobuf:"bytes,5,opt,name=activity_daily_presence_counter,json=activityDailyPresenceCounter"`
+	xxx_hidden_ActivityDayDistance          int32                      `protobuf:"varint,6,opt,name=activity_day_distance,json=activityDayDistance"`
+	xxx_hidden_ActivityChangeInfo           *[]*v11.ActivityChangeInfo `protobuf:"bytes,7,rep,name=activity_change_info,json=activityChangeInfo"`
+	xxx_hidden_RawData                      []byte                     `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData                  protoimpl.RaceDetectHookData
 	XXX_presence                            [1]uint32
 	unknownFields                           protoimpl.UnknownFields
@@ -376,7 +373,7 @@ func (x *DriverActivityData_DailyRecord) GetActivityRecordDate() *timestamppb.Ti
 	return nil
 }
 
-func (x *DriverActivityData_DailyRecord) GetActivityDailyPresenceCounter() *v1.BcdString {
+func (x *DriverActivityData_DailyRecord) GetActivityDailyPresenceCounter() *v11.BcdString {
 	if x != nil {
 		return x.xxx_hidden_ActivityDailyPresenceCounter
 	}
@@ -390,7 +387,7 @@ func (x *DriverActivityData_DailyRecord) GetActivityDayDistance() int32 {
 	return 0
 }
 
-func (x *DriverActivityData_DailyRecord) GetActivityChangeInfo() []*v1.ActivityChangeInfo {
+func (x *DriverActivityData_DailyRecord) GetActivityChangeInfo() []*v11.ActivityChangeInfo {
 	if x != nil {
 		if x.xxx_hidden_ActivityChangeInfo != nil {
 			return *x.xxx_hidden_ActivityChangeInfo
@@ -425,7 +422,7 @@ func (x *DriverActivityData_DailyRecord) SetActivityRecordDate(v *timestamppb.Ti
 	x.xxx_hidden_ActivityRecordDate = v
 }
 
-func (x *DriverActivityData_DailyRecord) SetActivityDailyPresenceCounter(v *v1.BcdString) {
+func (x *DriverActivityData_DailyRecord) SetActivityDailyPresenceCounter(v *v11.BcdString) {
 	x.xxx_hidden_ActivityDailyPresenceCounter = v
 }
 
@@ -434,7 +431,7 @@ func (x *DriverActivityData_DailyRecord) SetActivityDayDistance(v int32) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
 }
 
-func (x *DriverActivityData_DailyRecord) SetActivityChangeInfo(v []*v1.ActivityChangeInfo) {
+func (x *DriverActivityData_DailyRecord) SetActivityChangeInfo(v []*v11.ActivityChangeInfo) {
 	x.xxx_hidden_ActivityChangeInfo = &v
 }
 
@@ -561,7 +558,7 @@ type DriverActivityData_DailyRecord_builder struct {
 	// ASN.1 Specification:
 	//
 	//	DailyPresenceCounter ::= BCDString(SIZE(2))
-	ActivityDailyPresenceCounter *v1.BcdString
+	ActivityDailyPresenceCounter *v11.BcdString
 	// The total distance travelled this day in kilometers.
 	//
 	// See Data Dictionary, Section 2.9, `activityDayDistance`.
@@ -572,7 +569,7 @@ type DriverActivityData_DailyRecord_builder struct {
 	// The set of activity changes for the driver on this day.
 	//
 	// See Data Dictionary, Section 2.9, `activityChangeInfo`.
-	ActivityChangeInfo []*v1.ActivityChangeInfo
+	ActivityChangeInfo []*v11.ActivityChangeInfo
 	// The raw bytes of a daily record that could not be parsed.
 	RawData []byte
 }
@@ -611,14 +608,14 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xfb\x06\n" +
+	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xb0\a\n" +
 	"\x12DriverActivityData\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12k\n" +
 	"\rdaily_records\x18\x03 \x03(\v2F.wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecordR\fdailyRecords\x12\x19\n" +
 	"\braw_data\x18\x05 \x01(\fR\arawData\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x12-\n" +
-	"\x12signature_verified\x18\x06 \x01(\bR\x11signatureVerified\x1a\xa1\x04\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xa1\x04\n" +
 	"\vDailyRecord\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x02 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +
@@ -634,20 +631,22 @@ var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_msgTy
 var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_goTypes = []any{
 	(*DriverActivityData)(nil),             // 0: wayplatform.connect.tachograph.card.v1.DriverActivityData
 	(*DriverActivityData_DailyRecord)(nil), // 1: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord
-	(*timestamppb.Timestamp)(nil),          // 2: google.protobuf.Timestamp
-	(*v1.BcdString)(nil),                   // 3: wayplatform.connect.tachograph.dd.v1.BcdString
-	(*v1.ActivityChangeInfo)(nil),          // 4: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
+	(*v1.Authentication)(nil),              // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(*timestamppb.Timestamp)(nil),          // 3: google.protobuf.Timestamp
+	(*v11.BcdString)(nil),                  // 4: wayplatform.connect.tachograph.dd.v1.BcdString
+	(*v11.ActivityChangeInfo)(nil),         // 5: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 }
 var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.DriverActivityData.daily_records:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord
-	2, // 1: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_record_date:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_daily_presence_counter:type_name -> wayplatform.connect.tachograph.dd.v1.BcdString
-	4, // 3: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_change_info:type_name -> wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.DriverActivityData.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_record_date:type_name -> google.protobuf.Timestamp
+	4, // 3: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_daily_presence_counter:type_name -> wayplatform.connect.tachograph.dd.v1.BcdString
+	5, // 4: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_change_info:type_name -> wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_init() }

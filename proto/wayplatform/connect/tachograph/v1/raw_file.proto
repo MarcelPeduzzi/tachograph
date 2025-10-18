@@ -1,0 +1,22 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.v1;
+
+import "wayplatform/connect/tachograph/card/v1/raw_card_file.proto";
+import "wayplatform/connect/tachograph/vu/v1/raw_vehicle_unit_file.proto";
+
+// Represents the intermediate, raw structure of a tachograph file after
+// initial parsing but before semantic interpretation. This format preserves
+// exact binary boundaries and is suitable for signature authentication.
+message RawFile {
+  Type type = 1;
+  wayplatform.connect.tachograph.card.v1.RawCardFile card = 2;
+  wayplatform.connect.tachograph.vu.v1.RawVehicleUnitFile vehicle_unit = 3;
+
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    CARD = 1;
+    VEHICLE_UNIT = 2;
+  }
+}
+

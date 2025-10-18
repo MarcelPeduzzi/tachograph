@@ -8,6 +8,7 @@ package cardv1
 
 import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -90,17 +91,18 @@ func (b0 RawCardFile_builder) Build() *RawCardFile {
 
 // A TLV record of the raw card file.
 type RawCardFile_Record struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Tag         int32                  `protobuf:"varint,1,opt,name=tag"`
-	xxx_hidden_File        ElementaryFileType     `protobuf:"varint,2,opt,name=file,enum=wayplatform.connect.tachograph.card.v1.ElementaryFileType"`
-	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,3,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_ContentType ContentType            `protobuf:"varint,4,opt,name=content_type,json=contentType,enum=wayplatform.connect.tachograph.card.v1.ContentType"`
-	xxx_hidden_Length      int32                  `protobuf:"varint,5,opt,name=length"`
-	xxx_hidden_Value       []byte                 `protobuf:"bytes,6,opt,name=value"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                     protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Tag            int32                  `protobuf:"varint,1,opt,name=tag"`
+	xxx_hidden_File           ElementaryFileType     `protobuf:"varint,2,opt,name=file,enum=wayplatform.connect.tachograph.card.v1.ElementaryFileType"`
+	xxx_hidden_Generation     v1.Generation          `protobuf:"varint,3,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
+	xxx_hidden_ContentType    ContentType            `protobuf:"varint,4,opt,name=content_type,json=contentType,enum=wayplatform.connect.tachograph.card.v1.ContentType"`
+	xxx_hidden_Length         int32                  `protobuf:"varint,5,opt,name=length"`
+	xxx_hidden_Value          []byte                 `protobuf:"bytes,6,opt,name=value"`
+	xxx_hidden_Authentication *v11.Authentication    `protobuf:"bytes,99,opt,name=authentication"`
+	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
+	XXX_presence              [1]uint32
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *RawCardFile_Record) Reset() {
@@ -176,29 +178,36 @@ func (x *RawCardFile_Record) GetValue() []byte {
 	return nil
 }
 
+func (x *RawCardFile_Record) GetAuthentication() *v11.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *RawCardFile_Record) SetTag(v int32) {
 	x.xxx_hidden_Tag = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
 func (x *RawCardFile_Record) SetFile(v ElementaryFileType) {
 	x.xxx_hidden_File = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
 }
 
 func (x *RawCardFile_Record) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
 }
 
 func (x *RawCardFile_Record) SetContentType(v ContentType) {
 	x.xxx_hidden_ContentType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
 }
 
 func (x *RawCardFile_Record) SetLength(v int32) {
 	x.xxx_hidden_Length = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
 }
 
 func (x *RawCardFile_Record) SetValue(v []byte) {
@@ -206,7 +215,11 @@ func (x *RawCardFile_Record) SetValue(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Value = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
+}
+
+func (x *RawCardFile_Record) SetAuthentication(v *v11.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *RawCardFile_Record) HasTag() bool {
@@ -251,6 +264,13 @@ func (x *RawCardFile_Record) HasValue() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
+func (x *RawCardFile_Record) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *RawCardFile_Record) ClearTag() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Tag = 0
@@ -281,6 +301,10 @@ func (x *RawCardFile_Record) ClearValue() {
 	x.xxx_hidden_Value = nil
 }
 
+func (x *RawCardFile_Record) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
+}
+
 type RawCardFile_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -298,6 +322,9 @@ type RawCardFile_Record_builder struct {
 	Length *int32
 	// The raw byte value of the record.
 	Value []byte
+	// Result of cryptographic signature authentication for this record.
+	// Present when signature verification has been performed.
+	Authentication *v11.Authentication
 }
 
 func (b0 RawCardFile_Record_builder) Build() *RawCardFile_Record {
@@ -305,29 +332,30 @@ func (b0 RawCardFile_Record_builder) Build() *RawCardFile_Record {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Tag != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
 		x.xxx_hidden_Tag = *b.Tag
 	}
 	if b.File != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
 		x.xxx_hidden_File = *b.File
 	}
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	if b.ContentType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
 		x.xxx_hidden_ContentType = *b.ContentType
 	}
 	if b.Length != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
 		x.xxx_hidden_Length = *b.Length
 	}
 	if b.Value != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
 		x.xxx_hidden_Value = b.Value
 	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -335,9 +363,9 @@ var File_wayplatform_connect_tachograph_card_v1_raw_card_file_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1a9wayplatform/connect/tachograph/card/v1/content_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\"\xa8\x03\n" +
+	":wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a9wayplatform/connect/tachograph/card/v1/content_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\"\x8c\x04\n" +
 	"\vRawCardFile\x12T\n" +
-	"\arecords\x18\x01 \x03(\v2:.wayplatform.connect.tachograph.card.v1.RawCardFile.RecordR\arecords\x1a\xc2\x02\n" +
+	"\arecords\x18\x01 \x03(\v2:.wayplatform.connect.tachograph.card.v1.RawCardFile.RecordR\arecords\x1a\xa6\x03\n" +
 	"\x06Record\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\x05R\x03tag\x12N\n" +
 	"\x04file\x18\x02 \x01(\x0e2:.wayplatform.connect.tachograph.card.v1.ElementaryFileTypeR\x04file\x12P\n" +
@@ -346,7 +374,8 @@ const file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_rawDesc = 
 	"generation\x12V\n" +
 	"\fcontent_type\x18\x04 \x01(\x0e23.wayplatform.connect.tachograph.card.v1.ContentTypeR\vcontentType\x12\x16\n" +
 	"\x06length\x18\x05 \x01(\x05R\x06length\x12\x14\n" +
-	"\x05value\x18\x06 \x01(\fR\x05valueB\xdd\x02\n" +
+	"\x05value\x18\x06 \x01(\fR\x05value\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xdd\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x10RawCardFileProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
@@ -356,17 +385,19 @@ var file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_goTypes = []
 	(ElementaryFileType)(0),    // 2: wayplatform.connect.tachograph.card.v1.ElementaryFileType
 	(v1.Generation)(0),         // 3: wayplatform.connect.tachograph.dd.v1.Generation
 	(ContentType)(0),           // 4: wayplatform.connect.tachograph.card.v1.ContentType
+	(*v11.Authentication)(nil), // 5: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.RawCardFile.records:type_name -> wayplatform.connect.tachograph.card.v1.RawCardFile.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.file:type_name -> wayplatform.connect.tachograph.card.v1.ElementaryFileType
 	3, // 2: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
 	4, // 3: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.content_type:type_name -> wayplatform.connect.tachograph.card.v1.ContentType
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 4: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_init() }

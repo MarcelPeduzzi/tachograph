@@ -3,6 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 
@@ -104,6 +105,7 @@ message EventsData {
   //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 2;
 
-  // Indicates if the signature has been successfully verified.
-  bool signature_verified = 3;
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

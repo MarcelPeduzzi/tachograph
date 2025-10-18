@@ -38,8 +38,6 @@ const (
 	File_CONTROL_CARD File_Type = 4
 	// A file downloaded from a Company Card.
 	File_COMPANY_CARD File_Type = 5
-	// A raw, unparsed card file.
-	File_RAW_CARD File_Type = 6
 )
 
 // Enum value maps for File_Type.
@@ -51,7 +49,6 @@ var (
 		3: "WORKSHOP_CARD",
 		4: "CONTROL_CARD",
 		5: "COMPANY_CARD",
-		6: "RAW_CARD",
 	}
 	File_Type_value = map[string]int32{
 		"TYPE_UNSPECIFIED": 0,
@@ -60,7 +57,6 @@ var (
 		"WORKSHOP_CARD":    3,
 		"CONTROL_CARD":     4,
 		"COMPANY_CARD":     5,
-		"RAW_CARD":         6,
 	}
 )
 
@@ -86,17 +82,18 @@ func (x File_Type) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Represents the entire content of a single parsed tachograph data file (e.g., .DDD, .C1B, .V1B).
+// Represents the entire content of a single fully parsed tachograph data file (e.g., .DDD, .C1B, .V1B).
 //
-// This message acts as a top-level container, providing a single, consistent type
-// for any kind of tachograph file. It uses a manually tagged union pattern, where the
-// `type` field indicates which of the specific file-type fields is populated.
+// This message contains only fully parsed, semantic data structures. For intermediate
+// raw parsing suitable for signature authentication, see RawFile.
+//
+// This message uses a manually tagged union pattern, where the `type` field indicates
+// which of the specific file-type fields is populated.
 type File struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Type        File_Type              `protobuf:"varint,1,opt,name=type,enum=wayplatform.connect.tachograph.v1.File_Type"`
 	xxx_hidden_VehicleUnit *v1.VehicleUnitFile    `protobuf:"bytes,2,opt,name=vehicle_unit,json=vehicleUnit"`
 	xxx_hidden_DriverCard  *v11.DriverCardFile    `protobuf:"bytes,3,opt,name=driver_card,json=driverCard"`
-	xxx_hidden_RawCard     *v11.RawCardFile       `protobuf:"bytes,7,opt,name=raw_card,json=rawCard"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -151,16 +148,9 @@ func (x *File) GetDriverCard() *v11.DriverCardFile {
 	return nil
 }
 
-func (x *File) GetRawCard() *v11.RawCardFile {
-	if x != nil {
-		return x.xxx_hidden_RawCard
-	}
-	return nil
-}
-
 func (x *File) SetType(v File_Type) {
 	x.xxx_hidden_Type = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
 func (x *File) SetVehicleUnit(v *v1.VehicleUnitFile) {
@@ -169,10 +159,6 @@ func (x *File) SetVehicleUnit(v *v1.VehicleUnitFile) {
 
 func (x *File) SetDriverCard(v *v11.DriverCardFile) {
 	x.xxx_hidden_DriverCard = v
-}
-
-func (x *File) SetRawCard(v *v11.RawCardFile) {
-	x.xxx_hidden_RawCard = v
 }
 
 func (x *File) HasType() bool {
@@ -196,13 +182,6 @@ func (x *File) HasDriverCard() bool {
 	return x.xxx_hidden_DriverCard != nil
 }
 
-func (x *File) HasRawCard() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_RawCard != nil
-}
-
 func (x *File) ClearType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Type = File_TYPE_UNSPECIFIED
@@ -214,10 +193,6 @@ func (x *File) ClearVehicleUnit() {
 
 func (x *File) ClearDriverCard() {
 	x.xxx_hidden_DriverCard = nil
-}
-
-func (x *File) ClearRawCard() {
-	x.xxx_hidden_RawCard = nil
 }
 
 type File_builder struct {
@@ -232,10 +207,6 @@ type File_builder struct {
 	// The content of the file if it is from a Driver Card.
 	// This field is populated if and only if `type` is `DRIVER_CARD`.
 	DriverCard *v11.DriverCardFile
-	// The raw, uninterpreted content of a card file. This can be used as a
-	// fallback or for applications that need to do their own detailed parsing.
-	// This field is populated if and only if `type` is `RAW_CARD`.
-	RawCard *v11.RawCardFile
 }
 
 func (b0 File_builder) Build() *File {
@@ -243,12 +214,11 @@ func (b0 File_builder) Build() *File {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Type != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
 		x.xxx_hidden_Type = *b.Type
 	}
 	x.xxx_hidden_VehicleUnit = b.VehicleUnit
 	x.xxx_hidden_DriverCard = b.DriverCard
-	x.xxx_hidden_RawCard = b.RawCard
 	return m0
 }
 
@@ -256,21 +226,19 @@ var File_wayplatform_connect_tachograph_v1_file_proto protoreflect.FileDescripto
 
 const file_wayplatform_connect_tachograph_v1_file_proto_rawDesc = "" +
 	"\n" +
-	",wayplatform/connect/tachograph/v1/file.proto\x12!wayplatform.connect.tachograph.v1\x1a=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x1a:wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x1a<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\"\xd2\x03\n" +
+	",wayplatform/connect/tachograph/v1/file.proto\x12!wayplatform.connect.tachograph.v1\x1a=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x1a<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\"\xf3\x02\n" +
 	"\x04File\x12@\n" +
 	"\x04type\x18\x01 \x01(\x0e2,.wayplatform.connect.tachograph.v1.File.TypeR\x04type\x12X\n" +
 	"\fvehicle_unit\x18\x02 \x01(\v25.wayplatform.connect.tachograph.vu.v1.VehicleUnitFileR\vvehicleUnit\x12W\n" +
 	"\vdriver_card\x18\x03 \x01(\v26.wayplatform.connect.tachograph.card.v1.DriverCardFileR\n" +
-	"driverCard\x12N\n" +
-	"\braw_card\x18\a \x01(\v23.wayplatform.connect.tachograph.card.v1.RawCardFileR\arawCard\"\x84\x01\n" +
+	"driverCard\"v\n" +
 	"\x04Type\x12\x14\n" +
 	"\x10TYPE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fVEHICLE_UNIT\x10\x01\x12\x0f\n" +
 	"\vDRIVER_CARD\x10\x02\x12\x11\n" +
 	"\rWORKSHOP_CARD\x10\x03\x12\x10\n" +
 	"\fCONTROL_CARD\x10\x04\x12\x10\n" +
-	"\fCOMPANY_CARD\x10\x05\x12\f\n" +
-	"\bRAW_CARD\x10\x06B\xbc\x02\n" +
+	"\fCOMPANY_CARD\x10\x05B\xbc\x02\n" +
 	"%com.wayplatform.connect.tachograph.v1B\tFileProtoP\x01Zagithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1;tachographv1\xa2\x02\x03WCT\xaa\x02!Wayplatform.Connect.Tachograph.V1\xca\x02!Wayplatform\\Connect\\Tachograph\\V1\xe2\x02-Wayplatform\\Connect\\Tachograph\\V1\\GPBMetadata\xea\x02$Wayplatform::Connect::Tachograph::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_v1_file_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
@@ -280,18 +248,16 @@ var file_wayplatform_connect_tachograph_v1_file_proto_goTypes = []any{
 	(*File)(nil),               // 1: wayplatform.connect.tachograph.v1.File
 	(*v1.VehicleUnitFile)(nil), // 2: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile
 	(*v11.DriverCardFile)(nil), // 3: wayplatform.connect.tachograph.card.v1.DriverCardFile
-	(*v11.RawCardFile)(nil),    // 4: wayplatform.connect.tachograph.card.v1.RawCardFile
 }
 var file_wayplatform_connect_tachograph_v1_file_proto_depIdxs = []int32{
 	0, // 0: wayplatform.connect.tachograph.v1.File.type:type_name -> wayplatform.connect.tachograph.v1.File.Type
 	2, // 1: wayplatform.connect.tachograph.v1.File.vehicle_unit:type_name -> wayplatform.connect.tachograph.vu.v1.VehicleUnitFile
 	3, // 2: wayplatform.connect.tachograph.v1.File.driver_card:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardFile
-	4, // 3: wayplatform.connect.tachograph.v1.File.raw_card:type_name -> wayplatform.connect.tachograph.card.v1.RawCardFile
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_v1_file_proto_init() }

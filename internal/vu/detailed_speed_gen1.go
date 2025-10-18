@@ -48,3 +48,4 @@ func appendDetailedSpeedGen1(dst []byte, detailedSpeed *vuv1.DetailedSpeedGen1) 
 
 	return nil, fmt.Errorf("cannot marshal Detailed Speed Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
+

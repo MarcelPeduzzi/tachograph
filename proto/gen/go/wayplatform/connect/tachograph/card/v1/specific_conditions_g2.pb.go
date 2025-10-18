@@ -8,6 +8,7 @@ package cardv1
 
 import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -47,7 +48,7 @@ type SpecificConditionsG2 struct {
 	xxx_hidden_Records           *[]*v1.SpecificConditionRecord `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_RawData           []byte                         `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Signature         []byte                         `protobuf:"bytes,4,opt,name=signature"`
-	xxx_hidden_SignatureVerified bool                           `protobuf:"varint,5,opt,name=signature_verified,json=signatureVerified"`
+	xxx_hidden_Authentication    *v11.Authentication            `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -109,11 +110,11 @@ func (x *SpecificConditionsG2) GetSignature() []byte {
 	return nil
 }
 
-func (x *SpecificConditionsG2) GetSignatureVerified() bool {
+func (x *SpecificConditionsG2) GetAuthentication() *v11.Authentication {
 	if x != nil {
-		return x.xxx_hidden_SignatureVerified
+		return x.xxx_hidden_Authentication
 	}
-	return false
+	return nil
 }
 
 func (x *SpecificConditionsG2) SetNewestRecordIndex(v int32) {
@@ -141,9 +142,8 @@ func (x *SpecificConditionsG2) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
-func (x *SpecificConditionsG2) SetSignatureVerified(v bool) {
-	x.xxx_hidden_SignatureVerified = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+func (x *SpecificConditionsG2) SetAuthentication(v *v11.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *SpecificConditionsG2) HasNewestRecordIndex() bool {
@@ -167,11 +167,11 @@ func (x *SpecificConditionsG2) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *SpecificConditionsG2) HasSignatureVerified() bool {
+func (x *SpecificConditionsG2) HasAuthentication() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return x.xxx_hidden_Authentication != nil
 }
 
 func (x *SpecificConditionsG2) ClearNewestRecordIndex() {
@@ -189,9 +189,8 @@ func (x *SpecificConditionsG2) ClearSignature() {
 	x.xxx_hidden_Signature = nil
 }
 
-func (x *SpecificConditionsG2) ClearSignatureVerified() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_SignatureVerified = false
+func (x *SpecificConditionsG2) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type SpecificConditionsG2_builder struct {
@@ -223,8 +222,9 @@ type SpecificConditionsG2_builder struct {
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
 	Signature []byte
-	// Indicates if the signature has been successfully verified.
-	SignatureVerified *bool
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v11.Authentication
 }
 
 func (b0 SpecificConditionsG2_builder) Build() *SpecificConditionsG2 {
@@ -244,10 +244,7 @@ func (b0 SpecificConditionsG2_builder) Build() *SpecificConditionsG2 {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Signature = b.Signature
 	}
-	if b.SignatureVerified != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
-		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
-	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -255,27 +252,29 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto pro
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto_rawDesc = "" +
 	"\n" +
-	"Cwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\x87\x02\n" +
+	"Cwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\xbc\x02\n" +
 	"\x14SpecificConditionsG2\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12W\n" +
 	"\arecords\x18\x02 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x19\n" +
 	"\braw_data\x18\x03 \x01(\fR\arawData\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x12-\n" +
-	"\x12signature_verified\x18\x05 \x01(\bR\x11signatureVerifiedB\xe6\x02\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xe6\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x19SpecificConditionsG2ProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto_goTypes = []any{
 	(*SpecificConditionsG2)(nil),       // 0: wayplatform.connect.tachograph.card.v1.SpecificConditionsG2
 	(*v1.SpecificConditionRecord)(nil), // 1: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
+	(*v11.Authentication)(nil),         // 2: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.SpecificConditionsG2.records:type_name -> wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.SpecificConditionsG2.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto_init() }

@@ -51,3 +51,4 @@ func sizeOfCardDownload(data []byte, transferType vuv1.TransferType) (int, error
 
 // unmarshalCardDownload parses a card download transfer.
 // The card download payload is raw TLV-formatted card data.
+

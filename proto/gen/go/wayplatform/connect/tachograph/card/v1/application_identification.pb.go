@@ -8,6 +8,7 @@ package cardv1
 
 import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -38,7 +39,7 @@ type ApplicationIdentification struct {
 	xxx_hidden_Company                *ApplicationIdentification_Company  `protobuf:"bytes,6,opt,name=company"`
 	xxx_hidden_Control                *ApplicationIdentification_Control  `protobuf:"bytes,7,opt,name=control"`
 	xxx_hidden_Signature              []byte                              `protobuf:"bytes,8,opt,name=signature"`
-	xxx_hidden_SignatureVerified      bool                                `protobuf:"varint,9,opt,name=signature_verified,json=signatureVerified"`
+	xxx_hidden_Authentication         *v11.Authentication                 `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -130,11 +131,11 @@ func (x *ApplicationIdentification) GetSignature() []byte {
 	return nil
 }
 
-func (x *ApplicationIdentification) GetSignatureVerified() bool {
+func (x *ApplicationIdentification) GetAuthentication() *v11.Authentication {
 	if x != nil {
-		return x.xxx_hidden_SignatureVerified
+		return x.xxx_hidden_Authentication
 	}
-	return false
+	return nil
 }
 
 func (x *ApplicationIdentification) SetCardType(v CardType) {
@@ -175,9 +176,8 @@ func (x *ApplicationIdentification) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
 }
 
-func (x *ApplicationIdentification) SetSignatureVerified(v bool) {
-	x.xxx_hidden_SignatureVerified = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
+func (x *ApplicationIdentification) SetAuthentication(v *v11.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *ApplicationIdentification) HasCardType() bool {
@@ -236,11 +236,11 @@ func (x *ApplicationIdentification) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
-func (x *ApplicationIdentification) HasSignatureVerified() bool {
+func (x *ApplicationIdentification) HasAuthentication() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+	return x.xxx_hidden_Authentication != nil
 }
 
 func (x *ApplicationIdentification) ClearCardType() {
@@ -278,9 +278,8 @@ func (x *ApplicationIdentification) ClearSignature() {
 	x.xxx_hidden_Signature = nil
 }
 
-func (x *ApplicationIdentification) ClearSignatureVerified() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
-	x.xxx_hidden_SignatureVerified = false
+func (x *ApplicationIdentification) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type ApplicationIdentification_builder struct {
@@ -319,10 +318,9 @@ type ApplicationIdentification_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128))
 	Signature []byte
-	// Indicates if the signature has been successfully verified.
-	// This field is populated by VerifyApplicationIdentification() and remains
-	// false if verification has not been performed or failed.
-	SignatureVerified *bool
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v11.Authentication
 }
 
 func (b0 ApplicationIdentification_builder) Build() *ApplicationIdentification {
@@ -346,10 +344,7 @@ func (b0 ApplicationIdentification_builder) Build() *ApplicationIdentification {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
 		x.xxx_hidden_Signature = b.Signature
 	}
-	if b.SignatureVerified != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
-		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
-	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -1015,7 +1010,7 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_proto
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\xd2\f\n" +
+	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\x87\r\n" +
 	"\x19ApplicationIdentification\x12M\n" +
 	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12o\n" +
 	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\x16typeOfTachographCardId\x12p\n" +
@@ -1024,8 +1019,8 @@ const file_wayplatform_connect_tachograph_card_v1_application_identification_pro
 	"\bworkshop\x18\x05 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.WorkshopR\bworkshop\x12c\n" +
 	"\acompany\x18\x06 \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CompanyR\acompany\x12c\n" +
 	"\acontrol\x18\a \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.ControlR\acontrol\x12\x1c\n" +
-	"\tsignature\x18\b \x01(\fR\tsignature\x12-\n" +
-	"\x12signature_verified\x18\t \x01(\bR\x11signatureVerified\x1a\xa0\x02\n" +
+	"\tsignature\x18\b \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xa0\x02\n" +
 	"\x06Driver\x121\n" +
 	"\x15events_per_type_count\x18\x01 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
 	"\x15faults_per_type_count\x18\x02 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +
@@ -1055,6 +1050,7 @@ var file_wayplatform_connect_tachograph_card_v1_application_identification_proto
 	(CardType)(0),                   // 5: wayplatform.connect.tachograph.card.v1.CardType
 	(v1.EquipmentType)(0),           // 6: wayplatform.connect.tachograph.dd.v1.EquipmentType
 	(*v1.CardStructureVersion)(nil), // 7: wayplatform.connect.tachograph.dd.v1.CardStructureVersion
+	(*v11.Authentication)(nil),      // 8: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_application_identification_proto_depIdxs = []int32{
 	5, // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_type:type_name -> wayplatform.connect.tachograph.card.v1.CardType
@@ -1064,11 +1060,12 @@ var file_wayplatform_connect_tachograph_card_v1_application_identification_proto
 	2, // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.workshop:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Workshop
 	3, // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.company:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Company
 	4, // 6: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.control:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Control
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	8, // 7: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_application_identification_proto_init() }

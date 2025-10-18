@@ -34,91 +34,97 @@ func TestUnmarshalVehicleUnitFile(t *testing.T) {
 				t.Fatalf("failed to read test file: %v", err)
 			}
 
-			// Unmarshal to VehicleUnitFile (full semantic parsing)
-			vuFile, err := unmarshalVehicleUnitFile(data)
+			// Unmarshal to RawVehicleUnitFile first
+			rawFile, err := UnmarshalRawVehicleUnitFile(data)
 			if err != nil {
-				t.Fatalf("unmarshalVehicleUnitFile failed: %v", err)
+				t.Fatalf("UnmarshalRawVehicleUnitFile failed: %v", err)
+			}
+
+			// Then parse to VehicleUnitFile (full semantic parsing)
+			vuFile, err := ParseRawVehicleUnitFile(rawFile)
+			if err != nil {
+				t.Fatalf("ParseRawVehicleUnitFile failed: %v", err)
 			}
 
 			if vuFile == nil {
-				t.Fatal("unmarshalVehicleUnitFile returned nil")
+				t.Fatal("ParseRawVehicleUnitFile returned nil")
 			}
 
-		// Verify we got generation-specific data
-		generation := vuFile.GetGeneration()
-		t.Logf("Successfully parsed VU file: generation=%s", generation)
+			// Verify we got generation-specific data
+			generation := vuFile.GetGeneration()
+			t.Logf("Successfully parsed VU file: generation=%s", generation)
 
-		// Check generation-specific fields
-		switch generation {
-		case ddv1.Generation_GENERATION_1:
-			gen1File := vuFile.GetGen1()
-			if gen1File == nil {
-				t.Fatal("expected Gen1 file data, got nil")
-			}
-
-			// Check Overview
-			if overview := gen1File.GetOverview(); overview != nil {
-				t.Logf("  - Overview: VIN=%s, certificates present=%v",
-					overview.GetVehicleIdentificationNumber().GetValue(),
-					len(overview.GetMemberStateCertificate()) > 0)
-
-				// Verify raw_data is preserved
-				if len(overview.GetRawData()) == 0 {
-					t.Errorf("    - Overview raw_data is empty")
+			// Check generation-specific fields
+			switch generation {
+			case ddv1.Generation_GENERATION_1:
+				gen1File := vuFile.GetGen1()
+				if gen1File == nil {
+					t.Fatal("expected Gen1 file data, got nil")
 				}
-			}
-
-			// Log other transfers
-			t.Logf("  - Activities: %d records", len(gen1File.GetActivities()))
-			t.Logf("  - EventsAndFaults: %d records", len(gen1File.GetEventsAndFaults()))
-			t.Logf("  - DetailedSpeed: %d records", len(gen1File.GetDetailedSpeed()))
-			t.Logf("  - TechnicalData: %d records", len(gen1File.GetTechnicalData()))
-
-		case ddv1.Generation_GENERATION_2:
-			version := vuFile.GetVersion()
-			if version == ddv1.Version_VERSION_2 {
-				gen2v2File := vuFile.GetGen2V2()
-				if gen2v2File == nil {
-					t.Fatal("expected Gen2 V2 file data, got nil")
-				}
-				t.Logf("  - Version: V2")
 
 				// Check Overview
-				if overview := gen2v2File.GetOverview(); overview != nil {
-					t.Logf("  - Overview present, raw_data size: %d bytes", len(overview.GetRawData()))
+				if overview := gen1File.GetOverview(); overview != nil {
+					t.Logf("  - Overview: VIN=%s, certificates present=%v",
+						overview.GetVehicleIdentificationNumber().GetValue(),
+						len(overview.GetMemberStateCertificate()) > 0)
+
+					// Verify raw_data is preserved
 					if len(overview.GetRawData()) == 0 {
 						t.Errorf("    - Overview raw_data is empty")
 					}
 				}
 
-				t.Logf("  - Activities: %d records", len(gen2v2File.GetActivities()))
-				t.Logf("  - EventsAndFaults: %d records", len(gen2v2File.GetEventsAndFaults()))
-				t.Logf("  - DetailedSpeed: %d records", len(gen2v2File.GetDetailedSpeed()))
-				t.Logf("  - TechnicalData: %d records", len(gen2v2File.GetTechnicalData()))
-			} else {
-				gen2v1File := vuFile.GetGen2V1()
-				if gen2v1File == nil {
-					t.Fatal("expected Gen2 V1 file data, got nil")
-				}
-				t.Logf("  - Version: V1")
+				// Log other transfers
+				t.Logf("  - Activities: %d records", len(gen1File.GetActivities()))
+				t.Logf("  - EventsAndFaults: %d records", len(gen1File.GetEventsAndFaults()))
+				t.Logf("  - DetailedSpeed: %d records", len(gen1File.GetDetailedSpeed()))
+				t.Logf("  - TechnicalData: %d records", len(gen1File.GetTechnicalData()))
 
-				// Check Overview
-				if overview := gen2v1File.GetOverview(); overview != nil {
-					t.Logf("  - Overview present, raw_data size: %d bytes", len(overview.GetRawData()))
-					if len(overview.GetRawData()) == 0 {
-						t.Errorf("    - Overview raw_data is empty")
+			case ddv1.Generation_GENERATION_2:
+				version := vuFile.GetVersion()
+				if version == ddv1.Version_VERSION_2 {
+					gen2v2File := vuFile.GetGen2V2()
+					if gen2v2File == nil {
+						t.Fatal("expected Gen2 V2 file data, got nil")
 					}
+					t.Logf("  - Version: V2")
+
+					// Check Overview
+					if overview := gen2v2File.GetOverview(); overview != nil {
+						t.Logf("  - Overview present, raw_data size: %d bytes", len(overview.GetRawData()))
+						if len(overview.GetRawData()) == 0 {
+							t.Errorf("    - Overview raw_data is empty")
+						}
+					}
+
+					t.Logf("  - Activities: %d records", len(gen2v2File.GetActivities()))
+					t.Logf("  - EventsAndFaults: %d records", len(gen2v2File.GetEventsAndFaults()))
+					t.Logf("  - DetailedSpeed: %d records", len(gen2v2File.GetDetailedSpeed()))
+					t.Logf("  - TechnicalData: %d records", len(gen2v2File.GetTechnicalData()))
+				} else {
+					gen2v1File := vuFile.GetGen2V1()
+					if gen2v1File == nil {
+						t.Fatal("expected Gen2 V1 file data, got nil")
+					}
+					t.Logf("  - Version: V1")
+
+					// Check Overview
+					if overview := gen2v1File.GetOverview(); overview != nil {
+						t.Logf("  - Overview present, raw_data size: %d bytes", len(overview.GetRawData()))
+						if len(overview.GetRawData()) == 0 {
+							t.Errorf("    - Overview raw_data is empty")
+						}
+					}
+
+					t.Logf("  - Activities: %d records", len(gen2v1File.GetActivities()))
+					t.Logf("  - EventsAndFaults: %d records", len(gen2v1File.GetEventsAndFaults()))
+					t.Logf("  - DetailedSpeed: %d records", len(gen2v1File.GetDetailedSpeed()))
+					t.Logf("  - TechnicalData: %d records", len(gen2v1File.GetTechnicalData()))
 				}
 
-				t.Logf("  - Activities: %d records", len(gen2v1File.GetActivities()))
-				t.Logf("  - EventsAndFaults: %d records", len(gen2v1File.GetEventsAndFaults()))
-				t.Logf("  - DetailedSpeed: %d records", len(gen2v1File.GetDetailedSpeed()))
-				t.Logf("  - TechnicalData: %d records", len(gen2v1File.GetTechnicalData()))
+			default:
+				t.Errorf("unexpected generation: %s", generation)
 			}
-
-		default:
-			t.Errorf("unexpected generation: %s", generation)
-		}
 		})
 	}
 }
@@ -143,9 +149,13 @@ func TestVehicleUnitFileGolden(t *testing.T) {
 				t.Fatalf("failed to read test file: %v", err)
 			}
 
-			vuFile, err := unmarshalVehicleUnitFile(data)
+			rawFile, err := UnmarshalRawVehicleUnitFile(data)
 			if err != nil {
-				t.Fatalf("unmarshalVehicleUnitFile failed: %v", err)
+				t.Fatalf("UnmarshalRawVehicleUnitFile failed: %v", err)
+			}
+			vuFile, err := ParseRawVehicleUnitFile(rawFile)
+			if err != nil {
+				t.Fatalf("ParseRawVehicleUnitFile failed: %v", err)
 			}
 
 			goldenPath := filepath.Join("testdata", filepath.Base(testFile)+".golden.json")

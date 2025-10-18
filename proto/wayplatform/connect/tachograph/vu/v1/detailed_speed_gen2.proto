@@ -55,3 +55,4 @@ message DetailedSpeedGen2 {
   bytes raw_data = 3;
 }
 
+

@@ -15,11 +15,6 @@ import (
 	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
 
-// UnmarshalDriverCardFile parses driver card data into a protobuf DriverCardFile message.
-func UnmarshalDriverCardFile(rawCard *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
-	return unmarshalDriverCardFile(rawCard)
-}
-
 // MarshalDriverCardFile serializes a DriverCardFile into binary format.
 func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 	if file == nil {
@@ -33,7 +28,7 @@ func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 	return appendDriverCard(buf, file)
 }
 
-// unmarshalDriverCardFile unmarshals a driver card file from raw card file data.
+// ParseRawDriverCardFile parses driver card data into a protobuf DriverCardFile message.
 //
 // The driver card file structure is organized into Dedicated Files (DFs):
 // - Common EFs (ICC, IC) reside in the Master File (MF)
@@ -43,7 +38,7 @@ func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 // The generation of each EF is determined by the TLV tag appendix byte:
 // - '00'/'01' indicates Gen1 (Tachograph DF)
 // - '02'/'03' indicates Gen2 (Tachograph_G2 DF)
-func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
+func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
 	// File-level version context (extracted from CardStructureVersion)
 	// This represents the card's overall version capability
 	var fileVersion ddv1.Version = ddv1.Version_VERSION_1

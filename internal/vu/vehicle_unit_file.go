@@ -8,11 +8,6 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// UnmarshalVehicleUnitFile parses VU file data into a protobuf VehicleUnitFile message.
-func UnmarshalVehicleUnitFile(data []byte) (*vuv1.VehicleUnitFile, error) {
-	return unmarshalVehicleUnitFile(data)
-}
-
 // MarshalVehicleUnitFile serializes a VehicleUnitFile into binary format.
 func MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 	if file == nil {
@@ -26,7 +21,8 @@ func MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 	return appendVU(buf, file)
 }
 
-// unmarshalVehicleUnitFile unmarshals a vehicle unit file from binary data.
+// ParseRawVehicleUnitFile parses a RawVehicleUnitFile into a fully parsed VehicleUnitFile message.
+// Authentication results from the raw file records are propagated to the parsed messages.
 //
 // The data type `VehicleUnitFile` represents a complete vehicle unit file structure.
 //
@@ -45,13 +41,7 @@ func MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 //	        technicalData             TechnicalData
 //	    }
 //	}
-func unmarshalVehicleUnitFile(input []byte) (*vuv1.VehicleUnitFile, error) {
-	// Pass 1: Slice into RawVehicleUnitFile
-	rawFile, err := unmarshalRawVehicleUnitFile(input)
-	if err != nil {
-		return nil, fmt.Errorf("raw unmarshal failed: %w", err)
-	}
-
+func ParseRawVehicleUnitFile(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFile, error) {
 	// Determine generation/version
 	if len(rawFile.GetRecords()) == 0 {
 		return nil, fmt.Errorf("empty VU file")

@@ -7,7 +7,8 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -45,7 +46,7 @@ type GnssPlaces struct {
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*GnssPlaces_Record  `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_Signature         []byte                 `protobuf:"bytes,3,opt,name=signature"`
-	xxx_hidden_SignatureVerified bool                   `protobuf:"varint,4,opt,name=signature_verified,json=signatureVerified"`
+	xxx_hidden_Authentication    *v1.Authentication     `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -100,11 +101,11 @@ func (x *GnssPlaces) GetSignature() []byte {
 	return nil
 }
 
-func (x *GnssPlaces) GetSignatureVerified() bool {
+func (x *GnssPlaces) GetAuthentication() *v1.Authentication {
 	if x != nil {
-		return x.xxx_hidden_SignatureVerified
+		return x.xxx_hidden_Authentication
 	}
-	return false
+	return nil
 }
 
 func (x *GnssPlaces) SetNewestRecordIndex(v int32) {
@@ -124,9 +125,8 @@ func (x *GnssPlaces) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
-func (x *GnssPlaces) SetSignatureVerified(v bool) {
-	x.xxx_hidden_SignatureVerified = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+func (x *GnssPlaces) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *GnssPlaces) HasNewestRecordIndex() bool {
@@ -143,11 +143,11 @@ func (x *GnssPlaces) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *GnssPlaces) HasSignatureVerified() bool {
+func (x *GnssPlaces) HasAuthentication() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_Authentication != nil
 }
 
 func (x *GnssPlaces) ClearNewestRecordIndex() {
@@ -160,9 +160,8 @@ func (x *GnssPlaces) ClearSignature() {
 	x.xxx_hidden_Signature = nil
 }
 
-func (x *GnssPlaces) ClearSignatureVerified() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_SignatureVerified = false
+func (x *GnssPlaces) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type GnssPlaces_builder struct {
@@ -197,8 +196,9 @@ type GnssPlaces_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
-	// Indicates if the signature has been successfully verified.
-	SignatureVerified *bool
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 GnssPlaces_builder) Build() *GnssPlaces {
@@ -214,10 +214,7 @@ func (b0 GnssPlaces_builder) Build() *GnssPlaces {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Signature = b.Signature
 	}
-	if b.SignatureVerified != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
-		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
-	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -235,7 +232,7 @@ func (b0 GnssPlaces_builder) Build() *GnssPlaces {
 type GnssPlaces_Record struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp         *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_GnssPlaceRecord   *v1.GNSSPlaceRecord    `protobuf:"bytes,2,opt,name=gnss_place_record,json=gnssPlaceRecord"`
+	xxx_hidden_GnssPlaceRecord   *v11.GNSSPlaceRecord   `protobuf:"bytes,2,opt,name=gnss_place_record,json=gnssPlaceRecord"`
 	xxx_hidden_VehicleOdometerKm int32                  `protobuf:"varint,3,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
@@ -275,7 +272,7 @@ func (x *GnssPlaces_Record) GetTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *GnssPlaces_Record) GetGnssPlaceRecord() *v1.GNSSPlaceRecord {
+func (x *GnssPlaces_Record) GetGnssPlaceRecord() *v11.GNSSPlaceRecord {
 	if x != nil {
 		return x.xxx_hidden_GnssPlaceRecord
 	}
@@ -293,7 +290,7 @@ func (x *GnssPlaces_Record) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
-func (x *GnssPlaces_Record) SetGnssPlaceRecord(v *v1.GNSSPlaceRecord) {
+func (x *GnssPlaces_Record) SetGnssPlaceRecord(v *v11.GNSSPlaceRecord) {
 	x.xxx_hidden_GnssPlaceRecord = v
 }
 
@@ -349,7 +346,7 @@ type GnssPlaces_Record_builder struct {
 	// The nested GNSS place record.
 	//
 	// See Data Dictionary, Section 2.80, `GNSSPlaceRecord`.
-	GnssPlaceRecord *v1.GNSSPlaceRecord
+	GnssPlaceRecord *v11.GNSSPlaceRecord
 	// Odometer at the time of the record in kilometers.
 	//
 	// See Data Dictionary, Section 2.113, `OdometerShort`.
@@ -376,13 +373,13 @@ var File_wayplatform_connect_tachograph_card_v1_gnss_places_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a<wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto\"\xb6\x03\n" +
+	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a<wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto\"\xeb\x03\n" +
 	"\n" +
 	"GnssPlaces\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +
 	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.GnssPlaces.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x12-\n" +
-	"\x12signature_verified\x18\x04 \x01(\bR\x11signatureVerified\x1a\xd5\x01\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xd5\x01\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12a\n" +
 	"\x11gnss_place_record\x18\x02 \x01(\v25.wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecordR\x0fgnssPlaceRecord\x12.\n" +
@@ -393,18 +390,20 @@ var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_msgTypes = mak
 var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_goTypes = []any{
 	(*GnssPlaces)(nil),            // 0: wayplatform.connect.tachograph.card.v1.GnssPlaces
 	(*GnssPlaces_Record)(nil),     // 1: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record
-	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
-	(*v1.GNSSPlaceRecord)(nil),    // 3: wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecord
+	(*v1.Authentication)(nil),     // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(*v11.GNSSPlaceRecord)(nil),   // 4: wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecord
 }
 var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.GnssPlaces.records:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.timestamp:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.gnss_place_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecord
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.GnssPlaces.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.timestamp:type_name -> google.protobuf.Timestamp
+	4, // 3: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.gnss_place_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecord
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_init() }

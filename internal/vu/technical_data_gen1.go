@@ -54,3 +54,4 @@ func appendTechnicalDataGen1(dst []byte, technicalData *vuv1.TechnicalDataGen1) 
 
 	return nil, fmt.Errorf("cannot marshal Technical Data Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
+

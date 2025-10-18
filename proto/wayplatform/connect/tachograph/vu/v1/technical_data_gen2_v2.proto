@@ -302,3 +302,4 @@ message TechnicalDataGen2V2 {
   bytes raw_data = 9;
 }
 
+

@@ -174,7 +174,6 @@ func (opts MarshalOptions) MarshalIcc(icc *cardv1.Icc) ([]byte, error) {
 	)
 
 	var dst []byte
-	
 
 	// Append clock stop (1 byte)
 	clockStopByte, err := dd.MarshalEnum(icc.GetClockStop())
@@ -222,7 +221,6 @@ func (opts MarshalOptions) MarshalEmbedderIcAssemblerId(eia *cardv1.Icc_Embedder
 	}
 
 	var dst []byte
-	
 
 	// Append country code (2 bytes, IA5String)
 	countryCodeBytes, err := opts.MarshalIa5StringValue(eia.GetCountryCode())

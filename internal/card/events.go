@@ -212,7 +212,6 @@ func (opts MarshalOptions) MarshalEventRecord(record *cardv1.EventsData_Record) 
 	protocolValue, _ := dd.MarshalEnum(record.GetEventType())
 	dst = append(dst, protocolValue)
 
-	
 	beginTimeBytes, err := opts.MarshalTimeReal(record.GetEventBeginTime())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal event begin time: %w", err)

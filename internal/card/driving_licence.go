@@ -86,7 +86,6 @@ func (opts MarshalOptions) MarshalDrivingLicenceInfo(dli *cardv1.DrivingLicenceI
 	}
 
 	var dst []byte
-	
 
 	authorityBytes, err := opts.MarshalStringValue(dli.GetDrivingLicenceIssuingAuthority())
 	if err != nil {

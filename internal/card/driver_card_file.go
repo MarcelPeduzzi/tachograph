@@ -40,9 +40,6 @@ func (opts MarshalOptions) MarshalDriverCardFile(file *cardv1.DriverCardFile) ([
 // - '00'/'01' indicates Gen1 (Tachograph DF)
 // - '02'/'03' indicates Gen2 (Tachograph_G2 DF)
 func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
-	// File-level version context (extracted from CardStructureVersion)
-	// This represents the card's overall version capability
-	var fileVersion ddv1.Version = ddv1.Version_VERSION_1
 	var output cardv1.DriverCardFile
 
 	// DF-level containers - we populate these as we encounter EFs
@@ -59,10 +56,8 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 		// (set during unmarshalRawCardFileRecord)
 		efGeneration := record.GetGeneration()
 
-		// Create UnmarshalOptions with EF-specific generation and file-level version
-		opts := UnmarshalOptions{}
-		opts.Generation = efGeneration
-		opts.Version = fileVersion
+		// Create UnmarshalOptions with PreserveRawData from ParseOptions
+		unmarshalOpts := opts.unmarshal()
 
 		var signature []byte
 		if i+1 < len(input.GetRecords()) {
@@ -75,7 +70,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 
 		switch record.GetFile() {
 		case cardv1.ElementaryFileType_EF_ICC:
-			icc, err := opts.unmarshalIcc(record.GetValue())
+			icc, err := unmarshalOpts.unmarshalIcc(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -85,7 +80,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			output.SetIcc(icc)
 
 		case cardv1.ElementaryFileType_EF_IC:
-			ic, err := opts.unmarshalIc(record.GetValue())
+			ic, err := unmarshalOpts.unmarshalIc(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -95,7 +90,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			output.SetIc(ic)
 
 		case cardv1.ElementaryFileType_EF_IDENTIFICATION:
-			identification, err := opts.unmarshalIdentification(record.GetValue())
+			identification, err := unmarshalOpts.unmarshalIdentification(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -127,7 +122,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			// Parse and route to appropriate DF based on generation
 			switch efGeneration {
 			case ddv1.Generation_GENERATION_1:
-				appId, err := opts.unmarshalApplicationIdentification(record.GetValue())
+				appId, err := unmarshalOpts.unmarshalApplicationIdentification(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -139,21 +134,13 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 					appId.SetAuthentication(auth)
 				}
 
-				// Extract file-level version from CardStructureVersion for subsequent EFs
-				// Generation comes from TLV tag appendix, but version is file-level
-				if csv := appId.GetCardStructureVersion(); csv != nil {
-					var versionOpts UnmarshalOptions
-					versionOpts.SetFromCardStructureVersion(csv)
-					fileVersion = versionOpts.Version
-				}
-
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
 				tachographDF.SetApplicationIdentification(appId)
 
 			case ddv1.Generation_GENERATION_2:
-				appIdG2, err := opts.unmarshalApplicationIdentificationG2(record.GetValue())
+				appIdG2, err := unmarshalOpts.unmarshalApplicationIdentificationG2(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -163,13 +150,6 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 				// Propagate authentication
 				if auth := record.GetAuthentication(); auth != nil {
 					appIdG2.SetAuthentication(auth)
-				}
-
-				// Extract file-level version from CardStructureVersion for subsequent EFs
-				if csv := appIdG2.GetCardStructureVersion(); csv != nil {
-					var versionOpts UnmarshalOptions
-					versionOpts.SetFromCardStructureVersion(csv)
-					fileVersion = versionOpts.Version
 				}
 
 				if tachographG2DF == nil {
@@ -182,7 +162,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO:
-			drivingLicenceInfo, err := opts.unmarshalDrivingLicenceInfo(record.GetValue())
+			drivingLicenceInfo, err := unmarshalOpts.unmarshalDrivingLicenceInfo(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -211,7 +191,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_EVENTS_DATA:
-			eventsData, err := opts.unmarshalEventsData(record.GetValue())
+			eventsData, err := unmarshalOpts.unmarshalEventsData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -240,7 +220,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_FAULTS_DATA:
-			faultsData, err := opts.unmarshalFaultsData(record.GetValue())
+			faultsData, err := unmarshalOpts.unmarshalFaultsData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -269,7 +249,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA:
-			activityData, err := opts.unmarshalDriverActivityData(record.GetValue())
+			activityData, err := unmarshalOpts.unmarshalDriverActivityData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -301,7 +281,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			// Parse and route to appropriate DF based on generation
 			switch efGeneration {
 			case ddv1.Generation_GENERATION_1:
-				vehiclesUsed, err := opts.unmarshalVehiclesUsed(record.GetValue())
+				vehiclesUsed, err := unmarshalOpts.unmarshalVehiclesUsed(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -318,7 +298,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 				tachographDF.SetVehiclesUsed(vehiclesUsed)
 
 			case ddv1.Generation_GENERATION_2:
-				vehiclesUsedG2, err := opts.unmarshalVehiclesUsedG2(record.GetValue())
+				vehiclesUsedG2, err := unmarshalOpts.unmarshalVehiclesUsedG2(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -342,7 +322,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			// Parse and route to appropriate DF based on generation
 			switch efGeneration {
 			case ddv1.Generation_GENERATION_1:
-				places, err := opts.unmarshalPlaces(record.GetValue())
+				places, err := unmarshalOpts.unmarshalPlaces(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -359,7 +339,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 				tachographDF.SetPlaces(places)
 
 			case ddv1.Generation_GENERATION_2:
-				placesG2, err := opts.unmarshalPlacesG2(record.GetValue())
+				placesG2, err := unmarshalOpts.unmarshalPlacesG2(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -380,7 +360,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_CURRENT_USAGE:
-			currentUsage, err := opts.unmarshalCurrentUsage(record.GetValue())
+			currentUsage, err := unmarshalOpts.unmarshalCurrentUsage(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -409,7 +389,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA:
-			controlActivity, err := opts.unmarshalControlActivityData(record.GetValue())
+			controlActivity, err := unmarshalOpts.unmarshalControlActivityData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -441,7 +421,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			// Parse and route to appropriate DF based on generation
 			switch efGeneration {
 			case ddv1.Generation_GENERATION_1:
-				specificConditions, err := opts.unmarshalSpecificConditions(record.GetValue())
+				specificConditions, err := unmarshalOpts.unmarshalSpecificConditions(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -459,7 +439,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 				tachographDF.SetSpecificConditions(specificConditions)
 
 			case ddv1.Generation_GENERATION_2:
-				specificConditionsG2, err := opts.unmarshalSpecificConditionsG2(record.GetValue())
+				specificConditionsG2, err := unmarshalOpts.unmarshalSpecificConditionsG2(record.GetValue())
 				if err != nil {
 					return nil, err
 				}
@@ -481,7 +461,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER:
-			cardDownload, err := opts.unmarshalCardDownload(record.GetValue())
+			cardDownload, err := unmarshalOpts.unmarshalCardDownload(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -506,7 +486,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 
 		case cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED:
-			vehicleUnits, err := opts.unmarshalVehicleUnitsUsed(record.GetValue())
+			vehicleUnits, err := unmarshalOpts.unmarshalVehicleUnitsUsed(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -525,7 +505,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			tachographG2DF.SetVehicleUnitsUsed(vehicleUnits)
 
 		case cardv1.ElementaryFileType_EF_GNSS_PLACES:
-			gnssPlaces, err := opts.unmarshalGnssPlaces(record.GetValue())
+			gnssPlaces, err := unmarshalOpts.unmarshalGnssPlaces(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -544,7 +524,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			tachographG2DF.SetGnssPlaces(gnssPlaces)
 
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2:
-			appIdV2, err := opts.unmarshalApplicationIdentificationV2(record.GetValue())
+			appIdV2, err := unmarshalOpts.unmarshalApplicationIdentificationV2(record.GetValue())
 			if err != nil {
 				return nil, err
 			}

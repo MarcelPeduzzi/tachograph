@@ -47,7 +47,7 @@ func (opts MarshalOptions) MarshalCardDownload(lastDownload *cardv1.CardDownload
 	}
 
 	// Timestamp (4 bytes)
-	
+
 	timestampBytes, err := opts.MarshalTimeReal(lastDownload.GetTimestamp())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal timestamp: %w", err)

@@ -57,7 +57,7 @@ func (opts UnmarshalOptions) unmarshalGnssPlaces(data []byte) (*cardv1.GnssPlace
 	target.SetNewestRecordIndex(int32(newestRecordIndex))
 
 	// Parse records using bufio.Scanner pattern
-	records, err := parseGNSSAccumulatedDrivingRecords(data[lenNewestRecordIndex:], opts)
+	records, err := opts.unmarshalGNSSAccumulatedDrivingRecords(data[lenNewestRecordIndex:])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse GNSS accumulated driving records: %w", err)
 	}
@@ -80,14 +80,14 @@ func splitGNSSAccumulatedDrivingRecord(data []byte, atEOF bool) (advance int, to
 	return lenGNSSAccumulatedDrivingRecord, data[:lenGNSSAccumulatedDrivingRecord], nil
 }
 
-// parseGNSSAccumulatedDrivingRecords parses the fixed-size array of GNSS accumulated driving records.
-func parseGNSSAccumulatedDrivingRecords(data []byte, opts UnmarshalOptions) ([]*cardv1.GnssPlaces_Record, error) {
+// unmarshalGNSSAccumulatedDrivingRecords parses the fixed-size array of GNSS accumulated driving records.
+func (opts UnmarshalOptions) unmarshalGNSSAccumulatedDrivingRecords(data []byte) ([]*cardv1.GnssPlaces_Record, error) {
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	scanner.Split(splitGNSSAccumulatedDrivingRecord)
 
 	var records []*cardv1.GnssPlaces_Record
 	for scanner.Scan() {
-		record, err := unmarshalGNSSAccumulatedDrivingRecord(scanner.Bytes(), opts)
+		record, err := opts.unmarshalGNSSAccumulatedDrivingRecord(scanner.Bytes())
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal GNSS accumulated driving record: %w", err)
 		}
@@ -107,7 +107,7 @@ func parseGNSSAccumulatedDrivingRecords(data []byte, opts UnmarshalOptions) ([]*
 //   - 4 bytes: TimeReal timestamp
 //   - 11 bytes: GNSSPlaceRecord
 //   - 3 bytes: OdometerShort vehicleOdometerValue
-func unmarshalGNSSAccumulatedDrivingRecord(data []byte, opts UnmarshalOptions) (*cardv1.GnssPlaces_Record, error) {
+func (opts UnmarshalOptions) unmarshalGNSSAccumulatedDrivingRecord(data []byte) (*cardv1.GnssPlaces_Record, error) {
 	const (
 		idxTimeStamp       = 0
 		idxGnssPlaceRecord = 4
@@ -206,7 +206,7 @@ func (opts MarshalOptions) MarshalGNSSAccumulatedDrivingRecord(record *cardv1.Gn
 	var dst []byte
 
 	// Append timestamp (TimeReal - 4 bytes)
-	
+
 	timestampBytes, err := opts.MarshalTimeReal(record.GetTimestamp())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal timestamp: %w", err)

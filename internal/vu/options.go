@@ -6,13 +6,16 @@ import (
 
 // UnmarshalOptions provides context for parsing binary VU data.
 //
-// This struct embeds dd.UnmarshalOptions to inherit generation/version context,
-// and extends it with VU-specific unmarshal configuration.
+// This struct embeds dd.UnmarshalOptions to inherit all data dictionary unmarshal methods,
+// and extends it with VU-specific unmarshal methods.
 //
-// The zero value (UnmarshalOptions{}) is valid and represents the default
-// parsing behavior for vehicle unit data.
+// See also: tachograph.UnmarshalOptions for the public API definition.
 type UnmarshalOptions struct {
-	// Embed dd.UnmarshalOptions to inherit generation/version context.
+	// Embed dd.UnmarshalOptions to inherit all data dictionary unmarshal methods.
+	// This allows vu.UnmarshalOptions to be used wherever dd.UnmarshalOptions is needed.
+	//
+	// Inherited fields:
+	// - PreserveRawData: controls whether raw byte slices are stored
 	dd.UnmarshalOptions
 
 	// Strict controls how the parser handles unrecognized transfer types.
@@ -28,6 +31,15 @@ type ParseOptions struct {
 	// PreserveRawData controls whether raw byte slices are stored in
 	// the raw_data field of parsed protobuf messages.
 	PreserveRawData bool
+}
+
+// unmarshal returns UnmarshalOptions configured from ParseOptions.
+func (o ParseOptions) unmarshal() UnmarshalOptions {
+	return UnmarshalOptions{
+		UnmarshalOptions: dd.UnmarshalOptions{
+			PreserveRawData: o.PreserveRawData,
+		},
+	}
 }
 
 // MarshalOptions configures the marshaling of VU files into binary format.

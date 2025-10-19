@@ -33,21 +33,15 @@ func (opts UnmarshalOptions) unmarshalPlacesG2(data []byte) (*cardv1.PlacesG2, e
 	// Remaining data contains the circular buffer of place records
 	remainingData := data[2:]
 
-	// Create dd.UnmarshalOptions from card-level UnmarshalOptions
-	ddOpts := dd.UnmarshalOptions{
-		Generation: opts.Generation,
-		Version:    opts.Version,
-	}
-
 	// Parse Gen2 records (21 bytes each)
-	records, _ := parseCircularPlaceRecordsG2(remainingData, int(newestRecordIndex), ddOpts)
+	records, _ := opts.unmarshalCircularPlaceRecordsG2(remainingData, int(newestRecordIndex))
 	target.SetRecords(records)
 
 	return target, nil
 }
 
-// parseCircularPlaceRecordsG2 parses place records from a circular buffer (Gen2: 21 bytes each).
-func parseCircularPlaceRecordsG2(data []byte, newestIndex int, opts dd.UnmarshalOptions) ([]*ddv1.PlaceRecordG2, []byte) {
+// unmarshalCircularPlaceRecordsG2 parses place records from a circular buffer (Gen2: 21 bytes each).
+func (opts UnmarshalOptions) unmarshalCircularPlaceRecordsG2(data []byte, newestIndex int) ([]*ddv1.PlaceRecordG2, []byte) {
 	const recordSize = 21
 	numFullRecords := len(data) / recordSize
 	trailingBytes := data[numFullRecords*recordSize:]
@@ -59,7 +53,7 @@ func parseCircularPlaceRecordsG2(data []byte, newestIndex int, opts dd.Unmarshal
 		end := start + recordSize
 		recordData := data[start:end]
 
-		record, err := opts.UnmarshalPlaceRecordG2(recordData)
+		record, err := opts.UnmarshalOptions.UnmarshalPlaceRecordG2(recordData)
 		if err != nil {
 			// Mark record as invalid on parse error
 			record = &ddv1.PlaceRecordG2{}

@@ -51,7 +51,7 @@ func (opts ParseOptions) ParseRawVehicleUnitFile(rawFile *vuv1.RawVehicleUnitFil
 
 	switch firstRecord.GetGeneration() {
 	case ddv1.Generation_GENERATION_1:
-		gen1File, err := unmarshalVehicleUnitFileGen1(rawFile)
+		gen1File, err := opts.unmarshalVehicleUnitFileGen1(rawFile)
 		if err != nil {
 			return nil, err
 		}
@@ -60,7 +60,7 @@ func (opts ParseOptions) ParseRawVehicleUnitFile(rawFile *vuv1.RawVehicleUnitFil
 
 	case ddv1.Generation_GENERATION_2:
 		if hasGen2V2Transfers(rawFile) {
-			gen2v2File, err := unmarshalVehicleUnitFileGen2V2(rawFile)
+			gen2v2File, err := opts.unmarshalVehicleUnitFileGen2V2(rawFile)
 			if err != nil {
 				return nil, err
 			}
@@ -68,7 +68,7 @@ func (opts ParseOptions) ParseRawVehicleUnitFile(rawFile *vuv1.RawVehicleUnitFil
 			output.SetVersion(ddv1.Version_VERSION_2)
 			output.SetGen2V2(gen2v2File)
 		} else {
-			gen2v1File, err := unmarshalVehicleUnitFileGen2V1(rawFile)
+			gen2v1File, err := opts.unmarshalVehicleUnitFileGen2V1(rawFile)
 			if err != nil {
 				return nil, err
 			}
@@ -102,8 +102,9 @@ func hasGen2V2Transfers(rawFile *vuv1.RawVehicleUnitFile) bool {
 }
 
 // unmarshalVehicleUnitFileGen1 unmarshals a Gen1 VU file from raw records.
-func unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen1, error) {
+func (opts ParseOptions) unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen1, error) {
 	var output vuv1.VehicleUnitFileGen1
+	// unmarshalOpts := opts.unmarshal()  // Available for future use
 
 	for _, record := range rawFile.GetRecords() {
 		switch record.GetType() {
@@ -171,8 +172,9 @@ func unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Vehic
 }
 
 // unmarshalVehicleUnitFileGen2V1 unmarshals a Gen2 V1 VU file from raw records.
-func unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen2V1, error) {
+func (opts ParseOptions) unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen2V1, error) {
 	var output vuv1.VehicleUnitFileGen2V1
+	// unmarshalOpts := opts.unmarshal()  // Available for future use
 
 	for _, record := range rawFile.GetRecords() {
 		switch record.GetType() {
@@ -240,8 +242,9 @@ func unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.Veh
 }
 
 // unmarshalVehicleUnitFileGen2V2 unmarshals a Gen2 V2 VU file from raw records.
-func unmarshalVehicleUnitFileGen2V2(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen2V2, error) {
+func (opts ParseOptions) unmarshalVehicleUnitFileGen2V2(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen2V2, error) {
 	var output vuv1.VehicleUnitFileGen2V2
+	// unmarshalOpts := opts.unmarshal()  // Available for future use
 
 	for _, record := range rawFile.GetRecords() {
 		switch record.GetType() {

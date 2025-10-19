@@ -59,7 +59,7 @@ func (opts UnmarshalOptions) unmarshalVehicleUnitsUsed(data []byte) (*cardv1.Veh
 	target.SetVehicleUnitPointerNewestRecord(int32(newestRecordPointer))
 
 	// Parse records using bufio.Scanner pattern
-	records, err := parseCardVehicleUnitRecords(data[lenNewestRecordPointer:], opts)
+	records, err := opts.unmarshalCardVehicleUnitRecords(data[lenNewestRecordPointer:])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse vehicle unit records: %w", err)
 	}
@@ -82,14 +82,14 @@ func splitCardVehicleUnitRecord(data []byte, atEOF bool) (advance int, token []b
 	return lenCardVehicleUnitRecord, data[:lenCardVehicleUnitRecord], nil
 }
 
-// parseCardVehicleUnitRecords parses the fixed-size array of vehicle unit records.
-func parseCardVehicleUnitRecords(data []byte, opts UnmarshalOptions) ([]*cardv1.VehicleUnitsUsed_Record, error) {
+// unmarshalCardVehicleUnitRecords parses the fixed-size array of vehicle unit records.
+func (opts UnmarshalOptions) unmarshalCardVehicleUnitRecords(data []byte) ([]*cardv1.VehicleUnitsUsed_Record, error) {
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	scanner.Split(splitCardVehicleUnitRecord)
 
 	var records []*cardv1.VehicleUnitsUsed_Record
 	for scanner.Scan() {
-		record, err := unmarshalCardVehicleUnitRecord(scanner.Bytes(), opts)
+		record, err := opts.unmarshalCardVehicleUnitRecord(scanner.Bytes())
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal vehicle unit record: %w", err)
 		}
@@ -110,7 +110,7 @@ func parseCardVehicleUnitRecords(data []byte, opts UnmarshalOptions) ([]*cardv1.
 //   - 1 byte: ManufacturerCode
 //   - 1 byte: deviceID
 //   - 4 bytes: VuSoftwareVersion (IA5String)
-func unmarshalCardVehicleUnitRecord(data []byte, opts UnmarshalOptions) (*cardv1.VehicleUnitsUsed_Record, error) {
+func (opts UnmarshalOptions) unmarshalCardVehicleUnitRecord(data []byte) (*cardv1.VehicleUnitsUsed_Record, error) {
 	const (
 		idxTimeStamp         = 0
 		idxManufacturerCode  = 4
@@ -207,7 +207,7 @@ func (opts MarshalOptions) MarshalCardVehicleUnitRecord(record *cardv1.VehicleUn
 	var dst []byte
 
 	// Append timestamp (TimeReal - 4 bytes)
-	
+
 	timestampBytes, err := opts.MarshalTimeReal(record.GetTimestamp())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal timestamp: %w", err)

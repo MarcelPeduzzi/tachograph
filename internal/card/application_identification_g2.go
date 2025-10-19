@@ -170,7 +170,7 @@ func (opts MarshalOptions) MarshalCardApplicationIdentificationG2(appId *cardv1.
 	structureVersion := appId.GetCardStructureVersion()
 	if structureVersion != nil {
 		// Marshal using centralized helper
-		
+
 		versionBytes, err := opts.MarshalCardStructureVersion(structureVersion)
 		if err != nil {
 			return nil, fmt.Errorf("failed to marshal card structure version: %w", err)

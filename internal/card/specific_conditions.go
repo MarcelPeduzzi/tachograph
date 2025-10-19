@@ -76,7 +76,7 @@ func (opts MarshalOptions) MarshalCardSpecificConditions(conditions *cardv1.Spec
 		copy(canvas, rawData)
 
 		// Paint each record over canvas
-		
+
 		offset := 0
 		for _, record := range conditions.GetRecords() {
 			recordBytes, err := opts.MarshalSpecificConditionRecord(record)
@@ -95,7 +95,7 @@ func (opts MarshalOptions) MarshalCardSpecificConditions(conditions *cardv1.Spec
 
 	// Fall back to building from scratch
 	var dst []byte
-	
+
 	for _, record := range conditions.GetRecords() {
 		recordBytes, err := opts.MarshalSpecificConditionRecord(record)
 		if err != nil {

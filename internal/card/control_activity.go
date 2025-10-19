@@ -190,7 +190,7 @@ func (opts MarshalOptions) MarshalCardControlActivityData(controlData *cardv1.Co
 	data = append(data, controlTypeByte)
 
 	// Control time (4 bytes)
-	
+
 	timeBytes, err := opts.MarshalTimeReal(controlData.GetControlTime())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal control time: %w", err)

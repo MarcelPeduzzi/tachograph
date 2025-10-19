@@ -5,8 +5,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -36,14 +34,8 @@ func (opts UnmarshalOptions) unmarshalVehiclesUsedG2(data []byte) (*cardv1.Vehic
 
 	target.SetNewestRecordIndex(int32(newestRecordIndex))
 
-	// Create dd.UnmarshalOptions from card-level UnmarshalOptions
-	ddOpts := dd.UnmarshalOptions{
-		Generation: opts.Generation,
-		Version:    opts.Version,
-	}
-
 	// Parse Gen2 vehicle records (48 bytes each)
-	records, err := parseVehicleRecordsGen2(r, ddOpts)
+	records, err := opts.unmarshalVehicleRecordsGen2(r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse Gen2 vehicle records: %w", err)
 	}
@@ -52,8 +44,8 @@ func (opts UnmarshalOptions) unmarshalVehiclesUsedG2(data []byte) (*cardv1.Vehic
 	return &target, nil
 }
 
-// parseVehicleRecordsGen2 parses Gen2 vehicle records (48 bytes each).
-func parseVehicleRecordsGen2(r *bytes.Reader, opts dd.UnmarshalOptions) ([]*ddv1.CardVehicleRecordG2, error) {
+// unmarshalVehicleRecordsGen2 parses Gen2 vehicle records (48 bytes each).
+func (opts UnmarshalOptions) unmarshalVehicleRecordsGen2(r *bytes.Reader) ([]*ddv1.CardVehicleRecordG2, error) {
 	const lenCardVehicleRecord = 48
 
 	var records []*ddv1.CardVehicleRecordG2
@@ -63,7 +55,7 @@ func parseVehicleRecordsGen2(r *bytes.Reader, opts dd.UnmarshalOptions) ([]*ddv1
 			break // Stop parsing on error, but return what we have
 		}
 
-		record, err := opts.UnmarshalCardVehicleRecordG2(recordBytes)
+		record, err := opts.UnmarshalOptions.UnmarshalCardVehicleRecordG2(recordBytes)
 		if err != nil {
 			return records, fmt.Errorf("failed to parse Gen2 vehicle record: %w", err)
 		}
@@ -94,7 +86,7 @@ func (opts MarshalOptions) MarshalVehiclesUsedG2(vehiclesUsed *cardv1.VehiclesUs
 		binary.BigEndian.PutUint16(canvas[0:2], uint16(vehiclesUsed.GetNewestRecordIndex()))
 
 		// Paint each record over canvas
-		
+
 		offset := 2
 		for _, record := range vehiclesUsed.GetRecords() {
 			recordBytes, err := opts.MarshalCardVehicleRecordG2(record)
@@ -116,7 +108,6 @@ func (opts MarshalOptions) MarshalVehiclesUsedG2(vehiclesUsed *cardv1.VehiclesUs
 	newestRecordIndex := uint16(vehiclesUsed.GetNewestRecordIndex())
 	dst = binary.BigEndian.AppendUint16(dst, newestRecordIndex)
 
-	
 	for _, record := range vehiclesUsed.GetRecords() {
 		recordBytes, err := opts.MarshalCardVehicleRecordG2(record)
 		if err != nil {
@@ -127,5 +118,3 @@ func (opts MarshalOptions) MarshalVehiclesUsedG2(vehiclesUsed *cardv1.VehiclesUs
 
 	return dst, nil
 }
-
-

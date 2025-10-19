@@ -471,7 +471,7 @@ func marshalRecordWithHeader(opts MarshalOptions, rec *cardv1.DriverActivityData
 	buf = binary.BigEndian.AppendUint16(buf, uint16(currentRecordLength))
 
 	// Write fixed content
-	
+
 	dateBytes, err := opts.MarshalTimeReal(rec.GetActivityRecordDate())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal activity record date: %w", err)

@@ -85,7 +85,7 @@ func (opts MarshalOptions) MarshalCardSpecificConditionsG2(conditions *cardv1.Sp
 		binary.BigEndian.PutUint16(canvas[0:lenPointer], uint16(conditions.GetNewestRecordIndex()))
 
 		// Paint each record over canvas
-		
+
 		offset := lenPointer
 		for _, record := range conditions.GetRecords() {
 			if offset+recordSize > len(canvas) {
@@ -114,7 +114,6 @@ fallback:
 	binary.BigEndian.PutUint16(pointerBytes, uint16(conditions.GetNewestRecordIndex()))
 	dst = append(dst, pointerBytes...)
 
-	
 	for _, record := range conditions.GetRecords() {
 		recordBytes, err := opts.MarshalSpecificConditionRecord(record)
 		if err != nil {

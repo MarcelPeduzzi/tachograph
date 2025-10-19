@@ -212,7 +212,6 @@ func (opts MarshalOptions) MarshalFaultRecord(record *cardv1.FaultsData_Record) 
 	protocolValue, _ := dd.MarshalEnum(record.GetFaultType())
 	dst = append(dst, protocolValue)
 
-	
 	beginTimeBytes, err := opts.MarshalTimeReal(record.GetFaultBeginTime())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal fault begin time: %w", err)

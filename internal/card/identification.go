@@ -297,7 +297,6 @@ func (opts MarshalOptions) MarshalCardIdentification(id *cardv1.Identification_C
 	}
 
 	var dst []byte
-	
 
 	// Append cardIssuingMemberState (1 byte) - get protocol value from enum
 	memberState := id.GetCardIssuingMemberState()
@@ -447,7 +446,6 @@ func (opts MarshalOptions) MarshalDriverCardHolderIdentification(h *cardv1.Ident
 	}
 
 	var dst []byte
-	
 
 	nameBlock := make([]byte, 0, 72)
 	surnameBytes, err := opts.MarshalStringValue(h.GetCardHolderSurname())

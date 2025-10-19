@@ -36,14 +36,8 @@ func (opts UnmarshalOptions) unmarshalVehiclesUsed(data []byte) (*cardv1.Vehicle
 
 	target.SetNewestRecordIndex(int32(newestRecordIndex))
 
-	// Create dd.UnmarshalOptions from card-level UnmarshalOptions
-	ddOpts := dd.UnmarshalOptions{
-		Generation: opts.Generation,
-		Version:    opts.Version,
-	}
-
 	// Parse Gen1 vehicle records (31 bytes each)
-	records, err := parseVehicleRecordsGen1(r, ddOpts)
+	records, err := opts.unmarshalVehicleRecordsGen1(r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse Gen1 vehicle records: %w", err)
 	}
@@ -52,8 +46,8 @@ func (opts UnmarshalOptions) unmarshalVehiclesUsed(data []byte) (*cardv1.Vehicle
 	return &target, nil
 }
 
-// parseVehicleRecordsGen1 parses Gen1 vehicle records (31 bytes each).
-func parseVehicleRecordsGen1(r *bytes.Reader, opts dd.UnmarshalOptions) ([]*ddv1.CardVehicleRecord, error) {
+// unmarshalVehicleRecordsGen1 parses Gen1 vehicle records (31 bytes each).
+func (opts UnmarshalOptions) unmarshalVehicleRecordsGen1(r *bytes.Reader) ([]*ddv1.CardVehicleRecord, error) {
 	const lenCardVehicleRecord = 31
 
 	var records []*ddv1.CardVehicleRecord
@@ -63,7 +57,7 @@ func parseVehicleRecordsGen1(r *bytes.Reader, opts dd.UnmarshalOptions) ([]*ddv1
 			break // Stop parsing on error, but return what we have
 		}
 
-		record, err := opts.UnmarshalCardVehicleRecord(recordBytes)
+		record, err := opts.UnmarshalOptions.UnmarshalCardVehicleRecord(recordBytes)
 		if err != nil {
 			return records, fmt.Errorf("failed to parse Gen1 vehicle record: %w", err)
 		}
@@ -94,7 +88,7 @@ func (opts MarshalOptions) MarshalVehiclesUsed(vehiclesUsed *cardv1.VehiclesUsed
 		binary.BigEndian.PutUint16(canvas[0:2], uint16(vehiclesUsed.GetNewestRecordIndex()))
 
 		// Paint each record over canvas
-		
+
 		offset := 2
 		for _, record := range vehiclesUsed.GetRecords() {
 			recordBytes, err := opts.MarshalCardVehicleRecord(record)
@@ -116,7 +110,6 @@ func (opts MarshalOptions) MarshalVehiclesUsed(vehiclesUsed *cardv1.VehiclesUsed
 	newestRecordIndex := uint16(vehiclesUsed.GetNewestRecordIndex())
 	dst = binary.BigEndian.AppendUint16(dst, newestRecordIndex)
 
-	
 	for _, record := range vehiclesUsed.GetRecords() {
 		recordBytes, err := opts.MarshalCardVehicleRecord(record)
 		if err != nil {

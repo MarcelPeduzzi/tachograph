@@ -333,7 +333,6 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 
 	// Paint semantic values over canvas
 	offset := 0
-	
 
 	// MemberStateCertificate (194 bytes)
 	copy(canvas[offset:offset+194], overview.GetMemberStateCertificate())

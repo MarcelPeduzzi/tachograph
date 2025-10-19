@@ -7,6 +7,7 @@ import (
 	"io"
 
 	"github.com/way-platform/tachograph-go/internal/card"
+	"github.com/way-platform/tachograph-go/internal/dd"
 	"github.com/way-platform/tachograph-go/internal/vu"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
@@ -17,7 +18,6 @@ import (
 //
 // This is a convenience function that uses default options:
 // - Strict: true (error on unrecognized tags)
-// - PreserveRawData: true (store raw bytes for round-tripping)
 //
 // For custom options, use UnmarshalOptions directly:
 //
@@ -25,8 +25,7 @@ import (
 //	rawFile, err := opts.Unmarshal(data)
 func Unmarshal(data []byte) (*tachographv1.RawFile, error) {
 	opts := UnmarshalOptions{
-		Strict:          true,
-		PreserveRawData: true,
+		Strict: true,
 	}
 	return opts.Unmarshal(data)
 }
@@ -42,17 +41,6 @@ type UnmarshalOptions struct {
 	// If false, the unmarshaler will attempt to skip over unrecognized
 	// parts of the file and continue parsing.
 	Strict bool
-
-	// PreserveRawData controls whether raw byte slices are stored in
-	// the raw_data field of parsed protobuf messages.
-	//
-	// If true (default), the raw byte slice for each parsed element
-	// will be stored in the raw_data field, enabling perfect binary
-	// round-tripping via Marshal.
-	//
-	// If false, raw_data fields will be left empty, reducing memory usage
-	// but preventing exact binary reconstruction.
-	PreserveRawData bool
 }
 
 // Unmarshal parses a tachograph file from its binary representation into a raw,
@@ -68,11 +56,7 @@ func (o UnmarshalOptions) Unmarshal(data []byte) (*tachographv1.RawFile, error) 
 	switch {
 	// Vehicle unit file (starts with TREP prefix 0x76).
 	case data[0] == 0x76:
-		vuOpts := vu.UnmarshalOptions{
-			Strict: o.Strict,
-		}
-		vuOpts.PreserveRawData = o.PreserveRawData
-		vuRaw, err := vuOpts.UnmarshalRawVehicleUnitFile(data)
+		vuRaw, err := o.vu().UnmarshalRawVehicleUnitFile(data)
 		if err != nil {
 			return nil, err
 		}
@@ -81,11 +65,7 @@ func (o UnmarshalOptions) Unmarshal(data []byte) (*tachographv1.RawFile, error) 
 
 	// Card file (starts with EF_ICC prefix 0x0002).
 	case binary.BigEndian.Uint16(data[0:2]) == 0x0002:
-		cardOpts := card.UnmarshalOptions{
-			Strict: o.Strict,
-		}
-		cardOpts.PreserveRawData = o.PreserveRawData
-		cardRaw, err := cardOpts.UnmarshalRawCardFile(data)
+		cardRaw, err := o.card().UnmarshalRawCardFile(data)
 		if err != nil {
 			return nil, err
 		}
@@ -97,4 +77,24 @@ func (o UnmarshalOptions) Unmarshal(data []byte) (*tachographv1.RawFile, error) 
 	}
 
 	return &rawFile, nil
+}
+
+// card returns card.UnmarshalOptions configured from UnmarshalOptions.
+func (o UnmarshalOptions) card() card.UnmarshalOptions {
+	return card.UnmarshalOptions{
+		UnmarshalOptions: dd.UnmarshalOptions{
+			// PreserveRawData NOT set - unmarshal produces RawFile, not semantic messages
+		},
+		Strict: o.Strict,
+	}
+}
+
+// vu returns vu.UnmarshalOptions configured from UnmarshalOptions.
+func (o UnmarshalOptions) vu() vu.UnmarshalOptions {
+	return vu.UnmarshalOptions{
+		UnmarshalOptions: dd.UnmarshalOptions{
+			// PreserveRawData NOT set - unmarshal produces RawFile, not semantic messages
+		},
+		Strict: o.Strict,
+	}
 }

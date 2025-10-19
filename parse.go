@@ -42,6 +42,20 @@ type ParseOptions struct {
 	PreserveRawData bool
 }
 
+// card returns card.ParseOptions configured from ParseOptions.
+func (o ParseOptions) card() card.ParseOptions {
+	return card.ParseOptions{
+		PreserveRawData: o.PreserveRawData,
+	}
+}
+
+// vu returns vu.ParseOptions configured from ParseOptions.
+func (o ParseOptions) vu() vu.ParseOptions {
+	return vu.ParseOptions{
+		PreserveRawData: o.PreserveRawData,
+	}
+}
+
 // Parse performs the second parsing pass, converting raw records into semantic
 // data structures. If the raw file has been authenticated (via
 // AuthenticateOptions.Authenticate), the authentication results are propagated
@@ -54,10 +68,7 @@ func (o ParseOptions) Parse(rawFile *tachographv1.RawFile) (*tachographv1.File, 
 		cardType := card.InferFileType(rawFile.GetCard())
 		switch cardType {
 		case cardv1.CardType_DRIVER_CARD:
-			cardOpts := card.ParseOptions{
-				PreserveRawData: o.PreserveRawData,
-			}
-			driverCard, err := cardOpts.ParseRawDriverCardFile(rawFile.GetCard())
+			driverCard, err := o.card().ParseRawDriverCardFile(rawFile.GetCard())
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse driver card: %w", err)
 			}
@@ -68,10 +79,7 @@ func (o ParseOptions) Parse(rawFile *tachographv1.RawFile) (*tachographv1.File, 
 		}
 
 	case tachographv1.RawFile_VEHICLE_UNIT:
-		vuOpts := vu.ParseOptions{
-			PreserveRawData: o.PreserveRawData,
-		}
-		vuFile, err := vuOpts.ParseRawVehicleUnitFile(rawFile.GetVehicleUnit())
+		vuFile, err := o.vu().ParseRawVehicleUnitFile(rawFile.GetVehicleUnit())
 		if err != nil {
 			return nil, err
 		}

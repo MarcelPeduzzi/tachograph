@@ -5,8 +5,22 @@ import (
 	"io"
 )
 
-// VU-specific binary parsing functions for reading structured data from byte slices
-// These functions are used across multiple VU-related files for consistent data parsing
+// VU-specific offset-based binary parsing functions for reading structured data from byte slices.
+//
+// These functions provide a low-level, offset-based approach to parsing binary data.
+// They are used extensively throughout the VU package for parsing complex structures
+// where the bufio.Scanner pattern is not suitable (e.g., when parsing non-contiguous
+// fields or when the structure layout is not uniform).
+//
+// NOTE: The preferred pattern for contiguous binary data parsing is bufio.Scanner
+// with custom SplitFunc (see AGENTS.md for details). These offset-based functions
+// should only be used when the scanner pattern is not applicable.
+//
+// Usage pattern:
+//   offset := 0
+//   value, offset, err := readUint8FromBytes(data, offset)
+//   if err != nil { return err }
+//   // Continue with next field...
 
 // readUint8FromBytes reads a single byte from a byte slice at the given offset
 func readUint8FromBytes(data []byte, offset int) (uint8, int, error) {

@@ -35,19 +35,6 @@ func (opts UnmarshalOptions) UnmarshalGeoCoordinates(data []byte) (*ddv1.GeoCoor
 	return &output, nil
 }
 
-// readInt24 reads a 3-byte big-endian signed integer.
-// The value is sign-extended to 32 bits.
-func readInt24(data []byte) int32 {
-	// Read as unsigned 24-bit value
-	val := uint32(data[0])<<16 | uint32(data[1])<<8 | uint32(data[2])
-	// Sign extend from 24 bits to 32 bits
-	// If bit 23 is set (negative number), extend with 1s
-	if val&0x800000 != 0 {
-		val |= 0xFF000000
-	}
-	return int32(val)
-}
-
 // MarshalGeoCoordinates marshals geo coordinates data to bytes.
 //
 // The data type `GeoCoordinates` is specified in the Data Dictionary, Section 2.76.
@@ -74,11 +61,4 @@ func (opts MarshalOptions) MarshalGeoCoordinates(geoCoords *ddv1.GeoCoordinates)
 	longBytes := marshalInt24(geoCoords.GetLongitude())
 	copy(canvas[3:6], longBytes)
 	return canvas[:], nil
-}
-
-// marshalInt24 converts a 3-byte big-endian signed integer to bytes.
-// Only the lower 24 bits of the value are written.
-func marshalInt24(val int32) []byte {
-	// Write the lower 24 bits in big-endian order
-	return []byte{byte(val >> 16), byte(val >> 8), byte(val)}
 }

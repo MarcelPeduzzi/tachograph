@@ -338,6 +338,44 @@ The preferred approach is to co-locate helper functions with the code that uses 
 
 This approach maintains clear boundaries between packages while ensuring shared functionality is accessible where needed.
 
+#### Helper Function Organization Patterns
+
+Based on the codebase structure, the following patterns have been established for organizing helper functions:
+
+**1. Type-Specific Helper Files (Recommended)**
+
+- Create dedicated files for specific utility domains (e.g., `encoding.go`, `int24.go`)
+- Use descriptive, semantic names that clearly indicate the purpose
+- Keep functions private (package-level) unless they need to be shared across packages
+- Include comprehensive documentation explaining the utility domain
+
+**Examples:**
+
+- `internal/dd/encoding.go` - String encoding/decoding utilities (code page mapping, character set conversion)
+- `internal/dd/int24.go` - 24-bit integer encoding/decoding utilities
+- `internal/dd/bcd.go` - BCD encoding/decoding utilities
+
+**2. Offset-Based Parsing Helpers (VU Package)**
+
+- Use `offset_readers.go` for low-level, offset-based binary parsing functions
+- Document that these are for cases where `bufio.Scanner` pattern is not suitable
+- Include usage examples and warnings about the preferred `bufio.Scanner` pattern
+- Keep these functions in the VU package as they are VU-specific
+
+**3. Cross-Cutting Concern Files**
+
+- Files like `marshal.go`, `unmarshal.go`, `anonymize.go` should only contain:
+  - Options structs
+  - Top-level orchestration functions
+  - Package-level configuration
+- Type-specific marshal/unmarshal methods belong in their respective type files
+
+**4. Avoid Generic Helper Files**
+
+- Do not create files named `helpers.go`, `utils.go`, or similar generic names
+- Instead, create semantically-named files that describe the specific utility domain
+- This makes the codebase more discoverable and maintainable
+
 ### Using Protobuf Reflection for Annotations
 
 Our protobuf schemas are the single source of truth for data structures and their metadata. We use custom options to annotate fields and values with protocol-specific information, such as `protocol_enum_value` for enums or `code_page` for string encodings.

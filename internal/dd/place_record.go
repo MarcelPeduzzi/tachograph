@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // UnmarshalPlaceRecord parses a Generation 1 place record (10 bytes, no GNSS data).
@@ -132,15 +131,6 @@ func (opts MarshalOptions) MarshalPlaceRecord(rec *ddv1.PlaceRecord) ([]byte, er
 	return canvas[:], nil
 }
 
-// anonymizeTimestamp is a placeholder that returns the timestamp unchanged.
-// Actual anonymization happens at the Places message level via AnonymizeTimestampsInPlace,
-// which needs access to all timestamps to calculate a dataset-specific offset.
-//
-// This function exists for API consistency but does not modify the timestamp.
-func anonymizeTimestamp(ts *timestamppb.Timestamp) *timestamppb.Timestamp {
-	return ts
-}
-
 // AnonymizePlaceRecord creates an anonymized copy of PlaceRecord, preserving the
 // structure while replacing potentially sensitive location data with normalized values.
 //
@@ -157,7 +147,10 @@ func AnonymizePlaceRecord(rec *ddv1.PlaceRecord) *ddv1.PlaceRecord {
 	result := &ddv1.PlaceRecord{}
 
 	// Anonymize timestamp: shift to test epoch while preserving all relative timing
-	result.SetEntryTime(anonymizeTimestamp(rec.GetEntryTime()))
+	// Note: Actual timestamp anonymization happens at the Places message level via
+	// AnonymizeTimestampsInPlace, which needs access to all timestamps to calculate
+	// a dataset-specific offset. For now, preserve the original timestamp.
+	result.SetEntryTime(rec.GetEntryTime())
 
 	// Preserve entry type (structural information)
 	result.SetEntryTypeDailyWorkPeriod(rec.GetEntryTypeDailyWorkPeriod())

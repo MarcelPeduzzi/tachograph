@@ -4,7 +4,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -75,50 +74,6 @@ func sizeOfDetailedSpeedGen2(data []byte) (totalSize, signatureSize int, err err
 	offset += size
 
 	return offset, signatureSizeGen2, nil
-}
-
-// ===== Unmarshal Functions =====
-
-// UnmarshalVuDetailedSpeed unmarshals VU detailed speed data from a VU transfer.
-//
-// The data type `VuDetailedSpeed` is specified in the Data Dictionary, Section 2.2.6.4.
-//
-// ASN.1 Definition:
-//
-//	VuDetailedSpeedFirstGen ::= SEQUENCE {
-//	    vuDetailedSpeedBlock              VuDetailedSpeedBlock,
-//	    signature                         SignatureFirstGen
-//	}
-//
-//	VuDetailedSpeedSecondGen ::= SEQUENCE {
-//	    vuDetailedSpeedBlockRecordArray   VuDetailedSpeedBlockRecordArray,
-//	    signatureRecordArray              SignatureRecordArray
-//	}
-func (opts UnmarshalOptions) unmarshalVuDetailedSpeed(data []byte, offset int, target *vuv1.DetailedSpeed, generation int) (int, error) {
-	startOffset := offset
-
-	// Set generation
-	if generation == 1 {
-		target.SetGeneration(ddv1.Generation_GENERATION_1)
-	} else {
-		target.SetGeneration(ddv1.Generation_GENERATION_2)
-	}
-
-	// For now, implement a simplified version that just reads the data
-	// This ensures the interface is complete while allowing for future enhancement
-
-	// Read all remaining data
-	remainingData := data[offset:]
-	offset = len(data)
-
-	// Set as signature based on generation
-	if generation == 1 {
-		target.SetSignatureGen1(remainingData)
-	} else {
-		target.SetSignatureGen2(remainingData)
-	}
-
-	return offset - startOffset, nil
 }
 
 // AppendVuDetailedSpeed appends VU detailed speed data to a buffer.

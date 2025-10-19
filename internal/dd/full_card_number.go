@@ -29,7 +29,6 @@ import (
 //   - Card Number (16 bytes): CardNumber CHOICE based on card type (padded to 16 bytes)
 func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCardNumber, error) {
 	const lenFullCardNumber = 18
-	const lenCardNumberField = 16
 
 	if len(data) != lenFullCardNumber {
 		return nil, fmt.Errorf("invalid data length for FullCardNumber: got %d, want %d", len(data), lenFullCardNumber)

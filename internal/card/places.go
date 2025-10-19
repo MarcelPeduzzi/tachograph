@@ -132,7 +132,7 @@ func (opts MarshalOptions) MarshalPlaces(p *cardv1.Places) ([]byte, error) {
 // - Base: 2020-01-01 00:00:00, incremented by 1 hour per record
 // - Deterministic: same input always produces same output
 // - Maintains record ordering for parsing tests
-func AnonymizePlaces(p *cardv1.Places) *cardv1.Places {
+func (opts AnonymizeOptions) anonymizePlaces(p *cardv1.Places) *cardv1.Places {
 	if p == nil {
 		return nil
 	}
@@ -149,9 +149,11 @@ func AnonymizePlaces(p *cardv1.Places) *cardv1.Places {
 	}
 	result.SetRecords(anonymizedRecords)
 
-	// Apply dataset-specific timestamp normalization
+	// Apply dataset-specific timestamp normalization (unless timestamps are preserved)
 	// This makes the anonymization non-reversible
-	anonymizeTimestampsInPlace(anonymizedRecords)
+	if !opts.PreserveTimestamps {
+		anonymizeTimestampsInPlace(anonymizedRecords)
+	}
 
 	// Regenerate raw_data for each record after timestamp modification
 	ddOpts := dd.MarshalOptions{}

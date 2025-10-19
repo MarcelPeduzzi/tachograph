@@ -7,6 +7,7 @@ import (
 	"github.com/way-platform/tachograph-go/internal/dd"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalActivitiesGen1 parses Gen1 Activities data from the complete transfer value.
@@ -257,4 +258,17 @@ func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1
 	// 6. Writing VuSpecificConditionData (count + records)
 	// 7. Writing Signature
 	return nil, fmt.Errorf("cannot marshal Activities Gen1 without raw_data (semantic marshalling not yet implemented)")
+}
+
+
+// anonymizeActivitiesGen1 anonymizes Gen1 Activities data.
+// TODO: Implement full anonymization logic for Gen1 activities.
+func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.ActivitiesGen1) *vuv1.ActivitiesGen1 {
+	if activities == nil {
+		return nil
+	}
+	result := proto.Clone(activities).(*vuv1.ActivitiesGen1)
+	result.SetSignature(nil)
+	result.SetRawData(nil)
+	return result
 }

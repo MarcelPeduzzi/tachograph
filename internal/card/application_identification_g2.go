@@ -9,6 +9,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalApplicationIdentificationG2 parses the binary data for an EF_ApplicationIdentification record (Gen2 format).
@@ -264,4 +265,16 @@ func (opts MarshalOptions) MarshalCardApplicationIdentificationG2(appId *cardv1.
 	}
 
 	return data, nil
+}
+
+// anonymizeApplicationIdentificationG2 anonymizes an ApplicationIdentificationG2 record.
+//
+// Application Identification contains metadata about the card structure (record counts, version info).
+// This is not PII, so we preserve all fields for structural integrity.
+func (opts AnonymizeOptions) anonymizeApplicationIdentificationG2(appId *cardv1.ApplicationIdentificationG2) *cardv1.ApplicationIdentificationG2 {
+	if appId == nil {
+		return nil
+	}
+	// Application identification is metadata, not PII - return clone
+	return proto.Clone(appId).(*cardv1.ApplicationIdentificationG2)
 }

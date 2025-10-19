@@ -77,8 +77,7 @@ func newParseCommand() *cobra.Command {
 
 			// Step 1: Unmarshal to raw format
 			unmarshalOpts := tachograph.UnmarshalOptions{
-				Strict:          *strict,
-				PreserveRawData: *preserveRawData,
+				Strict: *strict,
 			}
 			rawFile, err := unmarshalOpts.Unmarshal(data)
 			if err != nil {

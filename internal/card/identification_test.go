@@ -114,7 +114,8 @@ func TestIdentificationAnonymization(t *testing.T) {
 	}
 
 	// Re-anonymize (should be idempotent since data is already anonymized)
-	anonymized := AnonymizeIdentification(identification)
+	opts := AnonymizeOptions{}
+	anonymized := opts.anonymizeIdentification(identification)
 
 	// Marshal both parts
 	marshalOpts := MarshalOptions{}

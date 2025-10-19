@@ -6,6 +6,7 @@ import (
 	"github.com/way-platform/tachograph-go/internal/dd"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalOverviewGen1 parses Gen1 Overview data from the complete transfer value.
@@ -535,4 +536,34 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 	copy(canvas[offset:offset+128], overview.GetSignature())
 
 	return canvas, nil
+}
+
+// anonymizeOverviewGen1 anonymizes Gen1 Overview data.
+func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) *vuv1.OverviewGen1 {
+	if overview == nil {
+		return nil
+	}
+
+	result := proto.Clone(overview).(*vuv1.OverviewGen1)
+
+	// Anonymize VIN
+	if vin := result.GetVehicleIdentificationNumber(); vin != nil {
+		vin.SetValue("TESTVIN1234567890")
+	}
+
+	// Anonymize VRN
+	if vrn := result.GetVehicleRegistrationWithNation(); vrn != nil {
+		if vrnNum := vrn.GetNumber(); vrnNum != nil {
+			vrnNum.SetValue("TEST123")
+		}
+	}
+
+	// Clear certificates (will be invalid after anonymization anyway)
+	result.SetMemberStateCertificate(nil)
+	result.SetVuCertificate(nil)
+
+	// Clear signature (will be invalid after anonymization)
+	result.SetSignature(nil)
+
+	return result
 }

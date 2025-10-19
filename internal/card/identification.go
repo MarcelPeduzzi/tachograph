@@ -494,7 +494,7 @@ func (opts MarshalOptions) MarshalDriverCardHolderIdentification(h *cardv1.Ident
 // - Card dates: Replaced with static test dates (issue/validity: 2020-01-01, expiry: 2024-12-31)
 // - Countries: Preserved (structural info)
 // - Signatures: Cleared (will be invalid after anonymization anyway)
-func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
+func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 	if id == nil {
 		return nil
 	}

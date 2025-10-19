@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalActivitiesGen2V2 parses Gen2 V2 Activities data from the complete transfer value.
@@ -106,4 +107,17 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	// TODO: Implement marshalling from semantic fields
 	// This would require constructing all RecordArrays from semantic data
 	return nil, fmt.Errorf("cannot marshal Activities Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
+}
+
+
+// anonymizeActivitiesGen2V2 anonymizes Gen2 V2 Activities data.
+// TODO: Implement full anonymization logic for Gen2 V2 activities.
+func (opts AnonymizeOptions) anonymizeActivitiesGen2V2(activities *vuv1.ActivitiesGen2V2) *vuv1.ActivitiesGen2V2 {
+	if activities == nil {
+		return nil
+	}
+	result := proto.Clone(activities).(*vuv1.ActivitiesGen2V2)
+	result.SetSignature(nil)
+	result.SetRawData(nil)
+	return result
 }

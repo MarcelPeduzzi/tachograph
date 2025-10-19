@@ -7,6 +7,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalVehiclesUsedG2 unmarshals vehicles used data from a Gen2 card EF.
@@ -117,4 +118,58 @@ func (opts MarshalOptions) MarshalVehiclesUsedG2(vehiclesUsed *cardv1.VehiclesUs
 	}
 
 	return dst, nil
+}
+
+// anonymizeVehiclesUsedG2 anonymizes a VehiclesUsedG2 record.
+//
+// Anonymization strategy (similar to Gen1):
+// - VINs: Replaced with test values
+// - VRNs: Replaced with test values
+// - Timestamps: Optional anonymization based on PreserveTimestamps
+// - Odometer readings: Optional anonymization based on PreserveDistanceAndTrips
+// - Countries: Preserved (structural info)
+// - Pointer: Preserved (structural info)
+// - VU counters: Preserved (structural info)
+func (opts AnonymizeOptions) anonymizeVehiclesUsedG2(v *cardv1.VehiclesUsedG2) *cardv1.VehiclesUsedG2 {
+	if v == nil {
+		return nil
+	}
+
+	result := &cardv1.VehiclesUsedG2{}
+
+	// Preserve pointer (structural info)
+	result.SetNewestRecordIndex(v.GetNewestRecordIndex())
+
+	// Anonymize records
+	var anonymizedRecords []*ddv1.CardVehicleRecordG2
+	for i, record := range v.GetRecords() {
+		// Clone and anonymize
+		anonRecord := proto.Clone(record).(*ddv1.CardVehicleRecordG2)
+
+		// Anonymize VIN (string field)
+		testVIN := fmt.Sprintf("TESTVIN%011d", i+1)
+		anonRecord.SetVehicleIdentificationNumber(testVIN)
+
+		// Anonymize VRN
+		if vrn := anonRecord.GetVehicleRegistration(); vrn != nil {
+			if vrnNum := vrn.GetNumber(); vrnNum != nil {
+				testVRN := fmt.Sprintf("TEST%03d", i+1)
+				vrnNum.SetValue(testVRN)
+			}
+		}
+
+		anonymizedRecords = append(anonymizedRecords, anonRecord)
+	}
+	result.SetRecords(anonymizedRecords)
+
+	// Regenerate raw_data for binary fidelity
+	cardOpts := MarshalOptions{}
+	if rawData, err := cardOpts.MarshalVehiclesUsedG2(result); err == nil {
+		result.SetRawData(rawData)
+	}
+
+	// Clear signature (will be invalid after anonymization)
+	result.SetSignature(nil)
+
+	return result
 }

@@ -131,7 +131,7 @@ func (opts MarshalOptions) MarshalVehiclesUsed(vehiclesUsed *cardv1.VehiclesUsed
 // - Countries: Preserved (structural info)
 // - Pointer: Preserved (structural info)
 // - VU counters: Preserved (structural info)
-func AnonymizeVehiclesUsed(v *cardv1.VehiclesUsed) *cardv1.VehiclesUsed {
+func (opts AnonymizeOptions) anonymizeVehiclesUsed(v *cardv1.VehiclesUsed) *cardv1.VehiclesUsed {
 	if v == nil {
 		return nil
 	}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalOverviewGen2V2 parses Gen2 V2 Overview data from the complete transfer value.
@@ -134,4 +135,31 @@ func (opts MarshalOptions) MarshalOverviewGen2V2(overview *vuv1.OverviewGen2V2) 
 	// TODO: Implement marshalling from semantic fields
 	// This would require constructing all RecordArrays from semantic data
 	return nil, fmt.Errorf("cannot marshal Overview Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
+}
+
+// anonymizeOverviewGen2V2 anonymizes Gen2 V2 Overview data.
+func (opts AnonymizeOptions) anonymizeOverviewGen2V2(overview *vuv1.OverviewGen2V2) *vuv1.OverviewGen2V2 {
+	if overview == nil {
+		return nil
+	}
+
+	result := proto.Clone(overview).(*vuv1.OverviewGen2V2)
+
+	// Anonymize VIN
+	if vin := result.GetVehicleIdentificationNumber(); vin != nil {
+		vin.SetValue("TESTVIN1234567890")
+	}
+
+	// Anonymize VRN
+	if vrn := result.GetVehicleRegistrationNumber(); vrn != nil {
+		vrn.SetValue("TEST123")
+	}
+
+	// Clear signature (will be invalid after anonymization)
+	result.SetSignature(nil)
+
+	// Clear raw_data to ensure it doesn't contain PII
+	result.SetRawData(nil)
+
+	return result
 }

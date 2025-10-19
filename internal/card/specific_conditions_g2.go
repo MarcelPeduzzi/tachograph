@@ -6,6 +6,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalSpecificConditionsG2 unmarshals specific conditions data from a card EF (Gen2 format with circular buffer).
@@ -123,4 +124,16 @@ fallback:
 	}
 
 	return dst, nil
+}
+
+// anonymizeSpecificConditionsG2 anonymizes a SpecificConditionsG2 record.
+//
+// Specific conditions contain regulatory/compliance information (e.g., out of scope mode).
+// This is metadata about driver activities, not direct PII, so we preserve all fields.
+func (opts AnonymizeOptions) anonymizeSpecificConditionsG2(sc *cardv1.SpecificConditionsG2) *cardv1.SpecificConditionsG2 {
+	if sc == nil {
+		return nil
+	}
+	// Specific conditions are regulatory flags, not PII - return clone
+	return proto.Clone(sc).(*cardv1.SpecificConditionsG2)
 }

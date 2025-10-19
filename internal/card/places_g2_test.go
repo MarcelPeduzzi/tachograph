@@ -149,7 +149,8 @@ func TestPlacesG2Anonymization(t *testing.T) {
 	}
 
 	// Re-anonymize (should be idempotent since data is already anonymized)
-	anonymized := AnonymizePlacesG2(places)
+	opts := AnonymizeOptions{}
+	anonymized := opts.anonymizePlacesG2(places)
 
 	// Marshal back
 	marshalOpts := MarshalOptions{}

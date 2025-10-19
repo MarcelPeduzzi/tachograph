@@ -1,21 +1,189 @@
 package vu
 
 import (
+	"encoding/binary"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // MarshalVehicleUnitFile serializes a VehicleUnitFile into binary format.
+//
+// The VehicleUnitFile is marshaled in TV (Tag-Value) format as specified in
+// Appendix 7, Section 2.2.6 of the regulation.
 func (opts MarshalOptions) MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 	if file == nil {
 		return nil, fmt.Errorf("vehicle unit file is nil")
 	}
 
-	// Use the new MarshalVU method
-	return opts.MarshalVU(file)
+	var dst []byte
+
+	switch file.GetGeneration() {
+	case ddv1.Generation_GENERATION_1:
+		gen1 := file.GetGen1()
+		if gen1 == nil {
+			return nil, fmt.Errorf("Gen1 data is nil")
+		}
+
+		// Marshal Overview (TREP 01)
+		if overview := gen1.GetOverview(); overview != nil {
+			transferData, err := opts.MarshalOverviewGen1(overview)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal Overview Gen1: %w", err)
+			}
+			dst = appendTransfer(dst, vuv1.TransferType_OVERVIEW_GEN1, transferData)
+		}
+
+		// Marshal Activities (TREP 02) - multiple transfers
+		for i, activities := range gen1.GetActivities() {
+			transferData, err := opts.MarshalActivitiesGen1(activities)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal Activities Gen1 [%d]: %w", i, err)
+			}
+			dst = appendTransfer(dst, vuv1.TransferType_ACTIVITIES_GEN1, transferData)
+		}
+
+		// Marshal Events and Faults (TREP 03) - multiple transfers
+		for i, eventsAndFaults := range gen1.GetEventsAndFaults() {
+			transferData, err := opts.MarshalEventsAndFaultsGen1(eventsAndFaults)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EventsAndFaults Gen1 [%d]: %w", i, err)
+			}
+			dst = appendTransfer(dst, vuv1.TransferType_EVENTS_AND_FAULTS_GEN1, transferData)
+		}
+
+		// Marshal Detailed Speed (TREP 04) - multiple transfers
+		for i, detailedSpeed := range gen1.GetDetailedSpeed() {
+			transferData, err := opts.MarshalDetailedSpeedGen1(detailedSpeed)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal DetailedSpeed Gen1 [%d]: %w", i, err)
+			}
+			dst = appendTransfer(dst, vuv1.TransferType_DETAILED_SPEED_GEN1, transferData)
+		}
+
+		// Marshal Technical Data (TREP 05) - multiple transfers
+		for i, technicalData := range gen1.GetTechnicalData() {
+			transferData, err := opts.MarshalTechnicalDataGen1(technicalData)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal TechnicalData Gen1 [%d]: %w", i, err)
+			}
+			dst = appendTransfer(dst, vuv1.TransferType_TECHNICAL_DATA_GEN1, transferData)
+		}
+
+	case ddv1.Generation_GENERATION_2:
+		if file.GetVersion() == ddv1.Version_VERSION_2 {
+			// Handle Gen2 V2
+			gen2v2 := file.GetGen2V2()
+			if gen2v2 == nil {
+				return nil, fmt.Errorf("Gen2V2 data is nil")
+			}
+
+			// Marshal Overview (TREP 31)
+			if overview := gen2v2.GetOverview(); overview != nil {
+				transferData, err := opts.MarshalOverviewGen2V2(overview)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal Overview Gen2V2: %w", err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_OVERVIEW_GEN2_V2, transferData)
+			}
+
+			// Marshal Activities (TREP 32) - multiple transfers
+			for i, activities := range gen2v2.GetActivities() {
+				transferData, err := opts.MarshalActivitiesGen2V2(activities)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal Activities Gen2V2 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_ACTIVITIES_GEN2_V2, transferData)
+			}
+
+			// Marshal Events and Faults (TREP 33) - multiple transfers
+			for i, eventsAndFaults := range gen2v2.GetEventsAndFaults() {
+				transferData, err := opts.MarshalEventsAndFaultsGen2V2(eventsAndFaults)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal EventsAndFaults Gen2V2 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V2, transferData)
+			}
+
+			// Marshal Detailed Speed (TREP 34) - multiple transfers
+			for i, detailedSpeed := range gen2v2.GetDetailedSpeed() {
+				transferData, err := opts.MarshalDetailedSpeedGen2(detailedSpeed)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal DetailedSpeed Gen2V2 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_DETAILED_SPEED_GEN2, transferData)
+			}
+
+			// Marshal Technical Data (TREP 35) - multiple transfers
+			for i, technicalData := range gen2v2.GetTechnicalData() {
+				transferData, err := opts.MarshalTechnicalDataGen2V2(technicalData)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal TechnicalData Gen2V2 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_TECHNICAL_DATA_GEN2_V2, transferData)
+			}
+
+		} else {
+			// Handle Gen2 V1
+			gen2v1 := file.GetGen2V1()
+			if gen2v1 == nil {
+				return nil, fmt.Errorf("Gen2V1 data is nil")
+			}
+
+			// Marshal Overview (TREP 11)
+			if overview := gen2v1.GetOverview(); overview != nil {
+				transferData, err := opts.MarshalOverviewGen2V1(overview)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal Overview Gen2V1: %w", err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_OVERVIEW_GEN2_V1, transferData)
+			}
+
+			// Marshal Activities (TREP 12) - multiple transfers
+			for i, activities := range gen2v1.GetActivities() {
+				transferData, err := opts.MarshalActivitiesGen2V1(activities)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal Activities Gen2V1 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_ACTIVITIES_GEN2_V1, transferData)
+			}
+
+			// Marshal Events and Faults (TREP 13) - multiple transfers
+			for i, eventsAndFaults := range gen2v1.GetEventsAndFaults() {
+				transferData, err := opts.MarshalEventsAndFaultsGen2V1(eventsAndFaults)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal EventsAndFaults Gen2V1 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1, transferData)
+			}
+
+			// Marshal Detailed Speed (TREP 14) - multiple transfers
+			for i, detailedSpeed := range gen2v1.GetDetailedSpeed() {
+				transferData, err := opts.MarshalDetailedSpeedGen2(detailedSpeed)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal DetailedSpeed Gen2V1 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_DETAILED_SPEED_GEN2, transferData)
+			}
+
+			// Marshal Technical Data (TREP 15) - multiple transfers
+			for i, technicalData := range gen2v1.GetTechnicalData() {
+				transferData, err := opts.MarshalTechnicalDataGen2V1(technicalData)
+				if err != nil {
+					return nil, fmt.Errorf("failed to marshal TechnicalData Gen2V1 [%d]: %w", i, err)
+				}
+				dst = appendTransfer(dst, vuv1.TransferType_TECHNICAL_DATA_GEN2_V1, transferData)
+			}
+		}
+
+	default:
+		return nil, fmt.Errorf("unsupported generation: %v", file.GetGeneration())
+	}
+
+	return dst, nil
 }
 
 // ParseRawVehicleUnitFile parses a RawVehicleUnitFile into a fully parsed VehicleUnitFile message.
@@ -334,35 +502,27 @@ func findTransferTypeByTag(tag uint16) vuv1.TransferType {
 	return vuv1.TransferType_TRANSFER_TYPE_UNSPECIFIED
 }
 
-// appendVU orchestrates writing a VU file in TV format
-//
-// The data type `VehicleUnitFile` represents a complete vehicle unit file structure.
-//
-// ASN.1 Definition:
-//
-//	VehicleUnitFile ::= SEQUENCE OF Transfer
-//
-//	Transfer ::= SEQUENCE {
-//	    type    TransferType,
-//	    data    CHOICE {
-//	        downloadInterfaceVersion    DownloadInterfaceVersion,
-//	        overview                   Overview,
-//	        activities                 Activities,
-//	        eventsAndFaults           EventsAndFaults,
-//	        detailedSpeed             DetailedSpeed,
-//	        technicalData             TechnicalData
-//	    }
-//	}
-func (opts MarshalOptions) MarshalVU(vuFile *vuv1.VehicleUnitFile) ([]byte, error) {
-	if vuFile == nil {
-		return nil, nil
-	}
-
-	// Dispatch to generation-specific marshaller
-	// Note: The plan specifies that VehicleUnitFile marshalling is NOT implemented,
-	// only RawVehicleUnitFile marshalling is used for round-tripping.
-	// Individual transfer marshalling is implemented for testing purposes.
-	return nil, fmt.Errorf("VehicleUnitFile marshalling is not implemented; use RawVehicleUnitFile for binary round-tripping")
+// appendTransfer appends a transfer in TV format: [Tag: 2 bytes][Value: N bytes]
+func appendTransfer(dst []byte, transferType vuv1.TransferType, data []byte) []byte {
+	tag := getTagForTransferType(transferType)
+	dst = binary.BigEndian.AppendUint16(dst, tag)
+	dst = append(dst, data...)
+	return dst
 }
 
 // getTagForTransferType returns the TV format tag for a given transfer type
+func getTagForTransferType(transferType vuv1.TransferType) uint16 {
+	valueDesc := transferType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(transferType))
+	if valueDesc == nil {
+		return 0
+	}
+
+	opts := valueDesc.Options()
+	if !proto.HasExtension(opts, vuv1.E_TrepValue) {
+		return 0
+	}
+
+	trepValue := proto.GetExtension(opts, vuv1.E_TrepValue).(int32)
+	// VU tags are constructed as 0x76XX where XX is the TREP value
+	return uint16(0x7600 | (uint16(trepValue) & 0xFF))
+}

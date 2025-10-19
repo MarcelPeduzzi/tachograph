@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalDetailedSpeedGen1 parses Gen1 Detailed Speed data from the complete transfer value.
@@ -49,3 +50,16 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen1(detailedSpeed *vuv1.Detailed
 	return nil, fmt.Errorf("cannot marshal Detailed Speed Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
 
+
+
+// anonymizeDetailedSpeedGen1 anonymizes Gen1 Detailed Speed data.
+// TODO: Implement full anonymization logic for Gen1 detailed speed.
+func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGen1) *vuv1.DetailedSpeedGen1 {
+	if ds == nil {
+		return nil
+	}
+	result := proto.Clone(ds).(*vuv1.DetailedSpeedGen1)
+	result.SetSignature(nil)
+	result.SetRawData(nil)
+	return result
+}

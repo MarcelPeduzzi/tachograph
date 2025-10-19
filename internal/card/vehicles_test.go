@@ -90,7 +90,8 @@ func TestVehiclesAnonymization(t *testing.T) {
 	}
 
 	// Anonymize
-	anonymized := AnonymizeVehiclesUsed(vehicles)
+	opts := AnonymizeOptions{}
+	anonymized := opts.anonymizeVehiclesUsed(vehicles)
 
 	// Marshal the anonymized data
 	marshalOpts := MarshalOptions{}
@@ -130,7 +131,8 @@ func TestVehiclesAnonymization(t *testing.T) {
 
 		// Re-anonymizing should produce identical output (determinism check)
 		marshalOpts := MarshalOptions{}
-		reanonymizedBytes, err := marshalOpts.MarshalVehiclesUsed(AnonymizeVehiclesUsed(vehicles))
+		anonOpts := AnonymizeOptions{}
+		reanonymizedBytes, err := marshalOpts.MarshalVehiclesUsed(anonOpts.anonymizeVehiclesUsed(vehicles))
 		if err != nil {
 			t.Fatalf("Re-anonymize marshal failed: %v", err)
 		}

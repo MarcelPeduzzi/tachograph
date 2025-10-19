@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalTechnicalDataGen2V2 parses Gen2 V2 Technical Data from the complete transfer value.
@@ -70,4 +71,17 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(technicalData *vuv1.Techni
 	}
 
 	return nil, fmt.Errorf("cannot marshal Technical Data Gen2 V2 without raw_data (semantic marshalling not yet implemented)")
+}
+
+
+// anonymizeTechnicalDataGen2V2 anonymizes Gen2 V2 Technical Data.
+// TODO: Implement full anonymization logic for Gen2 V2 technical data.
+func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2V2) *vuv1.TechnicalDataGen2V2 {
+	if td == nil {
+		return nil
+	}
+	result := proto.Clone(td).(*vuv1.TechnicalDataGen2V2)
+	result.SetSignature(nil)
+	result.SetRawData(nil)
+	return result
 }

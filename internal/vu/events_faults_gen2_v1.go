@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalEventsAndFaultsGen2V1 parses Gen2 V1 Events and Faults data from the complete transfer value.
@@ -65,4 +66,17 @@ func (opts MarshalOptions) MarshalEventsAndFaultsGen2V1(eventsAndFaults *vuv1.Ev
 	}
 
 	return nil, fmt.Errorf("cannot marshal Events and Faults Gen2 V1 without raw_data (semantic marshalling not yet implemented)")
+}
+
+
+// anonymizeEventsAndFaultsGen2V1 anonymizes Gen2 V1 Events and Faults data.
+// TODO: Implement full anonymization logic for Gen2 V1 events/faults.
+func (opts AnonymizeOptions) anonymizeEventsAndFaultsGen2V1(ef *vuv1.EventsAndFaultsGen2V1) *vuv1.EventsAndFaultsGen2V1 {
+	if ef == nil {
+		return nil
+	}
+	result := proto.Clone(ef).(*vuv1.EventsAndFaultsGen2V1)
+	result.SetSignature(nil)
+	result.SetRawData(nil)
+	return result
 }

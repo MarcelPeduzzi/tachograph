@@ -5,8 +5,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -204,7 +202,7 @@ func (opts UnmarshalOptions) parseSingleActivityDailyRecord(data []byte) (*cardv
 	return record, nil
 }
 
-// AppendDriverActivity appends the binary representation of DriverActivityData to dst.
+// MarshalDriverActivity marshals the binary representation of DriverActivityData.
 //
 // The data type `CardDriverActivity` is specified in the Data Dictionary, Section 2.17.
 //
@@ -226,10 +224,12 @@ func (opts UnmarshalOptions) parseSingleActivityDailyRecord(data []byte) (*cardv
 //	}
 //
 //	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
-func appendDriverActivity(dst []byte, activity *cardv1.DriverActivityData) ([]byte, error) {
+func (opts MarshalOptions) MarshalDriverActivity(activity *cardv1.DriverActivityData) ([]byte, error) {
 	if activity == nil {
-		return dst, nil
+		return nil, nil
 	}
+
+	var dst []byte
 
 	// Append header (pointers)
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetOldestDayRecordIndex()))
@@ -424,7 +424,7 @@ func buildCyclicBufferFromRecords(records []*cardv1.DriverActivityData_DailyReco
 			copy(buffer[currentPos:], rec.GetRawData())
 		} else {
 			// For valid records, marshal with proper header
-			recordWithHeader, err := marshalRecordWithHeader(rec, prevRecordLength, recordSize)
+			recordWithHeader, err := marshalRecordWithHeader(MarshalOptions{}, rec, prevRecordLength, recordSize)
 			if err != nil {
 				return nil, fmt.Errorf("failed to marshal record %d: %w", i, err)
 			}
@@ -463,7 +463,7 @@ func calculateRecordSize(rec *cardv1.DriverActivityData_DailyRecord) (int, error
 
 // marshalRecordWithHeader marshals a single activity record with the correct header values.
 // This ensures the linked-list structure is properly maintained.
-func marshalRecordWithHeader(rec *cardv1.DriverActivityData_DailyRecord, prevRecordLength, currentRecordLength int) ([]byte, error) {
+func marshalRecordWithHeader(opts MarshalOptions, rec *cardv1.DriverActivityData_DailyRecord, prevRecordLength, currentRecordLength int) ([]byte, error) {
 	var buf []byte
 
 	// Write header
@@ -471,25 +471,28 @@ func marshalRecordWithHeader(rec *cardv1.DriverActivityData_DailyRecord, prevRec
 	buf = binary.BigEndian.AppendUint16(buf, uint16(currentRecordLength))
 
 	// Write fixed content
-	var err error
-	buf, err = dd.AppendTimeReal(buf, rec.GetActivityRecordDate())
+	
+	dateBytes, err := opts.MarshalTimeReal(rec.GetActivityRecordDate())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append activity record date: %w", err)
+		return nil, fmt.Errorf("failed to marshal activity record date: %w", err)
 	}
+	buf = append(buf, dateBytes...)
 
-	buf, err = dd.AppendBcdString(buf, rec.GetActivityDailyPresenceCounter())
+	counterBytes, err := opts.MarshalBcdString(rec.GetActivityDailyPresenceCounter())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append activity daily presence counter: %w", err)
+		return nil, fmt.Errorf("failed to marshal activity daily presence counter: %w", err)
 	}
+	buf = append(buf, counterBytes...)
 
 	buf = binary.BigEndian.AppendUint16(buf, uint16(rec.GetActivityDayDistance()))
 
 	// Write activity change info
 	for _, ac := range rec.GetActivityChangeInfo() {
-		buf, err = dd.AppendActivityChangeInfo(buf, ac)
+		acBytes, err := opts.MarshalActivityChangeInfo(ac)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append activity change info: %w", err)
+			return nil, fmt.Errorf("failed to marshal activity change info: %w", err)
 		}
+		buf = append(buf, acBytes...)
 	}
 
 	// Add padding if the current length is less than the expected record length

@@ -14,12 +14,8 @@ func (opts MarshalOptions) MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([
 		return nil, fmt.Errorf("vehicle unit file is nil")
 	}
 
-	// Allocate a buffer large enough for the VU file
-	buf := make([]byte, 0, 1024*1024) // 1MB initial capacity
-
-	// Use the existing AppendVU function
-	// TODO: Pass opts.UseRawData through to append functions
-	return appendVU(buf, file)
+	// Use the new MarshalVU method
+	return opts.MarshalVU(file)
 }
 
 // ParseRawVehicleUnitFile parses a RawVehicleUnitFile into a fully parsed VehicleUnitFile message.
@@ -354,9 +350,9 @@ func findTransferTypeByTag(tag uint16) vuv1.TransferType {
 //	        technicalData             TechnicalData
 //	    }
 //	}
-func appendVU(dst []byte, vuFile *vuv1.VehicleUnitFile) ([]byte, error) {
+func (opts MarshalOptions) MarshalVU(vuFile *vuv1.VehicleUnitFile) ([]byte, error) {
 	if vuFile == nil {
-		return dst, nil
+		return nil, nil
 	}
 
 	// Dispatch to generation-specific marshaller

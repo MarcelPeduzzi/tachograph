@@ -73,10 +73,10 @@ func parseVehicleRecordsGen1(r *bytes.Reader, opts dd.UnmarshalOptions) ([]*ddv1
 	return records, nil
 }
 
-// appendVehiclesUsed appends Gen1 vehicles used data for marshalling.
-func appendVehiclesUsed(dst []byte, vehiclesUsed *cardv1.VehiclesUsed) ([]byte, error) {
+// MarshalVehiclesUsed marshals Gen1 vehicles used data.
+func (opts MarshalOptions) MarshalVehiclesUsed(vehiclesUsed *cardv1.VehiclesUsed) ([]byte, error) {
 	if vehiclesUsed == nil {
-		return dst, nil
+		return nil, nil
 	}
 
 	// Calculate expected size: 2 bytes (pointer) + N records × 31 bytes
@@ -94,11 +94,12 @@ func appendVehiclesUsed(dst []byte, vehiclesUsed *cardv1.VehiclesUsed) ([]byte, 
 		binary.BigEndian.PutUint16(canvas[0:2], uint16(vehiclesUsed.GetNewestRecordIndex()))
 
 		// Paint each record over canvas
+		
 		offset := 2
 		for _, record := range vehiclesUsed.GetRecords() {
-			recordBytes, err := dd.AppendCardVehicleRecord(nil, record)
+			recordBytes, err := opts.MarshalCardVehicleRecord(record)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append Gen1 vehicle record: %w", err)
+				return nil, fmt.Errorf("failed to marshal Gen1 vehicle record: %w", err)
 			}
 			if len(recordBytes) != recordSize {
 				return nil, fmt.Errorf("invalid Gen1 vehicle record size: got %d, want %d", len(recordBytes), recordSize)
@@ -107,17 +108,19 @@ func appendVehiclesUsed(dst []byte, vehiclesUsed *cardv1.VehiclesUsed) ([]byte, 
 			offset += recordSize
 		}
 
-		return append(dst, canvas...), nil
+		return canvas, nil
 	}
 
 	// Fall back to building from scratch
+	var dst []byte
 	newestRecordIndex := uint16(vehiclesUsed.GetNewestRecordIndex())
 	dst = binary.BigEndian.AppendUint16(dst, newestRecordIndex)
 
+	
 	for _, record := range vehiclesUsed.GetRecords() {
-		recordBytes, err := dd.AppendCardVehicleRecord(nil, record)
+		recordBytes, err := opts.MarshalCardVehicleRecord(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append Gen1 vehicle record: %w", err)
+			return nil, fmt.Errorf("failed to marshal Gen1 vehicle record: %w", err)
 		}
 		dst = append(dst, recordBytes...)
 	}
@@ -154,7 +157,8 @@ func AnonymizeVehiclesUsed(v *cardv1.VehiclesUsed) *cardv1.VehiclesUsed {
 	result.SetRecords(anonymizedRecords)
 
 	// Regenerate raw_data for binary fidelity
-	if rawData, err := appendVehiclesUsed(nil, result); err == nil {
+	cardOpts := MarshalOptions{}
+	if rawData, err := cardOpts.MarshalVehiclesUsed(result); err == nil {
 		result.SetRawData(rawData)
 	}
 
@@ -163,5 +167,3 @@ func AnonymizeVehiclesUsed(v *cardv1.VehiclesUsed) *cardv1.VehiclesUsed {
 
 	return result
 }
-
-

@@ -37,7 +37,8 @@ func TestVehiclesRoundTrip(t *testing.T) {
 	}
 
 	// Marshal back to binary
-	marshalledBytes, err := appendVehiclesUsed(nil, vehicles1)
+	marshalOpts := MarshalOptions{}
+	marshalledBytes, err := marshalOpts.MarshalVehiclesUsed(vehicles1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -92,7 +93,8 @@ func TestVehiclesAnonymization(t *testing.T) {
 	anonymized := AnonymizeVehiclesUsed(vehicles)
 
 	// Marshal the anonymized data
-	anonymizedBytes, err := appendVehiclesUsed(nil, anonymized)
+	marshalOpts := MarshalOptions{}
+	anonymizedBytes, err := marshalOpts.MarshalVehiclesUsed(anonymized)
 	if err != nil {
 		t.Fatalf("Marshal anonymized failed: %v", err)
 	}
@@ -127,7 +129,8 @@ func TestVehiclesAnonymization(t *testing.T) {
 		// Assert mode: verify matches golden files
 
 		// Re-anonymizing should produce identical output (determinism check)
-		reanonymizedBytes, err := appendVehiclesUsed(nil, AnonymizeVehiclesUsed(vehicles))
+		marshalOpts := MarshalOptions{}
+		reanonymizedBytes, err := marshalOpts.MarshalVehiclesUsed(AnonymizeVehiclesUsed(vehicles))
 		if err != nil {
 			t.Fatalf("Re-anonymize marshal failed: %v", err)
 		}

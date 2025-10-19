@@ -29,35 +29,36 @@ func (opts UnmarshalOptions) UnmarshalPreviousVehicleInfoG2(data []byte) (*ddv1.
 		return nil, fmt.Errorf("invalid data length for Gen2 PreviousVehicleInfo: got %d, want %d", len(data), lenPreviousVehicleInfo)
 	}
 
-	info := &ddv1.PreviousVehicleInfoG2{}
-	info.SetRawData(data)
-
+	result := &ddv1.PreviousVehicleInfoG2{}
+	if opts.PreserveRawData {
+		result.SetRawData(data)
+	}
 	// Parse vehicleRegistrationIdentification (15 bytes)
 	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[idxVehicleReg : idxVehicleReg+15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vehicle registration: %w", err)
 	}
-	info.SetVehicleRegistration(vehicleReg)
+	result.SetVehicleRegistration(vehicleReg)
 
 	// Parse cardWithdrawalTime (TimeReal - 4 bytes)
 	withdrawalTime, err := opts.UnmarshalTimeReal(data[idxCardWithdrawalTime : idxCardWithdrawalTime+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal card withdrawal time: %w", err)
 	}
-	info.SetCardWithdrawalTime(withdrawalTime)
+	result.SetCardWithdrawalTime(withdrawalTime)
 
 	// Parse vuGeneration (1 byte)
 	vuGen, err := UnmarshalEnum[ddv1.Generation](data[idxVuGeneration])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vu generation: %w", err)
 	}
-	info.SetVuGeneration(vuGen)
+	result.SetVuGeneration(vuGen)
 
-	return info, nil
+	return result, nil
 }
 
-// AppendPreviousVehicleInfoG2 appends a Generation 2 PreviousVehicleInfo (20 bytes).
-func AppendPreviousVehicleInfoG2(dst []byte, info *ddv1.PreviousVehicleInfoG2) ([]byte, error) {
+// MarshalPreviousVehicleInfoG2 marshals a Generation 2 PreviousVehicleInfo (20 bytes) to bytes.
+func (opts MarshalOptions) MarshalPreviousVehicleInfoG2(info *ddv1.PreviousVehicleInfoG2) ([]byte, error) {
 	const lenPreviousVehicleInfo = 20 // Fixed size for Gen2
 
 	// Use raw data painting strategy if available
@@ -70,19 +71,17 @@ func AppendPreviousVehicleInfoG2(dst []byte, info *ddv1.PreviousVehicleInfoG2) (
 	}
 
 	// Paint semantic values over the canvas
-	var err error
-
 	// Vehicle registration (15 bytes)
-	vehicleRegBytes, err := AppendVehicleRegistration(nil, info.GetVehicleRegistration())
+	vehicleRegBytes, err := opts.MarshalVehicleRegistration(info.GetVehicleRegistration())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle registration: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle registration: %w", err)
 	}
 	copy(canvas[0:15], vehicleRegBytes)
 
 	// Card withdrawal time (4 bytes)
-	timeBytes, err := AppendTimeReal(nil, info.GetCardWithdrawalTime())
+	timeBytes, err := opts.MarshalTimeReal(info.GetCardWithdrawalTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card withdrawal time: %w", err)
+		return nil, fmt.Errorf("failed to marshal card withdrawal time: %w", err)
 	}
 	copy(canvas[15:19], timeBytes)
 
@@ -93,5 +92,5 @@ func AppendPreviousVehicleInfoG2(dst []byte, info *ddv1.PreviousVehicleInfoG2) (
 	}
 	canvas[19] = vuGenByte
 
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

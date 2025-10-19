@@ -53,15 +53,15 @@ func unmarshalEventsAndFaultsGen2V2(value []byte) (*vuv1.EventsAndFaultsGen2V2, 
 	return eventsAndFaults, nil
 }
 
-// appendEventsAndFaultsGen2V2 marshals Gen2 V2 Events and Faults data using raw data painting.
-func appendEventsAndFaultsGen2V2(dst []byte, eventsAndFaults *vuv1.EventsAndFaultsGen2V2) ([]byte, error) {
+// MarshalEventsAndFaultsGen2V2 marshals Gen2 V2 Events and Faults data using raw data painting.
+func (opts MarshalOptions) MarshalEventsAndFaultsGen2V2(eventsAndFaults *vuv1.EventsAndFaultsGen2V2) ([]byte, error) {
 	if eventsAndFaults == nil {
 		return nil, fmt.Errorf("eventsAndFaults cannot be nil")
 	}
 
 	raw := eventsAndFaults.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	return nil, fmt.Errorf("cannot marshal Events and Faults Gen2 V2 without raw_data (semantic marshalling not yet implemented)")

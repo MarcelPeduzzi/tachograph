@@ -39,8 +39,8 @@ type ParseOptions struct {
 
 // MarshalOptions configures the marshaling of card files into binary format.
 type MarshalOptions struct {
-	// UseRawData controls whether the raw_data field is used during marshaling.
-	UseRawData bool
+	// Embed dd.MarshalOptions to inherit marshaling configuration.
+	dd.MarshalOptions
 }
 
 // AnonymizeOptions configures the anonymization of card files.

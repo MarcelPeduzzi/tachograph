@@ -3,8 +3,6 @@ package card
 import (
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
@@ -53,7 +51,7 @@ func (opts UnmarshalOptions) unmarshalCurrentUsage(data []byte) (*cardv1.Current
 	return &target, nil
 }
 
-// AppendCurrentUsage appends current usage data to a byte slice.
+// MarshalCurrentUsage marshals current usage data to bytes.
 //
 // The data type `CardCurrentUse` is specified in the Data Dictionary, Section 2.16.
 //
@@ -63,25 +61,28 @@ func (opts UnmarshalOptions) unmarshalCurrentUsage(data []byte) (*cardv1.Current
 //	    sessionOpenTime                   TimeReal,
 //	    sessionOpenVehicle                VehicleRegistrationIdentification
 //	}
-func appendCurrentUsage(data []byte, currentUsage *cardv1.CurrentUsage) ([]byte, error) {
+func (opts MarshalOptions) MarshalCurrentUsage(currentUsage *cardv1.CurrentUsage) ([]byte, error) {
 	if currentUsage == nil {
-		return data, nil
+		return nil, nil
 	}
 
+	var data []byte
+
 	// Session open time (4 bytes)
-	var err error
-	data, err = dd.AppendTimeReal(data, currentUsage.GetSessionOpenTime())
+	timeBytes, err := opts.MarshalTimeReal(currentUsage.GetSessionOpenTime())
 	if err != nil {
-		return data, fmt.Errorf("failed to append session open time: %w", err)
+		return nil, fmt.Errorf("failed to marshal session open time: %w", err)
 	}
+	data = append(data, timeBytes...)
 
 	// Session open vehicle registration (15 bytes total: 1 byte nation + 14 bytes number)
 	vehicleReg := currentUsage.GetSessionOpenVehicle()
 	if vehicleReg != nil {
-		data, err = dd.AppendVehicleRegistration(data, vehicleReg)
+		regBytes, err := opts.MarshalVehicleRegistration(vehicleReg)
 		if err != nil {
 			return nil, err
 		}
+		data = append(data, regBytes...)
 	} else {
 		// No vehicle registration - pad with zeros
 		data = append(data, make([]byte, 15)...)

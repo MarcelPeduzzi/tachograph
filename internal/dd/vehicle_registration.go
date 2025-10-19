@@ -47,7 +47,7 @@ func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.Ve
 	return vehicleReg, nil
 }
 
-// AppendVehicleRegistration appends a VehicleRegistrationIdentification to dst.
+// MarshalVehicleRegistration marshals a VehicleRegistrationIdentification to bytes.
 //
 // The data type `VehicleRegistrationIdentification` is specified in the Data Dictionary, Section 2.187.
 //
@@ -61,12 +61,14 @@ func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.Ve
 // Binary Layout (15 bytes):
 //   - Nation code (1 byte): NationNumeric
 //   - Registration number (14 bytes): codePage (1 byte) + vehicleRegNumber (13 bytes)
-func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationIdentification) ([]byte, error) {
+func (opts MarshalOptions) MarshalVehicleRegistration(vehicleReg *ddv1.VehicleRegistrationIdentification) ([]byte, error) {
 	if vehicleReg == nil {
 		return nil, fmt.Errorf("vehicleRegistration cannot be nil")
 	}
 
-	// Append nation (1 byte) - get protocol value from enum
+	var dst []byte
+
+	// Marshal nation (1 byte) - get protocol value from enum
 	nation := vehicleReg.GetNation()
 	var nationByte byte
 	if nation == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
@@ -81,7 +83,7 @@ func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationI
 	}
 	dst = append(dst, nationByte)
 
-	// Append registration number (14 bytes: 1 byte code page + 13 bytes string data)
+	// Marshal registration number (14 bytes: 1 byte code page + 13 bytes string data)
 	number := vehicleReg.GetNumber()
 	if number == nil {
 		// Create empty StringValue with correct length for VehicleRegistrationNumber
@@ -91,5 +93,9 @@ func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationI
 		number.SetLength(13) // Length of the string data, not including code page byte
 		number.SetEncoding(ddv1.Encoding_ENCODING_DEFAULT)
 	}
-	return AppendStringValue(dst, number)
+	numberBytes, err := opts.MarshalStringValue(number)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal vehicle registration number: %w", err)
+	}
+	return append(dst, numberBytes...), nil
 }

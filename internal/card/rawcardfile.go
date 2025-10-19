@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"io"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
@@ -18,7 +19,7 @@ func (opts UnmarshalOptions) UnmarshalRawCardFile(input []byte) (*cardv1.RawCard
 		return scanCardFile(data, atEOF, opts.Strict)
 	})
 	for sc.Scan() {
-		record, err := unmarshalRawCardFileRecord(sc.Bytes())
+		record, err := unmarshalRawCardFileRecord(sc.Bytes(), opts.Strict)
 		if err != nil {
 			return nil, err
 		}
@@ -79,7 +80,7 @@ func scanCardFile(data []byte, atEOF bool, strict bool) (advance int, token []by
 }
 
 // unmarshalRawCardFileRecord unmarshals a single raw card file record
-func unmarshalRawCardFileRecord(input []byte) (*cardv1.RawCardFile_Record, error) {
+func unmarshalRawCardFileRecord(input []byte, strict bool) (*cardv1.RawCardFile_Record, error) {
 	var output cardv1.RawCardFile_Record
 	// Parse tag: FID (2 bytes) + appendix (1 byte)
 	fid := binary.BigEndian.Uint16(input[0:2])
@@ -115,7 +116,10 @@ func unmarshalRawCardFileRecord(input []byte) (*cardv1.RawCardFile_Record, error
 		output.SetGeneration(ddv1.Generation_GENERATION_1)
 	}
 	// Map FID to elementary file type
-	fileType, _ := mapFidToElementaryFileType(fid)
+	fileType, found := mapFidToElementaryFileType(fid)
+	if !found && strict {
+		return nil, fmt.Errorf("unrecognized file ID 0x%04X in strict mode", fid)
+	}
 	output.SetFile(fileType)
 	return &output, nil
 }

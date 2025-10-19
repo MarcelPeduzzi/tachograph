@@ -24,7 +24,9 @@ func (opts UnmarshalOptions) UnmarshalDate(input []byte) (*ddv1.Date, error) {
 		return nil, fmt.Errorf("invalid data length for Date: got %d, want %d", len(input), lenDatef)
 	}
 	var output ddv1.Date
-	output.SetRawData(input[:lenDatef])
+	if opts.PreserveRawData {
+		output.SetRawData(input[:lenDatef])
+	}
 	year := int32(int32((input[0]&0xF0)>>4)*1000 + int32(input[0]&0x0F)*100 + int32((input[1]&0xF0)>>4)*10 + int32(input[1]&0x0F))
 	month := int32(int32((input[2]&0xF0)>>4)*10 + int32(input[2]&0x0F))
 	day := int32(int32((input[3]&0xF0)>>4)*10 + int32(input[3]&0x0F))
@@ -34,7 +36,7 @@ func (opts UnmarshalOptions) UnmarshalDate(input []byte) (*ddv1.Date, error) {
 	return &output, nil
 }
 
-// AppendDate appends a 4-byte BCD-encoded date from the Date type.
+// MarshalDate marshals a 4-byte BCD-encoded date from the Date type.
 //
 // The data type `Datef` is specified in the Data Dictionary, Section 2.57.
 //
@@ -46,7 +48,7 @@ func (opts UnmarshalOptions) UnmarshalDate(input []byte) (*ddv1.Date, error) {
 //   - Year (2 bytes): BCD-encoded YYYY
 //   - Month (1 byte): BCD-encoded MM
 //   - Day (1 byte): BCD-encoded DD
-func AppendDate(dst []byte, date *ddv1.Date) ([]byte, error) {
+func (opts MarshalOptions) MarshalDate(date *ddv1.Date) ([]byte, error) {
 	const lenDatef = 4
 	var canvas [lenDatef]byte
 	if date.HasRawData() {
@@ -65,5 +67,5 @@ func AppendDate(dst []byte, date *ddv1.Date) ([]byte, error) {
 	canvas[1] = byte((year/10)%10<<4 | year%10)
 	canvas[2] = byte((month/10)%10<<4 | month%10)
 	canvas[3] = byte((day/10)%10<<4 | day%10)
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

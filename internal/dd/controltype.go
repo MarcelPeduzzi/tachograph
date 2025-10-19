@@ -13,22 +13,27 @@ import (
 // ASN.1 Definition:
 //
 //	ControlType ::= OCTET STRING (SIZE(1))
-func (opts UnmarshalOptions) UnmarshalControlType(input []byte) (*ddv1.ControlType, error) {
-	if len(input) == 0 {
-		return nil, fmt.Errorf("insufficient data for control type")
+func (opts UnmarshalOptions) UnmarshalControlType(data []byte) (*ddv1.ControlType, error) {
+	const lenControlType = 1
+	if len(data) != lenControlType {
+		return nil, fmt.Errorf("invalid data length for ControlType: got %d, want %d", len(data), lenControlType)
 	}
-	b := input[0]
-	var output ddv1.ControlType
-	output.SetRawData(input)
+
+	output := &ddv1.ControlType{}
+	if opts.PreserveRawData {
+		output.SetRawData(data[:lenControlType])
+	}
+	b := data[0]
 	output.SetCardDownloading((b & 0x80) != 0)
 	output.SetVuDownloading((b & 0x40) != 0)
 	output.SetPrinting((b & 0x20) != 0)
 	output.SetDisplay((b & 0x10) != 0)
 	output.SetCalibrationChecking((b & 0x08) != 0)
-	return &output, nil
+
+	return output, nil
 }
 
-// AppendControlType appends a ControlType as a single byte bitmask.
+// MarshalControlType marshals a ControlType as a single byte bitmask.
 //
 // The data type `ControlType` is specified in the Data Dictionary, Section 2.53.
 //
@@ -43,7 +48,7 @@ func (opts UnmarshalOptions) UnmarshalControlType(input []byte) (*ddv1.ControlTy
 //   - Bit 4: display
 //   - Bit 3: calibration checking (Gen2+)
 //   - Bits 2-0: Reserved (RFU)
-func AppendControlType(dst []byte, controlType *ddv1.ControlType) ([]byte, error) {
+func (opts MarshalOptions) MarshalControlType(controlType *ddv1.ControlType) ([]byte, error) {
 	const lenControlType = 1
 	var canvas [lenControlType]byte
 	if controlType.HasRawData() {
@@ -55,6 +60,8 @@ func AppendControlType(dst []byte, controlType *ddv1.ControlType) ([]byte, error
 		}
 		copy(canvas[:], controlType.GetRawData())
 	}
+	// Clear known bits, then set based on semantic fields (raw data painting strategy)
+	canvas[0] &= 0x07 // Clear bits 7-3 (known bits), preserve bits 2-0 (reserved)
 	if controlType.GetCardDownloading() {
 		canvas[0] |= 0x80
 	}
@@ -70,5 +77,5 @@ func AppendControlType(dst []byte, controlType *ddv1.ControlType) ([]byte, error
 	if controlType.GetCalibrationChecking() {
 		canvas[0] |= 0x08
 	}
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

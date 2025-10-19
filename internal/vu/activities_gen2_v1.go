@@ -88,11 +88,11 @@ func unmarshalActivitiesGen2V1(value []byte) (*vuv1.ActivitiesGen2V1, error) {
 	return activities, nil
 }
 
-// appendActivitiesGen2V1 marshals Gen2 V1 Activities data using raw data painting.
+// MarshalActivitiesGen2V1 marshals Gen2 V1 Activities data using raw data painting.
 //
 // This function implements the raw data painting pattern: if raw_data is available
 // and matches the structure, it uses it as the output.
-func appendActivitiesGen2V1(dst []byte, activities *vuv1.ActivitiesGen2V1) ([]byte, error) {
+func (opts MarshalOptions) MarshalActivitiesGen2V1(activities *vuv1.ActivitiesGen2V1) ([]byte, error) {
 	if activities == nil {
 		return nil, fmt.Errorf("activities cannot be nil")
 	}
@@ -100,7 +100,7 @@ func appendActivitiesGen2V1(dst []byte, activities *vuv1.ActivitiesGen2V1) ([]by
 	// For Gen2 structures with RecordArrays, raw data painting is straightforward
 	raw := activities.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	// TODO: Implement marshalling from semantic fields

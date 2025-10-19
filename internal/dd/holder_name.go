@@ -56,7 +56,7 @@ func (opts UnmarshalOptions) UnmarshalHolderName(data []byte) (*ddv1.HolderName,
 	return holderName, nil
 }
 
-// appendHolderName appends holder name data to dst.
+// MarshalHolderName marshals holder name data to bytes.
 //
 // The data type `HolderName` is specified in the Data Dictionary, Section 2.83.
 //
@@ -75,24 +75,26 @@ func (opts UnmarshalOptions) UnmarshalHolderName(data []byte) (*ddv1.HolderName,
 // Binary Layout (fixed length, 72 bytes):
 //   - Bytes 0-35: Holder Surname (1 byte codePage + 35 bytes name)
 //   - Bytes 36-71: Holder First Names (1 byte codePage + 35 bytes name)
-func AppendHolderName(dst []byte, holderName *ddv1.HolderName) ([]byte, error) {
+func (opts MarshalOptions) MarshalHolderName(holderName *ddv1.HolderName) ([]byte, error) {
 	if holderName == nil {
 		return nil, fmt.Errorf("holderName cannot be nil")
 	}
 
-	var err error
+	var dst []byte
 
-	// Append holder surname (36 bytes)
-	dst, err = AppendStringValue(dst, holderName.GetHolderSurname())
+	// Marshal holder surname (36 bytes)
+	surnameBytes, err := opts.MarshalStringValue(holderName.GetHolderSurname())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append holder surname: %w", err)
+		return nil, fmt.Errorf("failed to marshal holder surname: %w", err)
 	}
+	dst = append(dst, surnameBytes...)
 
-	// Append holder first names (36 bytes)
-	dst, err = AppendStringValue(dst, holderName.GetHolderFirstNames())
+	// Marshal holder first names (36 bytes)
+	firstNamesBytes, err := opts.MarshalStringValue(holderName.GetHolderFirstNames())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append holder first names: %w", err)
+		return nil, fmt.Errorf("failed to marshal holder first names: %w", err)
 	}
+	dst = append(dst, firstNamesBytes...)
 
 	return dst, nil
 }

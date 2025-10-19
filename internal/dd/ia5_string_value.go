@@ -23,7 +23,9 @@ func (opts UnmarshalOptions) UnmarshalIa5StringValue(input []byte) (*ddv1.Ia5Str
 	}
 
 	var output ddv1.Ia5StringValue
-	output.SetRawData(input)
+	if opts.PreserveRawData {
+		output.SetRawData(input)
+	}
 	output.SetLength(int32(len(input)))
 
 	// Decode and trim the input bytes
@@ -41,7 +43,7 @@ func (opts UnmarshalOptions) UnmarshalIa5StringValue(input []byte) (*ddv1.Ia5Str
 	return &output, nil
 }
 
-// AppendIa5StringValue appends an Ia5StringValue to dst.
+// MarshalIa5StringValue marshals an Ia5StringValue to bytes.
 //
 // This function handles IA5String format (fixed-length ASCII strings) defined as:
 //
@@ -53,13 +55,10 @@ func (opts UnmarshalOptions) UnmarshalIa5StringValue(input []byte) (*ddv1.Ia5Str
 //
 // If 'raw_data' is available, it is used directly (for round-trip fidelity).
 // Otherwise, the 'value' string is encoded as ASCII and padded with spaces to the specified length.
-func AppendIa5StringValue(dst []byte, sv *ddv1.Ia5StringValue) ([]byte, error) {
+func (opts MarshalOptions) MarshalIa5StringValue(sv *ddv1.Ia5StringValue) ([]byte, error) {
 	// Handle nil - return empty bytes (no code page for IA5)
 	if sv == nil {
-		if dst == nil {
-			return []byte{}, nil
-		}
-		return dst, nil
+		return []byte{}, nil
 	}
 
 	// Validate that raw_data and length agree if both are provided
@@ -80,7 +79,7 @@ func AppendIa5StringValue(dst []byte, sv *ddv1.Ia5StringValue) ([]byte, error) {
 
 	// Prefer raw bytes if available and of correct length
 	if sv.HasRawData() && len(sv.GetRawData()) == length {
-		return append(dst, sv.GetRawData()...), nil
+		return sv.GetRawData(), nil
 	}
 
 	// Fallback: use value string and pad with spaces
@@ -93,5 +92,5 @@ func AppendIa5StringValue(dst []byte, sv *ddv1.Ia5StringValue) ([]byte, error) {
 	for i := len(value); i < length; i++ {
 		result[i] = ' '
 	}
-	return append(dst, result...), nil
+	return result, nil
 }

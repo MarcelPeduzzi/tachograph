@@ -66,7 +66,7 @@ func (opts UnmarshalOptions) UnmarshalOwnerIdentification(data []byte) (*ddv1.Ow
 	return ownerID, nil
 }
 
-// appendOwnerIdentification appends owner identification data to dst.
+// MarshalOwnerIdentification marshals owner identification data to bytes.
 //
 // The data type `OwnerIdentification` is specified in the Data Dictionary, Section 2.26.
 //
@@ -84,35 +84,40 @@ func (opts UnmarshalOptions) UnmarshalOwnerIdentification(data []byte) (*ddv1.Ow
 //   - Card Consecutive Index (1 byte): IA5String
 //   - Card Replacement Index (1 byte): IA5String
 //   - Card Renewal Index (1 byte): IA5String
-func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([]byte, error) {
+func (opts MarshalOptions) MarshalOwnerIdentification(ownerID *ddv1.OwnerIdentification) ([]byte, error) {
 	if ownerID == nil {
 		return nil, fmt.Errorf("ownerID cannot be nil")
 	}
 
-	// Append owner identification number (13 bytes)
-	var err error
-	dst, err = AppendIa5StringValue(dst, ownerID.GetOwnerIdentification())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append owner identification number: %w", err)
-	}
+	var dst []byte
 
-	// Append card consecutive index (1 byte)
-	dst, err = AppendIa5StringValue(dst, ownerID.GetConsecutiveIndex())
+	// Marshal owner identification number (13 bytes)
+	ownerIDBytes, err := opts.MarshalIa5StringValue(ownerID.GetOwnerIdentification())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card consecutive index: %w", err)
+		return nil, fmt.Errorf("failed to marshal owner identification number: %w", err)
 	}
+	dst = append(dst, ownerIDBytes...)
 
-	// Append card replacement index (1 byte)
-	dst, err = AppendIa5StringValue(dst, ownerID.GetReplacementIndex())
+	// Marshal card consecutive index (1 byte)
+	consecutiveBytes, err := opts.MarshalIa5StringValue(ownerID.GetConsecutiveIndex())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card replacement index: %w", err)
+		return nil, fmt.Errorf("failed to marshal card consecutive index: %w", err)
 	}
+	dst = append(dst, consecutiveBytes...)
 
-	// Append card renewal index (1 byte)
-	dst, err = AppendIa5StringValue(dst, ownerID.GetRenewalIndex())
+	// Marshal card replacement index (1 byte)
+	replacementBytes, err := opts.MarshalIa5StringValue(ownerID.GetReplacementIndex())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card renewal index: %w", err)
+		return nil, fmt.Errorf("failed to marshal card replacement index: %w", err)
 	}
+	dst = append(dst, replacementBytes...)
+
+	// Marshal card renewal index (1 byte)
+	renewalBytes, err := opts.MarshalIa5StringValue(ownerID.GetRenewalIndex())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal card renewal index: %w", err)
+	}
+	dst = append(dst, renewalBytes...)
 
 	return dst, nil
 }

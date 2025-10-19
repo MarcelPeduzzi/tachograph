@@ -60,8 +60,8 @@ func TestUnmarshalTimeReal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalTimeReal(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalTimeReal(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalTimeReal() expected error, got nil")
@@ -124,8 +124,8 @@ func TestAppendTimeReal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dst := []byte{}
-			got, err := AppendTimeReal(dst, tt.timestamp)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalTimeReal(tt.timestamp)
 			if err != nil {
 				t.Fatalf("AppendTimeReal() unexpected error: %v", err)
 			}
@@ -162,8 +162,9 @@ func TestTimeRealRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			ts, err := opts.UnmarshalTimeReal(tt.input)
+			unmarshalOpts := UnmarshalOptions{}
+			opts := MarshalOptions{}
+			ts, err := unmarshalOpts.UnmarshalTimeReal(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalTimeReal() unexpected error: %v", err)
 			}
@@ -172,8 +173,7 @@ func TestTimeRealRoundTrip(t *testing.T) {
 			}
 
 			// Marshal
-			dst := []byte{}
-			got, err := AppendTimeReal(dst, ts)
+			got, err := opts.MarshalTimeReal(ts)
 			if err != nil {
 				t.Fatalf("AppendTimeReal() error: %v", err)
 			}

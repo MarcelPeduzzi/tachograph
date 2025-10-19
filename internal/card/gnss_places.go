@@ -6,8 +6,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
@@ -147,7 +145,7 @@ func unmarshalGNSSAccumulatedDrivingRecord(data []byte, opts UnmarshalOptions) (
 	return &record, nil
 }
 
-// appendCardGnssPlaces appends GNSS places data to a byte slice.
+// MarshalCardGnssPlaces marshals GNSS places data.
 //
 // The data type `GNSSAccumulatedDriving` is specified in the Data Dictionary, Section 2.78.
 //
@@ -169,10 +167,12 @@ func unmarshalGNSSAccumulatedDrivingRecord(data []byte, opts UnmarshalOptions) (
 //   - N * 18 bytes: fixed-size array of GNSSAccumulatedDrivingRecord
 //
 // The number of records (N) is determined from the original data, not explicitly stored.
-func appendCardGnssPlaces(dst []byte, gnssPlaces *cardv1.GnssPlaces) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardGnssPlaces(gnssPlaces *cardv1.GnssPlaces) ([]byte, error) {
 	if gnssPlaces == nil {
-		return dst, nil
+		return nil, nil
 	}
+
+	var dst []byte
 
 	// Append newest record index (2 bytes)
 	newestRecordIndex := gnssPlaces.GetNewestRecordIndex()
@@ -182,46 +182,54 @@ func appendCardGnssPlaces(dst []byte, gnssPlaces *cardv1.GnssPlaces) ([]byte, er
 	// The binary format is a fixed-size array, so we write exactly what we have
 	records := gnssPlaces.GetRecords()
 	for _, record := range records {
-		var err error
-		dst, err = appendGNSSAccumulatedDrivingRecord(dst, record)
+		recordBytes, err := opts.MarshalGNSSAccumulatedDrivingRecord(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append GNSS accumulated driving record: %w", err)
+			return nil, fmt.Errorf("failed to marshal GNSS accumulated driving record: %w", err)
 		}
+		dst = append(dst, recordBytes...)
 	}
 
 	return dst, nil
 }
 
-// appendGNSSAccumulatedDrivingRecord appends a single GNSS accumulated driving record to dst.
+// MarshalGNSSAccumulatedDrivingRecord marshals a single GNSS accumulated driving record.
 //
 // Binary structure (18 bytes):
 //   - 4 bytes: TimeReal timestamp
 //   - 11 bytes: GNSSPlaceRecord
 //   - 3 bytes: OdometerShort vehicleOdometerValue
-func appendGNSSAccumulatedDrivingRecord(dst []byte, record *cardv1.GnssPlaces_Record) ([]byte, error) {
+func (opts MarshalOptions) MarshalGNSSAccumulatedDrivingRecord(record *cardv1.GnssPlaces_Record) ([]byte, error) {
 	if record == nil {
-		return dst, nil
+		return nil, nil
 	}
+
+	var dst []byte
 
 	// Append timestamp (TimeReal - 4 bytes)
-	var err error
-	dst, err = dd.AppendTimeReal(dst, record.GetTimestamp())
+	
+	timestampBytes, err := opts.MarshalTimeReal(record.GetTimestamp())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append timestamp: %w", err)
+		return nil, fmt.Errorf("failed to marshal timestamp: %w", err)
 	}
+	dst = append(dst, timestampBytes...)
 
 	// Append GNSS place record (11 bytes)
-	dst, err = dd.AppendGNSSPlaceRecord(dst, record.GetGnssPlaceRecord())
+	gnssBytes, err := opts.MarshalGNSSPlaceRecord(record.GetGnssPlaceRecord())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append GNSS place record: %w", err)
+		return nil, fmt.Errorf("failed to marshal GNSS place record: %w", err)
 	}
+	dst = append(dst, gnssBytes...)
 
 	// Append vehicle odometer (OdometerShort - 3 bytes)
 	odometer := record.GetVehicleOdometerKm()
 	if odometer < 0 || odometer > 999999 {
 		return nil, fmt.Errorf("invalid vehicle odometer value: %d", odometer)
 	}
-	dst = dd.AppendOdometer(dst, uint32(odometer))
+	odometerBytes, err := opts.MarshalOdometer(odometer)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal vehicle odometer: %w", err)
+	}
+	dst = append(dst, odometerBytes...)
 
 	return dst, nil
 }

@@ -1,7 +1,6 @@
 package dd
 
 import (
-	"bytes"
 	"encoding/binary"
 	"fmt"
 
@@ -30,7 +29,9 @@ func (opts UnmarshalOptions) UnmarshalActivityChangeInfo(input []byte) (*ddv1.Ac
 		return nil, fmt.Errorf("invalid data length for ActivityChangeInfo: got %d, want %d", len(input), lenActivityChangeInfo)
 	}
 	var output ddv1.ActivityChangeInfo
-	output.SetRawData(bytes.Clone(input))
+	if opts.PreserveRawData {
+		output.SetRawData(input)
+	}
 	value := binary.BigEndian.Uint16(input)
 	slot := (value >> 15) & 0x1            // bit 15
 	drivingStatus := (value >> 14) & 0x1   // bit 14
@@ -86,7 +87,7 @@ func AnonymizeActivityChangeInfo(ac *ddv1.ActivityChangeInfo, index int) *ddv1.A
 	return result
 }
 
-// AppendActivityChangeInfo appends the binary representation of ActivityChangeInfo to dst.
+// MarshalActivityChangeInfo marshals the binary representation of ActivityChangeInfo to bytes.
 //
 // The data type `ActivityChangeInfo` is specified in the Data Dictionary, Section 2.1.
 //
@@ -102,7 +103,7 @@ func AnonymizeActivityChangeInfo(ac *ddv1.ActivityChangeInfo, index int) *ddv1.A
 //	- p: Card status (1 bit): '0'B: INSERTED, '1'B: NOT INSERTED
 //	- aa: Activity (2 bits): '00'B: BREAK/REST, '01'B: AVAILABILITY, '10'B: WORK, '11'B: DRIVING
 //	- ttttttttttt: Time of change (11 bits): Number of minutes since 00h00 on the given day
-func AppendActivityChangeInfo(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, error) {
+func (opts MarshalOptions) MarshalActivityChangeInfo(ac *ddv1.ActivityChangeInfo) ([]byte, error) {
 	const lenActivityChangeInfo = 2
 	var canvas [lenActivityChangeInfo]byte
 	if ac.HasRawData() {
@@ -139,5 +140,5 @@ func AppendActivityChangeInfo(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, 
 	aci |= (uint16(activity) & 0x3) << 11
 	aci |= (uint16(ac.GetTimeOfChangeMinutes()) & 0x7FF)
 	binary.BigEndian.PutUint16(canvas[:], aci)
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

@@ -11,6 +11,26 @@ import (
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
 
+// Unmarshal parses a tachograph file from its binary representation into a raw,
+// unparsed format with default options. The returned RawFile is suitable for
+// authentication.
+//
+// This is a convenience function that uses default options:
+// - Strict: true (error on unrecognized tags)
+// - PreserveRawData: true (store raw bytes for round-tripping)
+//
+// For custom options, use UnmarshalOptions directly:
+//
+//	opts := UnmarshalOptions{Strict: false}
+//	rawFile, err := opts.Unmarshal(data)
+func Unmarshal(data []byte) (*tachographv1.RawFile, error) {
+	opts := UnmarshalOptions{
+		Strict:          true,
+		PreserveRawData: true,
+	}
+	return opts.Unmarshal(data)
+}
+
 // UnmarshalOptions configures the unmarshaling process for tachograph files.
 type UnmarshalOptions struct {
 	// Strict controls how the unmarshaler handles unrecognized tags or
@@ -38,15 +58,7 @@ type UnmarshalOptions struct {
 // Unmarshal parses a tachograph file from its binary representation into a raw,
 // unparsed format. The returned RawFile is suitable for authentication via
 // AuthenticateOptions.Authenticate.
-//
-// The zero value of UnmarshalOptions uses strict parsing and preserves raw data.
 func (o UnmarshalOptions) Unmarshal(data []byte) (*tachographv1.RawFile, error) {
-	// Apply defaults
-	if o == (UnmarshalOptions{}) {
-		o.Strict = true
-		o.PreserveRawData = true
-	}
-
 	if len(data) < 2 {
 		return nil, fmt.Errorf("insufficient data for tachograph file: %w", io.ErrUnexpectedEOF)
 	}

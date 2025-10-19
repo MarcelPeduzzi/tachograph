@@ -1,24 +1,27 @@
 package dd
 
 import (
-	"encoding/binary"
 	"fmt"
 )
 
-// appendOdometer appends a 3-byte odometer value.
+// MarshalOdometer marshals a 3-byte odometer value.
 //
-// The data type `OdometerShort` is specified in the Data Dictionary, Section 2.113.
+// The data type `Odometer` is specified in the Data Dictionary, Section 2.99.
 //
 // ASN.1 Definition:
 //
-//	OdometerShort ::= INTEGER(0..999999)
+//	Odometer ::= INTEGER (0..2^24-1)
 //
 // Binary Layout (3 bytes):
-//   - Odometer Value (3 bytes): Big-endian unsigned integer
-func AppendOdometer(dst []byte, odometer uint32) []byte {
-	b := make([]byte, 4)
-	binary.BigEndian.PutUint32(b, odometer)
-	return append(dst, b[1:]...)
+//   - Odometer reading in km (3 bytes): Big-endian uint24
+func (opts MarshalOptions) MarshalOdometer(odometer int32) ([]byte, error) {
+	const lenOdometer = 3
+	var canvas [lenOdometer]byte
+	// Convert 32-bit int to 24-bit big-endian (use only lower 24 bits)
+	canvas[0] = byte((odometer >> 16) & 0xFF)
+	canvas[1] = byte((odometer >> 8) & 0xFF)
+	canvas[2] = byte(odometer & 0xFF)
+	return canvas[:], nil
 }
 
 // UnmarshalOdometer unmarshals a 3-byte odometer value.

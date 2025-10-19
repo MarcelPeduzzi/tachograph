@@ -28,13 +28,14 @@ func TestControlActivityDataRoundTrip(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	ca1, err := opts.unmarshalControlActivityData(data)
+	unmarshalOpts := UnmarshalOptions{}
+	ca1, err := unmarshalOpts.unmarshalControlActivityData(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
-	marshaled, err := appendCardControlActivityData(nil, ca1)
+	opts := MarshalOptions{}
+	marshaled, err := opts.MarshalCardControlActivityData(ca1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -43,7 +44,7 @@ func TestControlActivityDataRoundTrip(t *testing.T) {
 		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
 	}
 
-	ca2, err := opts.unmarshalControlActivityData(marshaled)
+	ca2, err := unmarshalOpts.unmarshalControlActivityData(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -67,15 +68,16 @@ func TestControlActivityDataAnonymization(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	ca, err := opts.unmarshalControlActivityData(data)
+	unmarshalOpts := UnmarshalOptions{}
+	ca, err := unmarshalOpts.unmarshalControlActivityData(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
 
 	anonymized := AnonymizeControlActivityData(ca)
 
-	anonymizedData, err := appendCardControlActivityData(nil, anonymized)
+	opts := MarshalOptions{}
+	anonymizedData, err := opts.MarshalCardControlActivityData(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}
@@ -272,7 +274,8 @@ func AnonymizeControlActivityData(ca *cardv1.ControlActivityData) *cardv1.Contro
 	anonymized.SetControlDownloadPeriodEnd(&timestamppb.Timestamp{Seconds: 1577836800 + 86400}) // 1 day later
 
 	// Regenerate raw_data
-	rawData, err := appendCardControlActivityData(nil, anonymized)
+	marshalOpts := MarshalOptions{}
+	rawData, err := marshalOpts.MarshalCardControlActivityData(anonymized)
 	if err == nil {
 		anonymized.SetRawData(rawData)
 	}

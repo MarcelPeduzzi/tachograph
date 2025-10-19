@@ -112,12 +112,12 @@ func unmarshalOverviewGen2V1(value []byte) (*vuv1.OverviewGen2V1, error) {
 	return overview, nil
 }
 
-// appendOverviewGen2V1 marshals Gen2 V1 Overview data using raw data painting.
+// MarshalOverviewGen2V1 marshals Gen2 V1 Overview data using raw data painting.
 //
 // This function implements the raw data painting pattern: if raw_data is available
 // and matches the structure, it uses it as the output. Otherwise, it would need to
 // construct from semantic fields (currently not implemented).
-func appendOverviewGen2V1(dst []byte, overview *vuv1.OverviewGen2V1) ([]byte, error) {
+func (opts MarshalOptions) MarshalOverviewGen2V1(overview *vuv1.OverviewGen2V1) ([]byte, error) {
 	if overview == nil {
 		return nil, fmt.Errorf("overview cannot be nil")
 	}
@@ -126,7 +126,7 @@ func appendOverviewGen2V1(dst []byte, overview *vuv1.OverviewGen2V1) ([]byte, er
 	// we use the raw_data if available
 	raw := overview.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	// TODO: Implement marshalling from semantic fields

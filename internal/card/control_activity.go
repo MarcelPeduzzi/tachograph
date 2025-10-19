@@ -4,8 +4,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -130,7 +128,7 @@ func (opts UnmarshalOptions) unmarshalControlActivityData(data []byte) (*cardv1.
 	return &target, nil
 }
 
-// AppendCardControlActivityData appends control activity data to a byte slice.
+// MarshalCardControlActivityData marshals control activity data.
 //
 // The data type `CardControlActivityDataRecord` is specified in the Data Dictionary, Section 2.15.
 //
@@ -144,9 +142,9 @@ func (opts UnmarshalOptions) unmarshalControlActivityData(data []byte) (*cardv1.
 //	    controlDownloadPeriodBegin         TimeReal,
 //	    controlDownloadPeriodEnd           TimeReal
 //	}
-func appendCardControlActivityData(data []byte, controlData *cardv1.ControlActivityData) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardControlActivityData(controlData *cardv1.ControlActivityData) ([]byte, error) {
 	if controlData == nil {
-		return data, nil
+		return nil, nil
 	}
 
 	if !controlData.GetValid() {
@@ -154,10 +152,12 @@ func appendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 		rawData := controlData.GetRawData()
 		if len(rawData) != 46 {
 			// Fallback to zeros if raw data is invalid
-			return append(data, make([]byte, 46)...), nil
+			return make([]byte, 46), nil
 		}
-		return append(data, rawData...), nil
+		return rawData, nil
 	}
+
+	var data []byte
 
 	// Valid record: serialize semantic data
 	// Control type (1 byte)
@@ -189,37 +189,41 @@ func appendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 	}
 	data = append(data, controlTypeByte)
 
-	var err error
-
 	// Control time (4 bytes)
-	data, err = dd.AppendTimeReal(data, controlData.GetControlTime())
+	
+	timeBytes, err := opts.MarshalTimeReal(controlData.GetControlTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append control time: %w", err)
+		return nil, fmt.Errorf("failed to marshal control time: %w", err)
 	}
+	data = append(data, timeBytes...)
 
 	// Control card number (18 bytes)
-	data, err = dd.AppendFullCardNumberAsString(data, controlData.GetControlCardNumber().GetFullCardNumber(), 18)
+	cardNumberBytes, err := opts.MarshalFullCardNumberAsString(controlData.GetControlCardNumber().GetFullCardNumber(), 18)
 	if err != nil {
 		return nil, err
 	}
+	data = append(data, cardNumberBytes...)
 
 	// Vehicle registration (15 bytes total: 1 byte nation + 14 bytes number)
-	data, err = dd.AppendVehicleRegistration(data, controlData.GetControlVehicleRegistration())
+	vehicleRegBytes, err := opts.MarshalVehicleRegistration(controlData.GetControlVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}
+	data = append(data, vehicleRegBytes...)
 
 	// Control download period begin (4 bytes)
-	data, err = dd.AppendTimeReal(data, controlData.GetControlDownloadPeriodBegin())
+	beginBytes, err := opts.MarshalTimeReal(controlData.GetControlDownloadPeriodBegin())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append download period begin: %w", err)
+		return nil, fmt.Errorf("failed to marshal download period begin: %w", err)
 	}
+	data = append(data, beginBytes...)
 
 	// Control download period end (4 bytes)
-	data, err = dd.AppendTimeReal(data, controlData.GetControlDownloadPeriodEnd())
+	endBytes, err := opts.MarshalTimeReal(controlData.GetControlDownloadPeriodEnd())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append download period end: %w", err)
+		return nil, fmt.Errorf("failed to marshal download period end: %w", err)
 	}
+	data = append(data, endBytes...)
 
 	return data, nil
 }

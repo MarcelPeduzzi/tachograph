@@ -9,6 +9,24 @@ import (
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
 
+// Parse performs semantic parsing on raw tachograph records with default options.
+// If the raw file has been authenticated (via Authenticate), the authentication
+// results are propagated to the parsed messages.
+//
+// This is a convenience function that uses default options:
+// - PreserveRawData: true (store raw bytes for round-tripping)
+//
+// For custom options, use ParseOptions directly:
+//
+//	opts := ParseOptions{PreserveRawData: false}
+//	file, err := opts.Parse(rawFile)
+func Parse(rawFile *tachographv1.RawFile) (*tachographv1.File, error) {
+	opts := ParseOptions{
+		PreserveRawData: true,
+	}
+	return opts.Parse(rawFile)
+}
+
 // ParseOptions configures the parsing process for converting raw tachograph
 // files into semantic data structures.
 type ParseOptions struct {
@@ -28,14 +46,7 @@ type ParseOptions struct {
 // data structures. If the raw file has been authenticated (via
 // AuthenticateOptions.Authenticate), the authentication results are propagated
 // to the parsed messages.
-//
-// The zero value of ParseOptions preserves raw data for round-trip fidelity.
 func (o ParseOptions) Parse(rawFile *tachographv1.RawFile) (*tachographv1.File, error) {
-	// Apply defaults
-	if o == (ParseOptions{}) {
-		o.PreserveRawData = true
-	}
-
 	var file tachographv1.File
 
 	switch rawFile.GetType() {

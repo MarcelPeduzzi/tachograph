@@ -37,7 +37,9 @@ func (opts UnmarshalOptions) UnmarshalPlaceRecordG2(data []byte) (*ddv1.PlaceRec
 	}
 
 	record := &ddv1.PlaceRecordG2{}
-	record.SetRawData(data)
+	if opts.PreserveRawData {
+		record.SetRawData(data)
+	}
 
 	// Parse entry time (4 bytes)
 	entryTime, err := opts.UnmarshalTimeReal(data[idxEntryTime : idxEntryTime+4])
@@ -83,8 +85,8 @@ func (opts UnmarshalOptions) UnmarshalPlaceRecordG2(data []byte) (*ddv1.PlaceRec
 	return record, nil
 }
 
-// AppendPlaceRecordG2 appends a Generation 2 place record (21 bytes).
-func AppendPlaceRecordG2(dst []byte, rec *ddv1.PlaceRecordG2) ([]byte, error) {
+// MarshalPlaceRecordG2 marshals a Generation 2 place record (21 bytes) to bytes.
+func (opts MarshalOptions) MarshalPlaceRecordG2(rec *ddv1.PlaceRecordG2) ([]byte, error) {
 	const lenPlaceRecord = 21 // Fixed size for Gen2
 
 	// Use raw data painting strategy if available
@@ -97,10 +99,9 @@ func AppendPlaceRecordG2(dst []byte, rec *ddv1.PlaceRecordG2) ([]byte, error) {
 	}
 
 	// Paint semantic values over the canvas
-	var err error
-	timeBytes, err := AppendTimeReal(nil, rec.GetEntryTime())
+	timeBytes, err := opts.MarshalTimeReal(rec.GetEntryTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append entry time: %w", err)
+		return nil, fmt.Errorf("failed to marshal entry time: %w", err)
 	}
 	copy(canvas[0:4], timeBytes)
 
@@ -130,17 +131,20 @@ func AppendPlaceRecordG2(dst []byte, rec *ddv1.PlaceRecordG2) ([]byte, error) {
 	// Otherwise leave as zero (or preserved from raw_data)
 
 	// Odometer (3 bytes)
-	odometerBytes := AppendOdometer(nil, uint32(rec.GetVehicleOdometerKm()))
+	odometerBytes, err := opts.MarshalOdometer(rec.GetVehicleOdometerKm())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal odometer: %w", err)
+	}
 	copy(canvas[7:10], odometerBytes)
 
 	// GNSS place record (11 bytes)
-	gnssBytes, err := AppendGNSSPlaceRecord(nil, rec.GetEntryGnssPlaceRecord())
+	gnssBytes, err := opts.MarshalGNSSPlaceRecord(rec.GetEntryGnssPlaceRecord())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append GNSS place record: %w", err)
+		return nil, fmt.Errorf("failed to marshal GNSS place record: %w", err)
 	}
 	copy(canvas[10:21], gnssBytes)
 
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }
 
 // AnonymizePlaceRecordG2 creates an anonymized copy of PlaceRecordG2, preserving the
@@ -158,9 +162,6 @@ func AnonymizePlaceRecordG2(rec *ddv1.PlaceRecordG2) *ddv1.PlaceRecordG2 {
 	}
 
 	result := &ddv1.PlaceRecordG2{}
-
-	// Preserve entry time (useful for testing)
-	result.SetEntryTime(rec.GetEntryTime())
 
 	// Preserve entry type (structural information)
 	result.SetEntryTypeDailyWorkPeriod(rec.GetEntryTypeDailyWorkPeriod())

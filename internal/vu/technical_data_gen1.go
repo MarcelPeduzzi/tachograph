@@ -41,15 +41,15 @@ func unmarshalTechnicalDataGen1(value []byte) (*vuv1.TechnicalDataGen1, error) {
 	return technicalData, nil
 }
 
-// appendTechnicalDataGen1 marshals Gen1 Technical Data using raw data painting.
-func appendTechnicalDataGen1(dst []byte, technicalData *vuv1.TechnicalDataGen1) ([]byte, error) {
+// MarshalTechnicalDataGen1 marshals Gen1 Technical Data using raw data painting.
+func (opts MarshalOptions) MarshalTechnicalDataGen1(technicalData *vuv1.TechnicalDataGen1) ([]byte, error) {
 	if technicalData == nil {
 		return nil, fmt.Errorf("technicalData cannot be nil")
 	}
 
 	raw := technicalData.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	return nil, fmt.Errorf("cannot marshal Technical Data Gen1 without raw_data (semantic marshalling not yet implemented)")

@@ -87,8 +87,8 @@ func TestUnmarshalMonthYear(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalMonthYear(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalMonthYear(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -221,7 +221,8 @@ func TestAppendMonthYear(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := AppendMonthYear(nil, tt.monthYear)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalMonthYear(tt.monthYear)
 			if err != nil {
 				t.Fatalf("AppendMonthYear() unexpected error: %v", err)
 			}
@@ -240,10 +241,12 @@ func TestAppendMonthYear_WithExistingData(t *testing.T) {
 	my.SetMonth(6)
 	my.SetYear(2023)
 
-	got, err := AppendMonthYear(existing, my)
+	opts := MarshalOptions{}
+	got, err := opts.MarshalMonthYear(my)
 	if err != nil {
-		t.Fatalf("AppendMonthYear() unexpected error: %v", err)
+		t.Fatalf("MarshalMonthYear() unexpected error: %v", err)
 	}
+	got = append(existing, got...)
 
 	want := []byte{0xFF, 0xEE, 0x06, 0x23}
 	if diff := cmp.Diff(want, got); diff != "" {
@@ -285,8 +288,9 @@ func TestMonthYearRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			monthYear, err := opts.UnmarshalMonthYear(tt.input)
+			unmarshalOpts := UnmarshalOptions{}
+			opts := MarshalOptions{}
+			monthYear, err := unmarshalOpts.UnmarshalMonthYear(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalMonthYear() error: %v", err)
 			}
@@ -296,7 +300,7 @@ func TestMonthYearRoundTrip(t *testing.T) {
 			}
 
 			// Marshal back
-			got, err := AppendMonthYear(nil, monthYear)
+			got, err := opts.MarshalMonthYear(monthYear)
 			if err != nil {
 				t.Fatalf("AppendMonthYear() error: %v", err)
 			}

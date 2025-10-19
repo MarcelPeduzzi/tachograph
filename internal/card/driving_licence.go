@@ -69,7 +69,7 @@ func (opts UnmarshalOptions) unmarshalDrivingLicenceInfo(data []byte) (*cardv1.D
 	return &dli, nil
 }
 
-// AppendDrivingLicenceInfo appends the binary representation of DrivingLicenceInfo to dst.
+// MarshalDrivingLicenceInfo marshals the binary representation of DrivingLicenceInfo to bytes.
 //
 // The data type `CardDrivingLicenceInformation` is specified in the Data Dictionary, Section 2.18.
 //
@@ -80,24 +80,32 @@ func (opts UnmarshalOptions) unmarshalDrivingLicenceInfo(data []byte) (*cardv1.D
 //	    drivingLicenceIssuingNation        NationNumeric,
 //	    drivingLicenceNumber               Name
 //	}
-func appendDrivingLicenceInfo(dst []byte, dli *cardv1.DrivingLicenceInfo) ([]byte, error) {
+func (opts MarshalOptions) MarshalDrivingLicenceInfo(dli *cardv1.DrivingLicenceInfo) ([]byte, error) {
 	if dli == nil {
-		return dst, nil
+		return nil, nil
 	}
-	var err error
-	dst, err = dd.AppendStringValue(dst, dli.GetDrivingLicenceIssuingAuthority())
+
+	var dst []byte
+	
+
+	authorityBytes, err := opts.MarshalStringValue(dli.GetDrivingLicenceIssuingAuthority())
 	if err != nil {
 		return nil, err
 	}
+	dst = append(dst, authorityBytes...)
+
 	// Marshal nation enum to protocol value
 	nationByte, err := dd.MarshalEnum(dli.GetDrivingLicenceIssuingNation())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal nation: %w", err)
 	}
 	dst = append(dst, nationByte)
-	dst, err = dd.AppendIa5StringValue(dst, dli.GetDrivingLicenceNumber())
+
+	licenceNumberBytes, err := opts.MarshalIa5StringValue(dli.GetDrivingLicenceNumber())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append driving licence number: %w", err)
+		return nil, fmt.Errorf("failed to marshal driving licence number: %w", err)
 	}
+	dst = append(dst, licenceNumberBytes...)
+
 	return dst, nil
 }

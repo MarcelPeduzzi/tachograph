@@ -306,12 +306,12 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	return overview, nil
 }
 
-// appendOverviewGen1 marshals Gen1 Overview data using raw data painting.
+// MarshalOverviewGen1 marshals Gen1 Overview data using raw data painting.
 //
 // This function implements the raw data painting pattern: if raw_data is available
 // and has the correct length, it uses it as a canvas and paints semantic values over it.
 // Otherwise, it creates a zero-filled canvas and encodes from semantic fields.
-func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error) {
+func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]byte, error) {
 	if overview == nil {
 		return nil, fmt.Errorf("overview cannot be nil")
 	}
@@ -333,6 +333,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 
 	// Paint semantic values over canvas
 	offset := 0
+	
 
 	// MemberStateCertificate (194 bytes)
 	copy(canvas[offset:offset+194], overview.GetMemberStateCertificate())
@@ -345,7 +346,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 	// VehicleIdentificationNumber (17 bytes)
 	vin := overview.GetVehicleIdentificationNumber()
 	if vin != nil {
-		vinBytes, err := dd.AppendIa5StringValue(nil, vin)
+		vinBytes, err := opts.MarshalIa5StringValue(vin)
 		if err != nil {
 			return nil, fmt.Errorf("append VIN: %w", err)
 		}
@@ -356,7 +357,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 	// VehicleRegistrationIdentification (15 bytes)
 	vrn := overview.GetVehicleRegistrationWithNation()
 	if vrn != nil {
-		vrnBytes, err := dd.AppendVehicleRegistration(nil, vrn)
+		vrnBytes, err := opts.MarshalVehicleRegistration(vrn)
 		if err != nil {
 			return nil, fmt.Errorf("append VRN: %w", err)
 		}
@@ -367,7 +368,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 	// CurrentDateTime (4 bytes)
 	currentTime := overview.GetCurrentDateTime()
 	if currentTime != nil {
-		timeBytes, err := dd.AppendTimeReal(nil, currentTime)
+		timeBytes, err := opts.MarshalTimeReal(currentTime)
 		if err != nil {
 			return nil, fmt.Errorf("append current time: %w", err)
 		}
@@ -378,14 +379,14 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 	// VuDownloadablePeriod (8 bytes)
 	downloadablePeriod := overview.GetDownloadablePeriod()
 	if downloadablePeriod != nil {
-		minTimeBytes, err := dd.AppendTimeReal(nil, downloadablePeriod.GetMinTime())
+		minTimeBytes, err := opts.MarshalTimeReal(downloadablePeriod.GetMinTime())
 		if err != nil {
 			return nil, fmt.Errorf("append min time: %w", err)
 		}
 		copy(canvas[offset:offset+4], minTimeBytes)
 		offset += 4
 
-		maxTimeBytes, err := dd.AppendTimeReal(nil, downloadablePeriod.GetMaxTime())
+		maxTimeBytes, err := opts.MarshalTimeReal(downloadablePeriod.GetMaxTime())
 		if err != nil {
 			return nil, fmt.Errorf("append max time: %w", err)
 		}
@@ -413,7 +414,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		activity := downloadActivities[0]
 
 		// DownloadingTime (4 bytes)
-		downloadingTimeBytes, err := dd.AppendTimeReal(nil, activity.GetDownloadingTime())
+		downloadingTimeBytes, err := opts.MarshalTimeReal(activity.GetDownloadingTime())
 		if err != nil {
 			return nil, fmt.Errorf("append downloading time: %w", err)
 		}
@@ -421,7 +422,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 4
 
 		// FullCardNumber (18 bytes)
-		cardNumberBytes, err := dd.AppendFullCardNumber(nil, activity.GetFullCardNumber())
+		cardNumberBytes, err := opts.MarshalFullCardNumber(activity.GetFullCardNumber())
 		if err != nil {
 			return nil, fmt.Errorf("append full card number: %w", err)
 		}
@@ -429,7 +430,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 18
 
 		// CompanyOrWorkshopName (36 bytes)
-		companyNameBytes, err := dd.AppendStringValue(nil, activity.GetCompanyOrWorkshopName())
+		companyNameBytes, err := opts.MarshalStringValue(activity.GetCompanyOrWorkshopName())
 		if err != nil {
 			return nil, fmt.Errorf("append company name: %w", err)
 		}
@@ -445,7 +446,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 
 	for _, lock := range overview.GetCompanyLocks() {
 		// LockInTime (4 bytes)
-		lockInTimeBytes, err := dd.AppendTimeReal(nil, lock.GetLockInTime())
+		lockInTimeBytes, err := opts.MarshalTimeReal(lock.GetLockInTime())
 		if err != nil {
 			return nil, fmt.Errorf("append lock in time: %w", err)
 		}
@@ -453,7 +454,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 4
 
 		// LockOutTime (4 bytes)
-		lockOutTimeBytes, err := dd.AppendTimeReal(nil, lock.GetLockOutTime())
+		lockOutTimeBytes, err := opts.MarshalTimeReal(lock.GetLockOutTime())
 		if err != nil {
 			return nil, fmt.Errorf("append lock out time: %w", err)
 		}
@@ -461,7 +462,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 4
 
 		// CompanyName (36 bytes)
-		companyNameBytes, err := dd.AppendStringValue(nil, lock.GetCompanyName())
+		companyNameBytes, err := opts.MarshalStringValue(lock.GetCompanyName())
 		if err != nil {
 			return nil, fmt.Errorf("append company name: %w", err)
 		}
@@ -469,7 +470,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 36
 
 		// CompanyAddress (36 bytes)
-		companyAddressBytes, err := dd.AppendStringValue(nil, lock.GetCompanyAddress())
+		companyAddressBytes, err := opts.MarshalStringValue(lock.GetCompanyAddress())
 		if err != nil {
 			return nil, fmt.Errorf("append company address: %w", err)
 		}
@@ -477,7 +478,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 36
 
 		// CompanyCardNumber (18 bytes)
-		companyCardNumberBytes, err := dd.AppendFullCardNumber(nil, lock.GetCompanyCardNumber())
+		companyCardNumberBytes, err := opts.MarshalFullCardNumber(lock.GetCompanyCardNumber())
 		if err != nil {
 			return nil, fmt.Errorf("append company card number: %w", err)
 		}
@@ -491,7 +492,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 
 	for _, control := range overview.GetControlActivities() {
 		// ControlType (1 byte)
-		controlTypeBytes, err := dd.AppendControlType(nil, control.GetControlType())
+		controlTypeBytes, err := opts.MarshalControlType(control.GetControlType())
 		if err != nil {
 			return nil, fmt.Errorf("append control type: %w", err)
 		}
@@ -499,7 +500,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 1
 
 		// ControlTime (4 bytes)
-		controlTimeBytes, err := dd.AppendTimeReal(nil, control.GetControlTime())
+		controlTimeBytes, err := opts.MarshalTimeReal(control.GetControlTime())
 		if err != nil {
 			return nil, fmt.Errorf("append control time: %w", err)
 		}
@@ -507,7 +508,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 4
 
 		// ControlCardNumber (18 bytes)
-		controlCardNumberBytes, err := dd.AppendFullCardNumber(nil, control.GetControlCardNumber())
+		controlCardNumberBytes, err := opts.MarshalFullCardNumber(control.GetControlCardNumber())
 		if err != nil {
 			return nil, fmt.Errorf("append control card number: %w", err)
 		}
@@ -515,7 +516,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 18
 
 		// DownloadPeriodBeginTime (4 bytes)
-		downloadPeriodBeginTimeBytes, err := dd.AppendTimeReal(nil, control.GetDownloadPeriodBeginTime())
+		downloadPeriodBeginTimeBytes, err := opts.MarshalTimeReal(control.GetDownloadPeriodBeginTime())
 		if err != nil {
 			return nil, fmt.Errorf("append download period begin time: %w", err)
 		}
@@ -523,7 +524,7 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 		offset += 4
 
 		// DownloadPeriodEndTime (4 bytes)
-		downloadPeriodEndTimeBytes, err := dd.AppendTimeReal(nil, control.GetDownloadPeriodEndTime())
+		downloadPeriodEndTimeBytes, err := opts.MarshalTimeReal(control.GetDownloadPeriodEndTime())
 		if err != nil {
 			return nil, fmt.Errorf("append download period end time: %w", err)
 		}
@@ -534,5 +535,5 @@ func appendOverviewGen1(dst []byte, overview *vuv1.OverviewGen1) ([]byte, error)
 	// Signature (128 bytes)
 	copy(canvas[offset:offset+128], overview.GetSignature())
 
-	return append(dst, canvas...), nil
+	return canvas, nil
 }

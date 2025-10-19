@@ -29,14 +29,15 @@ func TestDrivingLicenceInfoRoundTrip(t *testing.T) {
 	}
 
 	// First unmarshal
-	opts := UnmarshalOptions{}
-	dli1, err := opts.unmarshalDrivingLicenceInfo(data)
+	unmarshalOpts := UnmarshalOptions{}
+	dli1, err := unmarshalOpts.unmarshalDrivingLicenceInfo(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
 	// Marshal
-	marshaled, err := appendDrivingLicenceInfo(nil, dli1)
+	opts := MarshalOptions{}
+	marshaled, err := opts.MarshalDrivingLicenceInfo(dli1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -47,7 +48,7 @@ func TestDrivingLicenceInfoRoundTrip(t *testing.T) {
 	}
 
 	// Second unmarshal
-	dli2, err := opts.unmarshalDrivingLicenceInfo(marshaled)
+	dli2, err := unmarshalOpts.unmarshalDrivingLicenceInfo(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -74,8 +75,8 @@ func TestDrivingLicenceInfoAnonymization(t *testing.T) {
 	}
 
 	// Unmarshal
-	opts := UnmarshalOptions{}
-	dli, err := opts.unmarshalDrivingLicenceInfo(data)
+	unmarshalOpts := UnmarshalOptions{}
+	dli, err := unmarshalOpts.unmarshalDrivingLicenceInfo(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
@@ -84,7 +85,8 @@ func TestDrivingLicenceInfoAnonymization(t *testing.T) {
 	anonymized := AnonymizeDrivingLicenceInfo(dli)
 
 	// Marshal anonymized data
-	anonymizedData, err := appendDrivingLicenceInfo(nil, anonymized)
+	opts := MarshalOptions{}
+	anonymizedData, err := opts.MarshalDrivingLicenceInfo(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}

@@ -28,14 +28,15 @@ func TestIcRoundTrip(t *testing.T) {
 	}
 
 	// First unmarshal
-	opts := UnmarshalOptions{}
-	ic1, err := opts.unmarshalIc(data)
+	unmarshalOpts := UnmarshalOptions{}
+	ic1, err := unmarshalOpts.unmarshalIc(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
 	// Marshal
-	marshaled, err := appendCardIc(nil, ic1)
+	opts := MarshalOptions{}
+	marshaled, err := opts.MarshalCardIc(ic1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -46,7 +47,7 @@ func TestIcRoundTrip(t *testing.T) {
 	}
 
 	// Second unmarshal
-	ic2, err := opts.unmarshalIc(marshaled)
+	ic2, err := unmarshalOpts.unmarshalIc(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -73,8 +74,8 @@ func TestIcAnonymization(t *testing.T) {
 	}
 
 	// Unmarshal
-	opts := UnmarshalOptions{}
-	ic, err := opts.unmarshalIc(data)
+	unmarshalOpts := UnmarshalOptions{}
+	ic, err := unmarshalOpts.unmarshalIc(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
@@ -83,7 +84,8 @@ func TestIcAnonymization(t *testing.T) {
 	anonymized := AnonymizeIc(ic)
 
 	// Marshal anonymized data
-	anonymizedData, err := appendCardIc(nil, anonymized)
+	opts := MarshalOptions{}
+	anonymizedData, err := opts.MarshalCardIc(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}

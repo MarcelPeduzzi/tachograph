@@ -230,12 +230,12 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	return activities, nil
 }
 
-// appendActivitiesGen1 marshals Gen1 Activities data using raw data painting.
+// MarshalActivitiesGen1 marshals Gen1 Activities data using raw data painting.
 //
 // This function implements the raw data painting pattern: if raw_data is available
 // and has the correct length, it uses it as a canvas and paints semantic values over it.
 // Otherwise, it creates a zero-filled canvas and encodes from semantic fields.
-func appendActivitiesGen1(dst []byte, activities *vuv1.ActivitiesGen1) ([]byte, error) {
+func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1) ([]byte, error) {
 	if activities == nil {
 		return nil, fmt.Errorf("activities cannot be nil")
 	}
@@ -244,7 +244,7 @@ func appendActivitiesGen1(dst []byte, activities *vuv1.ActivitiesGen1) ([]byte, 
 	// Full semantic marshalling requires implementing all record types
 	raw := activities.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	// TODO: Implement marshalling from semantic fields

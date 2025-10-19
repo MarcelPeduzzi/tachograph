@@ -48,7 +48,7 @@ func readInt24(data []byte) int32 {
 	return int32(val)
 }
 
-// AppendGeoCoordinates appends geo coordinates data to dst.
+// MarshalGeoCoordinates marshals geo coordinates data to bytes.
 //
 // The data type `GeoCoordinates` is specified in the Data Dictionary, Section 2.76.
 //
@@ -64,18 +64,21 @@ func readInt24(data []byte) int32 {
 //   - Longitude (3 bytes): Signed 24-bit integer in ±DDDMM.M × 10 format
 //
 // Unknown position marker: 0x7FFFFF (8388607 decimal)
-func AppendGeoCoordinates(dst []byte, geoCoords *ddv1.GeoCoordinates) ([]byte, error) {
-	// Append latitude (3-byte signed integer)
-	dst = appendInt24(dst, geoCoords.GetLatitude())
-	// Append longitude (3-byte signed integer)
-	dst = appendInt24(dst, geoCoords.GetLongitude())
-	return dst, nil
+func (opts MarshalOptions) MarshalGeoCoordinates(geoCoords *ddv1.GeoCoordinates) ([]byte, error) {
+	const lenGeoCoordinates = 6
+	var canvas [lenGeoCoordinates]byte
+	// Marshal latitude (3-byte signed integer)
+	latBytes := marshalInt24(geoCoords.GetLatitude())
+	copy(canvas[0:3], latBytes)
+	// Marshal longitude (3-byte signed integer)
+	longBytes := marshalInt24(geoCoords.GetLongitude())
+	copy(canvas[3:6], longBytes)
+	return canvas[:], nil
 }
 
-// appendInt24 appends a 3-byte big-endian signed integer to dst.
+// marshalInt24 converts a 3-byte big-endian signed integer to bytes.
 // Only the lower 24 bits of the value are written.
-func appendInt24(dst []byte, val int32) []byte {
+func marshalInt24(val int32) []byte {
 	// Write the lower 24 bits in big-endian order
-	dst = append(dst, byte(val>>16), byte(val>>8), byte(val))
-	return dst
+	return []byte{byte(val >> 16), byte(val >> 8), byte(val)}
 }

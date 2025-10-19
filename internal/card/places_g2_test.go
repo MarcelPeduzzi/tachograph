@@ -68,7 +68,8 @@ func TestPlacesG2RoundTrip(t *testing.T) {
 		places1.GetNewestRecordIndex(), len(places1.GetRecords()))
 
 	// Marshal
-	marshalledBytes, err := appendPlacesG2(nil, places1)
+	marshalOpts := MarshalOptions{}
+	marshalledBytes, err := marshalOpts.MarshalPlacesG2(places1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -151,7 +152,8 @@ func TestPlacesG2Anonymization(t *testing.T) {
 	anonymized := AnonymizePlacesG2(places)
 
 	// Marshal back
-	anonymizedBytes, err := appendPlacesG2(nil, anonymized)
+	marshalOpts := MarshalOptions{}
+	anonymizedBytes, err := marshalOpts.MarshalPlacesG2(anonymized)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}

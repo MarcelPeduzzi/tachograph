@@ -30,7 +30,7 @@ func (opts UnmarshalOptions) UnmarshalBcdString(input []byte) (*ddv1.BcdString, 
 	return &output, nil
 }
 
-// AppendBcdString appends BCD string data to dst.
+// MarshalBcdString marshals BCD string data to bytes.
 //
 // The data type `BcdString` is specified in the Data Dictionary, Section 2.7.
 //
@@ -43,9 +43,9 @@ func (opts UnmarshalOptions) UnmarshalBcdString(input []byte) (*ddv1.BcdString, 
 //
 // The regulation specifies canonical encoding: digits 0-9 only, with zero
 // padding. This makes encoding deterministic from value + length.
-func AppendBcdString(dst []byte, bcdString *ddv1.BcdString) ([]byte, error) {
+func (opts MarshalOptions) MarshalBcdString(bcdString *ddv1.BcdString) ([]byte, error) {
 	if bcdString == nil {
-		return dst, nil
+		return []byte{}, nil
 	}
 	value := bcdString.GetValue()
 	if value < 0 {
@@ -55,5 +55,5 @@ func AppendBcdString(dst []byte, bcdString *ddv1.BcdString) ([]byte, error) {
 	if length <= 0 {
 		return nil, fmt.Errorf("invalid BCD string length: %d", length)
 	}
-	return appendBCD(dst, int(value), int(length))
+	return encodeBCD(int(value), int(length))
 }

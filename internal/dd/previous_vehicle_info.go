@@ -27,28 +27,29 @@ func (opts UnmarshalOptions) UnmarshalPreviousVehicleInfo(data []byte) (*ddv1.Pr
 		return nil, fmt.Errorf("invalid data length for Gen1 PreviousVehicleInfo: got %d, want %d", len(data), lenPreviousVehicleInfo)
 	}
 
-	info := &ddv1.PreviousVehicleInfo{}
-	info.SetRawData(data)
-
+	result := &ddv1.PreviousVehicleInfo{}
+	if opts.PreserveRawData {
+		result.SetRawData(data)
+	}
 	// Parse vehicleRegistrationIdentification (15 bytes)
 	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[idxVehicleReg : idxVehicleReg+15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vehicle registration: %w", err)
 	}
-	info.SetVehicleRegistration(vehicleReg)
+	result.SetVehicleRegistration(vehicleReg)
 
 	// Parse cardWithdrawalTime (TimeReal - 4 bytes)
 	withdrawalTime, err := opts.UnmarshalTimeReal(data[idxCardWithdrawalTime : idxCardWithdrawalTime+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal card withdrawal time: %w", err)
 	}
-	info.SetCardWithdrawalTime(withdrawalTime)
+	result.SetCardWithdrawalTime(withdrawalTime)
 
-	return info, nil
+	return result, nil
 }
 
-// AppendPreviousVehicleInfo appends a Generation 1 PreviousVehicleInfo (19 bytes).
-func AppendPreviousVehicleInfo(dst []byte, info *ddv1.PreviousVehicleInfo) ([]byte, error) {
+// MarshalPreviousVehicleInfo marshals a Generation 1 PreviousVehicleInfo (19 bytes) to bytes.
+func (opts MarshalOptions) MarshalPreviousVehicleInfo(info *ddv1.PreviousVehicleInfo) ([]byte, error) {
 	const lenPreviousVehicleInfo = 19 // Fixed size for Gen1
 
 	// Use raw data painting strategy if available
@@ -61,21 +62,19 @@ func AppendPreviousVehicleInfo(dst []byte, info *ddv1.PreviousVehicleInfo) ([]by
 	}
 
 	// Paint semantic values over the canvas
-	var err error
-
 	// Vehicle registration (15 bytes)
-	vehicleRegBytes, err := AppendVehicleRegistration(nil, info.GetVehicleRegistration())
+	vehicleRegBytes, err := opts.MarshalVehicleRegistration(info.GetVehicleRegistration())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle registration: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle registration: %w", err)
 	}
 	copy(canvas[0:15], vehicleRegBytes)
 
 	// Card withdrawal time (4 bytes)
-	timeBytes, err := AppendTimeReal(nil, info.GetCardWithdrawalTime())
+	timeBytes, err := opts.MarshalTimeReal(info.GetCardWithdrawalTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card withdrawal time: %w", err)
+		return nil, fmt.Errorf("failed to marshal card withdrawal time: %w", err)
 	}
 	copy(canvas[15:19], timeBytes)
 
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

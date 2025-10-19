@@ -1,7 +1,6 @@
 package dd
 
 import (
-	"bytes"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -26,14 +25,18 @@ func (opts UnmarshalOptions) UnmarshalCardStructureVersion(data []byte) (*ddv1.C
 	if len(data) != lenCardStructureVersion {
 		return nil, fmt.Errorf("invalid data length for CardStructureVersion: got %d, want %d", len(data), lenCardStructureVersion)
 	}
-	var output ddv1.CardStructureVersion
-	output.SetRawData(bytes.Clone(data))
-	output.SetMajor(int32((data[0]&0xF0)>>4)*10 + int32(data[0]&0x0F))
-	output.SetMinor(int32((data[1]&0xF0)>>4)*10 + int32(data[1]&0x0F))
-	return &output, nil
+
+	output := &ddv1.CardStructureVersion{}
+	if opts.PreserveRawData {
+		output.SetRawData(data)
+	}
+	output.SetMajor(int32(data[0]))
+	output.SetMinor(int32(data[1]))
+
+	return output, nil
 }
 
-// AppendCardStructureVersion appends the binary representation of CardStructureVersion to dst.
+// MarshalCardStructureVersion marshals the binary representation of CardStructureVersion to bytes.
 //
 // The data type `CardStructureVersion` is specified in the Data Dictionary, Section 2.36.
 //
@@ -47,7 +50,7 @@ func (opts UnmarshalOptions) UnmarshalCardStructureVersion(data []byte) (*ddv1.C
 //	For example, version '01.02' is coded as '0102'H.
 //	- Byte 0: Major version in BCD (e.g., 0x01 = 01)
 //	- Byte 1: Minor version in BCD (e.g., 0x02 = 02)
-func AppendCardStructureVersion(dst []byte, csv *ddv1.CardStructureVersion) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardStructureVersion(csv *ddv1.CardStructureVersion) ([]byte, error) {
 	const lenCardStructureVersion = 2
 	var canvas [lenCardStructureVersion]byte
 	if csv.HasRawData() {
@@ -65,5 +68,5 @@ func AppendCardStructureVersion(dst []byte, csv *ddv1.CardStructureVersion) ([]b
 	minor := csv.GetMinor()
 	minorBCD := byte((minor/10)<<4) | byte(minor%10)
 	canvas[1] = minorBCD
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

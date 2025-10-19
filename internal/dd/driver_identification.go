@@ -39,7 +39,7 @@ func (opts UnmarshalOptions) UnmarshalDriverIdentification(data []byte) (*ddv1.D
 	return driverID, nil
 }
 
-// appendDriverIdentification appends driver identification data to dst.
+// MarshalDriverIdentification marshals driver identification data to bytes.
 //
 // The data type `DriverIdentification` is specified in the Data Dictionary, Section 2.26.
 //
@@ -51,13 +51,13 @@ func (opts UnmarshalOptions) UnmarshalDriverIdentification(data []byte) (*ddv1.D
 //
 // Binary Layout (14 bytes):
 //   - Driver Identification Number (14 bytes): IA5String
-func AppendDriverIdentification(dst []byte, driverID *ddv1.DriverIdentification) ([]byte, error) {
+func (opts MarshalOptions) MarshalDriverIdentification(driverID *ddv1.DriverIdentification) ([]byte, error) {
 	if driverID == nil {
 		return nil, fmt.Errorf("driverID cannot be nil")
 	}
 
-	// Append driver identification number (14 bytes)
-	return AppendIa5StringValue(dst, driverID.GetDriverIdentificationNumber())
+	// Marshal driver identification number (14 bytes)
+	return opts.MarshalIa5StringValue(driverID.GetDriverIdentificationNumber())
 }
 
 // AnonymizeDriverIdentification creates an anonymized copy of DriverIdentification,

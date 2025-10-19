@@ -48,7 +48,7 @@ func (opts UnmarshalOptions) unmarshalIc(data []byte) (*cardv1.Ic, error) {
 	return &target, nil
 }
 
-// AppendCardIc appends IC identification data to a byte slice.
+// MarshalCardIc marshals IC identification data to bytes.
 //
 // The data type `CardChipIdentification` is specified in the Data Dictionary, Section 2.13.
 //
@@ -58,15 +58,17 @@ func (opts UnmarshalOptions) unmarshalIc(data []byte) (*cardv1.Ic, error) {
 //	    icSerialNumber              OCTET STRING (SIZE(4)),
 //	    icManufacturingReferences   OCTET STRING (SIZE(4))
 //	}
-func appendCardIc(data []byte, ic *cardv1.Ic) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardIc(ic *cardv1.Ic) ([]byte, error) {
 	const (
 		lenIcSerialNumber            = 4
 		lenIcManufacturingReferences = 4
 	)
 
 	if ic == nil {
-		return data, nil
+		return nil, nil
 	}
+
+	var data []byte
 
 	// Append IC Serial Number (4 bytes)
 	serialBytes := ic.GetIcSerialNumber()

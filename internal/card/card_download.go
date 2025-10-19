@@ -3,8 +3,6 @@ package card
 import (
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
@@ -36,24 +34,24 @@ func (opts UnmarshalOptions) unmarshalCardDownload(data []byte) (*cardv1.CardDow
 	return &target, nil
 }
 
-// appendCardDownload appends card download data to a byte slice.
+// MarshalCardDownload marshals card download data to bytes.
 //
 // The data type `LastCardDownload` is specified in the Data Dictionary, Section 2.89.
 //
 // ASN.1 Definition:
 //
 //	LastCardDownload ::= TimeReal
-func appendCardDownload(data []byte, lastDownload *cardv1.CardDownloadDriver) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardDownload(lastDownload *cardv1.CardDownloadDriver) ([]byte, error) {
 	if lastDownload == nil {
-		return data, nil
+		return nil, nil
 	}
 
 	// Timestamp (4 bytes)
-	var err error
-	data, err = dd.AppendTimeReal(data, lastDownload.GetTimestamp())
+	
+	timestampBytes, err := opts.MarshalTimeReal(lastDownload.GetTimestamp())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append timestamp: %w", err)
+		return nil, fmt.Errorf("failed to marshal timestamp: %w", err)
 	}
 
-	return data, nil
+	return timestampBytes, nil
 }

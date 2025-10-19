@@ -72,7 +72,7 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 	return cardNumber, nil
 }
 
-// appendFullCardNumber appends full card number data to dst.
+// MarshalFullCardNumber marshals full card number data to bytes.
 //
 // The data type `FullCardNumber` is specified in the Data Dictionary, Section 2.73.
 //
@@ -93,30 +93,33 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 //   - Card Type (1 byte): EquipmentType
 //   - Issuing Member State (1 byte): NationNumeric
 //   - Card Number (16 bytes): CardNumber CHOICE based on card type (padded to 16 bytes)
-func AppendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber) ([]byte, error) {
+func (opts MarshalOptions) MarshalFullCardNumber(cardNumber *ddv1.FullCardNumber) ([]byte, error) {
 	if cardNumber == nil {
 		return nil, fmt.Errorf("cardNumber cannot be nil")
 	}
 
-	// Append card type (1 byte)
+	var dst []byte
+
+	// Marshal card type (1 byte)
 	cardTypeByte, err := MarshalEnum(cardNumber.GetCardType())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card type: %w", err)
 	}
 	dst = append(dst, cardTypeByte)
 
-	// Append issuing member state (1 byte)
+	// Marshal issuing member state (1 byte)
 	dst = append(dst, byte(cardNumber.GetCardIssuingMemberState()))
 
-	// Append card number based on card type (16 bytes with padding if needed)
+	// Marshal card number based on card type (16 bytes with padding if needed)
 	switch cardNumber.GetCardType() {
 	case ddv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
 			// DriverIdentification is 14 bytes, pad to 16
-			dst, err = AppendDriverIdentification(dst, driverID)
+			driverBytes, err := opts.MarshalDriverIdentification(driverID)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append driver identification: %w", err)
+				return nil, fmt.Errorf("failed to marshal driver identification: %w", err)
 			}
+			dst = append(dst, driverBytes...)
 			// Add 2 bytes padding
 			dst = append(dst, 0x00, 0x00)
 		} else {
@@ -126,10 +129,11 @@ func AppendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber) ([]byte, 
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
 			// OwnerIdentification is 16 bytes (no padding needed)
-			dst, err = AppendOwnerIdentification(dst, ownerID)
+			ownerBytes, err := opts.MarshalOwnerIdentification(ownerID)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append owner identification: %w", err)
+				return nil, fmt.Errorf("failed to marshal owner identification: %w", err)
 			}
+			dst = append(dst, ownerBytes...)
 		} else {
 			// Empty owner ID: 16 zero bytes
 			dst = append(dst, make([]byte, 16)...)
@@ -142,9 +146,9 @@ func AppendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber) ([]byte, 
 	return dst, nil
 }
 
-// appendFullCardNumberAsString appends a FullCardNumber structure as a string representation.
+// MarshalFullCardNumberAsString marshals a FullCardNumber structure as a string representation.
 // This is used for display purposes and has a maximum length constraint.
-func AppendFullCardNumberAsString(dst []byte, cardNumber *ddv1.FullCardNumber, maxLen int) ([]byte, error) {
+func (opts MarshalOptions) MarshalFullCardNumberAsString(cardNumber *ddv1.FullCardNumber, maxLen int) ([]byte, error) {
 	if cardNumber == nil {
 		return nil, fmt.Errorf("cardNumber cannot be nil")
 	}
@@ -153,13 +157,13 @@ func AppendFullCardNumberAsString(dst []byte, cardNumber *ddv1.FullCardNumber, m
 	switch cardNumber.GetCardType() {
 	case ddv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
-			return AppendIa5StringValue(dst, driverID.GetDriverIdentificationNumber())
+			return opts.MarshalIa5StringValue(driverID.GetDriverIdentificationNumber())
 		}
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
-			return AppendIa5StringValue(dst, ownerID.GetOwnerIdentification())
+			return opts.MarshalIa5StringValue(ownerID.GetOwnerIdentification())
 		}
 	}
 
-	return AppendStringValue(dst, nil)
+	return opts.MarshalStringValue(nil)
 }

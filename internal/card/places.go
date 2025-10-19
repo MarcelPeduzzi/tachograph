@@ -72,14 +72,14 @@ func parseCircularPlaceRecordsGen1(data []byte, newestIndex int, opts dd.Unmarsh
 	return records, trailingBytes
 }
 
-// appendPlaces marshals the EF_Places data (Gen1 format).
+// MarshalPlaces marshals the EF_Places data (Gen1 format).
 //
 // Gen1 Structure (TCS_150):
 // - placePointerNewestRecord: 1 byte (not 2!)
 // - placeRecords: N × 10 bytes
-func appendPlaces(dst []byte, p *cardv1.Places) ([]byte, error) {
+func (opts MarshalOptions) MarshalPlaces(p *cardv1.Places) ([]byte, error) {
 	if p == nil {
-		return dst, nil
+		return nil, nil
 	}
 
 	// Calculate expected size: 1 byte (pointer) + N records × 10 bytes
@@ -97,11 +97,12 @@ func appendPlaces(dst []byte, p *cardv1.Places) ([]byte, error) {
 		canvas[0] = byte(p.GetNewestRecordIndex())
 
 		// Paint each record over canvas
+
 		offset := 1
 		for _, record := range p.GetRecords() {
-			recordBytes, err := dd.AppendPlaceRecord(nil, record)
+			recordBytes, err := opts.MarshalPlaceRecord(record)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append Gen1 place record: %w", err)
+				return nil, fmt.Errorf("failed to marshal Gen1 place record: %w", err)
 			}
 			if len(recordBytes) != recordSize {
 				return nil, fmt.Errorf("invalid Gen1 place record size: got %d, want %d", len(recordBytes), recordSize)
@@ -110,17 +111,18 @@ func appendPlaces(dst []byte, p *cardv1.Places) ([]byte, error) {
 			offset += recordSize
 		}
 
-		return append(dst, canvas...), nil
+		return canvas, nil
 	}
 
 	// Fall back to building from scratch
+	var dst []byte
 	newestRecordIndex := byte(p.GetNewestRecordIndex())
 	dst = append(dst, newestRecordIndex)
 
 	for _, record := range p.GetRecords() {
-		recordBytes, err := dd.AppendPlaceRecord(nil, record)
+		recordBytes, err := opts.MarshalPlaceRecord(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append Gen1 place record: %w", err)
+			return nil, fmt.Errorf("failed to marshal Gen1 place record: %w", err)
 		}
 		dst = append(dst, recordBytes...)
 	}
@@ -158,8 +160,9 @@ func AnonymizePlaces(p *cardv1.Places) *cardv1.Places {
 	anonymizeTimestampsInPlace(anonymizedRecords)
 
 	// Regenerate raw_data for each record after timestamp modification
+	ddOpts := dd.MarshalOptions{}
 	for _, record := range anonymizedRecords {
-		recordBytes, err := dd.AppendPlaceRecord(nil, record)
+		recordBytes, err := ddOpts.MarshalPlaceRecord(record)
 		if err == nil {
 			record.SetRawData(recordBytes)
 		}
@@ -167,7 +170,8 @@ func AnonymizePlaces(p *cardv1.Places) *cardv1.Places {
 
 	// Regenerate raw_data to match anonymized content
 	// This ensures round-trip fidelity after anonymization
-	anonymizedBytes, err := appendPlaces(nil, result)
+	cardOpts := MarshalOptions{}
+	anonymizedBytes, err := cardOpts.MarshalPlaces(result)
 	if err == nil {
 		result.SetRawData(anonymizedBytes)
 	}

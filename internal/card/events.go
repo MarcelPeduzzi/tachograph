@@ -154,7 +154,7 @@ func (opts UnmarshalOptions) unmarshalEventRecord(data []byte) (*cardv1.EventsDa
 	return &rec, nil
 }
 
-// AppendEventsData appends the binary representation of EventData to dst.
+// MarshalEventsData marshals the binary representation of EventData.
 //
 // The data type `CardEventData` is specified in the Data Dictionary, Section 2.19.
 //
@@ -168,20 +168,25 @@ func (opts UnmarshalOptions) unmarshalEventRecord(data []byte) (*cardv1.EventsDa
 //	    eventEndTime                     TimeReal,                         -- 4 bytes
 //	    eventVehicleRegistration         VehicleRegistrationIdentification -- 15 bytes
 //	}
-func appendEventsData(dst []byte, data *cardv1.EventsData) ([]byte, error) {
-	var err error
+func (opts MarshalOptions) MarshalEventsData(data *cardv1.EventsData) ([]byte, error) {
+	if data == nil {
+		return nil, nil
+	}
+
+	var dst []byte
 
 	// Process events in their chronological order
 	for _, r := range data.GetEvents() {
-		dst, err = appendEventRecord(dst, r)
+		recordBytes, err := opts.MarshalEventRecord(r)
 		if err != nil {
 			return nil, err
 		}
+		dst = append(dst, recordBytes...)
 	}
 	return dst, nil
 }
 
-// AppendEventRecord appends a single event record to dst.
+// MarshalEventRecord marshals a single event record.
 //
 // The data type `CardEventRecord` is specified in the Data Dictionary, Section 2.20.
 //
@@ -193,29 +198,38 @@ func appendEventsData(dst []byte, data *cardv1.EventsData) ([]byte, error) {
 //	    eventEndTime                     TimeReal,                         -- 4 bytes
 //	    eventVehicleRegistration         VehicleRegistrationIdentification -- 15 bytes
 //	}
-func appendEventRecord(dst []byte, record *cardv1.EventsData_Record) ([]byte, error) {
-	if !record.GetValid() {
-		return append(dst, record.GetRawData()...), nil
+func (opts MarshalOptions) MarshalEventRecord(record *cardv1.EventsData_Record) ([]byte, error) {
+	if record == nil {
+		return nil, nil
 	}
+
+	if !record.GetValid() {
+		return record.GetRawData(), nil
+	}
+
+	var dst []byte
 
 	protocolValue, _ := dd.MarshalEnum(record.GetEventType())
 	dst = append(dst, protocolValue)
 
-	var err error
-	dst, err = dd.AppendTimeReal(dst, record.GetEventBeginTime())
+	
+	beginTimeBytes, err := opts.MarshalTimeReal(record.GetEventBeginTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append event begin time: %w", err)
+		return nil, fmt.Errorf("failed to marshal event begin time: %w", err)
 	}
+	dst = append(dst, beginTimeBytes...)
 
-	dst, err = dd.AppendTimeReal(dst, record.GetEventEndTime())
+	endTimeBytes, err := opts.MarshalTimeReal(record.GetEventEndTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append event end time: %w", err)
+		return nil, fmt.Errorf("failed to marshal event end time: %w", err)
 	}
+	dst = append(dst, endTimeBytes...)
 
-	dst, err = dd.AppendVehicleRegistration(dst, record.GetEventVehicleRegistration())
+	vehicleRegBytes, err := opts.MarshalVehicleRegistration(record.GetEventVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}
+	dst = append(dst, vehicleRegBytes...)
 
 	return dst, nil
 }

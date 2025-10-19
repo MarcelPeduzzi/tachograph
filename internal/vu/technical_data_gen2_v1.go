@@ -58,15 +58,15 @@ func unmarshalTechnicalDataGen2V1(value []byte) (*vuv1.TechnicalDataGen2V1, erro
 	return technicalData, nil
 }
 
-// appendTechnicalDataGen2V1 marshals Gen2 V1 Technical Data using raw data painting.
-func appendTechnicalDataGen2V1(dst []byte, technicalData *vuv1.TechnicalDataGen2V1) ([]byte, error) {
+// MarshalTechnicalDataGen2V1 marshals Gen2 V1 Technical Data using raw data painting.
+func (opts MarshalOptions) MarshalTechnicalDataGen2V1(technicalData *vuv1.TechnicalDataGen2V1) ([]byte, error) {
 	if technicalData == nil {
 		return nil, fmt.Errorf("technicalData cannot be nil")
 	}
 
 	raw := technicalData.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	return nil, fmt.Errorf("cannot marshal Technical Data Gen2 V1 without raw_data (semantic marshalling not yet implemented)")

@@ -72,8 +72,8 @@ func TestUnmarshalOdometer(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalOdometer(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalOdometer(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalOdometer() expected error containing %q, got nil", tt.errMessage)
@@ -130,8 +130,11 @@ func TestAppendOdometer(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dst := []byte{}
-			got := AppendOdometer(dst, tt.input)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalOdometer(int32(tt.input))
+			if err != nil {
+				t.Fatalf("MarshalOdometer() unexpected error: %v", err)
+			}
 			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("AppendOdometer() mismatch (-want +got):\n%s", diff)
 			}
@@ -165,14 +168,18 @@ func TestOdometerRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			odometer, err := opts.UnmarshalOdometer(tt.input)
+			unmarshalOpts := UnmarshalOptions{}
+			opts := MarshalOptions{}
+			odometer, err := unmarshalOpts.UnmarshalOdometer(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalOdometer() unexpected error: %v", err)
 			}
 
 			// Marshal
-			got := AppendOdometer(nil, odometer)
+			got, err := opts.MarshalOdometer(int32(odometer))
+			if err != nil {
+				t.Fatalf("MarshalOdometer() unexpected error: %v", err)
+			}
 
 			// Verify round-trip
 			if diff := cmp.Diff(tt.input, got); diff != "" {

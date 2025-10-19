@@ -65,7 +65,9 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecord(data []byte) (*ddv1.VuCardI
 	}
 
 	record := &ddv1.VuCardIWRecord{}
-	record.SetRawData(data)
+	if opts.PreserveRawData {
+		record.SetRawData(data)
+	}
 
 	// cardHolderName (72 bytes)
 	holderName, err := opts.UnmarshalHolderName(data[idxCardHolderName : idxCardHolderName+lenHolderName])
@@ -137,8 +139,8 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecord(data []byte) (*ddv1.VuCardI
 	return record, nil
 }
 
-// AppendVuCardIWRecord appends a Generation 1 VuCardIWRecord (129 bytes).
-func AppendVuCardIWRecord(dst []byte, record *ddv1.VuCardIWRecord) ([]byte, error) {
+// MarshalVuCardIWRecord marshals a Generation 1 VuCardIWRecord (129 bytes) to bytes.
+func (opts MarshalOptions) MarshalVuCardIWRecord(record *ddv1.VuCardIWRecord) ([]byte, error) {
 	const lenVuCardIWRecord = 129
 
 	// Use raw data painting strategy if available
@@ -153,39 +155,42 @@ func AppendVuCardIWRecord(dst []byte, record *ddv1.VuCardIWRecord) ([]byte, erro
 	offset := 0
 
 	// cardHolderName (72 bytes)
-	holderNameBytes, err := AppendHolderName(nil, record.GetCardHolderName())
+	holderNameBytes, err := opts.MarshalHolderName(record.GetCardHolderName())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card holder name: %w", err)
+		return nil, fmt.Errorf("failed to marshal card holder name: %w", err)
 	}
 	copy(canvas[offset:offset+72], holderNameBytes)
 	offset += 72
 
 	// fullCardNumber (18 bytes)
-	fullCardNumberBytes, err := AppendFullCardNumber(nil, record.GetFullCardNumber())
+	fullCardNumberBytes, err := opts.MarshalFullCardNumber(record.GetFullCardNumber())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append full card number: %w", err)
+		return nil, fmt.Errorf("failed to marshal full card number: %w", err)
 	}
 	copy(canvas[offset:offset+18], fullCardNumberBytes)
 	offset += 18
 
 	// cardExpiryDate (4 bytes)
-	expiryDateBytes, err := AppendDate(nil, record.GetCardExpiryDate())
+	expiryDateBytes, err := opts.MarshalDate(record.GetCardExpiryDate())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card expiry date: %w", err)
+		return nil, fmt.Errorf("failed to marshal card expiry date: %w", err)
 	}
 	copy(canvas[offset:offset+4], expiryDateBytes)
 	offset += 4
 
 	// cardInsertionTime (4 bytes)
-	insertionTimeBytes, err := AppendTimeReal(nil, record.GetCardInsertionTime())
+	insertionTimeBytes, err := opts.MarshalTimeReal(record.GetCardInsertionTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card insertion time: %w", err)
+		return nil, fmt.Errorf("failed to marshal card insertion time: %w", err)
 	}
 	copy(canvas[offset:offset+4], insertionTimeBytes)
 	offset += 4
 
 	// vehicleOdometerValueAtInsertion (3 bytes)
-	odometerAtInsertionBytes := AppendOdometer(nil, uint32(record.GetOdometerAtInsertionKm()))
+	odometerAtInsertionBytes, err := opts.MarshalOdometer(record.GetOdometerAtInsertionKm())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal odometer at insertion: %w", err)
+	}
 	copy(canvas[offset:offset+3], odometerAtInsertionBytes)
 	offset += 3
 
@@ -195,22 +200,25 @@ func AppendVuCardIWRecord(dst []byte, record *ddv1.VuCardIWRecord) ([]byte, erro
 	offset += 1
 
 	// cardWithdrawalTime (4 bytes)
-	withdrawalTimeBytes, err := AppendTimeReal(nil, record.GetCardWithdrawalTime())
+	withdrawalTimeBytes, err := opts.MarshalTimeReal(record.GetCardWithdrawalTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card withdrawal time: %w", err)
+		return nil, fmt.Errorf("failed to marshal card withdrawal time: %w", err)
 	}
 	copy(canvas[offset:offset+4], withdrawalTimeBytes)
 	offset += 4
 
 	// vehicleOdometerValueAtWithdrawal (3 bytes)
-	odometerAtWithdrawalBytes := AppendOdometer(nil, uint32(record.GetOdometerAtWithdrawalKm()))
+	odometerAtWithdrawalBytes, err := opts.MarshalOdometer(record.GetOdometerAtWithdrawalKm())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal odometer at withdrawal: %w", err)
+	}
 	copy(canvas[offset:offset+3], odometerAtWithdrawalBytes)
 	offset += 3
 
 	// previousVehicleInfo (19 bytes)
-	previousVehicleInfoBytes, err := AppendPreviousVehicleInfo(nil, record.GetPreviousVehicleInfo())
+	previousVehicleInfoBytes, err := opts.MarshalPreviousVehicleInfo(record.GetPreviousVehicleInfo())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append previous vehicle info: %w", err)
+		return nil, fmt.Errorf("failed to marshal previous vehicle info: %w", err)
 	}
 	copy(canvas[offset:offset+19], previousVehicleInfoBytes)
 	offset += 19
@@ -222,5 +230,5 @@ func AppendVuCardIWRecord(dst []byte, record *ddv1.VuCardIWRecord) ([]byte, erro
 		canvas[offset] = 0
 	}
 
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

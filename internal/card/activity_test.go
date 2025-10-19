@@ -29,13 +29,14 @@ func TestDriverActivityDataRoundTrip(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	activity1, err := opts.unmarshalDriverActivityData(data)
+	unmarshalOpts := UnmarshalOptions{}
+	activity1, err := unmarshalOpts.unmarshalDriverActivityData(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
-	marshaled, err := appendDriverActivity(nil, activity1)
+	marshalOpts := MarshalOptions{}
+	marshaled, err := marshalOpts.MarshalDriverActivity(activity1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -50,7 +51,7 @@ func TestDriverActivityDataRoundTrip(t *testing.T) {
 	// of activity changes). Binary comparison above is sufficient to ensure perfect
 	// round-trip fidelity. If structural validation is needed for debugging, uncomment:
 	//
-	// activity2, err := opts.unmarshalDriverActivityData(marshaled)
+	// activity2, err := unmarshalOpts.unmarshalDriverActivityData(marshaled)
 	// if err != nil {
 	// 	t.Fatalf("Second unmarshal failed: %v", err)
 	// }
@@ -101,15 +102,16 @@ func TestDriverActivityDataAnonymization(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	activity, err := opts.unmarshalDriverActivityData(data)
+	unmarshalOpts := UnmarshalOptions{}
+	activity, err := unmarshalOpts.unmarshalDriverActivityData(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
 
 	anonymized := AnonymizeDriverActivityData(activity)
 
-	anonymizedData, err := appendDriverActivity(nil, anonymized)
+	marshalOpts := MarshalOptions{}
+	anonymizedData, err := marshalOpts.MarshalDriverActivity(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}

@@ -38,7 +38,9 @@ func (opts UnmarshalOptions) UnmarshalCardVehicleRecord(data []byte) (*ddv1.Card
 	}
 
 	record := &ddv1.CardVehicleRecord{}
-	record.SetRawData(data)
+	if opts.PreserveRawData {
+		record.SetRawData(data)
+	}
 
 	// Parse odometer begin (3 bytes)
 	odometerBeginBytes := data[idxOdometerBegin : idxOdometerBegin+3]
@@ -81,8 +83,8 @@ func (opts UnmarshalOptions) UnmarshalCardVehicleRecord(data []byte) (*ddv1.Card
 	return record, nil
 }
 
-// AppendCardVehicleRecord appends a Generation 1 CardVehicleRecord (31 bytes).
-func AppendCardVehicleRecord(dst []byte, record *ddv1.CardVehicleRecord) ([]byte, error) {
+// MarshalCardVehicleRecord marshals a Generation 1 CardVehicleRecord (31 bytes) to bytes.
+func (opts MarshalOptions) MarshalCardVehicleRecord(record *ddv1.CardVehicleRecord) ([]byte, error) {
 	const lenCardVehicleRecord = 31 // Fixed size for Gen1
 
 	// Use raw data painting strategy if available
@@ -95,8 +97,6 @@ func AppendCardVehicleRecord(dst []byte, record *ddv1.CardVehicleRecord) ([]byte
 	}
 
 	// Paint semantic values over the canvas
-	var err error
-
 	// Odometer begin (3 bytes)
 	odometerBegin := uint32(record.GetVehicleOdometerBeginKm())
 	canvas[0] = byte(odometerBegin >> 16)
@@ -110,34 +110,34 @@ func AppendCardVehicleRecord(dst []byte, record *ddv1.CardVehicleRecord) ([]byte
 	canvas[5] = byte(odometerEnd)
 
 	// Vehicle first use (4 bytes)
-	firstUseBytes, err := AppendTimeReal(nil, record.GetVehicleFirstUse())
+	firstUseBytes, err := opts.MarshalTimeReal(record.GetVehicleFirstUse())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle first use: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle first use: %w", err)
 	}
 	copy(canvas[6:10], firstUseBytes)
 
 	// Vehicle last use (4 bytes)
-	lastUseBytes, err := AppendTimeReal(nil, record.GetVehicleLastUse())
+	lastUseBytes, err := opts.MarshalTimeReal(record.GetVehicleLastUse())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle last use: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle last use: %w", err)
 	}
 	copy(canvas[10:14], lastUseBytes)
 
 	// Vehicle registration (15 bytes)
-	vehicleRegBytes, err := AppendVehicleRegistration(nil, record.GetVehicleRegistration())
+	vehicleRegBytes, err := opts.MarshalVehicleRegistration(record.GetVehicleRegistration())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle registration: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle registration: %w", err)
 	}
 	copy(canvas[14:29], vehicleRegBytes)
 
 	// VU data block counter (2 bytes as BCD)
-	vuDataBlockCounterBytes, err := AppendBcdString(nil, record.GetVuDataBlockCounter())
+	vuDataBlockCounterBytes, err := opts.MarshalBcdString(record.GetVuDataBlockCounter())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append VU data block counter: %w", err)
+		return nil, fmt.Errorf("failed to marshal VU data block counter: %w", err)
 	}
 	copy(canvas[29:31], vuDataBlockCounterBytes)
 
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }
 
 // AnonymizeCardVehicleRecord creates an anonymized copy, replacing sensitive data
@@ -178,18 +178,18 @@ func AnonymizeCardVehicleRecord(record *ddv1.CardVehicleRecord, index int) *ddv1
 	// Anonymize vehicle registration
 	if vreg := record.GetVehicleRegistration(); vreg != nil {
 		anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-		
+
 		// Preserve country (structural info)
 		anonymizedReg.SetNation(vreg.GetNation())
-		
+
 		// Replace VRN with test value
 		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
 		testRegNum := &ddv1.StringValue{}
 		testRegNum.SetValue("TEST-VRN")
 		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-		testRegNum.SetLength(13) // Length of data bytes (not including code page)
+		testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
 		anonymizedReg.SetNumber(testRegNum)
-		
+
 		anonymized.SetVehicleRegistration(anonymizedReg)
 	}
 
@@ -197,7 +197,8 @@ func AnonymizeCardVehicleRecord(record *ddv1.CardVehicleRecord, index int) *ddv1
 	anonymized.SetVuDataBlockCounter(record.GetVuDataBlockCounter())
 
 	// Regenerate raw_data for binary fidelity
-	if rawData, err := AppendCardVehicleRecord(nil, anonymized); err == nil {
+	defOpts := MarshalOptions{}
+	if rawData, err := defOpts.MarshalCardVehicleRecord(anonymized); err == nil {
 		anonymized.SetRawData(rawData)
 	}
 

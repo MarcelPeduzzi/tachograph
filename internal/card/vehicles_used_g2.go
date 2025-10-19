@@ -73,10 +73,10 @@ func parseVehicleRecordsGen2(r *bytes.Reader, opts dd.UnmarshalOptions) ([]*ddv1
 	return records, nil
 }
 
-// appendVehiclesUsedG2 appends Gen2 vehicles used data for marshalling.
-func appendVehiclesUsedG2(dst []byte, vehiclesUsed *cardv1.VehiclesUsedG2) ([]byte, error) {
+// MarshalVehiclesUsedG2 marshals Gen2 vehicles used data.
+func (opts MarshalOptions) MarshalVehiclesUsedG2(vehiclesUsed *cardv1.VehiclesUsedG2) ([]byte, error) {
 	if vehiclesUsed == nil {
-		return dst, nil
+		return nil, nil
 	}
 
 	// Calculate expected size: 2 bytes (pointer) + N records × 48 bytes
@@ -94,11 +94,12 @@ func appendVehiclesUsedG2(dst []byte, vehiclesUsed *cardv1.VehiclesUsedG2) ([]by
 		binary.BigEndian.PutUint16(canvas[0:2], uint16(vehiclesUsed.GetNewestRecordIndex()))
 
 		// Paint each record over canvas
+		
 		offset := 2
 		for _, record := range vehiclesUsed.GetRecords() {
-			recordBytes, err := dd.AppendCardVehicleRecordG2(nil, record)
+			recordBytes, err := opts.MarshalCardVehicleRecordG2(record)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append Gen2 vehicle record: %w", err)
+				return nil, fmt.Errorf("failed to marshal Gen2 vehicle record: %w", err)
 			}
 			if len(recordBytes) != recordSize {
 				return nil, fmt.Errorf("invalid Gen2 vehicle record size: got %d, want %d", len(recordBytes), recordSize)
@@ -107,17 +108,19 @@ func appendVehiclesUsedG2(dst []byte, vehiclesUsed *cardv1.VehiclesUsedG2) ([]by
 			offset += recordSize
 		}
 
-		return append(dst, canvas...), nil
+		return canvas, nil
 	}
 
 	// Fall back to building from scratch
+	var dst []byte
 	newestRecordIndex := uint16(vehiclesUsed.GetNewestRecordIndex())
 	dst = binary.BigEndian.AppendUint16(dst, newestRecordIndex)
 
+	
 	for _, record := range vehiclesUsed.GetRecords() {
-		recordBytes, err := dd.AppendCardVehicleRecordG2(nil, record)
+		recordBytes, err := opts.MarshalCardVehicleRecordG2(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append Gen2 vehicle record: %w", err)
+			return nil, fmt.Errorf("failed to marshal Gen2 vehicle record: %w", err)
 		}
 		dst = append(dst, recordBytes...)
 	}

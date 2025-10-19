@@ -34,7 +34,9 @@ func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*ddv1.StringVal
 	var output ddv1.StringValue
 	output.SetEncoding(getEncodingFromCodePage(codePage))
 	// Store the entire input including the code page byte (aligns with raw data painting policy)
-	output.SetRawData(input)
+	if opts.PreserveRawData {
+		output.SetRawData(input)
+	}
 	// Length field represents the string data length (not including code page)
 	output.SetLength(int32(len(data)))
 
@@ -48,7 +50,7 @@ func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*ddv1.StringVal
 	return &output, nil
 }
 
-// AppendStringValue appends a StringValue to dst.
+// MarshalStringValue marshals a StringValue to bytes.
 //
 // This function handles code-paged string format defined as:
 //
@@ -62,11 +64,11 @@ func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*ddv1.StringVal
 // If 'raw_data' is available, it is used directly (for round-trip fidelity).
 // Otherwise, the 'value' string is encoded using the specified encoding and padded
 // with spaces if a 'length' field is set (for fixed-length strings).
-func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
+func (opts MarshalOptions) MarshalStringValue(sv *ddv1.StringValue) ([]byte, error) {
 	// Handle nil
 	if sv == nil {
 		// Empty string value: code page 255 (EMPTY) + no data
-		return append(dst, 0xFF), nil
+		return []byte{0xFF}, nil
 	}
 
 	// Determine the expected total length (code page + string data)
@@ -107,7 +109,7 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		// 2. Re-encoding from UTF-8 can produce different byte lengths (e.g., ISO-8859-2 → UTF-8 → ISO-8859-2)
 		// 3. The raw_data preserves the exact original bytes, which is what we want for round-trip fidelity
 
-		return append(dst, canvas...), nil
+		return canvas, nil
 	}
 
 	// Fallback: encode from semantic fields (no raw_data available)
@@ -117,8 +119,10 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		return nil, fmt.Errorf("failed to encode string with code page %d: %w", codePage, err)
 	}
 
+	// Create result buffer
+	var result []byte
 	// Write code page byte
-	dst = append(dst, codePage)
+	result = append(result, codePage)
 
 	// Handle fixed-length strings (pad with spaces)
 	if hasFixedLength {
@@ -126,16 +130,17 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		if len(encoded) > dataLength {
 			return nil, fmt.Errorf("encoded string length (%d) exceeds allowed length (%d)", len(encoded), dataLength)
 		}
-		result := make([]byte, dataLength)
-		copy(result, encoded)
-		for i := len(encoded); i < dataLength; i++ {
-			result[i] = ' '
+		for i := 0; i < len(encoded); i++ {
+			result = append(result, encoded[i])
 		}
-		return append(dst, result...), nil
+		for i := len(encoded); i < dataLength; i++ {
+			result = append(result, ' ')
+		}
+		return result, nil
 	}
 
 	// Handle variable-length strings (no padding)
-	return append(dst, encoded...), nil
+	return append(result, encoded...), nil
 }
 
 // getEncodingFromCodePage maps a code page byte to the corresponding Encoding enum.

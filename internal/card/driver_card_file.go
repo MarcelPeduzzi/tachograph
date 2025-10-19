@@ -693,25 +693,52 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	var err error
 
+	// Create default MarshalOptions for internal calls
+	opts := MarshalOptions{}
+
 	// 1. EF_ICC (0x0002) - no signature
-	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_ICC, card.GetIcc(), appendIcc)
+	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_ICC, card.GetIcc(), func(dst []byte, msg *cardv1.Icc) ([]byte, error) {
+		bytes, err := opts.MarshalIcc(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	// 2. EF_IC (0x0005) - no signature
-	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_IC, card.GetIc(), appendCardIc)
+	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_IC, card.GetIc(), func(dst []byte, msg *cardv1.Ic) ([]byte, error) {
+		bytes, err := opts.MarshalCardIc(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	// 3. EF_APPLICATION_IDENTIFICATION (0x0501)
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetTachograph().GetApplicationIdentification(), appendCardApplicationIdentification)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetTachograph().GetApplicationIdentification(), func(dst []byte, msg *cardv1.ApplicationIdentification) ([]byte, error) {
+		bytes, err := opts.MarshalCardApplicationIdentification(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO, card.GetTachograph().GetDrivingLicenceInfo(), appendDrivingLicenceInfo)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO, card.GetTachograph().GetDrivingLicenceInfo(), func(dst []byte, msg *cardv1.DrivingLicenceInfo) ([]byte, error) {
+		bytes, err := opts.MarshalDrivingLicenceInfo(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -719,14 +746,16 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	// 4. EF_IDENTIFICATION (0x0520) - composite file
 	if identification := card.GetTachograph().GetIdentification(); identification != nil {
 		valBuf := make([]byte, 0, 143)
-		valBuf, err = appendCardIdentification(valBuf, identification.GetCard())
+		cardBytes, err := opts.MarshalCardIdentification(identification.GetCard())
 		if err != nil {
 			return nil, err
 		}
-		valBuf, err = appendDriverCardHolderIdentification(valBuf, identification.GetDriverCardHolder())
+		valBuf = append(valBuf, cardBytes...)
+		driverBytes, err := opts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
 		if err != nil {
 			return nil, err
 		}
+		valBuf = append(valBuf, driverBytes...)
 		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
 			return append(dst, msg.data...), nil
 		})
@@ -735,47 +764,101 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_EVENTS_DATA, card.GetTachograph().GetEventsData(), appendEventsData)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_EVENTS_DATA, card.GetTachograph().GetEventsData(), func(dst []byte, msg *cardv1.EventsData) ([]byte, error) {
+		bytes, err := opts.MarshalEventsData(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_FAULTS_DATA, card.GetTachograph().GetFaultsData(), appendFaultsData)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_FAULTS_DATA, card.GetTachograph().GetFaultsData(), func(dst []byte, msg *cardv1.FaultsData) ([]byte, error) {
+		bytes, err := opts.MarshalFaultsData(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, card.GetTachograph().GetDriverActivityData(), appendDriverActivity)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, card.GetTachograph().GetDriverActivityData(), func(dst []byte, msg *cardv1.DriverActivityData) ([]byte, error) {
+		bytes, err := opts.MarshalDriverActivity(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, card.GetTachograph().GetVehiclesUsed(), appendVehiclesUsed)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, card.GetTachograph().GetVehiclesUsed(), func(dst []byte, msg *cardv1.VehiclesUsed) ([]byte, error) {
+		bytes, err := opts.MarshalVehiclesUsed(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, card.GetTachograph().GetPlaces(), appendPlaces)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, card.GetTachograph().GetPlaces(), func(dst []byte, msg *cardv1.Places) ([]byte, error) {
+		bytes, err := opts.MarshalPlaces(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CURRENT_USAGE, card.GetTachograph().GetCurrentUsage(), appendCurrentUsage)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CURRENT_USAGE, card.GetTachograph().GetCurrentUsage(), func(dst []byte, msg *cardv1.CurrentUsage) ([]byte, error) {
+		bytes, err := opts.MarshalCurrentUsage(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA, card.GetTachograph().GetControlActivityData(), appendCardControlActivityData)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA, card.GetTachograph().GetControlActivityData(), func(dst []byte, msg *cardv1.ControlActivityData) ([]byte, error) {
+		bytes, err := opts.MarshalCardControlActivityData(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, card.GetTachograph().GetSpecificConditions(), appendCardSpecificConditions)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, card.GetTachograph().GetSpecificConditions(), func(dst []byte, msg *cardv1.SpecificConditions) ([]byte, error) {
+		bytes, err := opts.MarshalCardSpecificConditions(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetTachograph().GetCardDownload(), appendCardDownload)
+	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetTachograph().GetCardDownload(), func(dst []byte, msg *cardv1.CardDownloadDriver) ([]byte, error) {
+		bytes, err := opts.MarshalCardDownload(msg)
+		if err != nil {
+			return nil, err
+		}
+		return append(dst, bytes...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -785,39 +868,81 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		// Marshal Gen2 versions of shared EFs
 
 		// ApplicationIdentification (Gen2)
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, tachographG2.GetApplicationIdentification(), appendCardApplicationIdentificationG2)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, tachographG2.GetApplicationIdentification(), func(dst []byte, msg *cardv1.ApplicationIdentificationG2) ([]byte, error) {
+			bytes, err := opts.MarshalCardApplicationIdentificationG2(msg)
+			if err != nil {
+				return nil, err
+			}
+			return append(dst, bytes...), nil
+		})
 		if err != nil {
 			return nil, err
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, tachographG2.GetVehiclesUsed(), appendVehiclesUsedG2)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, tachographG2.GetVehiclesUsed(), func(dst []byte, msg *cardv1.VehiclesUsedG2) ([]byte, error) {
+			bytes, err := opts.MarshalVehiclesUsedG2(msg)
+			if err != nil {
+				return nil, err
+			}
+			return append(dst, bytes...), nil
+		})
 		if err != nil {
 			return nil, err
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_PLACES, tachographG2.GetPlaces(), appendPlacesG2)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_PLACES, tachographG2.GetPlaces(), func(dst []byte, msg *cardv1.PlacesG2) ([]byte, error) {
+			bytes, err := opts.MarshalPlacesG2(msg)
+			if err != nil {
+				return nil, err
+			}
+			return append(dst, bytes...), nil
+		})
 		if err != nil {
 			return nil, err
 		}
 
 		// SpecificConditions (Gen2)
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, tachographG2.GetSpecificConditions(), appendCardSpecificConditionsG2)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, tachographG2.GetSpecificConditions(), func(dst []byte, msg *cardv1.SpecificConditionsG2) ([]byte, error) {
+			bytes, err := opts.MarshalCardSpecificConditionsG2(msg)
+			if err != nil {
+				return nil, err
+			}
+			return append(dst, bytes...), nil
+		})
 		if err != nil {
 			return nil, err
 		}
 
 		// Marshal Gen2-exclusive EFs
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, tachographG2.GetVehicleUnitsUsed(), appendCardVehicleUnitsUsed)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, tachographG2.GetVehicleUnitsUsed(), func(dst []byte, msg *cardv1.VehicleUnitsUsed) ([]byte, error) {
+			bytes, err := opts.MarshalCardVehicleUnitsUsed(msg)
+			if err != nil {
+				return nil, err
+			}
+			return append(dst, bytes...), nil
+		})
 		if err != nil {
 			return nil, err
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, tachographG2.GetGnssPlaces(), appendCardGnssPlaces)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, tachographG2.GetGnssPlaces(), func(dst []byte, msg *cardv1.GnssPlaces) ([]byte, error) {
+			bytes, err := opts.MarshalCardGnssPlaces(msg)
+			if err != nil {
+				return nil, err
+			}
+			return append(dst, bytes...), nil
+		})
 		if err != nil {
 			return nil, err
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, tachographG2.GetApplicationIdentificationV2(), appendCardApplicationIdentificationV2)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, tachographG2.GetApplicationIdentificationV2(), func(dst []byte, msg *cardv1.ApplicationIdentificationV2) ([]byte, error) {
+			bytes, err := opts.MarshalCardApplicationIdentificationV2(msg)
+			if err != nil {
+				return nil, err
+			}
+			return append(dst, bytes...), nil
+		})
 		if err != nil {
 			return nil, err
 		}

@@ -27,13 +27,14 @@ func TestVehicleUnitsUsedRoundTrip(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	vu1, err := opts.unmarshalVehicleUnitsUsed(data)
+	unmarshalOpts := UnmarshalOptions{}
+	vu1, err := unmarshalOpts.unmarshalVehicleUnitsUsed(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
-	marshaled, err := appendCardVehicleUnitsUsed(nil, vu1)
+	marshalOpts := MarshalOptions{}
+	marshaled, err := marshalOpts.MarshalCardVehicleUnitsUsed(vu1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -42,7 +43,7 @@ func TestVehicleUnitsUsedRoundTrip(t *testing.T) {
 		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
 	}
 
-	vu2, err := opts.unmarshalVehicleUnitsUsed(marshaled)
+	vu2, err := unmarshalOpts.unmarshalVehicleUnitsUsed(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -66,15 +67,16 @@ func TestVehicleUnitsUsedAnonymization(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	vu, err := opts.unmarshalVehicleUnitsUsed(data)
+	unmarshalOpts := UnmarshalOptions{}
+	vu, err := unmarshalOpts.unmarshalVehicleUnitsUsed(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
 
 	anonymized := AnonymizeVehicleUnitsUsed(vu)
 
-	anonymizedData, err := appendCardVehicleUnitsUsed(nil, anonymized)
+	marshalOpts := MarshalOptions{}
+	anonymizedData, err := marshalOpts.MarshalCardVehicleUnitsUsed(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}

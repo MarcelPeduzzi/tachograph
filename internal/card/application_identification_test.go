@@ -29,14 +29,15 @@ func TestApplicationIdentificationRoundTrip(t *testing.T) {
 	}
 
 	// First unmarshal
-	opts := UnmarshalOptions{}
-	appId1, err := opts.unmarshalApplicationIdentification(data)
+	unmarshalOpts := UnmarshalOptions{}
+	appId1, err := unmarshalOpts.unmarshalApplicationIdentification(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
 	// Marshal
-	marshaled, err := appendCardApplicationIdentification(nil, appId1)
+	opts := MarshalOptions{}
+	marshaled, err := opts.MarshalCardApplicationIdentification(appId1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -47,7 +48,7 @@ func TestApplicationIdentificationRoundTrip(t *testing.T) {
 	}
 
 	// Second unmarshal
-	appId2, err := opts.unmarshalApplicationIdentification(marshaled)
+	appId2, err := unmarshalOpts.unmarshalApplicationIdentification(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -74,8 +75,8 @@ func TestApplicationIdentificationAnonymization(t *testing.T) {
 	}
 
 	// Unmarshal
-	opts := UnmarshalOptions{}
-	appId, err := opts.unmarshalApplicationIdentification(data)
+	unmarshalOpts := UnmarshalOptions{}
+	appId, err := unmarshalOpts.unmarshalApplicationIdentification(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
@@ -84,7 +85,8 @@ func TestApplicationIdentificationAnonymization(t *testing.T) {
 	anonymized := AnonymizeApplicationIdentification(appId)
 
 	// Marshal anonymized data
-	anonymizedData, err := appendCardApplicationIdentification(nil, anonymized)
+	opts := MarshalOptions{}
+	anonymizedData, err := opts.MarshalCardApplicationIdentification(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}
@@ -198,5 +200,3 @@ func AnonymizeApplicationIdentification(appId *cardv1.ApplicationIdentification)
 
 	return anonymized
 }
-
-

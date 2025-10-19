@@ -4,8 +4,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -57,7 +55,7 @@ func (opts UnmarshalOptions) unmarshalSpecificConditionsG2(data []byte) (*cardv1
 	return target, nil
 }
 
-// appendCardSpecificConditionsG2 appends Gen2 specific conditions data to a byte slice.
+// MarshalCardSpecificConditionsG2 marshals Gen2 specific conditions data.
 //
 // The data type `SpecificConditions` is specified in the Data Dictionary, Section 2.153.
 //
@@ -67,9 +65,9 @@ func (opts UnmarshalOptions) unmarshalSpecificConditionsG2(data []byte) (*cardv1
 //	    conditionPointerNewestRecord NoOfSpecificConditionRecords,
 //	    specificConditionRecords SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
 //	}
-func appendCardSpecificConditionsG2(data []byte, conditions *cardv1.SpecificConditionsG2) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardSpecificConditionsG2(conditions *cardv1.SpecificConditionsG2) ([]byte, error) {
 	if conditions == nil {
-		return data, nil
+		return nil, nil
 	}
 
 	// Use raw_data as canvas if available (includes pointer + records + trailing bytes)
@@ -87,15 +85,16 @@ func appendCardSpecificConditionsG2(data []byte, conditions *cardv1.SpecificCond
 		binary.BigEndian.PutUint16(canvas[0:lenPointer], uint16(conditions.GetNewestRecordIndex()))
 
 		// Paint each record over canvas
+		
 		offset := lenPointer
 		for _, record := range conditions.GetRecords() {
 			if offset+recordSize > len(canvas) {
 				// Canvas too small for all records, fall back to building from scratch
 				goto fallback
 			}
-			recordBytes, err := dd.AppendSpecificConditionRecord(nil, record)
+			recordBytes, err := opts.MarshalSpecificConditionRecord(record)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append specific condition record: %w", err)
+				return nil, fmt.Errorf("failed to marshal specific condition record: %w", err)
 			}
 			if len(recordBytes) != recordSize {
 				return nil, fmt.Errorf("invalid specific condition record size: got %d, want %d", len(recordBytes), recordSize)
@@ -105,22 +104,24 @@ func appendCardSpecificConditionsG2(data []byte, conditions *cardv1.SpecificCond
 		}
 
 		// Canvas preserves trailing bytes automatically
-		return append(data, canvas...), nil
+		return canvas, nil
 	}
 
 fallback:
 	// Fall back to building from scratch
+	var dst []byte
 	pointerBytes := make([]byte, 2)
 	binary.BigEndian.PutUint16(pointerBytes, uint16(conditions.GetNewestRecordIndex()))
-	data = append(data, pointerBytes...)
+	dst = append(dst, pointerBytes...)
 
+	
 	for _, record := range conditions.GetRecords() {
-		var err error
-		data, err = dd.AppendSpecificConditionRecord(data, record)
+		recordBytes, err := opts.MarshalSpecificConditionRecord(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append specific condition record: %w", err)
+			return nil, fmt.Errorf("failed to marshal specific condition record: %w", err)
 		}
+		dst = append(dst, recordBytes...)
 	}
 
-	return data, nil
+	return dst, nil
 }

@@ -37,7 +37,14 @@ func (opts UnmarshalOptions) UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.Raw
 		// Determine transfer type from tag
 		transferType := findTransferTypeByTag(tag)
 		if transferType == vuv1.TransferType_TRANSFER_TYPE_UNSPECIFIED {
-			return nil, fmt.Errorf("unknown tag: 0x%04X at offset %d", tag, offset-2)
+			if opts.Strict {
+				return nil, fmt.Errorf("unknown tag: 0x%04X at offset %d", tag, offset-2)
+			}
+			// In non-strict mode, skip this tag and try to continue
+			// We can't know the structure without knowing the transfer type,
+			// so we have to stop here
+			fmt.Printf("warning: skipping unknown tag 0x%04X at offset %d\n", tag, offset-2)
+			break
 		}
 
 		// Calculate size of value (including embedded signature)

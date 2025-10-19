@@ -25,7 +25,9 @@ func (opts UnmarshalOptions) UnmarshalMonthYear(data []byte) (*ddv1.MonthYear, e
 	}
 
 	monthYear := &ddv1.MonthYear{}
-	monthYear.SetRawData(data[:lenMonthYear])
+	if opts.PreserveRawData {
+		monthYear.SetRawData(data[:lenMonthYear])
+	}
 
 	// Decode BCD month/year as 4-digit number MMYY
 	monthYearInt, err := decodeBCD(data[:lenMonthYear])
@@ -45,47 +47,28 @@ func (opts UnmarshalOptions) UnmarshalMonthYear(data []byte) (*ddv1.MonthYear, e
 	return monthYear, nil
 }
 
-// AppendMonthYear appends BCD-encoded month and year data to dst.
+// MarshalMonthYear marshals a 2-byte BCD-encoded month/year value.
 //
-// The data type `monthYear` is specified in the Data Dictionary, Section 2.72
-// as part of ExtendedSerialNumber.
-//
-// ASN.1 Definition:
-//
-//	monthYear BCDString(SIZE(2))
+// The data type `MonthYear` is specified in the Data Dictionary.
 //
 // Binary Layout (2 bytes):
-//   - BCD-encoded MMYY format (2 bytes)
-func AppendMonthYear(dst []byte, monthYear *ddv1.MonthYear) ([]byte, error) {
+//   - Month (1 byte): BCD-encoded MM
+//   - Year (1 byte): BCD-encoded YY (last 2 digits)
+func (opts MarshalOptions) MarshalMonthYear(my *ddv1.MonthYear) ([]byte, error) {
 	const lenMonthYear = 2
-
-	// No nil check needed - protobuf returns zero values for nil, which are valid
-	// This function only reads primitive int32 fields (month, year) and bytes
-
-	// Use stack-allocated array for the canvas (fixed size, avoids heap allocation)
 	var canvas [lenMonthYear]byte
-
-	// Start with raw_data as canvas if available (raw data painting approach)
-	if rawData := monthYear.GetRawData(); len(rawData) > 0 {
-		if len(rawData) != lenMonthYear {
-			return nil, fmt.Errorf("invalid raw_data length for MonthYear: got %d, want %d", len(rawData), lenMonthYear)
+	if my.HasRawData() {
+		if len(my.GetRawData()) != lenMonthYear {
+			return nil, fmt.Errorf(
+				"invalid raw_data length for MonthYear: got %d, want %d",
+				len(my.GetRawData()), lenMonthYear,
+			)
 		}
-		copy(canvas[:], rawData)
+		copy(canvas[:], my.GetRawData())
 	}
-	// Otherwise canvas is zero-initialized (Go default)
-
-	// Paint semantic values over the canvas
-	month := monthYear.GetMonth()
-	year := monthYear.GetYear()
-
-	// Convert 4-digit year to 2-digit for BCD encoding
-	year2Digit := year % 100
-
-	// Encode month as BCD
-	canvas[0] = byte(((month / 10) << 4) | (month % 10))
-
-	// Encode year as BCD
-	canvas[1] = byte(((year2Digit / 10) << 4) | (year2Digit % 10))
-
-	return append(dst, canvas[:]...), nil
+	month := int(my.GetMonth())
+	year := int(my.GetYear())
+	canvas[0] = byte((month/10)%10<<4 | month%10)
+	canvas[1] = byte((year/10)%10<<4 | year%10)
+	return canvas[:], nil
 }

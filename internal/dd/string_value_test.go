@@ -69,8 +69,8 @@ func TestUnmarshalStringValue(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalStringValue(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalStringValue(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -159,8 +159,8 @@ func TestUnmarshalIA5StringValue(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalIa5StringValue(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalIa5StringValue(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -271,7 +271,8 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := AppendStringValue(nil, tt.stringValue)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalStringValue(tt.stringValue)
 			if err != nil {
 				t.Fatalf("AppendStringValue() unexpected error: %v", err)
 			}
@@ -358,7 +359,8 @@ func TestAppendIa5StringValue(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := AppendIa5StringValue(nil, tt.stringValue)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalIa5StringValue(tt.stringValue)
 			if tt.wantErr {
 				if err == nil {
 					t.Fatalf("AppendStringValue() expected error, got nil")
@@ -406,8 +408,9 @@ func TestStringValueRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			sv, err := opts.UnmarshalStringValue(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			opts := MarshalOptions{}
+			sv, err := unmarshalOpts.UnmarshalStringValue(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalStringValue() error: %v", err)
 			}
@@ -417,7 +420,7 @@ func TestStringValueRoundTrip(t *testing.T) {
 			}
 
 			// Marshal back (code-paged format)
-			got, err := AppendStringValue(nil, sv)
+			got, err := opts.MarshalStringValue(sv)
 			if err != nil {
 				t.Fatalf("AppendStringValue() error: %v", err)
 			}
@@ -461,8 +464,9 @@ func TestIA5StringValueRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			sv, err := opts.UnmarshalIa5StringValue(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			opts := MarshalOptions{}
+			sv, err := unmarshalOpts.UnmarshalIa5StringValue(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalIA5StringValue() error: %v", err)
 			}
@@ -472,7 +476,7 @@ func TestIA5StringValueRoundTrip(t *testing.T) {
 			}
 
 			// Marshal back
-			got, err := AppendIa5StringValue(nil, sv)
+			got, err := opts.MarshalIa5StringValue(sv)
 			if err != nil {
 				t.Fatalf("AppendIa5StringValue() error: %v", err)
 			}
@@ -493,10 +497,12 @@ func TestAppendIa5StringValue_WithExistingData(t *testing.T) {
 	sv.SetLength(10)
 	sv.SetValue("Test")
 
-	got, err := AppendIa5StringValue(existing, sv)
+	opts := MarshalOptions{}
+	got, err := opts.MarshalIa5StringValue(sv)
 	if err != nil {
-		t.Fatalf("AppendIa5StringValue() unexpected error: %v", err)
+		t.Fatalf("MarshalIa5StringValue() unexpected error: %v", err)
 	}
+	got = append(existing, got...)
 
 	want := []byte{
 		0xDE, 0xAD, 0xBE, 0xEF, // existing data

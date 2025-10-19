@@ -1,6 +1,8 @@
 package vu
 
 import (
+	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"testing"
@@ -161,7 +163,6 @@ func TestVehicleUnitFileGolden(t *testing.T) {
 			goldenPath := filepath.Join("testdata", filepath.Base(testFile)+".golden.json")
 
 			m := protojson.MarshalOptions{
-				Indent:        "  ",
 				UseProtoNames: true,
 			}
 			gotJSON, err := m.Marshal(vuFile)
@@ -171,10 +172,16 @@ func TestVehicleUnitFileGolden(t *testing.T) {
 
 			if *update {
 				// Update mode: write the golden file
+				// Indent the JSON for consistent formatting
+				var indentedJSON bytes.Buffer
+				if err := json.Indent(&indentedJSON, gotJSON, "", "  "); err != nil {
+					t.Fatalf("failed to indent JSON: %v", err)
+				}
+
 				if err := os.MkdirAll("testdata", 0o755); err != nil {
 					t.Fatalf("failed to create testdata directory: %v", err)
 				}
-				if err := os.WriteFile(goldenPath, gotJSON, 0o644); err != nil {
+				if err := os.WriteFile(goldenPath, indentedJSON.Bytes(), 0o644); err != nil {
 					t.Fatalf("failed to write golden file: %v", err)
 				}
 				t.Logf("Updated golden file: %s", goldenPath)
@@ -190,7 +197,18 @@ func TestVehicleUnitFileGolden(t *testing.T) {
 				t.Fatalf("failed to read golden file %s: %v", goldenPath, err)
 			}
 
-			if diff := cmp.Diff(string(wantJSON), string(gotJSON)); diff != "" {
+			// Indent both JSON strings for consistent comparison
+			var indentedGotJSON bytes.Buffer
+			if err := json.Indent(&indentedGotJSON, gotJSON, "", "  "); err != nil {
+				t.Fatalf("failed to indent got JSON: %v", err)
+			}
+
+			var indentedWantJSON bytes.Buffer
+			if err := json.Indent(&indentedWantJSON, wantJSON, "", "  "); err != nil {
+				t.Fatalf("failed to indent golden file JSON: %v", err)
+			}
+
+			if diff := cmp.Diff(indentedWantJSON.String(), indentedGotJSON.String()); diff != "" {
 				t.Errorf("Golden file mismatch (-want +got):\n%s", diff)
 			}
 

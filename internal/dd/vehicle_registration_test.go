@@ -93,8 +93,8 @@ func TestUnmarshalVehicleRegistration(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalVehicleRegistration(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalVehicleRegistration(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -253,7 +253,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := AppendVehicleRegistration(nil, tt.vehicleReg)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalVehicleRegistration(tt.vehicleReg)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("AppendVehicleRegistration() expected error, got nil")
@@ -282,10 +283,12 @@ func TestAppendVehicleRegistration_WithExistingData(t *testing.T) {
 	num.SetEncoding(ddv1.Encoding_ENCODING_DEFAULT)
 	vr.SetNumber(num)
 
-	got, err := AppendVehicleRegistration(existing, vr)
+	opts := MarshalOptions{}
+	got, err := opts.MarshalVehicleRegistration(vr)
 	if err != nil {
-		t.Fatalf("AppendVehicleRegistration() unexpected error: %v", err)
+		t.Fatalf("MarshalVehicleRegistration() unexpected error: %v", err)
 	}
+	got = append(existing, got...)
 
 	want := []byte{
 		0xDE, 0xAD, 0xBE, 0xEF, // existing data
@@ -342,8 +345,9 @@ func TestVehicleRegistrationRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			vehicleReg, err := opts.UnmarshalVehicleRegistration(tt.input)
+			unmarshalOpts := UnmarshalOptions{}
+			opts := MarshalOptions{}
+			vehicleReg, err := unmarshalOpts.UnmarshalVehicleRegistration(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalVehicleRegistration() error: %v", err)
 			}
@@ -353,7 +357,7 @@ func TestVehicleRegistrationRoundTrip(t *testing.T) {
 			}
 
 			// Marshal back
-			got, err := AppendVehicleRegistration(nil, vehicleReg)
+			got, err := opts.MarshalVehicleRegistration(vehicleReg)
 			if err != nil {
 				t.Fatalf("AppendVehicleRegistration() error: %v", err)
 			}

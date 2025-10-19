@@ -154,7 +154,7 @@ func (opts UnmarshalOptions) unmarshalFaultRecord(data []byte, rec *cardv1.Fault
 	return nil
 }
 
-// AppendFaultsData appends the binary representation of FaultData to dst.
+// MarshalFaultsData marshals the binary representation of FaultData.
 //
 // The data type `CardFaultData` is specified in the Data Dictionary, Section 2.22.
 //
@@ -168,20 +168,25 @@ func (opts UnmarshalOptions) unmarshalFaultRecord(data []byte, rec *cardv1.Fault
 //	    faultEndTime                      TimeReal,                         -- 4 bytes
 //	    faultVehicleRegistration          VehicleRegistrationIdentification -- 15 bytes
 //	}
-func appendFaultsData(dst []byte, data *cardv1.FaultsData) ([]byte, error) {
-	var err error
+func (opts MarshalOptions) MarshalFaultsData(data *cardv1.FaultsData) ([]byte, error) {
+	if data == nil {
+		return nil, nil
+	}
+
+	var dst []byte
 
 	// Process faults in their chronological order
 	for _, r := range data.GetFaults() {
-		dst, err = appendFaultRecord(dst, r)
+		recordBytes, err := opts.MarshalFaultRecord(r)
 		if err != nil {
 			return nil, err
 		}
+		dst = append(dst, recordBytes...)
 	}
 	return dst, nil
 }
 
-// AppendFaultRecord appends a single fault record to dst.
+// MarshalFaultRecord marshals a single fault record.
 //
 // The data type `CardFaultRecord` is specified in the Data Dictionary, Section 2.22.
 //
@@ -193,29 +198,38 @@ func appendFaultsData(dst []byte, data *cardv1.FaultsData) ([]byte, error) {
 //	    faultEndTime                      TimeReal,                         -- 4 bytes
 //	    faultVehicleRegistration          VehicleRegistrationIdentification -- 15 bytes
 //	}
-func appendFaultRecord(dst []byte, record *cardv1.FaultsData_Record) ([]byte, error) {
-	if !record.GetValid() {
-		return append(dst, record.GetRawData()...), nil
+func (opts MarshalOptions) MarshalFaultRecord(record *cardv1.FaultsData_Record) ([]byte, error) {
+	if record == nil {
+		return nil, nil
 	}
+
+	if !record.GetValid() {
+		return record.GetRawData(), nil
+	}
+
+	var dst []byte
 
 	protocolValue, _ := dd.MarshalEnum(record.GetFaultType())
 	dst = append(dst, protocolValue)
 
-	var err error
-	dst, err = dd.AppendTimeReal(dst, record.GetFaultBeginTime())
+	
+	beginTimeBytes, err := opts.MarshalTimeReal(record.GetFaultBeginTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append fault begin time: %w", err)
+		return nil, fmt.Errorf("failed to marshal fault begin time: %w", err)
 	}
+	dst = append(dst, beginTimeBytes...)
 
-	dst, err = dd.AppendTimeReal(dst, record.GetFaultEndTime())
+	endTimeBytes, err := opts.MarshalTimeReal(record.GetFaultEndTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append fault end time: %w", err)
+		return nil, fmt.Errorf("failed to marshal fault end time: %w", err)
 	}
+	dst = append(dst, endTimeBytes...)
 
-	dst, err = dd.AppendVehicleRegistration(dst, record.GetFaultVehicleRegistration())
+	vehicleRegBytes, err := opts.MarshalVehicleRegistration(record.GetFaultVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}
+	dst = append(dst, vehicleRegBytes...)
 
 	return dst, nil
 }

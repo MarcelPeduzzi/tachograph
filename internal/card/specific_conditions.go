@@ -3,8 +3,6 @@ package card
 import (
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -51,7 +49,7 @@ func (opts UnmarshalOptions) unmarshalSpecificConditions(data []byte) (*cardv1.S
 	return &target, nil
 }
 
-// AppendCardSpecificConditions appends specific conditions data to a byte slice.
+// MarshalCardSpecificConditions marshals specific conditions data.
 //
 // The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
 //
@@ -61,9 +59,9 @@ func (opts UnmarshalOptions) unmarshalSpecificConditions(data []byte) (*cardv1.S
 //	    entryTime                TimeReal,
 //	    specificConditionType    SpecificConditionType
 //	}
-func appendCardSpecificConditions(data []byte, conditions *cardv1.SpecificConditions) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardSpecificConditions(conditions *cardv1.SpecificConditions) ([]byte, error) {
 	if conditions == nil {
-		return data, nil
+		return nil, nil
 	}
 
 	// Calculate expected size: N records × 5 bytes (Gen1: fixed 56 records = 280 bytes)
@@ -78,11 +76,12 @@ func appendCardSpecificConditions(data []byte, conditions *cardv1.SpecificCondit
 		copy(canvas, rawData)
 
 		// Paint each record over canvas
+		
 		offset := 0
 		for _, record := range conditions.GetRecords() {
-			recordBytes, err := dd.AppendSpecificConditionRecord(nil, record)
+			recordBytes, err := opts.MarshalSpecificConditionRecord(record)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append specific condition record: %w", err)
+				return nil, fmt.Errorf("failed to marshal specific condition record: %w", err)
 			}
 			if len(recordBytes) != recordSize {
 				return nil, fmt.Errorf("invalid specific condition record size: got %d, want %d", len(recordBytes), recordSize)
@@ -91,17 +90,19 @@ func appendCardSpecificConditions(data []byte, conditions *cardv1.SpecificCondit
 			offset += recordSize
 		}
 
-		return append(data, canvas...), nil
+		return canvas, nil
 	}
 
 	// Fall back to building from scratch
+	var dst []byte
+	
 	for _, record := range conditions.GetRecords() {
-		var err error
-		data, err = dd.AppendSpecificConditionRecord(data, record)
+		recordBytes, err := opts.MarshalSpecificConditionRecord(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append specific condition record: %w", err)
+			return nil, fmt.Errorf("failed to marshal specific condition record: %w", err)
 		}
+		dst = append(dst, recordBytes...)
 	}
 
-	return data, nil
+	return dst, nil
 }

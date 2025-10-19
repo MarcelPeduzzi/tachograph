@@ -39,15 +39,15 @@ func unmarshalEventsAndFaultsGen1(value []byte) (*vuv1.EventsAndFaultsGen1, erro
 	return eventsAndFaults, nil
 }
 
-// appendEventsAndFaultsGen1 marshals Gen1 Events and Faults data using raw data painting.
-func appendEventsAndFaultsGen1(dst []byte, eventsAndFaults *vuv1.EventsAndFaultsGen1) ([]byte, error) {
+// MarshalEventsAndFaultsGen1 marshals Gen1 Events and Faults data using raw data painting.
+func (opts MarshalOptions) MarshalEventsAndFaultsGen1(eventsAndFaults *vuv1.EventsAndFaultsGen1) ([]byte, error) {
 	if eventsAndFaults == nil {
 		return nil, fmt.Errorf("eventsAndFaults cannot be nil")
 	}
 
 	raw := eventsAndFaults.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	// TODO: Implement marshalling from semantic fields

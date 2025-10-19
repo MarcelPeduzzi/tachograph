@@ -69,7 +69,7 @@ func (opts UnmarshalOptions) unmarshalApplicationIdentificationV2(data []byte) (
 	return &target, nil
 }
 
-// AppendCardApplicationIdentificationV2 appends application identification V2 data to a byte slice.
+// MarshalCardApplicationIdentificationV2 marshals application identification V2 data.
 //
 // The data type `ApplicationIdentificationV2` is specified in the Data Dictionary, Section 2.2.
 //
@@ -81,9 +81,9 @@ func (opts UnmarshalOptions) unmarshalApplicationIdentificationV2(data []byte) (
 //	    noOfLoadTypeEntryRecords     INTEGER(0..255),
 //	    vuConfigurationLengthRange   INTEGER(0..255)
 //	}
-func appendCardApplicationIdentificationV2(data []byte, appIdV2 *cardv1.ApplicationIdentificationV2) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardApplicationIdentificationV2(appIdV2 *cardv1.ApplicationIdentificationV2) ([]byte, error) {
 	if appIdV2 == nil {
-		return data, nil
+		return nil, nil
 	}
 
 	// Get the appropriate nested message based on card type
@@ -113,6 +113,8 @@ func appendCardApplicationIdentificationV2(data []byte, appIdV2 *cardv1.Applicat
 			vuConfigLength = control.GetVuConfigurationLengthRange()
 		}
 	}
+
+	var data []byte
 
 	// Border crossing records count (1 byte)
 	data = append(data, byte(borderCrossingRecords))

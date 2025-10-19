@@ -73,14 +73,14 @@ func parseCircularPlaceRecordsG2(data []byte, newestIndex int, opts dd.Unmarshal
 	return records, trailingBytes
 }
 
-// appendPlacesG2 marshals the EF_Places data (Gen2 format).
+// MarshalPlacesG2 marshals the EF_Places data (Gen2 format).
 //
 // Gen2 Structure (TCS_152):
 // - placePointerNewestRecord: 2 bytes (not 1!)
 // - placeRecords: N × 21 bytes
-func appendPlacesG2(dst []byte, p *cardv1.PlacesG2) ([]byte, error) {
+func (opts MarshalOptions) MarshalPlacesG2(p *cardv1.PlacesG2) ([]byte, error) {
 	if p == nil {
-		return dst, nil
+		return nil, nil
 	}
 
 	// Calculate expected size: 2 bytes (pointer) + N records × 21 bytes
@@ -98,11 +98,12 @@ func appendPlacesG2(dst []byte, p *cardv1.PlacesG2) ([]byte, error) {
 		binary.BigEndian.PutUint16(canvas[0:2], uint16(p.GetNewestRecordIndex()))
 
 		// Paint each record over canvas
+
 		offset := 2
 		for _, record := range p.GetRecords() {
-			recordBytes, err := dd.AppendPlaceRecordG2(nil, record)
+			recordBytes, err := opts.MarshalPlaceRecordG2(record)
 			if err != nil {
-				return nil, fmt.Errorf("failed to append Gen2 place record: %w", err)
+				return nil, fmt.Errorf("failed to marshal Gen2 place record: %w", err)
 			}
 			if len(recordBytes) != recordSize {
 				return nil, fmt.Errorf("invalid Gen2 place record size: got %d, want %d", len(recordBytes), recordSize)
@@ -111,17 +112,18 @@ func appendPlacesG2(dst []byte, p *cardv1.PlacesG2) ([]byte, error) {
 			offset += recordSize
 		}
 
-		return append(dst, canvas...), nil
+		return canvas, nil
 	}
 
 	// Fall back to building from scratch
+	var dst []byte
 	newestRecordIndex := uint16(p.GetNewestRecordIndex())
 	dst = binary.BigEndian.AppendUint16(dst, newestRecordIndex)
 
 	for _, record := range p.GetRecords() {
-		recordBytes, err := dd.AppendPlaceRecordG2(nil, record)
+		recordBytes, err := opts.MarshalPlaceRecordG2(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append Gen2 place record: %w", err)
+			return nil, fmt.Errorf("failed to marshal Gen2 place record: %w", err)
 		}
 		dst = append(dst, recordBytes...)
 	}
@@ -160,8 +162,9 @@ func AnonymizePlacesG2(p *cardv1.PlacesG2) *cardv1.PlacesG2 {
 	anonymizeTimestampsInPlaceG2(anonymizedRecords)
 
 	// Regenerate raw_data for each record after timestamp modification
+	ddOpts := dd.MarshalOptions{}
 	for _, record := range anonymizedRecords {
-		recordBytes, err := dd.AppendPlaceRecordG2(nil, record)
+		recordBytes, err := ddOpts.MarshalPlaceRecordG2(record)
 		if err == nil {
 			record.SetRawData(recordBytes)
 		}
@@ -169,7 +172,8 @@ func AnonymizePlacesG2(p *cardv1.PlacesG2) *cardv1.PlacesG2 {
 
 	// Regenerate raw_data to match anonymized content
 	// This ensures round-trip fidelity after anonymization
-	anonymizedBytes, err := appendPlacesG2(nil, result)
+	cardOpts := MarshalOptions{}
+	anonymizedBytes, err := cardOpts.MarshalPlacesG2(result)
 	if err == nil {
 		result.SetRawData(anonymizedBytes)
 	}

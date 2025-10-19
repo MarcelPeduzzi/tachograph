@@ -30,14 +30,15 @@ func TestFaultsDataRoundTrip(t *testing.T) {
 	}
 
 	// First unmarshal
-	opts := UnmarshalOptions{}
-	faults1, err := opts.unmarshalFaultsData(data)
+	unmarshalOpts := UnmarshalOptions{}
+	faults1, err := unmarshalOpts.unmarshalFaultsData(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
 	// Marshal
-	marshaled, err := appendFaultsData(nil, faults1)
+	opts := MarshalOptions{}
+	marshaled, err := opts.MarshalFaultsData(faults1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -48,7 +49,7 @@ func TestFaultsDataRoundTrip(t *testing.T) {
 	}
 
 	// Second unmarshal
-	faults2, err := opts.unmarshalFaultsData(marshaled)
+	faults2, err := unmarshalOpts.unmarshalFaultsData(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -75,8 +76,8 @@ func TestFaultsDataAnonymization(t *testing.T) {
 	}
 
 	// Unmarshal
-	opts := UnmarshalOptions{}
-	faults, err := opts.unmarshalFaultsData(data)
+	unmarshalOpts := UnmarshalOptions{}
+	faults, err := unmarshalOpts.unmarshalFaultsData(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
@@ -85,7 +86,8 @@ func TestFaultsDataAnonymization(t *testing.T) {
 	anonymized := AnonymizeFaultsData(faults)
 
 	// Marshal anonymized data
-	anonymizedData, err := appendFaultsData(nil, anonymized)
+	opts := MarshalOptions{}
+	anonymizedData, err := opts.MarshalFaultsData(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}
@@ -205,14 +207,15 @@ func AnonymizeFaultsData(faults *cardv1.FaultsData) *cardv1.FaultsData {
 				testRegNum := &ddv1.StringValue{}
 				testRegNum.SetValue("TEST-VRN")
 				testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-				testRegNum.SetLength(13)                               // Length of data bytes (not including code page)
+				testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
 				anonymizedReg.SetNumber(testRegNum)
 
 				anonymizedFault.SetFaultVehicleRegistration(anonymizedReg)
 			}
 
 			// Regenerate raw_data for binary fidelity
-			rawData, err := appendFaultRecord(nil, anonymizedFault)
+			marshalOpts := MarshalOptions{}
+			rawData, err := marshalOpts.MarshalFaultRecord(anonymizedFault)
 			if err == nil {
 				anonymizedFault.SetRawData(rawData)
 			}

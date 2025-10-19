@@ -149,7 +149,7 @@ func (opts UnmarshalOptions) unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	return &icc, nil
 }
 
-// AppendIcc appends the binary representation of an EF_ICC message to dst.
+// MarshalIcc marshals the binary representation of an EF_ICC message to bytes.
 //
 // The data type `CardIccIdentification` is specified in the Data Dictionary, Section 2.23.
 //
@@ -163,7 +163,7 @@ func (opts UnmarshalOptions) unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 //	    embedderIcAssemblerId       EmbedderIcAssemblerId,   -- 5 bytes
 //	    icIdentifier                OCTET STRING (SIZE(2))
 //	}
-func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
+func (opts MarshalOptions) MarshalIcc(icc *cardv1.Icc) ([]byte, error) {
 	const (
 		lenClockStop                = 1
 		lenCardExtendedSerialNumber = 8
@@ -173,7 +173,9 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 		lenIcIdentifier             = 2
 	)
 
-	var err error
+	var dst []byte
+	
+
 	// Append clock stop (1 byte)
 	clockStopByte, err := dd.MarshalEnum(icc.GetClockStop())
 	if err != nil {
@@ -182,52 +184,59 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	dst = append(dst, clockStopByte)
 
 	// Append extended serial number (8 bytes)
-	dst, err = dd.AppendExtendedSerialNumberAsString(dst, icc.GetCardExtendedSerialNumber(), lenCardExtendedSerialNumber)
+	esnBytes, err := opts.MarshalExtendedSerialNumberAsString(icc.GetCardExtendedSerialNumber(), lenCardExtendedSerialNumber)
 	if err != nil {
 		return nil, err
 	}
+	dst = append(dst, esnBytes...)
 
 	// Append card approval number (8 bytes)
-	dst, err = dd.AppendIa5StringValue(dst, icc.GetCardApprovalNumber())
+	approvalBytes, err := opts.MarshalIa5StringValue(icc.GetCardApprovalNumber())
 	if err != nil {
 		return nil, err
 	}
+	dst = append(dst, approvalBytes...)
 
 	// Append card personaliser ID (1 byte)
 	dst = append(dst, byte(icc.GetCardPersonaliserId()))
 
 	// Append embedder IC assembler ID (5 bytes)
-	dst, err = appendEmbedderIcAssemblerId(dst, icc.GetEmbedderIcAssemblerId())
+	eiaBytes, err := opts.MarshalEmbedderIcAssemblerId(icc.GetEmbedderIcAssemblerId())
 	if err != nil {
 		return nil, err
 	}
+	dst = append(dst, eiaBytes...)
 
 	// Append IC identifier (2 bytes)
 	dst = append(dst, icc.GetIcIdentifier()...)
 	return dst, nil
 }
 
-// appendEmbedderIcAssemblerId appends an EmbedderIcAssemblerId structure (5 bytes total)
-func appendEmbedderIcAssemblerId(dst []byte, eia *cardv1.Icc_EmbedderIcAssemblerId) ([]byte, error) {
+// MarshalEmbedderIcAssemblerId marshals an EmbedderIcAssemblerId structure (5 bytes total)
+func (opts MarshalOptions) MarshalEmbedderIcAssemblerId(eia *cardv1.Icc_EmbedderIcAssemblerId) ([]byte, error) {
 	const lenEmbedderIcAssemblerId = 5
 
 	if eia == nil {
-		// Append default values: 5 zero bytes
-		return append(dst, make([]byte, lenEmbedderIcAssemblerId)...), nil
+		// Return default values: 5 zero bytes
+		return make([]byte, lenEmbedderIcAssemblerId), nil
 	}
 
-	var err error
+	var dst []byte
+	
+
 	// Append country code (2 bytes, IA5String)
-	dst, err = dd.AppendIa5StringValue(dst, eia.GetCountryCode())
+	countryCodeBytes, err := opts.MarshalIa5StringValue(eia.GetCountryCode())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append country code: %w", err)
+		return nil, fmt.Errorf("failed to marshal country code: %w", err)
 	}
+	dst = append(dst, countryCodeBytes...)
 
 	// Append module embedder (2 bytes, IA5String)
-	dst, err = dd.AppendIa5StringValue(dst, eia.GetModuleEmbedder())
+	moduleEmbedderBytes, err := opts.MarshalIa5StringValue(eia.GetModuleEmbedder())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append module embedder: %w", err)
+		return nil, fmt.Errorf("failed to marshal module embedder: %w", err)
 	}
+	dst = append(dst, moduleEmbedderBytes...)
 
 	// Append manufacturer information (1 byte)
 	dst = append(dst, byte(eia.GetManufacturerInformation()))

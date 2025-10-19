@@ -53,7 +53,7 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumberAndGeneration(data []byte) (
 	return fullCardNumberAndGen, nil
 }
 
-// appendFullCardNumberAndGeneration appends full card number and generation data to dst.
+// MarshalFullCardNumberAndGeneration marshals full card number and generation data to bytes.
 //
 // The data type `FullCardNumberAndGeneration` is specified in the Data Dictionary, Section 2.74.
 //
@@ -69,25 +69,27 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumberAndGeneration(data []byte) (
 //   - Generation (1 byte): Generation enum value
 //
 //nolint:unused
-func AppendFullCardNumberAndGeneration(dst []byte, fullCardNumberAndGen *ddv1.FullCardNumberAndGeneration) ([]byte, error) {
+func (opts MarshalOptions) MarshalFullCardNumberAndGeneration(fullCardNumberAndGen *ddv1.FullCardNumberAndGeneration) ([]byte, error) {
 	if fullCardNumberAndGen == nil {
 		return nil, fmt.Errorf("fullCardNumberAndGeneration cannot be nil")
 	}
 
-	// Append full card number (variable length)
+	var dst []byte
+
+	// Marshal full card number (variable length)
 	fullCardNumber := fullCardNumberAndGen.GetFullCardNumber()
 	if fullCardNumber != nil {
-		var err error
-		dst, err = AppendFullCardNumber(dst, fullCardNumber)
+		fullCardNumberBytes, err := opts.MarshalFullCardNumber(fullCardNumber)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append full card number: %w", err)
+			return nil, fmt.Errorf("failed to marshal full card number: %w", err)
 		}
+		dst = append(dst, fullCardNumberBytes...)
 	}
 
-	// Append generation (1 byte)
+	// Marshal generation (1 byte)
 	generationByte, err := MarshalEnum(fullCardNumberAndGen.GetGeneration())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append generation: %w", err)
+		return nil, fmt.Errorf("failed to marshal generation: %w", err)
 	}
 	dst = append(dst, generationByte)
 

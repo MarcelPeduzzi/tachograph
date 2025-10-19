@@ -60,7 +60,7 @@ func (opts UnmarshalOptions) UnmarshalGNSSPlaceRecord(data []byte) (*ddv1.GNSSPl
 	return record, nil
 }
 
-// AppendGNSSPlaceRecord appends a GNSSPlaceRecord to dst.
+// MarshalGNSSPlaceRecord marshals a GNSSPlaceRecord to bytes.
 //
 // The data type `GNSSPlaceRecord` is specified in the Data Dictionary, Section 2.80.
 //
@@ -79,31 +79,34 @@ func (opts UnmarshalOptions) UnmarshalGNSSPlaceRecord(data []byte) (*ddv1.GNSSPl
 //	Offset 5: geoCoordinates (6 bytes)
 //
 // This format is used consistently across all contexts (VU downloads, card files, etc.).
-func AppendGNSSPlaceRecord(dst []byte, record *ddv1.GNSSPlaceRecord) ([]byte, error) {
+func (opts MarshalOptions) MarshalGNSSPlaceRecord(record *ddv1.GNSSPlaceRecord) ([]byte, error) {
 	if record == nil {
-		// Append 11 zero bytes if no GNSS data
-		return append(dst, make([]byte, 11)...), nil
+		// Return 11 zero bytes if no GNSS data
+		return make([]byte, 11), nil
 	}
 
-	// Append timestamp (TimeReal - 4 bytes)
-	var err error
-	dst, err = AppendTimeReal(dst, record.GetTimestamp())
+	var dst []byte
+
+	// Marshal timestamp (TimeReal - 4 bytes)
+	timeBytes, err := opts.MarshalTimeReal(record.GetTimestamp())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append timestamp: %w", err)
+		return nil, fmt.Errorf("failed to marshal timestamp: %w", err)
 	}
+	dst = append(dst, timeBytes...)
 
-	// Append gnssAccuracy (1 byte)
+	// Marshal gnssAccuracy (1 byte)
 	accuracy := record.GetGnssAccuracy()
 	if accuracy < 0 || accuracy > 255 {
 		return nil, fmt.Errorf("invalid GNSS accuracy: %d (must be 0-255)", accuracy)
 	}
 	dst = append(dst, byte(accuracy))
 
-	// Append geoCoordinates (6 bytes)
-	dst, err = AppendGeoCoordinates(dst, record.GetGeoCoordinates())
+	// Marshal geoCoordinates (6 bytes)
+	geoBytes, err := opts.MarshalGeoCoordinates(record.GetGeoCoordinates())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append geo coordinates: %w", err)
+		return nil, fmt.Errorf("failed to marshal geo coordinates: %w", err)
 	}
+	dst = append(dst, geoBytes...)
 
 	return dst, nil
 }

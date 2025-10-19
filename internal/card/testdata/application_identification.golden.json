@@ -2,7 +2,6 @@
   "cardType": "DRIVER_CARD",
   "typeOfTachographCardId": "DRIVER_CARD",
   "cardStructureVersion": {
-    "rawData": "AAA=",
     "major": 0,
     "minor": 0
   },

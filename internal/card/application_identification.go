@@ -107,7 +107,7 @@ func (opts UnmarshalOptions) unmarshalApplicationIdentification(data []byte) (*c
 	return target, nil
 }
 
-// AppendCardApplicationIdentification appends Gen1 application identification data to a byte slice.
+// MarshalCardApplicationIdentification marshals Gen1 application identification data.
 //
 // The data type `ApplicationIdentification` is specified in the Data Dictionary, Section 2.2.
 //
@@ -123,10 +123,12 @@ func (opts UnmarshalOptions) unmarshalApplicationIdentification(data []byte) (*c
 //	    noOfCardPlaceRecords      INTEGER(0..255),
 //	    noOfCalibrationRecords    INTEGER(0..255)
 //	}
-func appendCardApplicationIdentification(data []byte, appId *cardv1.ApplicationIdentification) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardApplicationIdentification(appId *cardv1.ApplicationIdentification) ([]byte, error) {
 	if appId == nil {
-		return data, nil
+		return nil, nil
 	}
+
+	var data []byte
 
 	// Type of tachograph card ID (1 byte)
 	if appId.HasTypeOfTachographCardId() {
@@ -139,12 +141,13 @@ func appendCardApplicationIdentification(data []byte, appId *cardv1.ApplicationI
 	// Card structure version (2 bytes)
 	structureVersion := appId.GetCardStructureVersion()
 	if structureVersion != nil {
-		// Append using centralized helper
-		var err error
-		data, err = dd.AppendCardStructureVersion(data, structureVersion)
+		// Marshal using centralized helper
+		
+		versionBytes, err := opts.MarshalCardStructureVersion(structureVersion)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append card structure version: %w", err)
+			return nil, fmt.Errorf("failed to marshal card structure version: %w", err)
 		}
+		data = append(data, versionBytes...)
 	} else {
 		data = append(data, 0x00, 0x01) // Default version
 	}

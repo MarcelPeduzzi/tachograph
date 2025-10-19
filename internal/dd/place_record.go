@@ -36,7 +36,9 @@ func (opts UnmarshalOptions) UnmarshalPlaceRecord(data []byte) (*ddv1.PlaceRecor
 	}
 
 	record := &ddv1.PlaceRecord{}
-	record.SetRawData(data)
+	if opts.PreserveRawData {
+		record.SetRawData(data)
+	}
 
 	// Parse entry time (4 bytes)
 	entryTime, err := opts.UnmarshalTimeReal(data[idxEntryTime : idxEntryTime+4])
@@ -75,8 +77,8 @@ func (opts UnmarshalOptions) UnmarshalPlaceRecord(data []byte) (*ddv1.PlaceRecor
 	return record, nil
 }
 
-// AppendPlaceRecord appends a Generation 1 place record (10 bytes).
-func AppendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord) ([]byte, error) {
+// MarshalPlaceRecord marshals a Generation 1 place record (10 bytes) to bytes.
+func (opts MarshalOptions) MarshalPlaceRecord(rec *ddv1.PlaceRecord) ([]byte, error) {
 	const lenPlaceRecord = 10 // Fixed size for Gen1
 
 	// Use raw data painting strategy if available
@@ -89,10 +91,9 @@ func AppendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord) ([]byte, error) {
 	}
 
 	// Paint semantic values over the canvas
-	var err error
-	timeBytes, err := AppendTimeReal(nil, rec.GetEntryTime())
+	timeBytes, err := opts.MarshalTimeReal(rec.GetEntryTime())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append entry time: %w", err)
+		return nil, fmt.Errorf("failed to marshal entry time: %w", err)
 	}
 	copy(canvas[0:4], timeBytes)
 
@@ -122,10 +123,13 @@ func AppendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord) ([]byte, error) {
 	// Otherwise leave as zero (or preserved from raw_data)
 
 	// Odometer (3 bytes)
-	odometerBytes := AppendOdometer(nil, uint32(rec.GetVehicleOdometerKm()))
+	odometerBytes, err := opts.MarshalOdometer(rec.GetVehicleOdometerKm())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal odometer: %w", err)
+	}
 	copy(canvas[7:10], odometerBytes)
 
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }
 
 // anonymizeTimestamp is a placeholder that returns the timestamp unchanged.
@@ -174,7 +178,8 @@ func AnonymizePlaceRecord(rec *ddv1.PlaceRecord) *ddv1.PlaceRecord {
 
 	// Regenerate raw_data to match anonymized values
 	// This ensures round-trip fidelity after anonymization
-	anonymizedBytes, err := AppendPlaceRecord(nil, result)
+	defOpts := MarshalOptions{}
+	anonymizedBytes, err := defOpts.MarshalPlaceRecord(result)
 	if err == nil {
 		result.SetRawData(anonymizedBytes)
 	}

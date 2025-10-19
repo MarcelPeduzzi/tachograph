@@ -35,15 +35,15 @@ func unmarshalDetailedSpeedGen1(value []byte) (*vuv1.DetailedSpeedGen1, error) {
 	return detailedSpeed, nil
 }
 
-// appendDetailedSpeedGen1 marshals Gen1 Detailed Speed data using raw data painting.
-func appendDetailedSpeedGen1(dst []byte, detailedSpeed *vuv1.DetailedSpeedGen1) ([]byte, error) {
+// MarshalDetailedSpeedGen1 marshals Gen1 Detailed Speed data using raw data painting.
+func (opts MarshalOptions) MarshalDetailedSpeedGen1(detailedSpeed *vuv1.DetailedSpeedGen1) ([]byte, error) {
 	if detailedSpeed == nil {
 		return nil, fmt.Errorf("detailedSpeed cannot be nil")
 	}
 
 	raw := detailedSpeed.GetRawData()
 	if len(raw) > 0 {
-		return append(dst, raw...), nil
+		return raw, nil
 	}
 
 	return nil, fmt.Errorf("cannot marshal Detailed Speed Gen1 without raw_data (semantic marshalling not yet implemented)")

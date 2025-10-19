@@ -63,8 +63,8 @@ func TestUnmarshalBcdString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalBcdString(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalBcdString(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalBcdString() expected error, got nil")
@@ -111,18 +111,18 @@ func TestAppendBcdString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			opts := MarshalOptions{}
 			// Create BCD string from input
 			var bcdString *ddv1.BcdString
 			if len(tt.input) > 0 {
-				var opts UnmarshalOptions
+				unmarshalOpts := UnmarshalOptions{}
 				var err error
-				bcdString, err = opts.UnmarshalBcdString(tt.input)
+				bcdString, err = unmarshalOpts.UnmarshalBcdString(tt.input)
 				if err != nil {
 					t.Fatalf("UnmarshalBcdString() unexpected error: %v", err)
 				}
 			}
-			dst := []byte{}
-			got, err := AppendBcdString(dst, bcdString)
+			got, err := opts.MarshalBcdString(bcdString)
 			if err != nil {
 				t.Fatalf("AppendBcdString() unexpected error: %v", err)
 			}
@@ -154,8 +154,8 @@ func TestBcdStringRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			bcdString, err := opts.UnmarshalBcdString(tt.input)
+			unmarshalOpts := UnmarshalOptions{}
+			bcdString, err := unmarshalOpts.UnmarshalBcdString(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalBcdString() unexpected error: %v", err)
 			}
@@ -163,8 +163,8 @@ func TestBcdStringRoundTrip(t *testing.T) {
 				t.Fatal("UnmarshalBcdString() returned nil")
 			}
 			// Marshal
-			dst := []byte{}
-			got, err := AppendBcdString(dst, bcdString)
+			marshalOpts := MarshalOptions{}
+			got, err := marshalOpts.MarshalBcdString(bcdString)
 			if err != nil {
 				t.Fatalf("AppendBcdString() unexpected error: %v", err)
 			}
@@ -248,12 +248,12 @@ func TestAppendBcdString_WithLength(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			opts := MarshalOptions{}
 			bcdString := &ddv1.BcdString{}
 			bcdString.SetValue(tt.value)
 			bcdString.SetLength(tt.length)
 
-			dst := []byte{}
-			got, err := AppendBcdString(dst, bcdString)
+			got, err := opts.MarshalBcdString(bcdString)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("AppendBcdString() expected error, got nil")

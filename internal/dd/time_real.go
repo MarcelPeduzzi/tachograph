@@ -30,7 +30,7 @@ func (opts UnmarshalOptions) UnmarshalTimeReal(data []byte) (*timestamppb.Timest
 	return timestamppb.New(time.Unix(int64(timeVal), 0)), nil
 }
 
-// AppendTimeReal appends a 4-byte TimeReal value.
+// MarshalTimeReal marshals a 4-byte TimeReal value.
 //
 // The data type `TimeReal` is specified in the Data Dictionary, Section 2.162.
 //
@@ -40,9 +40,11 @@ func (opts UnmarshalOptions) UnmarshalTimeReal(data []byte) (*timestamppb.Timest
 //
 // Binary Layout (4 bytes):
 //   - Seconds since Unix epoch (4 bytes): Big-endian uint32
-func AppendTimeReal(dst []byte, ts *timestamppb.Timestamp) ([]byte, error) {
+func (opts MarshalOptions) MarshalTimeReal(ts *timestamppb.Timestamp) ([]byte, error) {
 	if ts.GetNanos() > 0 {
 		return nil, fmt.Errorf("nanosecond resolution is not supported for TimeReal")
 	}
-	return binary.BigEndian.AppendUint32(dst, uint32(ts.GetSeconds())), nil
+	var buf [4]byte
+	binary.BigEndian.PutUint32(buf[:], uint32(ts.GetSeconds()))
+	return buf[:], nil
 }

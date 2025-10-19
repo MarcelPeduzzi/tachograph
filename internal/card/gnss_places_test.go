@@ -29,13 +29,14 @@ func TestGnssPlacesRoundTrip(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	gnssPlaces1, err := opts.unmarshalGnssPlaces(data)
+	unmarshalOpts := UnmarshalOptions{}
+	gnssPlaces1, err := unmarshalOpts.unmarshalGnssPlaces(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
-	marshaled, err := appendCardGnssPlaces(nil, gnssPlaces1)
+	opts := MarshalOptions{}
+	marshaled, err := opts.MarshalCardGnssPlaces(gnssPlaces1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -44,7 +45,7 @@ func TestGnssPlacesRoundTrip(t *testing.T) {
 		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
 	}
 
-	gnssPlaces2, err := opts.unmarshalGnssPlaces(marshaled)
+	gnssPlaces2, err := unmarshalOpts.unmarshalGnssPlaces(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -68,15 +69,16 @@ func TestGnssPlacesAnonymization(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	gnssPlaces, err := opts.unmarshalGnssPlaces(data)
+	unmarshalOpts := UnmarshalOptions{}
+	gnssPlaces, err := unmarshalOpts.unmarshalGnssPlaces(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
 
 	anonymized := AnonymizeGnssPlaces(gnssPlaces)
 
-	anonymizedData, err := appendCardGnssPlaces(nil, anonymized)
+	opts := MarshalOptions{}
+	anonymizedData, err := opts.MarshalCardGnssPlaces(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}

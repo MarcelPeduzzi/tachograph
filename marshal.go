@@ -4,9 +4,26 @@ import (
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/card"
+	"github.com/way-platform/tachograph-go/internal/dd"
 	"github.com/way-platform/tachograph-go/internal/vu"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
+
+// Marshal serializes a parsed tachograph file into binary format with default options.
+//
+// This is a convenience function that uses default options:
+// - UseRawData: true (use raw data painting for perfect round-trip fidelity)
+//
+// For custom options, use MarshalOptions directly:
+//
+//	opts := MarshalOptions{UseRawData: false}
+//	data, err := opts.Marshal(file)
+func Marshal(file *tachographv1.File) ([]byte, error) {
+	opts := MarshalOptions{
+		UseRawData: true,
+	}
+	return opts.Marshal(file)
+}
 
 // MarshalOptions configures the marshaling process for tachograph files.
 type MarshalOptions struct {
@@ -25,23 +42,22 @@ type MarshalOptions struct {
 
 // Marshal serializes a parsed tachograph file into its binary representation.
 //
-// The zero value of MarshalOptions uses raw data painting for perfect
-// round-trip fidelity.
+// Use NewMarshalOptions() to create options with sensible defaults, or
+// construct MarshalOptions directly to customize behavior.
 func (o MarshalOptions) Marshal(file *tachographv1.File) ([]byte, error) {
-	// Apply defaults
-	if o == (MarshalOptions{}) {
-		o.UseRawData = true
-	}
-
 	switch file.GetType() {
 	case tachographv1.File_DRIVER_CARD:
 		cardOpts := card.MarshalOptions{
-			UseRawData: o.UseRawData,
+			MarshalOptions: dd.MarshalOptions{
+				UseRawData: o.UseRawData,
+			},
 		}
 		return cardOpts.MarshalDriverCardFile(file.GetDriverCard())
 	case tachographv1.File_VEHICLE_UNIT:
 		vuOpts := vu.MarshalOptions{
-			UseRawData: o.UseRawData,
+			MarshalOptions: dd.MarshalOptions{
+				UseRawData: o.UseRawData,
+			},
 		}
 		return vuOpts.MarshalVehicleUnitFile(file.GetVehicleUnit())
 	default:

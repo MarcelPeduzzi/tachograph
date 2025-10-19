@@ -63,7 +63,7 @@ func (opts UnmarshalOptions) UnmarshalExtendedSerialNumber(data []byte) (*ddv1.E
 	return esn, nil
 }
 
-// appendExtendedSerialNumber appends extended serial number data to dst.
+// MarshalExtendedSerialNumber marshals extended serial number data to bytes.
 //
 // The data type `ExtendedSerialNumber` is specified in the Data Dictionary, Section 2.72.
 //
@@ -83,38 +83,40 @@ func (opts UnmarshalOptions) UnmarshalExtendedSerialNumber(data []byte) (*ddv1.E
 //   - Manufacturer Code (1 byte): ManufacturerCode
 //
 //nolint:unused
-func AppendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber) ([]byte, error) {
+func (opts MarshalOptions) MarshalExtendedSerialNumber(esn *ddv1.ExtendedSerialNumber) ([]byte, error) {
 	if esn == nil {
 		return nil, fmt.Errorf("extendedSerialNumber cannot be nil")
 	}
 
-	// Append serial number (4 bytes, big-endian)
+	var dst []byte
+
+	// Marshal serial number (4 bytes, big-endian)
 	serialNumber := esn.GetSerialNumber()
 	dst = binary.BigEndian.AppendUint32(dst, uint32(serialNumber))
 
-	// Append month/year BCD (2 bytes, MMYY format)
-	var err error
-	dst, err = AppendMonthYear(dst, esn.GetMonthYear())
+	// Marshal month/year BCD (2 bytes, MMYY format)
+	monthYearBytes, err := opts.MarshalMonthYear(esn.GetMonthYear())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append month/year: %w", err)
+		return nil, fmt.Errorf("failed to marshal month/year: %w", err)
 	}
+	dst = append(dst, monthYearBytes...)
 
-	// Append equipment type (1 byte)
+	// Marshal equipment type (1 byte)
 	equipmentTypeByte, err := MarshalEnum(esn.GetType())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append equipment type: %w", err)
+		return nil, fmt.Errorf("failed to marshal equipment type: %w", err)
 	}
 	dst = append(dst, equipmentTypeByte)
 
-	// Append manufacturer code (1 byte)
+	// Marshal manufacturer code (1 byte)
 	dst = append(dst, byte(esn.GetManufacturerCode()))
 
 	return dst, nil
 }
 
-// appendExtendedSerialNumberAsString appends an ExtendedSerialNumber structure as string (legacy compatibility).
+// MarshalExtendedSerialNumberAsString marshals an ExtendedSerialNumber structure as string (legacy compatibility).
 // This function maintains compatibility with existing code that expects a string representation.
-func AppendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumber, maxLen int) ([]byte, error) {
+func (opts MarshalOptions) MarshalExtendedSerialNumberAsString(esn *ddv1.ExtendedSerialNumber, maxLen int) ([]byte, error) {
 	if esn == nil {
 		return nil, fmt.Errorf("extendedSerialNumber cannot be nil")
 	}
@@ -129,14 +131,12 @@ func AppendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumb
 	}
 
 	// Next 2 bytes: month/year (BCD)
-	// Append month/year to a temporary buffer, then copy to serialBytes
-	tempBytes := make([]byte, 0, 2)
-	tempBytes, err := AppendMonthYear(tempBytes, esn.GetMonthYear())
+	monthYearBytes, err := opts.MarshalMonthYear(esn.GetMonthYear())
 	if err != nil {
 		return nil, err
 	}
-	if len(tempBytes) >= 2 {
-		copy(serialBytes[4:6], tempBytes[:2])
+	if len(monthYearBytes) >= 2 {
+		copy(serialBytes[4:6], monthYearBytes[:2])
 	}
 
 	// Next byte: equipment type (converted to protocol value using generic helper)
@@ -162,5 +162,5 @@ func AppendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumb
 		serialBytes = append(serialBytes, padding...)
 	}
 
-	return append(dst, serialBytes...), nil
+	return serialBytes, nil
 }

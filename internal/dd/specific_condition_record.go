@@ -47,7 +47,7 @@ func (opts UnmarshalOptions) UnmarshalSpecificConditionRecord(data []byte) (*ddv
 	return record, nil
 }
 
-// AppendSpecificConditionRecord appends a SpecificConditionRecord to dst.
+// MarshalSpecificConditionRecord marshals a SpecificConditionRecord to bytes.
 //
 // The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
 //
@@ -57,24 +57,26 @@ func (opts UnmarshalOptions) UnmarshalSpecificConditionRecord(data []byte) (*ddv
 //	    entryTime TimeReal,
 //	    specificConditionType SpecificConditionType
 //	}
-func AppendSpecificConditionRecord(dst []byte, record *ddv1.SpecificConditionRecord) ([]byte, error) {
+func (opts MarshalOptions) MarshalSpecificConditionRecord(record *ddv1.SpecificConditionRecord) ([]byte, error) {
 	if record == nil {
 		return nil, fmt.Errorf("specific condition record cannot be nil")
 	}
 
-	// Append entryTime (TimeReal - 4 bytes)
+	var dst []byte
+
+	// Marshal entryTime (TimeReal - 4 bytes)
 	entryTime := record.GetEntryTime()
 	if entryTime == nil {
 		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
 	} else {
-		var err error
-		dst, err = AppendTimeReal(dst, entryTime)
+		timeBytes, err := opts.MarshalTimeReal(entryTime)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append entry time: %w", err)
+			return nil, fmt.Errorf("failed to marshal entry time: %w", err)
 		}
+		dst = append(dst, timeBytes...)
 	}
 
-	// Append specificConditionType (1 byte)
+	// Marshal specificConditionType (1 byte)
 	var conditionType byte
 	if record.GetSpecificConditionType() == ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNRECOGNIZED {
 		conditionType = byte(record.GetUnrecognizedSpecificConditionType())

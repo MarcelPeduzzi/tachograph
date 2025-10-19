@@ -14,11 +14,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgvhAAASAQCLEF4L4QAMAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T01:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -30,11 +28,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgvvEAMSAQCLdF4L7xAnAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T02:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -46,11 +42,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xgv9IAMSAQCMPF4L/SAbAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T03:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -62,11 +56,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgwLMAASAQCMPF4MCzAbAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T04:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -78,11 +70,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgwZQAMSAQCMoF4MGUANAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T05:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -94,11 +84,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgwnUAMSAQCMoF4MJ1ANAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T06:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -110,11 +98,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xgw1YAASAQCMoF4MNWANAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T07:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -126,11 +112,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgxDcAMSAQCOMF4MQ3AKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T08:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -142,11 +126,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgxRgAASAQCOMF4MUYAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T09:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -158,11 +140,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgxfkAMSAQCOlF4MX5AXAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T10:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -174,11 +154,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgxtoAMSAQCOlF4MbaAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T11:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -190,11 +168,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xgx7sAASAQCOlF4Me7AKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T12:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -206,11 +182,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgyJwAMSAQCO+F4MicAfAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T13:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -222,11 +196,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgyX0AMSAQCO+F4Ml9AJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T14:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -238,11 +210,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xgyl4AASAQCO+F4MpeAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T15:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -254,11 +224,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xgyz8AMSAQCPXF4Ms/AbAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T16:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -270,11 +238,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgzCAAMSAQCQJF4MwgAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T17:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -286,11 +252,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgzQEAASAQCQJF4M0BAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T18:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -302,11 +266,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgzeIAMSAQCQiF4M3iANAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T19:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -318,11 +280,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XgzsMAMSAQCQiF4M7DALAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T20:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -334,11 +294,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xgz6QAASAQCQiF4M+kALAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T21:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -350,11 +308,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg0IUAMSAQCQ7F4NCFAnAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T22:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -366,11 +322,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg0WYAMSAQCQ7F4NFmAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-01T23:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -382,11 +336,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg0kcAASAQCQ7F4NJHAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T00:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -398,11 +350,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg0ygAMSAQCRUF4NMoAOAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T01:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -414,11 +364,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg1AkAMSAQCSfF4NQJAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T02:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -430,11 +378,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg1OoAASAQCSfF4NTqAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T03:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -446,11 +392,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg1csAMSAQCSfF4NXLAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T04:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -462,11 +406,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg1qwAASAQCSfF4NasAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T05:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -478,11 +420,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg140AMSAQCS4F4NeNAlAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T06:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -494,11 +434,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg2G4AMSAQCS4F4NhuAGAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T07:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -510,11 +448,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg2U8AASAQCS4F4NlPAGAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T08:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -526,11 +462,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg2jAAMSAQCTRF4NowAGAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T09:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -542,11 +476,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg2xEAMSAQCU1F4NsRAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T10:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -558,11 +490,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg2/IAASAQCU1F4NvyAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T11:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -574,11 +504,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg3NMAMSAQCVOF4NzTBNAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T12:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -590,11 +518,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg3bQAMSAQCWAF4N20AIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T13:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -606,11 +532,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg3pUAASAQCWAF4N6VAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T14:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -622,11 +546,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg33YAMSAQCWZF4N92AhAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T15:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -638,11 +560,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg4FcAMSAQCWyF4OBXAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T16:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -654,11 +574,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg4TgAASAQCWyF4OE4AJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T17:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -670,11 +588,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg4hkAMSAQCYWF4OIZAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T18:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -686,11 +602,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg4voAASAQCYWF4OL6AIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T19:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -702,11 +616,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg49sAASAQB1lF4OPbAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T20:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -718,11 +630,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg5LwAESAQB1+F4OS8ALAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T21:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -734,11 +644,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg5Z0AASAQFFAF4OWdAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T22:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -750,11 +658,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg5n4AESAQFFyF4OZ+AFAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-02T23:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -766,11 +672,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg518AASAQFFyF4OdfAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T00:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -782,11 +686,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg6EAAESAQFGkF4OhAAGAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T01:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -798,11 +700,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg6SEAASAQFGkF4OkhAaAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T02:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -814,11 +714,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg6gIAESAQFG9F4OoCAGAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T03:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -830,11 +728,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg6uMAASAQFG9F4OrjAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T04:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -846,11 +742,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg68QAESAQFHWF4OvEAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T05:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -862,11 +756,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg7KUAASAQCvAF4OylAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T06:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -878,11 +770,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg7YYAESAQCvZF4O2GAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T07:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -894,11 +784,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg7mcAASAQCvZF4O5nAmAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T08:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -910,11 +798,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg70gAESAQCwLF4O9IAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T09:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -926,11 +812,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg8CkAASAQCwLF4PApAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T10:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -942,11 +826,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg8QoAMSAQB5GF4PEKALAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T11:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -958,11 +840,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg8esAASAQB5GF4PHrALAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T12:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -974,11 +854,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg8swAMSAQB5fF4PLMARAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T13:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -990,11 +868,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg860AMSAQB5fF4POtAMAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T14:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1006,11 +882,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg9I4AASAQB5fF4PSOAMAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T15:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1022,11 +896,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg9W8AMSAQB54F4PVvBkAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T16:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1038,11 +910,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg9lAAMSAQB54F4PZQAUAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T17:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1054,11 +924,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg9zEAASAQB54F4PcxAUAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T18:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1070,11 +938,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg+BIAMSAQB71F4PgSAHAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T19:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1086,11 +952,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg+PMAASAQB71F4PjzAHAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T20:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1102,11 +966,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg+dQAMSAQB8OF4PnUANAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T21:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1118,11 +980,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg+rUAASAQB8OF4Pq1ANAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T22:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1134,11 +994,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg+5YAMSAQB8nF4PuWAOAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-03T23:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1150,11 +1008,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg/HcAMSAQB8nF4Px3AiAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T00:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1166,11 +1022,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg/VgAASAQB8nF4P1YAiAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T01:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1182,11 +1036,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg/jkAMSAQB9AF4P45AOAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T02:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1198,11 +1050,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg/xoAASAQB9AF4P8aAOAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T03:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1214,11 +1064,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "Xg//sAMSAQB+kF4P/7AMAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T04:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1230,11 +1078,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhANwAASAQB+kF4QDcAMAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T05:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1246,11 +1092,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhAb0AMSAQB+9F4QG9AJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T06:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1262,11 +1106,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhAp4AASAQB+9F4QKeAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T07:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1278,11 +1120,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhA38AMSAQB/WF4QN/AKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T08:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1294,11 +1134,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhBGAAMSAQB/WF4QRgAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T09:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1310,11 +1148,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhBUEAASAQB/WF4QVBAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T10:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1326,11 +1162,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhBiIAMSAQB/vF4QYiAPAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T11:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1342,11 +1176,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhBwMAMSAQCAhF4QcDALAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T12:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1358,11 +1190,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhB+QAASAQCAhF4QfkALAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T13:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1374,11 +1204,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhCMUAMSAQCCeF4QjFAUAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T14:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1390,11 +1218,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhCaYAASAQCCeF4QmmAUAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T15:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1406,11 +1232,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhCocAMSAQCC3F4QqHAaAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T16:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1422,11 +1246,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhC2gAMSAQCC3F4QtoAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T17:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1438,11 +1260,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhDEkAASAQCC3F4QxJAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T18:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1454,11 +1274,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhDSoAMSAQCDQF4Q0qAPAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T19:00:00Z",
       "entryTypeDailyWorkPeriod": "END",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1470,11 +1288,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhDgsAESAQCDQF4Q4LAPAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T20:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1486,11 +1302,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhDuwAASAQBujF4Q7sAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T21:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1502,11 +1316,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhD80AMSAQCECF4Q/NAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T22:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1518,11 +1330,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhEK4AASAQCECF4RCuAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-04T23:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1534,11 +1344,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhEY8AMSAQCEbF4RGPAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T00:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1550,11 +1358,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhEnAAASAQCEbF4RJwAKAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T01:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1566,11 +1372,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhE1EAMSAQCE0F4RNRAcAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T02:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1582,11 +1386,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhFDIAMSAQCE0F4RQyAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T03:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1598,11 +1400,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhFRMAASAQCE0F4RUTAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T04:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1614,11 +1414,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhFfQAMSAQCFNF4RX0BGAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T05:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1630,11 +1428,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhFtUAMSAQCF/F4RbVAJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T06:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1646,11 +1442,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhF7YAASAQCF/F4Re2AJAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T07:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1662,11 +1456,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhGJcAMSAQCGYF4RiXAaAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T08:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1678,11 +1470,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhGXgAMSAQCHjF4Rl4AIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T09:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1694,11 +1484,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhGlkAASAQCHjF4RpZAIAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T10:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1710,11 +1498,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhGzoAMSAQCH8F4Rs6AQAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T11:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1726,11 +1512,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhHBsAMSAQCJ5F4RwbAeAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T12:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1742,11 +1526,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhHPwAMSAQCKrF4Rz8AHAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T13:00:00Z",
       "entryTypeDailyWorkPeriod": "BEGIN",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1758,11 +1540,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhHd0AASAQCKrF4R3dAHAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T14:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1774,11 +1554,9 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhHr4AMSAQCLEF4R6+AjAOrEAF/w"
+      }
     },
     {
-      "entryTime": "2020-01-05T15:00:00Z",
       "entryTypeDailyWorkPeriod": "END_GNSS",
       "dailyWorkPeriodCountry": "FINLAND",
       "dailyWorkPeriodRegion": "AQ==",
@@ -1790,9 +1568,8 @@
           "latitude": 60100,
           "longitude": 24560
         }
-      },
-      "rawData": "XhH58AMSAQCLEF4R+fAMAOrEAF/w"
+      }
     }
   ],
-  "rawData": "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"
+  "rawData": "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"
 }

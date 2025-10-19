@@ -30,14 +30,15 @@ func TestCurrentUsageRoundTrip(t *testing.T) {
 	}
 
 	// First unmarshal
-	opts := UnmarshalOptions{}
-	cu1, err := opts.unmarshalCurrentUsage(data)
+	unmarshalOpts := UnmarshalOptions{}
+	cu1, err := unmarshalOpts.unmarshalCurrentUsage(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
 	// Marshal
-	marshaled, err := appendCurrentUsage(nil, cu1)
+	opts := MarshalOptions{}
+	marshaled, err := opts.MarshalCurrentUsage(cu1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -48,7 +49,7 @@ func TestCurrentUsageRoundTrip(t *testing.T) {
 	}
 
 	// Second unmarshal
-	cu2, err := opts.unmarshalCurrentUsage(marshaled)
+	cu2, err := unmarshalOpts.unmarshalCurrentUsage(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -75,8 +76,8 @@ func TestCurrentUsageAnonymization(t *testing.T) {
 	}
 
 	// Unmarshal
-	opts := UnmarshalOptions{}
-	cu, err := opts.unmarshalCurrentUsage(data)
+	unmarshalOpts := UnmarshalOptions{}
+	cu, err := unmarshalOpts.unmarshalCurrentUsage(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
@@ -85,7 +86,8 @@ func TestCurrentUsageAnonymization(t *testing.T) {
 	anonymized := AnonymizeCurrentUsage(cu)
 
 	// Marshal anonymized data
-	anonymizedData, err := appendCurrentUsage(nil, anonymized)
+	opts := MarshalOptions{}
+	anonymizedData, err := opts.MarshalCurrentUsage(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}
@@ -191,7 +193,7 @@ func AnonymizeCurrentUsage(cu *cardv1.CurrentUsage) *cardv1.CurrentUsage {
 		testRegNum := &ddv1.StringValue{}
 		testRegNum.SetValue("TEST-123")
 		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-		testRegNum.SetLength(13)                               // Length of data bytes (not including code page)
+		testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
 		anonymizedReg.SetNumber(testRegNum)
 
 		anonymized.SetSessionOpenVehicle(anonymizedReg)

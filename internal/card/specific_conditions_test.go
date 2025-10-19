@@ -28,13 +28,14 @@ func TestSpecificConditionsRoundTrip(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	sc1, err := opts.unmarshalSpecificConditions(data)
+	unmarshalOpts := UnmarshalOptions{}
+	sc1, err := unmarshalOpts.unmarshalSpecificConditions(data)
 	if err != nil {
 		t.Fatalf("First unmarshal failed: %v", err)
 	}
 
-	marshaled, err := appendCardSpecificConditions(nil, sc1)
+	marshalOpts := MarshalOptions{}
+	marshaled, err := marshalOpts.MarshalCardSpecificConditions(sc1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -43,7 +44,7 @@ func TestSpecificConditionsRoundTrip(t *testing.T) {
 		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
 	}
 
-	sc2, err := opts.unmarshalSpecificConditions(marshaled)
+	sc2, err := unmarshalOpts.unmarshalSpecificConditions(marshaled)
 	if err != nil {
 		t.Fatalf("Second unmarshal failed: %v", err)
 	}
@@ -67,15 +68,16 @@ func TestSpecificConditionsAnonymization(t *testing.T) {
 		t.Fatalf("Failed to decode base64: %v", err)
 	}
 
-	opts := UnmarshalOptions{}
-	sc, err := opts.unmarshalSpecificConditions(data)
+	unmarshalOpts := UnmarshalOptions{}
+	sc, err := unmarshalOpts.unmarshalSpecificConditions(data)
 	if err != nil {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
 
 	anonymized := AnonymizeSpecificConditions(sc)
 
-	anonymizedData, err := appendCardSpecificConditions(nil, anonymized)
+	marshalOpts := MarshalOptions{}
+	anonymizedData, err := marshalOpts.MarshalCardSpecificConditions(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}

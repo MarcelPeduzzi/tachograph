@@ -6,8 +6,6 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
@@ -146,7 +144,7 @@ func unmarshalCardVehicleUnitRecord(data []byte, opts UnmarshalOptions) (*cardv1
 	return &record, nil
 }
 
-// appendCardVehicleUnitsUsed appends vehicle units used data to a byte slice.
+// MarshalCardVehicleUnitsUsed marshals vehicle units used data.
 //
 // The data type `CardVehicleUnitsUsed` is specified in the Data Dictionary, Section 2.40.
 //
@@ -169,10 +167,12 @@ func unmarshalCardVehicleUnitRecord(data []byte, opts UnmarshalOptions) (*cardv1
 //   - N * 10 bytes: fixed-size array of CardVehicleUnitRecord
 //
 // The number of records (N) is determined from the original data, not explicitly stored.
-func appendCardVehicleUnitsUsed(dst []byte, vehicleUnits *cardv1.VehicleUnitsUsed) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardVehicleUnitsUsed(vehicleUnits *cardv1.VehicleUnitsUsed) ([]byte, error) {
 	if vehicleUnits == nil {
-		return dst, nil
+		return nil, nil
 	}
+
+	var dst []byte
 
 	// Append newest record pointer (2 bytes)
 	newestRecordPointer := vehicleUnits.GetVehicleUnitPointerNewestRecord()
@@ -182,34 +182,37 @@ func appendCardVehicleUnitsUsed(dst []byte, vehicleUnits *cardv1.VehicleUnitsUse
 	// The binary format is a fixed-size array, so we write exactly what we have
 	records := vehicleUnits.GetRecords()
 	for _, record := range records {
-		var err error
-		dst, err = appendCardVehicleUnitRecord(dst, record)
+		recordBytes, err := opts.MarshalCardVehicleUnitRecord(record)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append vehicle unit record: %w", err)
+			return nil, fmt.Errorf("failed to marshal vehicle unit record: %w", err)
 		}
+		dst = append(dst, recordBytes...)
 	}
 
 	return dst, nil
 }
 
-// appendCardVehicleUnitRecord appends a single vehicle unit record to dst.
+// MarshalCardVehicleUnitRecord marshals a single vehicle unit record.
 //
 // Binary structure (10 bytes):
 //   - 4 bytes: TimeReal timestamp
 //   - 1 byte: ManufacturerCode
 //   - 1 byte: deviceID
 //   - 4 bytes: VuSoftwareVersion (IA5String)
-func appendCardVehicleUnitRecord(dst []byte, record *cardv1.VehicleUnitsUsed_Record) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardVehicleUnitRecord(record *cardv1.VehicleUnitsUsed_Record) ([]byte, error) {
 	if record == nil {
-		return dst, nil
+		return nil, nil
 	}
 
+	var dst []byte
+
 	// Append timestamp (TimeReal - 4 bytes)
-	var err error
-	dst, err = dd.AppendTimeReal(dst, record.GetTimestamp())
+	
+	timestampBytes, err := opts.MarshalTimeReal(record.GetTimestamp())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append timestamp: %w", err)
+		return nil, fmt.Errorf("failed to marshal timestamp: %w", err)
 	}
+	dst = append(dst, timestampBytes...)
 
 	// Append manufacturer code (1 byte)
 	manufacturerCode := record.GetManufacturerCode()

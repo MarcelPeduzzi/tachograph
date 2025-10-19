@@ -277,7 +277,7 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 	return &identification, nil
 }
 
-// AppendCardIdentification appends the binary representation of CardIdentification to dst.
+// MarshalCardIdentification marshals the binary representation of CardIdentification to bytes.
 //
 // The data type `CardIdentification` is specified in the Data Dictionary, Section 2.1.
 //
@@ -291,10 +291,14 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 //	    cardValidityBegin        TimeReal,
 //	    cardExpiryDate           TimeReal
 //	}
-func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byte, error) {
+func (opts MarshalOptions) MarshalCardIdentification(id *cardv1.Identification_Card) ([]byte, error) {
 	if id == nil {
-		return dst, nil
+		return nil, nil
 	}
+
+	var dst []byte
+	
+
 	// Append cardIssuingMemberState (1 byte) - get protocol value from enum
 	memberState := id.GetCardIssuingMemberState()
 	var memberStateByte byte
@@ -397,26 +401,35 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		}
 	}
 	dst = append(dst, cardNumberBytes...)
-	dst, err = dd.AppendStringValue(dst, id.GetCardIssuingAuthorityName())
+
+	issuingAuthorityNameBytes, err := opts.MarshalStringValue(id.GetCardIssuingAuthorityName())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card issuing authority name: %w", err)
+		return nil, fmt.Errorf("failed to marshal card issuing authority name: %w", err)
 	}
-	dst, err = dd.AppendTimeReal(dst, id.GetCardIssueDate())
+	dst = append(dst, issuingAuthorityNameBytes...)
+
+	issueDateBytes, err := opts.MarshalTimeReal(id.GetCardIssueDate())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card issue date: %w", err)
+		return nil, fmt.Errorf("failed to marshal card issue date: %w", err)
 	}
-	dst, err = dd.AppendTimeReal(dst, id.GetCardValidityBegin())
+	dst = append(dst, issueDateBytes...)
+
+	validityBeginBytes, err := opts.MarshalTimeReal(id.GetCardValidityBegin())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card validity begin: %w", err)
+		return nil, fmt.Errorf("failed to marshal card validity begin: %w", err)
 	}
-	dst, err = dd.AppendTimeReal(dst, id.GetCardExpiryDate())
+	dst = append(dst, validityBeginBytes...)
+
+	expiryDateBytes, err := opts.MarshalTimeReal(id.GetCardExpiryDate())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card expiry date: %w", err)
+		return nil, fmt.Errorf("failed to marshal card expiry date: %w", err)
 	}
+	dst = append(dst, expiryDateBytes...)
+
 	return dst, nil
 }
 
-// AppendDriverCardHolderIdentification appends the binary representation of DriverCardHolderIdentification to dst.
+// MarshalDriverCardHolderIdentification marshals the binary representation of DriverCardHolderIdentification to bytes.
 //
 // The data type `DriverCardHolderIdentification` is specified in the Data Dictionary, Section 2.1.
 //
@@ -428,37 +441,46 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 //	    cardHolderBirthDate          Datef,
 //	    cardHolderPreferredLanguage  Language
 //	}
-func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_DriverCardHolder) ([]byte, error) {
+func (opts MarshalOptions) MarshalDriverCardHolderIdentification(h *cardv1.Identification_DriverCardHolder) ([]byte, error) {
 	if h == nil {
-		return dst, nil
+		return nil, nil
 	}
-	var err error
+
+	var dst []byte
+	
+
 	nameBlock := make([]byte, 0, 72)
-	nameBlock, err = dd.AppendStringValue(nameBlock, h.GetCardHolderSurname())
+	surnameBytes, err := opts.MarshalStringValue(h.GetCardHolderSurname())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card holder surname: %w", err)
+		return nil, fmt.Errorf("failed to marshal card holder surname: %w", err)
 	}
-	nameBlock, err = dd.AppendStringValue(nameBlock, h.GetCardHolderFirstNames())
+	nameBlock = append(nameBlock, surnameBytes...)
+
+	firstNamesBytes, err := opts.MarshalStringValue(h.GetCardHolderFirstNames())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append card holder first names: %w", err)
+		return nil, fmt.Errorf("failed to marshal card holder first names: %w", err)
 	}
+	nameBlock = append(nameBlock, firstNamesBytes...)
 	dst = append(dst, nameBlock...)
 
 	birthDate := h.GetCardHolderBirthDate()
 	if birthDate != nil {
-		dst, err = dd.AppendDate(dst, birthDate)
+		birthDateBytes, err := opts.MarshalDate(birthDate)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append birth date: %w", err)
+			return nil, fmt.Errorf("failed to marshal birth date: %w", err)
 		}
+		dst = append(dst, birthDateBytes...)
 	} else {
 		// Append default date (00000000)
 		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
 	}
 
-	dst, err = dd.AppendIa5StringValue(dst, h.GetCardHolderPreferredLanguage())
+	preferredLanguageBytes, err := opts.MarshalIa5StringValue(h.GetCardHolderPreferredLanguage())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append preferred language: %w", err)
+		return nil, fmt.Errorf("failed to marshal preferred language: %w", err)
 	}
+	dst = append(dst, preferredLanguageBytes...)
+
 	return dst, nil
 }
 
@@ -548,7 +570,8 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			birthDate.SetMonth(1)
 			birthDate.SetDay(1)
 			// Regenerate raw_data for binary fidelity
-			if rawData, err := dd.AppendDate(nil, birthDate); err == nil {
+			defOpts := dd.MarshalOptions{}
+			if rawData, err := defOpts.MarshalDate(birthDate); err == nil {
 				birthDate.SetRawData(rawData)
 			}
 			anonymizedHolder.SetCardHolderBirthDate(birthDate)

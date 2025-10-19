@@ -68,7 +68,7 @@ func (opts UnmarshalOptions) UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GN
 	return record, nil
 }
 
-// AppendGNSSPlaceAuthRecord appends a GNSSPlaceAuthRecord to dst.
+// MarshalGNSSPlaceAuthRecord marshals a GNSSPlaceAuthRecord to bytes.
 //
 // The data type `GNSSPlaceAuthRecord` is specified in the Data Dictionary, Section 2.79c.
 //
@@ -87,35 +87,37 @@ func (opts UnmarshalOptions) UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GN
 //	Offset 4: gnssAccuracy (1 byte)
 //	Offset 5: geoCoordinates (6 bytes)
 //	Offset 11: authenticationStatus (1 byte)
-func AppendGNSSPlaceAuthRecord(dst []byte, record *ddv1.GNSSPlaceAuthRecord) ([]byte, error) {
+func (opts MarshalOptions) MarshalGNSSPlaceAuthRecord(record *ddv1.GNSSPlaceAuthRecord) ([]byte, error) {
 	if record == nil {
-		// Append 12 zero bytes if no data
-		return append(dst, make([]byte, 12)...), nil
+		// Return 12 zero bytes if no data
+		return make([]byte, 12), nil
 	}
 
-	// Append timestamp (TimeReal - 4 bytes)
+	var dst []byte
+
+	// Marshal timestamp (TimeReal - 4 bytes)
 	timestamp := record.GetTimestamp()
 	if timestamp == nil {
 		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
 	} else {
-		var err error
-		dst, err = AppendTimeReal(dst, timestamp)
+		timeBytes, err := opts.MarshalTimeReal(timestamp)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append timestamp: %w", err)
+			return nil, fmt.Errorf("failed to marshal timestamp: %w", err)
 		}
+		dst = append(dst, timeBytes...)
 	}
 
-	// Append gnssAccuracy (1 byte)
+	// Marshal gnssAccuracy (1 byte)
 	dst = append(dst, byte(record.GetGnssAccuracy()))
 
-	// Append geoCoordinates (6 bytes)
-	var err error
-	dst, err = AppendGeoCoordinates(dst, record.GetGeoCoordinates())
+	// Marshal geoCoordinates (6 bytes)
+	geoBytes, err := opts.MarshalGeoCoordinates(record.GetGeoCoordinates())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append geo coordinates: %w", err)
+		return nil, fmt.Errorf("failed to marshal geo coordinates: %w", err)
 	}
+	dst = append(dst, geoBytes...)
 
-	// Append authenticationStatus (1 byte)
+	// Marshal authenticationStatus (1 byte)
 	var authStatus byte
 	if record.GetAuthenticationStatus() == ddv1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED {
 		authStatus = byte(record.GetUnrecognizedAuthenticationStatus())

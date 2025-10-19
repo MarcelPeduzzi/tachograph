@@ -39,57 +39,59 @@ func (opts UnmarshalOptions) UnmarshalCardVehicleRecordG2(data []byte) (*ddv1.Ca
 		return nil, fmt.Errorf("invalid data length for Gen2 CardVehicleRecord: got %d, want %d", len(data), lenCardVehicleRecord)
 	}
 
-	record := &ddv1.CardVehicleRecordG2{}
-	record.SetRawData(data)
+	result := &ddv1.CardVehicleRecordG2{}
+	if opts.PreserveRawData {
+		result.SetRawData(data)
+	}
 
 	// Parse odometer begin (3 bytes)
 	odometerBeginBytes := data[idxOdometerBegin : idxOdometerBegin+3]
 	odometerBegin := int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBeginBytes...)))
-	record.SetVehicleOdometerBeginKm(odometerBegin)
+	result.SetVehicleOdometerBeginKm(odometerBegin)
 
 	// Parse odometer end (3 bytes)
 	odometerEndBytes := data[idxOdometerEnd : idxOdometerEnd+3]
 	odometerEnd := int32(binary.BigEndian.Uint32(append([]byte{0}, odometerEndBytes...)))
-	record.SetVehicleOdometerEndKm(odometerEnd)
+	result.SetVehicleOdometerEndKm(odometerEnd)
 
 	// Parse vehicle first use (TimeReal - 4 bytes)
 	vehicleFirstUse, err := opts.UnmarshalTimeReal(data[idxVehicleFirstUse : idxVehicleFirstUse+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vehicle first use: %w", err)
 	}
-	record.SetVehicleFirstUse(vehicleFirstUse)
+	result.SetVehicleFirstUse(vehicleFirstUse)
 
 	// Parse vehicle last use (TimeReal - 4 bytes)
 	vehicleLastUse, err := opts.UnmarshalTimeReal(data[idxVehicleLastUse : idxVehicleLastUse+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vehicle last use: %w", err)
 	}
-	record.SetVehicleLastUse(vehicleLastUse)
+	result.SetVehicleLastUse(vehicleLastUse)
 
 	// Parse vehicle registration (15 bytes)
 	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[idxVehicleRegistration : idxVehicleRegistration+15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vehicle registration: %w", err)
 	}
-	record.SetVehicleRegistration(vehicleReg)
+	result.SetVehicleRegistration(vehicleReg)
 
 	// Parse VU data block counter (2 bytes as BCD)
 	vuDataBlockCounter, err := opts.UnmarshalBcdString(data[idxVuDataBlockCounter : idxVuDataBlockCounter+2])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal VU data block counter: %w", err)
 	}
-	record.SetVuDataBlockCounter(vuDataBlockCounter)
+	result.SetVuDataBlockCounter(vuDataBlockCounter)
 
 	// Parse VIN (17 bytes IA5String)
 	vinBytes := data[idxVIN : idxVIN+17]
 	vin := strings.TrimRight(string(vinBytes), "\x00 ") // Trim null bytes and spaces
-	record.SetVehicleIdentificationNumber(vin)
+	result.SetVehicleIdentificationNumber(vin)
 
-	return record, nil
+	return result, nil
 }
 
-// AppendCardVehicleRecordG2 appends a Generation 2 CardVehicleRecord (48 bytes).
-func AppendCardVehicleRecordG2(dst []byte, record *ddv1.CardVehicleRecordG2) ([]byte, error) {
+// MarshalCardVehicleRecordG2 marshals a Generation 2 CardVehicleRecord (48 bytes) to bytes.
+func (opts MarshalOptions) MarshalCardVehicleRecordG2(record *ddv1.CardVehicleRecordG2) ([]byte, error) {
 	const lenCardVehicleRecord = 48 // Fixed size for Gen2
 
 	// Use raw data painting strategy if available
@@ -102,8 +104,6 @@ func AppendCardVehicleRecordG2(dst []byte, record *ddv1.CardVehicleRecordG2) ([]
 	}
 
 	// Paint semantic values over the canvas
-	var err error
-
 	// Odometer begin (3 bytes)
 	odometerBegin := uint32(record.GetVehicleOdometerBeginKm())
 	canvas[0] = byte(odometerBegin >> 16)
@@ -117,30 +117,30 @@ func AppendCardVehicleRecordG2(dst []byte, record *ddv1.CardVehicleRecordG2) ([]
 	canvas[5] = byte(odometerEnd)
 
 	// Vehicle first use (4 bytes)
-	firstUseBytes, err := AppendTimeReal(nil, record.GetVehicleFirstUse())
+	firstUseBytes, err := opts.MarshalTimeReal(record.GetVehicleFirstUse())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle first use: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle first use: %w", err)
 	}
 	copy(canvas[6:10], firstUseBytes)
 
 	// Vehicle last use (4 bytes)
-	lastUseBytes, err := AppendTimeReal(nil, record.GetVehicleLastUse())
+	lastUseBytes, err := opts.MarshalTimeReal(record.GetVehicleLastUse())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle last use: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle last use: %w", err)
 	}
 	copy(canvas[10:14], lastUseBytes)
 
 	// Vehicle registration (15 bytes)
-	vehicleRegBytes, err := AppendVehicleRegistration(nil, record.GetVehicleRegistration())
+	vehicleRegBytes, err := opts.MarshalVehicleRegistration(record.GetVehicleRegistration())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append vehicle registration: %w", err)
+		return nil, fmt.Errorf("failed to marshal vehicle registration: %w", err)
 	}
 	copy(canvas[14:29], vehicleRegBytes)
 
 	// VU data block counter (2 bytes as BCD)
-	vuDataBlockCounterBytes, err := AppendBcdString(nil, record.GetVuDataBlockCounter())
+	vuDataBlockCounterBytes, err := opts.MarshalBcdString(record.GetVuDataBlockCounter())
 	if err != nil {
-		return nil, fmt.Errorf("failed to append VU data block counter: %w", err)
+		return nil, fmt.Errorf("failed to marshal VU data block counter: %w", err)
 	}
 	copy(canvas[29:31], vuDataBlockCounterBytes)
 
@@ -148,11 +148,7 @@ func AppendCardVehicleRecordG2(dst []byte, record *ddv1.CardVehicleRecordG2) ([]
 	vin := record.GetVehicleIdentificationNumber()
 	vinBytes := make([]byte, 17)
 	copy(vinBytes, []byte(vin))
-	// Pad with spaces if shorter than 17 bytes
-	for i := len(vin); i < 17; i++ {
-		vinBytes[i] = ' '
-	}
 	copy(canvas[31:48], vinBytes)
 
-	return append(dst, canvas[:]...), nil
+	return canvas[:], nil
 }

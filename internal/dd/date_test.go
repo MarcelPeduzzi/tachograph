@@ -112,8 +112,8 @@ func TestUnmarshalDate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalDate(tt.input)
+			unmarshalOpts := UnmarshalOptions{PreserveRawData: true}
+			got, err := unmarshalOpts.UnmarshalDate(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalDate() expected error, got nil")
@@ -202,8 +202,8 @@ func TestAppendDate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			dst := []byte{}
-			got, err := AppendDate(dst, tt.date)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalDate(tt.date)
 			if err != nil {
 				t.Fatalf("AppendDate() unexpected error: %v", err)
 			}
@@ -240,8 +240,8 @@ func TestDateRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			date, err := opts.UnmarshalDate(tt.input)
+			unmarshalOpts := UnmarshalOptions{}
+			date, err := unmarshalOpts.UnmarshalDate(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalDate() unexpected error: %v", err)
 			}
@@ -250,8 +250,8 @@ func TestDateRoundTrip(t *testing.T) {
 			}
 
 			// Marshal
-			dst := []byte{}
-			got, err := AppendDate(dst, date)
+			opts := MarshalOptions{}
+			got, err := opts.MarshalDate(date)
 			if err != nil {
 				t.Fatalf("AppendDate() error: %v", err)
 			}

@@ -46,14 +46,16 @@ func TestIdentificationRoundTrip(t *testing.T) {
 	t.Logf("First unmarshal: card_number=%s, holder_surname=%s", cardNumber, holderSurname)
 
 	// Marshal both parts
-	marshalledBytes, err := appendCardIdentification(nil, identification1.GetCard())
+	marshalOpts := MarshalOptions{}
+	marshalledBytes, err := marshalOpts.MarshalCardIdentification(identification1.GetCard())
 	if err != nil {
 		t.Fatalf("Marshal Card failed: %v", err)
 	}
-	marshalledBytes, err = appendDriverCardHolderIdentification(marshalledBytes, identification1.GetDriverCardHolder())
+	driverBytes, err := marshalOpts.MarshalDriverCardHolderIdentification(identification1.GetDriverCardHolder())
 	if err != nil {
 		t.Fatalf("Marshal DriverCardHolder failed: %v", err)
 	}
+	marshalledBytes = append(marshalledBytes, driverBytes...)
 	t.Logf("Marshalled data: %d bytes", len(marshalledBytes))
 
 	// Verify binary equality
@@ -115,14 +117,16 @@ func TestIdentificationAnonymization(t *testing.T) {
 	anonymized := AnonymizeIdentification(identification)
 
 	// Marshal both parts
-	anonymizedBytes, err := appendCardIdentification(nil, anonymized.GetCard())
+	marshalOpts := MarshalOptions{}
+	anonymizedBytes, err := marshalOpts.MarshalCardIdentification(anonymized.GetCard())
 	if err != nil {
 		t.Fatalf("Marshal Card failed: %v", err)
 	}
-	anonymizedBytes, err = appendDriverCardHolderIdentification(anonymizedBytes, anonymized.GetDriverCardHolder())
+	driverBytes, err := marshalOpts.MarshalDriverCardHolderIdentification(anonymized.GetDriverCardHolder())
 	if err != nil {
 		t.Fatalf("Marshal DriverCardHolder failed: %v", err)
 	}
+	anonymizedBytes = append(anonymizedBytes, driverBytes...)
 
 	// Verify round-trip works
 	identification2, err := (UnmarshalOptions{}).unmarshalIdentification(anonymizedBytes)

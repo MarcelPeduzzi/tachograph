@@ -68,7 +68,8 @@ func TestPlacesRoundTrip(t *testing.T) {
 		places1.GetNewestRecordIndex(), len(places1.GetRecords()))
 
 	// Marshal: protobuf → binary
-	marshalledBytes, err := appendPlaces(nil, places1)
+	marshalOpts := MarshalOptions{}
+	marshalledBytes, err := marshalOpts.MarshalPlaces(places1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}
@@ -169,7 +170,8 @@ func TestPlacesAnonymization(t *testing.T) {
 	anonymized := AnonymizePlaces(places)
 
 	// Marshal back
-	anonymizedBytes, err := appendPlaces(nil, anonymized)
+	marshalOpts := MarshalOptions{}
+	anonymizedBytes, err := marshalOpts.MarshalPlaces(anonymized)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}

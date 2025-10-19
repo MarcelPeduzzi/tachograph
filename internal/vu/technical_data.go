@@ -218,10 +218,8 @@ func (opts UnmarshalOptions) unmarshalVuTechnicalData(data []byte, offset int, t
 	// This ensures the interface is complete while allowing for future enhancement
 
 	// Read all remaining data
-	remainingData, offset, err := readBytesFromBytes(data, offset, len(data)-offset)
-	if err != nil {
-		return 0, fmt.Errorf("failed to read technical data: %w", err)
-	}
+	remainingData := data[offset:]
+	offset = len(data)
 
 	// Set as signature based on generation
 	if generation == 1 {

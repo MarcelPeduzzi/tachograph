@@ -622,6 +622,95 @@ func parseRecordArray(data []byte, offset int) ([]*Type, int, error) {
 
 **Benefits:** Cleaner code, better error handling, efficient memory usage, easier testing.
 
+### Direct Slicing Pattern for Fixed Structures
+
+For parsing fixed-size binary structures with known field offsets, use direct slicing with `const` blocks documenting the structure layout. This pattern is preferred over offset-threading helpers.
+
+**Use for:** Fixed-size records, structures with known field positions, parsing individual records
+**Pattern:**
+
+```go
+// unmarshalCardIWRecord parses a single VuCardIWRecord
+func (opts UnmarshalOptions) unmarshalCardIWRecord(data []byte) (*Record, error) {
+    const (
+        idxHolderName      = 0
+        lenHolderName      = 72
+        idxCardNumber      = 72
+        lenCardNumber      = 20
+        idxExpiryDate      = 92
+        lenExpiryDate      = 4
+        idxInsertionTime   = 96
+        lenInsertionTime   = 4
+        lenCardIWRecord    = 126
+    )
+
+    if len(data) != lenCardIWRecord {
+        return nil, fmt.Errorf("invalid length: got %d, want %d", len(data), lenCardIWRecord)
+    }
+
+    holderName, err := opts.UnmarshalHolderName(data[idxHolderName:idxHolderName+lenHolderName])
+    if err != nil {
+        return nil, fmt.Errorf("failed to parse holder name: %w", err)
+    }
+
+    cardNumber, err := opts.UnmarshalFullCardNumberAndGeneration(data[idxCardNumber:idxCardNumber+lenCardNumber])
+    if err != nil {
+        return nil, fmt.Errorf("failed to parse card number: %w", err)
+    }
+
+    expiryDate, err := opts.UnmarshalDate(data[idxExpiryDate:idxExpiryDate+lenExpiryDate])
+    if err != nil {
+        return nil, fmt.Errorf("failed to parse expiry date: %w", err)
+    }
+
+    insertionTime := int64(binary.BigEndian.Uint32(data[idxInsertionTime:idxInsertionTime+lenInsertionTime]))
+    // ... continue parsing ...
+
+    return record, nil
+}
+```
+
+**For count-then-records patterns:**
+
+```go
+func extractCardIWData(data []byte) ([]*Record, int, error) {
+    if len(data) < 1 {
+        return nil, 0, fmt.Errorf("insufficient data for count byte")
+    }
+
+    noOfRecords := data[0]
+    offset := 1
+
+    var records []*Record
+    var opts UnmarshalOptions
+
+    const recordSize = 126
+    for i := 0; i < int(noOfRecords); i++ {
+        if offset+recordSize > len(data) {
+            return nil, 0, fmt.Errorf("insufficient data for record %d", i)
+        }
+        record, err := opts.unmarshalCardIWRecord(data[offset:offset+recordSize])
+        if err != nil {
+            return nil, 0, fmt.Errorf("failed to parse record %d: %w", i, err)
+        }
+        records = append(records, record)
+        offset += recordSize
+    }
+
+    return records, offset, nil  // Return consumed bytes
+}
+```
+
+**Benefits:**
+
+- **Type-safe**: Fixed offsets provide compile-time bounds checking
+- **Self-documenting**: `const` blocks explicitly show structure layout
+- **Clear intent**: Offset names explain what each field is
+- **Less error-prone**: No manual offset threading, reduced risk of off-by-one errors
+- **Easier maintenance**: Changes to structure size are caught immediately
+
+**Avoid:** Offset-threading helper functions like `readBytesFromBytes(data, offset, n)` that return updated offsets. These are verbose, error-prone, and make the code harder to follow.
+
 ### Nil Handling Policy
 
 The binary tachograph protocol has no concept of `nil` or null values. Every field in the protocol is either present with valid data or absent (which is represented by specific zero/empty patterns in the binary format).

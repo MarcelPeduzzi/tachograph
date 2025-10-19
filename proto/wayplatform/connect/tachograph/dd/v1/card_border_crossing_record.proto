@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+
+// CardBorderCrossingRecord represents a Card Border Crossing record (Generation 2, version 2).
+//
+// This data type stores information about border crossings recorded on a driver or workshop card
+// when the vehicle crosses the border of a country.
+//
+// Data Dictionary Reference: Section 2.11b (Generation 2, version 2)
+//
+// Binary Size: 17 bytes
+//
+// ASN.1 Definition:
+//
+//   CardBorderCrossingRecord ::= SEQUENCE {
+//       countryLeft                     NationNumeric,          -- 1 byte
+//       countryEntered                  NationNumeric,          -- 1 byte
+//       gnssPlaceAuthRecord             GNSSPlaceAuthRecord,    -- 12 bytes
+//       vehicleOdometerValue            OdometerShort           -- 3 bytes
+//   }
+message CardBorderCrossingRecord {
+  // Country which was left by the vehicle
+  // 'Rest of the World' (0xFF) if VU cannot determine the country
+  NationNumeric country_left = 1;
+
+  // Country into which the vehicle has entered, or country at card insertion
+  // 'Rest of the World' (0xFF) if VU cannot determine the country
+  NationNumeric country_entered = 2;
+
+  // GNSS position and authentication status when border crossing was detected
+  GNSSPlaceAuthRecord gnss_place_auth_record = 3;
+
+  // Vehicle odometer value (in km) when border crossing was detected
+  int32 vehicle_odometer_km = 4;
+
+  // Raw binary data for round-trip fidelity (17 bytes)
+  bytes raw_data = 5;
+}

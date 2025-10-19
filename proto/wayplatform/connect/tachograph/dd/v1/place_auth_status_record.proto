@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/position_authentication_status.proto";
+
+// PlaceAuthStatusRecord represents a Place Authentication Status record (Generation 2, version 2).
+//
+// This data type provides the authentication status of a place where a daily work period
+// begins or ends. It is stored on driver or workshop cards.
+//
+// Data Dictionary Reference: Section 2.116b (Generation 2, version 2)
+//
+// Binary Size: 5 bytes
+//
+// ASN.1 Definition:
+//
+//   PlaceAuthStatusRecord ::= SEQUENCE {
+//       entryTime                       TimeReal,                       -- 4 bytes
+//       authenticationStatus            PositionAuthenticationStatus    -- 1 byte
+//   }
+message PlaceAuthStatusRecord {
+  // Date and time related to the entry (same as in corresponding PlaceRecord)
+  google.protobuf.Timestamp entry_time = 1;
+
+  // Authentication status of the recorded GNSS position
+  PositionAuthenticationStatus authentication_status = 2;
+
+  // Raw binary data for round-trip fidelity (5 bytes)
+  bytes raw_data = 3;
+}

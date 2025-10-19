@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/region_numeric.proto";
+
+// PlaceAuthRecord represents a Place Authentication record (Generation 2, version 2).
+//
+// This data type stores information about a place where a daily work period begins or ends,
+// including GNSS position and authentication status.
+//
+// Data Dictionary Reference: Section 2.116a (Generation 2, version 2)
+//
+// Binary Size: 22 bytes
+//
+// ASN.1 Definition:
+//
+//   PlaceAuthRecord ::= SEQUENCE {
+//       entryTime                       TimeReal,                       -- 4 bytes
+//       entryTypeDailyWorkPeriod        EntryTypeDailyWorkPeriod,       -- 1 byte
+//       dailyWorkPeriodCountry          NationNumeric,                  -- 1 byte
+//       dailyWorkPeriodRegion           RegionNumeric,                  -- 1 byte
+//       vehicleOdometerValue            OdometerShort,                  -- 3 bytes
+//       entryGNSSPlaceAuthRecord        GNSSPlaceAuthRecord             -- 12 bytes
+//   }
+message PlaceAuthRecord {
+  // Date and time related to the entry
+  google.protobuf.Timestamp entry_time = 1;
+
+  // Type of entry (begin or end of daily work period)
+  EntryTypeDailyWorkPeriod entry_type_daily_work_period = 2;
+
+  // Country entered
+  NationNumeric daily_work_period_country = 3;
+
+  // Region entered
+  RegionNumeric daily_work_period_region = 4;
+
+  // Vehicle odometer value (in km) at the time of place entry
+  int32 vehicle_odometer_km = 5;
+
+  // Recorded location, GNSS authentication status and position determination time
+  GNSSPlaceAuthRecord entry_gnss_place_auth_record = 6;
+
+  // Raw binary data for round-trip fidelity (22 bytes)
+  bytes raw_data = 7;
+}

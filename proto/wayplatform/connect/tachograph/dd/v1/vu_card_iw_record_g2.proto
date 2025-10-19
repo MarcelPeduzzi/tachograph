@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/holder_name.proto";
+import "wayplatform/connect/tachograph/dd/v1/previous_vehicle_info_g2.proto";
+
+// VuCardIWRecordG2 represents a Generation 2 VU Card Insertion/Withdrawal record.
+//
+// This data type stores information about a driver or workshop card insertion
+// and withdrawal cycle in a Generation 2 vehicle unit.
+//
+// Data Dictionary Reference: Section 2.177 (Generation 2)
+//
+// Binary Size: 132 bytes
+//
+// ASN.1 Definition (Gen2):
+//
+//   VuCardIWRecord ::= SEQUENCE {
+//       cardHolderName                     HolderName,                         -- 72 bytes
+//       fullCardNumberAndGeneration        FullCardNumberAndGeneration,        -- 20 bytes
+//       cardExpiryDate                     Datef,                              -- 4 bytes
+//       cardInsertionTime                  TimeReal,                           -- 4 bytes
+//       vehicleOdometerValueAtInsertion    OdometerShort,                      -- 3 bytes
+//       cardSlotNumber                     CardSlotNumber,                     -- 1 byte
+//       cardWithdrawalTime                 TimeReal,                           -- 4 bytes
+//       vehicleOdometerValueAtWithdrawal   OdometerShort,                      -- 3 bytes
+//       previousVehicleInfo                PreviousVehicleInfoGen2,            -- 20 bytes
+//       manualInputFlag                    ManualInputFlag                     -- 1 byte
+//   }
+//
+// Generation Differences:
+// - Gen1: Uses FullCardNumber (18 bytes) and PreviousVehicleInfo (19 bytes) = 129 bytes total
+// - Gen2: Uses FullCardNumberAndGeneration (20 bytes) and PreviousVehicleInfoGen2 (20 bytes) = 132 bytes total
+message VuCardIWRecordG2 {
+  // Card holder's name (surname and first names)
+  HolderName card_holder_name = 1;
+
+  // Full card number including generation information
+  FullCardNumberAndGeneration full_card_number = 2;
+
+  // Card expiry date
+  Date card_expiry_date = 3;
+
+  // Date and time when the card was inserted
+  google.protobuf.Timestamp card_insertion_time = 4;
+
+  // Vehicle odometer value (in km) at card insertion
+  int32 odometer_at_insertion_km = 5;
+
+  // Slot number where the card was inserted (driver or co-driver)
+  CardSlotNumber card_slot_number = 6;
+
+  // Date and time when the card was withdrawn
+  google.protobuf.Timestamp card_withdrawal_time = 7;
+
+  // Vehicle odometer value (in km) at card withdrawal
+  int32 odometer_at_withdrawal_km = 8;
+
+  // Information about the previous vehicle used by the driver
+  PreviousVehicleInfoG2 previous_vehicle_info = 9;
+
+  // Flag indicating if driver manually entered activities at card insertion
+  bool manual_input_flag = 10;
+
+  // Raw binary data for round-trip fidelity (132 bytes)
+  bytes raw_data = 11;
+}

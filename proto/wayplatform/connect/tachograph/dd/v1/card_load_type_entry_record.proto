@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/load_type.proto";
+
+// CardLoadTypeEntryRecord represents a Card Load Type Entry record (Generation 2, version 2).
+//
+// This data type stores information about load type changes entered when a card is inserted
+// in a vehicle unit.
+//
+// Data Dictionary Reference: Section 2.24b (Generation 2, version 2)
+//
+// Binary Size: 5 bytes
+//
+// ASN.1 Definition:
+//
+//   CardLoadTypeEntryRecord ::= SEQUENCE {
+//       timeStamp                       TimeReal,       -- 4 bytes
+//       loadTypeEntered                 LoadType        -- 1 byte
+//   }
+message CardLoadTypeEntryRecord {
+  // Date and time when the load type was entered
+  google.protobuf.Timestamp time_stamp = 1;
+
+  // Load type entered by the driver
+  LoadType load_type_entered = 2;
+
+  // Raw binary data for round-trip fidelity (5 bytes)
+  bytes raw_data = 3;
+}

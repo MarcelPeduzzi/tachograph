@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto";
+
+// VuGNSSADRecord represents a VU GNSS Accumulated Driving record (Generation 2, version 1).
+//
+// This data type stores information about the GNSS position of the vehicle
+// when the accumulated driving time reaches a multiple of three hours.
+//
+// Data Dictionary Reference: Section 2.203 (Generation 2, version 1)
+//
+// Binary Size: 58 bytes
+//
+// ASN.1 Definition:
+//
+//   VuGNSSADRecord ::= SEQUENCE {
+//       timeStamp                       TimeReal,                       -- 4 bytes
+//       cardNumberAndGenDriverSlot      FullCardNumberAndGeneration,    -- 20 bytes
+//       cardNumberAndGenCodriverSlot    FullCardNumberAndGeneration,    -- 20 bytes
+//       gnssPlaceRecord                 GNSSPlaceRecord,                -- 11 bytes
+//       vehicleOdometerValue            OdometerShort                   -- 3 bytes
+//   }
+//
+// Generation Differences:
+// - Gen2v1: Uses GNSSPlaceRecord (11 bytes) = 58 bytes total
+// - Gen2v2: Uses GNSSPlaceAuthRecord (12 bytes) = 59 bytes total (see VuGNSSADRecordG2)
+message VuGNSSADRecord {
+  // Date and time when the accumulated driving time reaches a multiple of three hours
+  google.protobuf.Timestamp time_stamp = 1;
+
+  // Card in driver slot (including generation)
+  FullCardNumberAndGeneration card_number_driver_slot = 2;
+
+  // Card in co-driver slot (including generation)
+  FullCardNumberAndGeneration card_number_codriver_slot = 3;
+
+  // GNSS position when accumulated driving reaches multiple of three hours
+  GNSSPlaceRecord gnss_place_record = 4;
+
+  // Vehicle odometer value (in km) when accumulated driving reaches multiple of three hours
+  int32 vehicle_odometer_km = 5;
+
+  // Raw binary data for round-trip fidelity (58 bytes)
+  bytes raw_data = 6;
+}

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+
+// VuBorderCrossingRecord represents a VU Border Crossing record (Generation 2, version 2).
+//
+// This data type stores information about border crossings detected by a vehicle unit
+// when the vehicle crosses the border of a country.
+//
+// Data Dictionary Reference: Section 2.203a (Generation 2, version 2)
+//
+// Binary Size: 57 bytes
+//
+// ASN.1 Definition:
+//
+//   VuBorderCrossingRecord ::= SEQUENCE {
+//       cardNumberAndGenDriverSlot      FullCardNumberAndGeneration,    -- 20 bytes
+//       cardNumberAndGenCodriverSlot    FullCardNumberAndGeneration,    -- 20 bytes
+//       countryLeft                     NationNumeric,                  -- 1 byte
+//       countryEntered                  NationNumeric,                  -- 1 byte
+//       gnssPlaceAuthRecord             GNSSPlaceAuthRecord,            -- 12 bytes
+//       vehicleOdometerValue            OdometerShort                   -- 3 bytes
+//   }
+message VuBorderCrossingRecord {
+  // Card in driver slot (including generation)
+  FullCardNumberAndGeneration card_number_driver_slot = 1;
+
+  // Card in co-driver slot (including generation)
+  FullCardNumberAndGeneration card_number_codriver_slot = 2;
+
+  // Country which was left by the vehicle
+  // 'Rest of the World' (0xFF) shall be used when the VU cannot determine the country
+  NationNumeric country_left = 3;
+
+  // Country into which the vehicle has entered
+  // 'Rest of the World' (0xFF) shall be used when the VU cannot determine the country
+  NationNumeric country_entered = 4;
+
+  // GNSS position and authentication status when border crossing was detected
+  GNSSPlaceAuthRecord gnss_place_auth_record = 5;
+
+  // Vehicle odometer value (in km) when border crossing was detected
+  int32 vehicle_odometer_km = 6;
+
+  // Raw binary data for round-trip fidelity (57 bytes)
+  bytes raw_data = 7;
+}

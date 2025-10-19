@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
+
+// CardLoadUnloadRecord represents a Card Load/Unload operation record (Generation 2, version 2).
+//
+// This data type stores information about load/unload operations recorded on a driver or workshop card.
+//
+// Data Dictionary Reference: Section 2.24d (Generation 2, version 2)
+//
+// Binary Size: 20 bytes
+//
+// ASN.1 Definition:
+//
+//   CardLoadUnloadRecord ::= SEQUENCE {
+//       timeStamp                       TimeReal,               -- 4 bytes
+//       operationType                   OperationType,          -- 1 byte
+//       gnssPlaceAuthRecord             GNSSPlaceAuthRecord,    -- 12 bytes
+//       vehicleOdometerValue            OdometerShort           -- 3 bytes
+//   }
+message CardLoadUnloadRecord {
+  // Date and time at the beginning of the load/unload operation
+  google.protobuf.Timestamp time_stamp = 1;
+
+  // Type of operation entered (load, unload, or simultaneous load/unload)
+  OperationType operation_type = 2;
+
+  // GNSS position and authentication status at load/unload operation
+  GNSSPlaceAuthRecord gnss_place_auth_record = 3;
+
+  // Vehicle odometer value (in km) at load/unload operation
+  int32 vehicle_odometer_km = 4;
+
+  // Raw binary data for round-trip fidelity (20 bytes)
+  bytes raw_data = 5;
+}

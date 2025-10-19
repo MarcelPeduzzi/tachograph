@@ -8,7 +8,6 @@ require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20250912141014-52f32327d4b0.1
 	buf.build/go/protovalidate v1.0.0
 	github.com/google/go-cmp v0.7.0
-	github.com/keybase/go-crypto v0.0.0-20200123153347-de78d2cb44f4
 	golang.org/x/text v0.29.0
 	google.golang.org/protobuf v1.36.10
 )

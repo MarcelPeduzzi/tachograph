@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/way-platform/tachograph-go/internal/brainpool"
 	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
 
@@ -111,27 +112,29 @@ func VerifyEccCertificateWithCA(cert, ca *securityv1.EccCertificate) error {
 }
 
 // parseCurveOID parses an elliptic curve OID and returns the hash size in bits
-// and the corresponding Go elliptic curve.
+// and the corresponding elliptic curve.
 //
 // Supported curves are defined in Appendix 11, Section 8.2.2, Table 1:
 // - Brainpool curves: brainpoolP256r1, brainpoolP384r1, brainpoolP512r1
 // - NIST curves: P-256, P-384, P-521
 //
-// Note: Brainpool curves are not supported by Go's standard library.
-// This function maps them to the corresponding NIST curves for verification.
+// Hash algorithm pairing (from CSM_50):
+// - 256-bit curves → SHA-256
+// - 384-bit curves → SHA-384
+// - 512-bit curves → SHA-512
+// - 521-bit curve (P-521) → SHA-512
 func parseCurveOID(oid string) (hashBits int, curve elliptic.Curve, err error) {
 	switch oid {
 	case "1.3.36.3.3.2.8.1.1.7": // brainpoolP256r1
-		return 256, elliptic.P256(), nil
+		return 256, brainpool.P256r1(), nil
 	case "1.2.840.10045.3.1.7": // NIST P-256 (secp256r1)
 		return 256, elliptic.P256(), nil
 	case "1.3.36.3.3.2.8.1.1.11": // brainpoolP384r1
-		return 384, elliptic.P384(), nil
+		return 384, brainpool.P384r1(), nil
 	case "1.3.132.0.34": // NIST P-384 (secp384r1)
 		return 384, elliptic.P384(), nil
 	case "1.3.36.3.3.2.8.1.1.13": // brainpoolP512r1
-		// Note: Using P-521 (not P-512) as there is no P-512 in standard library
-		return 512, elliptic.P521(), nil
+		return 512, brainpool.P512r1(), nil
 	case "1.3.132.0.35": // NIST P-521 (secp521r1)
 		return 521, elliptic.P521(), nil
 	default:

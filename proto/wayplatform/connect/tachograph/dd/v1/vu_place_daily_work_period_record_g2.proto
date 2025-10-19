@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/place_record_g2.proto";
+
+// VuPlaceDailyWorkPeriodRecordG2 represents a VU Place Daily Work Period record (Generation 2, version 1).
+//
+// This data type stores information about a place where a driver begins or ends
+// a daily work period in a Generation 2 version 1 vehicle unit.
+//
+// Data Dictionary Reference: Section 2.219 (Generation 2, version 1)
+//
+// Binary Size: 41 bytes
+//
+// ASN.1 Definition (Gen2 V1):
+//
+//   VuPlaceDailyWorkPeriodRecord ::= SEQUENCE {
+//       fullCardNumberAndGeneration FullCardNumberAndGeneration,    -- 20 bytes
+//       placeRecord                 PlaceRecord                     -- 21 bytes (Gen2)
+//   }
+//
+// Generation Differences:
+// - Gen1: Uses FullCardNumber (18 bytes) and PlaceRecord (10 bytes) = 28 bytes
+// - Gen2v1: Uses FullCardNumberAndGeneration (20 bytes) and PlaceRecordG2 (21 bytes) = 41 bytes
+// - Gen2v2: Uses FullCardNumberAndGeneration (20 bytes) and PlaceAuthRecord (22 bytes) = 42 bytes
+message VuPlaceDailyWorkPeriodRecordG2 {
+  // Card type, issuing Member State, card number and generation
+  FullCardNumberAndGeneration full_card_number = 1;
+
+  // Information related to the place entered (Gen2 version with GNSS)
+  PlaceRecordG2 place_record = 2;
+
+  // Raw binary data for round-trip fidelity (41 bytes)
+  bytes raw_data = 3;
+}

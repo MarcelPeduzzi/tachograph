@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
+
+// RegionNumeric represents a numerical reference to a region within a specified country.
+//
+// Data Dictionary Reference: Section 2.122
+//
+// ASN.1 Definition:
+//
+//   RegionNumeric ::= OCTET STRING (SIZE (1))
+//
+// Value Assignment:
+// - 0x00: No information available
+// - Country-specific region codes (varies by country)
+//   - Spain: 0x01-0x13 (Andalucía, Aragón, Asturias, ...)
+//   - France: 0x01-0x1B (Alsace, Aquitaine, Auvergne, ...)
+//   - And so on for other countries
+//
+// Note: This is stored as a raw byte value, not as named enum values,
+// because the region codes are country-specific and too numerous to enumerate.
+enum RegionNumeric {
+  // No information available
+  REGION_NUMERIC_UNSPECIFIED = 0 [(protocol_enum_value) = 0x00];
+
+  // For all other region codes, the raw byte value should be used directly.
+  // Region codes are defined per country in the Data Dictionary section 2.122.
+}

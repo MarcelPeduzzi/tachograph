@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
+
+// VuLoadUnloadRecord represents a VU Load/Unload operation record (Generation 2, version 2).
+//
+// This data type stores information about load/unload operations entered by drivers
+// in a Generation 2 version 2 vehicle unit.
+//
+// Data Dictionary Reference: Section 2.208a (Generation 2, version 2)
+//
+// Binary Size: 60 bytes
+//
+// ASN.1 Definition:
+//
+//   VuLoadUnloadRecord ::= SEQUENCE {
+//       timeStamp                       TimeReal,                       -- 4 bytes
+//       operationType                   OperationType,                  -- 1 byte
+//       cardNumberAndGenDriverSlot      FullCardNumberAndGeneration,    -- 20 bytes
+//       cardNumberAndGenCodriverSlot    FullCardNumberAndGeneration,    -- 20 bytes
+//       gnssPlaceAuthRecord             GNSSPlaceAuthRecord,            -- 12 bytes
+//       vehicleOdometerValue            OdometerShort                   -- 3 bytes
+//   }
+message VuLoadUnloadRecord {
+  // Date and time when the load/unload operation was entered
+  google.protobuf.Timestamp time_stamp = 1;
+
+  // Type of operation entered (load, unload, or simultaneous load/unload)
+  OperationType operation_type = 2;
+
+  // Card in driver slot (including generation)
+  FullCardNumberAndGeneration card_number_driver_slot = 3;
+
+  // Card in co-driver slot (including generation)
+  FullCardNumberAndGeneration card_number_codriver_slot = 4;
+
+  // GNSS position and authentication status at load/unload operation
+  GNSSPlaceAuthRecord gnss_place_auth_record = 5;
+
+  // Vehicle odometer value (in km) at load/unload operation
+  int32 vehicle_odometer_km = 6;
+
+  // Raw binary data for round-trip fidelity (60 bytes)
+  bytes raw_data = 7;
+}

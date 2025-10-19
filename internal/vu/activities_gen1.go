@@ -139,60 +139,23 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	noOfPlaceRecords := value[offset]
 	offset += 1
 
-	// Parse each VuPlaceDailyWorkPeriodRecord (28 bytes each)
-	placeRecords := make([]*vuv1.ActivitiesGen1_PlaceRecord, noOfPlaceRecords)
+	// Parse each VuPlaceDailyWorkPeriodRecord using DD type (28 bytes each)
+	// Extract only the PlaceRecord portion (VU records include FullCardNumber which we don't expose)
+	placeRecords := make([]*ddv1.PlaceRecord, noOfPlaceRecords)
 	for i := uint8(0); i < noOfPlaceRecords; i++ {
 		const placeRecordSize = 28 // 18 bytes FullCardNumber + 10 bytes PlaceRecord
 		if offset+placeRecordSize > len(value) {
 			return nil, fmt.Errorf("insufficient data for PlaceRecord %d", i)
 		}
 
-		record := &vuv1.ActivitiesGen1_PlaceRecord{}
-		recordOffset := 0
-
-		// Skip FullCardNumber (18 bytes) - not exposed in the proto for Gen1 PlaceRecord
-		// This is the card number associated with this place entry
-		recordOffset += 18
-
-		// PlaceRecord (10 bytes)
-		// entryTime (4 bytes)
-		entryTime, err := opts.UnmarshalTimeReal(value[offset+recordOffset : offset+recordOffset+4])
+		// Use DD type to parse the full VuPlaceDailyWorkPeriodRecord
+		vuPlaceRecord, err := opts.UnmarshalVuPlaceDailyWorkPeriodRecord(value[offset : offset+placeRecordSize])
 		if err != nil {
-			return nil, fmt.Errorf("unmarshal place entry time: %w", err)
+			return nil, fmt.Errorf("unmarshal VuPlaceDailyWorkPeriodRecord %d: %w", i, err)
 		}
-		record.SetEntryTime(entryTime)
-		recordOffset += 4
 
-		// entryTypeDailyWorkPeriod (1 byte)
-		entryType, err := dd.UnmarshalEnum[ddv1.EntryTypeDailyWorkPeriod](value[offset+recordOffset])
-		if err != nil {
-			return nil, fmt.Errorf("unmarshal entry type: %w", err)
-		}
-		record.SetEntryType(entryType)
-		recordOffset += 1
-
-		// dailyWorkPeriodCountry (1 byte)
-		country, err := dd.UnmarshalEnum[ddv1.NationNumeric](value[offset+recordOffset])
-		if err != nil {
-			return nil, fmt.Errorf("unmarshal country: %w", err)
-		}
-		record.SetCountry(country)
-		recordOffset += 1
-
-		// dailyWorkPeriodRegion (1 byte)
-		region := value[offset+recordOffset : offset+recordOffset+1]
-		record.SetRegion(region)
-		recordOffset += 1
-
-		// vehicleOdometerValue (3 bytes)
-		odometerValue, err := opts.UnmarshalOdometer(value[offset+recordOffset : offset+recordOffset+3])
-		if err != nil {
-			return nil, fmt.Errorf("unmarshal place odometer: %w", err)
-		}
-		record.SetOdometerKm(int32(odometerValue))
-		recordOffset += 3
-
-		placeRecords[i] = record
+		// Extract just the PlaceRecord portion (DD type)
+		placeRecords[i] = vuPlaceRecord.GetPlaceRecord()
 		offset += placeRecordSize
 	}
 	activities.SetPlaces(placeRecords)
@@ -259,7 +222,6 @@ func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1
 	// 7. Writing Signature
 	return nil, fmt.Errorf("cannot marshal Activities Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
-
 
 // anonymizeActivitiesGen1 anonymizes Gen1 Activities data.
 // TODO: Implement full anonymization logic for Gen1 activities.

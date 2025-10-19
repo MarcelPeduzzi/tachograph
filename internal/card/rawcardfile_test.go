@@ -46,7 +46,7 @@ func Test_roundTrip_rawCardFile(t *testing.T) {
 			}
 
 			// Step 1: Binary → RawCardFile
-			originalRawFile, err := UnmarshalRawCardFile(originalData)
+			originalRawFile, err := UnmarshalOptions{}.UnmarshalRawCardFile(originalData)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal to RawCardFile: %v", err)
 			}
@@ -58,7 +58,7 @@ func Test_roundTrip_rawCardFile(t *testing.T) {
 			}
 
 			// Step 3: Binary → RawCardFile (roundtrip)
-			roundtripRawFile, err := UnmarshalRawCardFile(marshalledData)
+			roundtripRawFile, err := UnmarshalOptions{}.UnmarshalRawCardFile(marshalledData)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal roundtrip binary: %v", err)
 			}
@@ -118,7 +118,7 @@ func Test_roundTrip_rawCardFile(t *testing.T) {
 	}
 }
 
-func TestUnmarshalRawCardFile_golden(t *testing.T) {
+func TestUnmarshalOptions_UnmarshalRawCardFile_golden(t *testing.T) {
 	// Check if testdata/card directory exists
 	if _, err := os.Stat("../../testdata/card"); err != nil {
 		if os.IsNotExist(err) {
@@ -152,7 +152,7 @@ func TestUnmarshalRawCardFile_golden(t *testing.T) {
 			}
 
 			var actual string
-			rawFile, err := UnmarshalRawCardFile(data)
+			rawFile, err := UnmarshalOptions{}.UnmarshalRawCardFile(data)
 			if err != nil {
 				// If parsing fails, use the error message as the golden content
 				actual = `{"error":"` + err.Error() + `"}`

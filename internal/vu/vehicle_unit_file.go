@@ -9,7 +9,7 @@ import (
 )
 
 // MarshalVehicleUnitFile serializes a VehicleUnitFile into binary format.
-func MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
+func (opts MarshalOptions) MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 	if file == nil {
 		return nil, fmt.Errorf("vehicle unit file is nil")
 	}
@@ -18,6 +18,7 @@ func MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 	buf := make([]byte, 0, 1024*1024) // 1MB initial capacity
 
 	// Use the existing AppendVU function
+	// TODO: Pass opts.UseRawData through to append functions
 	return appendVU(buf, file)
 }
 
@@ -41,7 +42,7 @@ func MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 //	        technicalData             TechnicalData
 //	    }
 //	}
-func ParseRawVehicleUnitFile(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFile, error) {
+func (opts ParseOptions) ParseRawVehicleUnitFile(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFile, error) {
 	// Determine generation/version
 	if len(rawFile.GetRecords()) == 0 {
 		return nil, fmt.Errorf("empty VU file")

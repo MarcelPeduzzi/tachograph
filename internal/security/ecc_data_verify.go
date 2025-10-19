@@ -92,3 +92,4 @@ func VerifyEccDataSignature(data, signature []byte, cardCert *securityv1.EccCert
 
 	return nil
 }
+

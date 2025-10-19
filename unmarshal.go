@@ -8,14 +8,45 @@ import (
 
 	"github.com/way-platform/tachograph-go/internal/card"
 	"github.com/way-platform/tachograph-go/internal/vu"
-	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
 
-// UnmarshalRawFile performs the first parsing pass on a tachograph file,
-// identifying record boundaries and preserving raw byte values.
-// The returned RawFile is suitable for signature authentication via AuthenticateRawFile.
-func UnmarshalRawFile(data []byte) (*tachographv1.RawFile, error) {
+// UnmarshalOptions configures the unmarshaling process for tachograph files.
+type UnmarshalOptions struct {
+	// Strict controls how the unmarshaler handles unrecognized tags or
+	// structural inconsistencies.
+	//
+	// If true (default), the unmarshaler will return an error on any
+	// unrecognized tags or structural inconsistencies.
+	//
+	// If false, the unmarshaler will attempt to skip over unrecognized
+	// parts of the file and continue parsing.
+	Strict bool
+
+	// PreserveRawData controls whether raw byte slices are stored in
+	// the raw_data field of parsed protobuf messages.
+	//
+	// If true (default), the raw byte slice for each parsed element
+	// will be stored in the raw_data field, enabling perfect binary
+	// round-tripping via Marshal.
+	//
+	// If false, raw_data fields will be left empty, reducing memory usage
+	// but preventing exact binary reconstruction.
+	PreserveRawData bool
+}
+
+// Unmarshal parses a tachograph file from its binary representation into a raw,
+// unparsed format. The returned RawFile is suitable for authentication via
+// AuthenticateOptions.Authenticate.
+//
+// The zero value of UnmarshalOptions uses strict parsing and preserves raw data.
+func (o UnmarshalOptions) Unmarshal(data []byte) (*tachographv1.RawFile, error) {
+	// Apply defaults
+	if o == (UnmarshalOptions{}) {
+		o.Strict = true
+		o.PreserveRawData = true
+	}
+
 	if len(data) < 2 {
 		return nil, fmt.Errorf("insufficient data for tachograph file: %w", io.ErrUnexpectedEOF)
 	}
@@ -25,7 +56,11 @@ func UnmarshalRawFile(data []byte) (*tachographv1.RawFile, error) {
 	switch {
 	// Vehicle unit file (starts with TREP prefix 0x76).
 	case data[0] == 0x76:
-		vuRaw, err := vu.UnmarshalRawVehicleUnitFile(data)
+		vuOpts := vu.UnmarshalOptions{
+			Strict: o.Strict,
+		}
+		vuOpts.PreserveRawData = o.PreserveRawData
+		vuRaw, err := vuOpts.UnmarshalRawVehicleUnitFile(data)
 		if err != nil {
 			return nil, err
 		}
@@ -34,7 +69,11 @@ func UnmarshalRawFile(data []byte) (*tachographv1.RawFile, error) {
 
 	// Card file (starts with EF_ICC prefix 0x0002).
 	case binary.BigEndian.Uint16(data[0:2]) == 0x0002:
-		cardRaw, err := card.UnmarshalRawCardFile(data)
+		cardOpts := card.UnmarshalOptions{
+			Strict: o.Strict,
+		}
+		cardOpts.PreserveRawData = o.PreserveRawData
+		cardRaw, err := cardOpts.UnmarshalRawCardFile(data)
 		if err != nil {
 			return nil, err
 		}
@@ -46,41 +85,4 @@ func UnmarshalRawFile(data []byte) (*tachographv1.RawFile, error) {
 	}
 
 	return &rawFile, nil
-}
-
-// ParseRawFile performs the second parsing pass, converting raw records
-// into semantic data structures. If the raw file has been authenticated
-// (via AuthenticateRawFile), the authentication results are propagated to
-// the parsed messages.
-func ParseRawFile(rawFile *tachographv1.RawFile) (*tachographv1.File, error) {
-	var file tachographv1.File
-
-	switch rawFile.GetType() {
-	case tachographv1.RawFile_CARD:
-		cardType := card.InferFileType(rawFile.GetCard())
-		switch cardType {
-		case cardv1.CardType_DRIVER_CARD:
-			driverCard, err := card.ParseRawDriverCardFile(rawFile.GetCard())
-			if err != nil {
-				return nil, fmt.Errorf("failed to parse driver card: %w", err)
-			}
-			file.SetType(tachographv1.File_DRIVER_CARD)
-			file.SetDriverCard(driverCard)
-		default:
-			return nil, fmt.Errorf("unsupported card type: %v", cardType)
-		}
-
-	case tachographv1.RawFile_VEHICLE_UNIT:
-		vuFile, err := vu.ParseRawVehicleUnitFile(rawFile.GetVehicleUnit())
-		if err != nil {
-			return nil, err
-		}
-		file.SetType(tachographv1.File_VEHICLE_UNIT)
-		file.SetVehicleUnit(vuFile)
-
-	default:
-		return nil, fmt.Errorf("unknown raw file type: %v", rawFile.GetType())
-	}
-
-	return &file, nil
 }

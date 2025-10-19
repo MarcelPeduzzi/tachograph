@@ -15,14 +15,17 @@ This SDK implements parsing of downloaded tachograph data, according to [the req
 > [!CAUTION]
 > This SDK is under active development and not yet ready for widespread use.
 
-- Simple interface:
+- Simple, options-based API:
 
-  - `tachograph.UnmarshalFile` to parse a Tachograph file
-  - `tachograph.MarshalFile` to serialize a Tachograph file
+  - `UnmarshalOptions.Unmarshal()` to parse raw tachograph data
+  - `ParseOptions.Parse()` to convert raw data to semantic structures
+  - `AuthenticateOptions.Authenticate()` to verify signatures
+  - `MarshalOptions.Marshal()` to serialize back to binary
+  - `AnonymizeOptions.Anonymize()` to create anonymized test data
 
 - Easy to use CLI tool
 
-  - `tachograph parse [...file]`
+  - `tachograph parse [...file]` with flexible options
 
 - Support for generation 1 and 2 (including v2)
 

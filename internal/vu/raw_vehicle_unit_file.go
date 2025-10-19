@@ -22,7 +22,7 @@ import (
 //
 // The challenge of the TV format is that the length is not explicitly encoded - it must
 // be calculated by understanding the structure of each transfer type.
-func UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.RawVehicleUnitFile, error) {
+func (opts UnmarshalOptions) UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.RawVehicleUnitFile, error) {
 	var rawFile vuv1.RawVehicleUnitFile
 	offset := 0
 

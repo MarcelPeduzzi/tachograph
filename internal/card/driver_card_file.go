@@ -16,7 +16,7 @@ import (
 )
 
 // MarshalDriverCardFile serializes a DriverCardFile into binary format.
-func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
+func (opts MarshalOptions) MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 	if file == nil {
 		return nil, fmt.Errorf("driver card file is nil")
 	}
@@ -25,6 +25,7 @@ func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 	buf := make([]byte, 0, 1024*1024) // 1MB initial capacity
 
 	// Use the existing appendDriverCard function
+	// TODO: Pass opts.UseRawData through to append functions
 	return appendDriverCard(buf, file)
 }
 
@@ -38,7 +39,7 @@ func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 // The generation of each EF is determined by the TLV tag appendix byte:
 // - '00'/'01' indicates Gen1 (Tachograph DF)
 // - '02'/'03' indicates Gen2 (Tachograph_G2 DF)
-func ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
+func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
 	// File-level version context (extracted from CardStructureVersion)
 	// This represents the card's overall version capability
 	var fileVersion ddv1.Version = ddv1.Version_VERSION_1

@@ -10,11 +10,13 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// UnmarshalRawCardFile parses raw card data.
-func UnmarshalRawCardFile(input []byte) (*cardv1.RawCardFile, error) {
+// UnmarshalRawCardFile parses raw card data with the configured options.
+func (opts UnmarshalOptions) UnmarshalRawCardFile(input []byte) (*cardv1.RawCardFile, error) {
 	var output cardv1.RawCardFile
 	sc := bufio.NewScanner(bytes.NewReader(input))
-	sc.Split(scanCardFile)
+	sc.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
+		return scanCardFile(data, atEOF, opts.Strict)
+	})
 	for sc.Scan() {
 		record, err := unmarshalRawCardFileRecord(sc.Bytes())
 		if err != nil {
@@ -44,7 +46,8 @@ func MarshalRawCardFile(file *cardv1.RawCardFile) ([]byte, error) {
 }
 
 // scanCardFile is a [bufio.SplitFunc] that splits a card file into separate TLV records.
-func scanCardFile(data []byte, atEOF bool) (advance int, token []byte, err error) {
+// The strict parameter controls whether unrecognized tags cause an error or are skipped.
+func scanCardFile(data []byte, atEOF bool, strict bool) (advance int, token []byte, err error) {
 	// Need at least 5 bytes for TLV header (3 bytes tag + 2 bytes length)
 	if len(data) < 5 {
 		if atEOF {

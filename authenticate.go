@@ -7,6 +7,7 @@ import (
 	"github.com/way-platform/tachograph-go/internal/card"
 	"github.com/way-platform/tachograph-go/internal/vu"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // AuthenticateOptions configures the signature authentication process.
@@ -14,19 +15,36 @@ type AuthenticateOptions struct {
 	// CertificateResolver is used to resolve CA certificates by their Certificate Authority Reference (CAR).
 	// If nil, this defaults to using DefaultCertificateResolver.
 	CertificateResolver CertificateResolver
+
+	// Mutate controls whether authentication modifies the input RawFile in-place.
+	//
+	// If false (default), the input RawFile is deep cloned before authentication,
+	// ensuring the original remains unchanged. This is the safe default for most use cases.
+	//
+	// If true, the input RawFile is modified in-place, which is more efficient
+	// but requires the caller to be aware that the input will be mutated.
+	Mutate bool
 }
 
-// AuthenticateRawFile performs cryptographic authentication on a raw tachograph file,
+// Authenticate performs cryptographic authentication on a raw tachograph file,
 // populating Authentication fields in the raw records.
-// This function mutates the rawFile parameter.
-func AuthenticateRawFile(ctx context.Context, rawFile *tachographv1.RawFile) error {
-	return AuthenticateOptions{}.AuthenticateRawFile(ctx, rawFile)
-}
-
-// AuthenticateRawFile performs cryptographic authentication with custom options.
-func (o AuthenticateOptions) AuthenticateRawFile(ctx context.Context, rawFile *tachographv1.RawFile) error {
+//
+// By default (Mutate: false), this method returns a new authenticated RawFile,
+// leaving the input unchanged. Set Mutate: true for in-place authentication.
+//
+// The zero value of AuthenticateOptions uses the default certificate resolver
+// and does not mutate the input.
+func (o AuthenticateOptions) Authenticate(ctx context.Context, rawFile *tachographv1.RawFile) (*tachographv1.RawFile, error) {
 	if rawFile == nil {
-		return fmt.Errorf("rawFile cannot be nil")
+		return nil, fmt.Errorf("rawFile cannot be nil")
+	}
+
+	// Clone the input unless mutate is explicitly requested
+	var target *tachographv1.RawFile
+	if o.Mutate {
+		target = rawFile
+	} else {
+		target = proto.Clone(rawFile).(*tachographv1.RawFile)
 	}
 
 	// Convert top-level options to internal options
@@ -37,12 +55,18 @@ func (o AuthenticateOptions) AuthenticateRawFile(ctx context.Context, rawFile *t
 		CertificateResolver: o.CertificateResolver,
 	}
 
-	switch rawFile.GetType() {
+	switch target.GetType() {
 	case tachographv1.RawFile_CARD:
-		return cardOpts.AuthenticateRawCardFile(ctx, rawFile.GetCard())
+		if err := cardOpts.AuthenticateRawCardFile(ctx, target.GetCard()); err != nil {
+			return nil, err
+		}
 	case tachographv1.RawFile_VEHICLE_UNIT:
-		return vuOpts.AuthenticateRawVehicleUnitFile(ctx, rawFile.GetVehicleUnit())
+		if err := vuOpts.AuthenticateRawVehicleUnitFile(ctx, target.GetVehicleUnit()); err != nil {
+			return nil, err
+		}
 	default:
-		return fmt.Errorf("unsupported file type: %v", rawFile.GetType())
+		return nil, fmt.Errorf("unsupported file type: %v", target.GetType())
 	}
+
+	return target, nil
 }

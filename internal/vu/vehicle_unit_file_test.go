@@ -35,19 +35,19 @@ func TestUnmarshalVehicleUnitFile(t *testing.T) {
 			}
 
 			// Unmarshal to RawVehicleUnitFile first
-			rawFile, err := UnmarshalRawVehicleUnitFile(data)
+			rawFile, err := UnmarshalOptions{}.UnmarshalRawVehicleUnitFile(data)
 			if err != nil {
-				t.Fatalf("UnmarshalRawVehicleUnitFile failed: %v", err)
+				t.Fatalf("UnmarshalOptions.UnmarshalRawVehicleUnitFile failed: %v", err)
 			}
 
 			// Then parse to VehicleUnitFile (full semantic parsing)
-			vuFile, err := ParseRawVehicleUnitFile(rawFile)
+			vuFile, err := ParseOptions{}.ParseRawVehicleUnitFile(rawFile)
 			if err != nil {
-				t.Fatalf("ParseRawVehicleUnitFile failed: %v", err)
+				t.Fatalf("ParseOptions.ParseRawVehicleUnitFile failed: %v", err)
 			}
 
 			if vuFile == nil {
-				t.Fatal("ParseRawVehicleUnitFile returned nil")
+				t.Fatal("ParseOptions.ParseRawVehicleUnitFile returned nil")
 			}
 
 			// Verify we got generation-specific data
@@ -149,13 +149,13 @@ func TestVehicleUnitFileGolden(t *testing.T) {
 				t.Fatalf("failed to read test file: %v", err)
 			}
 
-			rawFile, err := UnmarshalRawVehicleUnitFile(data)
+			rawFile, err := UnmarshalOptions{}.UnmarshalRawVehicleUnitFile(data)
 			if err != nil {
-				t.Fatalf("UnmarshalRawVehicleUnitFile failed: %v", err)
+				t.Fatalf("UnmarshalOptions.UnmarshalRawVehicleUnitFile failed: %v", err)
 			}
-			vuFile, err := ParseRawVehicleUnitFile(rawFile)
+			vuFile, err := ParseOptions{}.ParseRawVehicleUnitFile(rawFile)
 			if err != nil {
-				t.Fatalf("ParseRawVehicleUnitFile failed: %v", err)
+				t.Fatalf("ParseOptions.ParseRawVehicleUnitFile failed: %v", err)
 			}
 
 			goldenPath := filepath.Join("testdata", filepath.Base(testFile)+".golden.json")

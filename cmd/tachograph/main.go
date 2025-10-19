@@ -64,6 +64,8 @@ func newParseCommand() *cobra.Command {
 
 	raw := cmd.Flags().Bool("raw", false, "Output raw intermediate format (skip semantic parsing)")
 	authenticate := cmd.Flags().Bool("authenticate", false, "Authenticate signatures and certificates")
+	strict := cmd.Flags().Bool("strict", true, "Error on unrecognized tags (default true)")
+	preserveRawData := cmd.Flags().Bool("preserve-raw-data", true, "Store raw bytes for round-trip fidelity (default true)")
 
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
 		ctx := cmd.Context()
@@ -73,15 +75,23 @@ func newParseCommand() *cobra.Command {
 				return fmt.Errorf("error reading %s: %w", filename, err)
 			}
 
-			// Step 1: Always unmarshal to raw format first
-			rawFile, err := tachograph.UnmarshalRawFile(data)
+			// Step 1: Unmarshal to raw format
+			unmarshalOpts := tachograph.UnmarshalOptions{
+				Strict:          *strict,
+				PreserveRawData: *preserveRawData,
+			}
+			rawFile, err := unmarshalOpts.Unmarshal(data)
 			if err != nil {
 				return fmt.Errorf("error parsing raw %s: %w", filename, err)
 			}
 
 			// Step 2: Optionally authenticate (works on raw files)
 			if *authenticate {
-				if err := tachograph.AuthenticateRawFile(ctx, rawFile); err != nil {
+				authOpts := tachograph.AuthenticateOptions{
+					Mutate: true, // Mutate for CLI efficiency
+				}
+				rawFile, err = authOpts.Authenticate(ctx, rawFile)
+				if err != nil {
 					return fmt.Errorf("error authenticating %s: %w", filename, err)
 				}
 			}
@@ -92,7 +102,10 @@ func newParseCommand() *cobra.Command {
 				fmt.Println(protojson.Format(rawFile))
 			} else {
 				// Parse to semantic format (authentication results are propagated)
-				file, err := tachograph.ParseRawFile(rawFile)
+				parseOpts := tachograph.ParseOptions{
+					PreserveRawData: *preserveRawData,
+				}
+				file, err := parseOpts.Parse(rawFile)
 				if err != nil {
 					return fmt.Errorf("error parsing %s: %w", filename, err)
 				}

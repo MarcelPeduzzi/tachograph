@@ -32,6 +32,29 @@ type UnmarshalOptions struct {
 	//
 	// This field is reserved for future use as new versions are introduced.
 	Version ddv1.Version
+
+	// PreserveRawData controls whether raw byte slices are stored in
+	// the raw_data field of parsed protobuf messages.
+	//
+	// If true (default), the raw byte slice for each parsed element
+	// will be stored in the raw_data field, enabling perfect binary
+	// round-tripping.
+	//
+	// If false, raw_data fields will be left empty, reducing memory usage
+	// but preventing exact binary reconstruction.
+	PreserveRawData bool
+}
+
+// AppendOptions provides context for marshaling binary tachograph data.
+type AppendOptions struct {
+	// UseRawData controls whether the raw_data field is used during marshaling.
+	//
+	// If true (default), the "raw data painting" strategy is used: the raw_data
+	// field serves as a canvas, and semantic fields are painted over it at their
+	// designated byte offsets. This preserves unknown bits and reserved fields.
+	//
+	// If false, data is always encoded from semantic fields, ignoring raw_data.
+	UseRawData bool
 }
 
 // SetFromCardStructureVersion updates the generation and version fields based on

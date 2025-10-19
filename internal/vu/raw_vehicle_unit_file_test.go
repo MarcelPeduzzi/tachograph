@@ -43,7 +43,7 @@ func TestRawVehicleUnitFileGolden(t *testing.T) {
 			}
 
 			// Unmarshal to RawVehicleUnitFile
-			rawFile, err := UnmarshalRawVehicleUnitFile(data)
+			rawFile, err := UnmarshalOptions{}.UnmarshalRawVehicleUnitFile(data)
 			if err != nil {
 				t.Fatalf("unmarshalRawVehicleUnitFile failed: %v", err)
 			}
@@ -136,9 +136,9 @@ func TestRawVehicleUnitFileRoundTrip(t *testing.T) {
 			}
 
 			// Unmarshal to RawVehicleUnitFile
-			rawFile, err := UnmarshalRawVehicleUnitFile(originalData)
+			rawFile, err := UnmarshalOptions{}.UnmarshalRawVehicleUnitFile(originalData)
 			if err != nil {
-				t.Fatalf("UnmarshalRawVehicleUnitFile failed: %v", err)
+				t.Fatalf("UnmarshalOptions.UnmarshalRawVehicleUnitFile failed: %v", err)
 			}
 
 			// Reconstruct binary by concatenating tags and values

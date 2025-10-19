@@ -42,33 +42,101 @@ Key chapters:
 
 ## API overview
 
-The API is designed for simplicity and orthogonality. The top-level package contains only the main entry points, with all implementation details organized into internal packages.
+The API is designed for simplicity, consistency, and orthogonality. All operations use an options-based pattern with value receivers. The top-level package contains only the main entry points, with all implementation details organized into internal packages.
 
-### `tachograph.UnmarshalFile(data []byte) (*tachographv1.File, error)`
+### Unmarshal: `[]byte` → `*RawFile`
 
-Main entry point for parsing a tachograph data file. It delegates to type-specific unmarshal functions in the internal packages (`internal/vu`, `internal/card`, `internal/dd`).
-
-Usage:
+Parses binary data into a raw, unparsed format suitable for authentication.
 
 ```go
-data, err := os.ReadFile("tachograph.DDD")
+opts := tachograph.UnmarshalOptions{
+    Strict:          true,  // Error on unrecognized tags
+    PreserveRawData: true,  // Store raw bytes for round-tripping
+}
+rawFile, err := opts.Unmarshal(data)
 // ... handle error
-file, err := tachograph.UnmarshalFile(data)
+```
+
+### Parse: `*RawFile` → `*File`
+
+Converts raw records into semantic data structures.
+
+```go
+opts := tachograph.ParseOptions{
+    PreserveRawData: true,  // Store raw bytes for round-tripping
+}
+file, err := opts.Parse(rawFile)
 // ... handle error
 fmt.Println(protojson.Format(file))
 ```
 
-### `tachograph.MarshalFile(file *tachographv1.File) ([]byte, error)`
+### Authenticate: `*RawFile` → `*RawFile`
 
-Main entry point for serializing a tachograph file. It delegates to type-specific marshal functions in the internal packages that use the `encoding.BinaryAppender` pattern.
-
-Usage:
+Performs cryptographic authentication on a raw file.
 
 ```go
-file := &tachographv1.File{ /* ... */ }
-data, err := tachograph.MarshalFile(file)
+opts := tachograph.AuthenticateOptions{
+    CertificateResolver: nil,  // Use default resolver
+    Mutate:             false, // Clone before authenticating (safe default)
+}
+authenticatedRaw, err := opts.Authenticate(ctx, rawFile)
 // ... handle error
-os.WriteFile("tachograph.DDD", data, 0600)
+```
+
+### Marshal: `*File` → `[]byte`
+
+Serializes a parsed file back to binary format.
+
+```go
+opts := tachograph.MarshalOptions{
+    UseRawData: true,  // Use raw data painting for fidelity
+}
+data, err := opts.Marshal(file)
+// ... handle error
+os.WriteFile("output.DDD", data, 0600)
+```
+
+### Anonymize: `*File` → `*File`
+
+Creates an anonymized copy of a file for testing.
+
+```go
+opts := tachograph.AnonymizeOptions{
+    PreserveDistanceAndTrips: false,  // Anonymize distances
+    PreserveTimestamps:       false,  // Anonymize timestamps
+}
+anonFile, err := opts.Anonymize(file)
+// ... handle error
+```
+
+### Complete Example
+
+```go
+// Read and parse
+data, _ := os.ReadFile("card.DDD")
+rawFile, _ := tachograph.UnmarshalOptions{
+    Strict:          true,
+    PreserveRawData: true,
+}.Unmarshal(data)
+
+// Authenticate
+authenticated, _ := tachograph.AuthenticateOptions{
+    Mutate: false,
+}.Authenticate(ctx, rawFile)
+
+// Parse to semantic format
+file, _ := tachograph.ParseOptions{
+    PreserveRawData: true,
+}.Parse(authenticated)
+
+// Anonymize for testing
+anonFile, _ := tachograph.AnonymizeOptions{}.Anonymize(file)
+
+// Write back
+output, _ := tachograph.MarshalOptions{
+    UseRawData: true,
+}.Marshal(anonFile)
+os.WriteFile("output.DDD", output, 0600)
 ```
 
 ## Project Structure and Guidelines

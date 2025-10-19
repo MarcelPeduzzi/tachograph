@@ -44,7 +44,7 @@ func TestInferCardFileType(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Failed to read file: %v", err)
 			}
-			rawCardFile, err := UnmarshalRawCardFile(data)
+			rawCardFile, err := UnmarshalOptions{}.UnmarshalRawCardFile(data)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal: %v", err)
 			}

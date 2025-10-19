@@ -204,7 +204,7 @@ func sizeOfTechnicalDataGen2V2(data []byte) (totalSize, signatureSize int, err e
 //	    vuCardRecordArray                 VuCardRecordArray,
 //	    signatureRecordArray              SignatureRecordArray
 //	}
-func UnmarshalVuTechnicalData(data []byte, offset int, target *vuv1.TechnicalData, generation int) (int, error) {
+func (opts UnmarshalOptions) unmarshalVuTechnicalData(data []byte, offset int, target *vuv1.TechnicalData, generation int) (int, error) {
 	startOffset := offset
 
 	// Set generation

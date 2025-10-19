@@ -10,7 +10,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -74,10 +73,11 @@ func TestControlActivityDataAnonymization(t *testing.T) {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
 
-	anonymized := AnonymizeControlActivityData(ca)
+	anonymizeOpts := AnonymizeOptions{}
+	anonymized := anonymizeOpts.anonymizeControlActivityData(ca)
 
-	opts := MarshalOptions{}
-	anonymizedData, err := opts.MarshalCardControlActivityData(anonymized)
+	marshalOpts := MarshalOptions{}
+	anonymizedData, err := marshalOpts.MarshalCardControlActivityData(anonymized)
 	if err != nil {
 		t.Fatalf("Failed to marshal anonymized data: %v", err)
 	}
@@ -164,121 +164,3 @@ func TestControlActivityDataAnonymization(t *testing.T) {
 }
 
 // AnonymizeControlActivityData creates an anonymized copy of ControlActivityData.
-func AnonymizeControlActivityData(ca *cardv1.ControlActivityData) *cardv1.ControlActivityData {
-	if ca == nil {
-		return nil
-	}
-
-	anonymized := &cardv1.ControlActivityData{}
-	anonymized.SetValid(ca.GetValid())
-
-	if !ca.GetValid() {
-		anonymized.SetRawData(ca.GetRawData())
-		return anonymized
-	}
-
-	// Preserve control type (categorical)
-	anonymized.SetControlType(ca.GetControlType())
-
-	// Static test timestamp: 2020-01-01 00:00:00 UTC
-	anonymized.SetControlTime(&timestamppb.Timestamp{Seconds: 1577836800})
-
-	// Anonymize control card number
-	if cardNum := ca.GetControlCardNumber(); cardNum != nil {
-		anonymizedCardNum := &ddv1.FullCardNumberAndGeneration{}
-		if fcn := cardNum.GetFullCardNumber(); fcn != nil {
-			anonymizedFCN := &ddv1.FullCardNumber{}
-			anonymizedFCN.SetCardType(fcn.GetCardType())
-			anonymizedFCN.SetCardIssuingMemberState(ddv1.NationNumeric_FINLAND)
-
-			// Anonymize driver or owner identification
-			if driverID := fcn.GetDriverIdentification(); driverID != nil {
-				anonymizedDriverID := &ddv1.DriverIdentification{}
-				if driverID.GetDriverIdentificationNumber() != nil {
-					sv := &ddv1.Ia5StringValue{}
-					sv.SetValue("CTRL-DRV-001")
-
-					sv.SetLength(14)
-					anonymizedDriverID.SetDriverIdentificationNumber(sv)
-				}
-				if driverID.GetCardReplacementIndex() != nil {
-					sv := &ddv1.Ia5StringValue{}
-					sv.SetValue("0")
-
-					sv.SetLength(1)
-					anonymizedDriverID.SetCardReplacementIndex(sv)
-				}
-				if driverID.GetCardRenewalIndex() != nil {
-					sv := &ddv1.Ia5StringValue{}
-					sv.SetValue("0")
-
-					sv.SetLength(1)
-					anonymizedDriverID.SetCardRenewalIndex(sv)
-				}
-				anonymizedFCN.SetDriverIdentification(anonymizedDriverID)
-			} else if ownerID := fcn.GetOwnerIdentification(); ownerID != nil {
-				anonymizedOwnerID := &ddv1.OwnerIdentification{}
-				if ownerID.GetOwnerIdentification() != nil {
-					sv := &ddv1.Ia5StringValue{}
-					sv.SetValue("CTRL-OWN-001")
-
-					sv.SetLength(13)
-					anonymizedOwnerID.SetOwnerIdentification(sv)
-				}
-				if ownerID.GetConsecutiveIndex() != nil {
-					sv := &ddv1.Ia5StringValue{}
-					sv.SetValue("0")
-
-					sv.SetLength(1)
-					anonymizedOwnerID.SetConsecutiveIndex(sv)
-				}
-				if ownerID.GetReplacementIndex() != nil {
-					sv := &ddv1.Ia5StringValue{}
-					sv.SetValue("0")
-
-					sv.SetLength(1)
-					anonymizedOwnerID.SetReplacementIndex(sv)
-				}
-				if ownerID.GetRenewalIndex() != nil {
-					sv := &ddv1.Ia5StringValue{}
-					sv.SetValue("0")
-
-					sv.SetLength(1)
-					anonymizedOwnerID.SetRenewalIndex(sv)
-				}
-				anonymizedFCN.SetOwnerIdentification(anonymizedOwnerID)
-			}
-
-			anonymizedCardNum.SetFullCardNumber(anonymizedFCN)
-		}
-		anonymized.SetControlCardNumber(anonymizedCardNum)
-	}
-
-	// Anonymize vehicle registration
-	if vehicleReg := ca.GetControlVehicleRegistration(); vehicleReg != nil {
-		anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-		anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
-
-		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
-		testRegNum := &ddv1.StringValue{}
-		testRegNum.SetValue("TEST-VRN")
-		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-		testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
-		anonymizedReg.SetNumber(testRegNum)
-
-		anonymized.SetControlVehicleRegistration(anonymizedReg)
-	}
-
-	// Static download period
-	anonymized.SetControlDownloadPeriodBegin(&timestamppb.Timestamp{Seconds: 1577836800})
-	anonymized.SetControlDownloadPeriodEnd(&timestamppb.Timestamp{Seconds: 1577836800 + 86400}) // 1 day later
-
-	// Regenerate raw_data
-	marshalOpts := MarshalOptions{}
-	rawData, err := marshalOpts.MarshalCardControlActivityData(anonymized)
-	if err == nil {
-		anonymized.SetRawData(rawData)
-	}
-
-	return anonymized
-}

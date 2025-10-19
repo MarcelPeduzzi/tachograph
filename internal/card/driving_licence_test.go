@@ -82,7 +82,8 @@ func TestDrivingLicenceInfoAnonymization(t *testing.T) {
 	}
 
 	// Anonymize
-	anonymized := AnonymizeDrivingLicenceInfo(dli)
+	anonymizeOpts := AnonymizeOptions{}
+	anonymized := anonymizeOpts.anonymizeDrivingLicenceInfo(dli)
 
 	// Marshal anonymized data
 	opts := MarshalOptions{}
@@ -167,33 +168,3 @@ func TestDrivingLicenceInfoAnonymization(t *testing.T) {
 
 // AnonymizeDrivingLicenceInfo creates an anonymized copy of DrivingLicenceInfo data,
 // replacing sensitive information with static, deterministic test values.
-func AnonymizeDrivingLicenceInfo(dli *cardv1.DrivingLicenceInfo) *cardv1.DrivingLicenceInfo {
-	if dli == nil {
-		return nil
-	}
-
-	anonymized := &cardv1.DrivingLicenceInfo{}
-
-	// Replace issuing authority with static test value (code-paged string: 1 byte code page + 35 bytes data)
-	if dli.GetDrivingLicenceIssuingAuthority() != nil {
-		sv := &ddv1.StringValue{}
-		sv.SetValue("TEST AUTHORITY")
-		sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
-		sv.SetLength(35)
-		anonymized.SetDrivingLicenceIssuingAuthority(sv)
-	}
-
-	// Country → FINLAND (always)
-	anonymized.SetDrivingLicenceIssuingNation(ddv1.NationNumeric_FINLAND)
-
-	// Replace licence number with static test value (IA5String, 16 bytes)
-	if dli.GetDrivingLicenceNumber() != nil {
-		sv := &ddv1.Ia5StringValue{}
-		sv.SetValue("TEST-DL-123")
-
-		sv.SetLength(16)
-		anonymized.SetDrivingLicenceNumber(sv)
-	}
-
-	return anonymized
-}

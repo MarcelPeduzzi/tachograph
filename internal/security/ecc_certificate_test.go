@@ -179,7 +179,7 @@ func TestUnmarshalEccCertificate_RoundTrip(t *testing.T) {
 	}
 
 	// Marshal back to binary
-	marshaledData, err := AppendEccCertificate(nil, cert1)
+	marshaledData, err := MarshalEccCertificate(cert1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}

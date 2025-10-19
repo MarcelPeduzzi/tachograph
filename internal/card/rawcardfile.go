@@ -31,21 +31,6 @@ func (opts UnmarshalOptions) UnmarshalRawCardFile(input []byte) (*cardv1.RawCard
 	return &output, nil
 }
 
-// MarshalRawCardFile serializes a RawCardFile into binary format.
-func MarshalRawCardFile(file *cardv1.RawCardFile) ([]byte, error) {
-	var result []byte
-	for _, record := range file.GetRecords() {
-		// Write tag (FID + appendix)
-		result = binary.BigEndian.AppendUint16(result, uint16(record.GetTag()>>8))
-		result = append(result, byte(record.GetTag()&0xFF))
-		// Write length
-		result = binary.BigEndian.AppendUint16(result, uint16(record.GetLength()))
-		// Write value
-		result = append(result, record.GetValue()...)
-	}
-	return result, nil
-}
-
 // scanCardFile is a [bufio.SplitFunc] that splits a card file into separate TLV records.
 // The strict parameter controls whether unrecognized tags cause an error or are skipped.
 func scanCardFile(data []byte, atEOF bool, strict bool) (advance int, token []byte, err error) {

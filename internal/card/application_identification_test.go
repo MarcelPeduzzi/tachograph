@@ -82,7 +82,8 @@ func TestApplicationIdentificationAnonymization(t *testing.T) {
 	}
 
 	// Anonymize
-	anonymized := AnonymizeApplicationIdentification(appId)
+	anonymizeOpts := AnonymizeOptions{}
+	anonymized := anonymizeOpts.anonymizeApplicationIdentification(appId)
 
 	// Marshal anonymized data
 	opts := MarshalOptions{}
@@ -171,32 +172,3 @@ func TestApplicationIdentificationAnonymization(t *testing.T) {
 
 // AnonymizeApplicationIdentification creates an anonymized copy of ApplicationIdentification data,
 // preserving structural information while using static test values for version information.
-func AnonymizeApplicationIdentification(appId *cardv1.ApplicationIdentification) *cardv1.ApplicationIdentification {
-	if appId == nil {
-		return nil
-	}
-
-	anonymized := &cardv1.ApplicationIdentification{}
-
-	// Preserve type of tachograph card ID (not sensitive, categorical)
-	anonymized.SetTypeOfTachographCardId(appId.GetTypeOfTachographCardId())
-
-	// Preserve card structure version (not sensitive, technical metadata)
-	anonymized.SetCardStructureVersion(appId.GetCardStructureVersion())
-
-	// Preserve card type (not sensitive, categorical)
-	anonymized.SetCardType(appId.GetCardType())
-
-	// Preserve driver data structure (counts are not sensitive)
-	if driver := appId.GetDriver(); driver != nil {
-		anonymizedDriver := &cardv1.ApplicationIdentification_Driver{}
-		anonymizedDriver.SetEventsPerTypeCount(driver.GetEventsPerTypeCount())
-		anonymizedDriver.SetFaultsPerTypeCount(driver.GetFaultsPerTypeCount())
-		anonymizedDriver.SetActivityStructureLength(driver.GetActivityStructureLength())
-		anonymizedDriver.SetCardVehicleRecordsCount(driver.GetCardVehicleRecordsCount())
-		anonymizedDriver.SetCardPlaceRecordsCount(driver.GetCardPlaceRecordsCount())
-		anonymized.SetDriver(anonymizedDriver)
-	}
-
-	return anonymized
-}

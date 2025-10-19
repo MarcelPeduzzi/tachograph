@@ -81,7 +81,8 @@ func TestIcAnonymization(t *testing.T) {
 	}
 
 	// Anonymize
-	anonymized := AnonymizeIc(ic)
+	anonymizeOpts := AnonymizeOptions{}
+	anonymized := anonymizeOpts.anonymizeIc(ic)
 
 	// Marshal anonymized data
 	opts := MarshalOptions{}
@@ -157,20 +158,3 @@ func TestIcAnonymization(t *testing.T) {
 
 // AnonymizeIc creates an anonymized copy of IC data, replacing hardware identifiers
 // with static, deterministic test values.
-func AnonymizeIc(ic *cardv1.Ic) *cardv1.Ic {
-	if ic == nil {
-		return nil
-	}
-
-	anonymized := &cardv1.Ic{}
-
-	// Replace IC serial number with static test value
-	// IC serial number is a hardware identifier - use static placeholder
-	anonymized.SetIcSerialNumber([]byte{0x00, 0x00, 0x00, 0x01})
-
-	// Replace manufacturing references with static test value
-	// Manufacturing references are hardware identifiers - use static placeholder
-	anonymized.SetIcManufacturingReferences([]byte{0xAA, 0xBB, 0xCC, 0xDD})
-
-	return anonymized
-}

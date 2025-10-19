@@ -281,7 +281,7 @@ func sizeOfActivitiesGen2V2(data []byte) (totalSize, signatureSize int, err erro
 //	    vuLoadUnloadRecordArray                  VuLoadUnloadRecordArray OPTIONAL,
 //	    signatureRecordArray                     SignatureRecordArray
 //	}
-func UnmarshalVuActivities(data []byte, offset int, target *vuv1.Activities, generation int) (int, error) {
+func (opts UnmarshalOptions) unmarshalVuActivities(data []byte, offset int, target *vuv1.Activities, generation int) (int, error) {
 	switch generation {
 	case 1:
 		return unmarshalVuActivitiesGen1(data, offset, target)

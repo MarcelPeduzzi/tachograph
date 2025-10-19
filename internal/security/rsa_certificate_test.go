@@ -103,7 +103,7 @@ func TestUnmarshalRsaCertificate_RoundTrip(t *testing.T) {
 	}
 
 	// Marshal back to binary
-	marshaledData, err := AppendRsaCertificate(nil, cert1)
+	marshaledData, err := MarshalRsaCertificate(cert1)
 	if err != nil {
 		t.Fatalf("Marshal failed: %v", err)
 	}

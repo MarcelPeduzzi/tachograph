@@ -10,7 +10,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -83,7 +82,8 @@ func TestFaultsDataAnonymization(t *testing.T) {
 	}
 
 	// Anonymize
-	anonymized := AnonymizeFaultsData(faults)
+	anonymizeOpts := AnonymizeOptions{}
+	anonymized := anonymizeOpts.anonymizeFaultsData(faults)
 
 	// Marshal anonymized data
 	opts := MarshalOptions{}
@@ -170,63 +170,3 @@ func TestFaultsDataAnonymization(t *testing.T) {
 
 // AnonymizeFaultsData creates an anonymized copy of FaultsData,
 // replacing sensitive information with static, deterministic test values.
-func AnonymizeFaultsData(faults *cardv1.FaultsData) *cardv1.FaultsData {
-	if faults == nil {
-		return nil
-	}
-
-	anonymized := &cardv1.FaultsData{}
-
-	// Base timestamp for anonymization: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
-	baseEpoch := int64(1577836800)
-
-	var anonymizedFaults []*cardv1.FaultsData_Record
-	for i, fault := range faults.GetFaults() {
-		anonymizedFault := &cardv1.FaultsData_Record{}
-
-		// Preserve valid flag
-		anonymizedFault.SetValid(fault.GetValid())
-
-		if fault.GetValid() {
-			// Preserve fault type (not sensitive, categorical)
-			anonymizedFault.SetFaultType(fault.GetFaultType())
-
-			// Use incrementing timestamps based on index (1 hour apart)
-			beginTime := &timestamppb.Timestamp{Seconds: baseEpoch + int64(i)*3600}
-			endTime := &timestamppb.Timestamp{Seconds: baseEpoch + int64(i)*3600 + 1800} // 30 mins later
-			anonymizedFault.SetFaultBeginTime(beginTime)
-			anonymizedFault.SetFaultEndTime(endTime)
-
-			// Anonymize vehicle registration
-			if vehicleReg := fault.GetFaultVehicleRegistration(); vehicleReg != nil {
-				anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-				anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
-
-				// Use static test registration number
-				// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
-				testRegNum := &ddv1.StringValue{}
-				testRegNum.SetValue("TEST-VRN")
-				testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-				testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
-				anonymizedReg.SetNumber(testRegNum)
-
-				anonymizedFault.SetFaultVehicleRegistration(anonymizedReg)
-			}
-
-			// Regenerate raw_data for binary fidelity
-			marshalOpts := MarshalOptions{}
-			rawData, err := marshalOpts.MarshalFaultRecord(anonymizedFault)
-			if err == nil {
-				anonymizedFault.SetRawData(rawData)
-			}
-		} else {
-			// Preserve invalid records as-is
-			anonymizedFault.SetRawData(fault.GetRawData())
-		}
-
-		anonymizedFaults = append(anonymizedFaults, anonymizedFault)
-	}
-
-	anonymized.SetFaults(anonymizedFaults)
-	return anonymized
-}

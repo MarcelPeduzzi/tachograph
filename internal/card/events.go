@@ -10,6 +10,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // unmarshalEventsData unmarshals events data from a card EF.
@@ -231,4 +232,67 @@ func (opts MarshalOptions) MarshalEventRecord(record *cardv1.EventsData_Record) 
 	dst = append(dst, vehicleRegBytes...)
 
 	return dst, nil
+}
+
+// anonymizeEventsData creates an anonymized copy of EventsData,
+// replacing sensitive information with static, deterministic test values.
+func (opts AnonymizeOptions) anonymizeEventsData(events *cardv1.EventsData) *cardv1.EventsData {
+	if events == nil {
+		return nil
+	}
+
+	anonymized := &cardv1.EventsData{}
+
+	// Base timestamp for anonymization: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
+	baseEpoch := int64(1577836800)
+
+	var anonymizedEvents []*cardv1.EventsData_Record
+	for i, event := range events.GetEvents() {
+		anonymizedEvent := &cardv1.EventsData_Record{}
+
+		// Preserve valid flag
+		anonymizedEvent.SetValid(event.GetValid())
+
+		if event.GetValid() {
+			// Preserve event type (not sensitive, categorical)
+			anonymizedEvent.SetEventType(event.GetEventType())
+
+			// Use incrementing timestamps based on index (1 hour apart)
+			beginTime := &timestamppb.Timestamp{Seconds: baseEpoch + int64(i)*3600}
+			endTime := &timestamppb.Timestamp{Seconds: baseEpoch + int64(i)*3600 + 1800} // 30 mins later
+			anonymizedEvent.SetEventBeginTime(beginTime)
+			anonymizedEvent.SetEventEndTime(endTime)
+
+			// Anonymize vehicle registration
+			if vehicleReg := event.GetEventVehicleRegistration(); vehicleReg != nil {
+				anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
+				anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
+
+				// Use static test registration number
+				// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
+				testRegNum := &ddv1.StringValue{}
+				testRegNum.SetValue("TEST-VRN")
+				testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
+				testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
+				anonymizedReg.SetNumber(testRegNum)
+
+				anonymizedEvent.SetEventVehicleRegistration(anonymizedReg)
+			}
+
+			// Regenerate raw_data for binary fidelity
+			marshalOpts := MarshalOptions{}
+			rawData, err := marshalOpts.MarshalEventRecord(anonymizedEvent)
+			if err == nil {
+				anonymizedEvent.SetRawData(rawData)
+			}
+		} else {
+			// Preserve invalid records as-is
+			anonymizedEvent.SetRawData(event.GetRawData())
+		}
+
+		anonymizedEvents = append(anonymizedEvents, anonymizedEvent)
+	}
+
+	anonymized.SetEvents(anonymizedEvents)
+	return anonymized
 }

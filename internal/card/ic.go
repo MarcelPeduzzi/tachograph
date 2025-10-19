@@ -94,3 +94,23 @@ func (opts MarshalOptions) MarshalCardIc(ic *cardv1.Ic) ([]byte, error) {
 
 	return data, nil
 }
+
+// anonymizeIc creates an anonymized copy of Ic,
+// replacing sensitive information with static, deterministic test values.
+func (opts AnonymizeOptions) anonymizeIc(ic *cardv1.Ic) *cardv1.Ic {
+	if ic == nil {
+		return nil
+	}
+
+	anonymized := &cardv1.Ic{}
+
+	// Replace IC serial number with static test value
+	// IC serial number is a hardware identifier - use static placeholder
+	anonymized.SetIcSerialNumber([]byte{0x00, 0x00, 0x00, 0x01})
+
+	// Replace manufacturing references with static test value
+	// Manufacturing references are hardware identifiers - use static placeholder
+	anonymized.SetIcManufacturingReferences([]byte{0xAA, 0xBB, 0xCC, 0xDD})
+
+	return anonymized
+}

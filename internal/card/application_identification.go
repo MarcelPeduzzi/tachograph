@@ -206,3 +206,35 @@ func (opts MarshalOptions) MarshalCardApplicationIdentification(appId *cardv1.Ap
 
 	return data, nil
 }
+
+// anonymizeApplicationIdentification creates an anonymized copy of ApplicationIdentification,
+// replacing sensitive information with static, deterministic test values.
+func (opts AnonymizeOptions) anonymizeApplicationIdentification(appId *cardv1.ApplicationIdentification) *cardv1.ApplicationIdentification {
+	if appId == nil {
+		return nil
+	}
+
+	anonymized := &cardv1.ApplicationIdentification{}
+
+	// Preserve type of tachograph card ID (not sensitive, categorical)
+	anonymized.SetTypeOfTachographCardId(appId.GetTypeOfTachographCardId())
+
+	// Preserve card structure version (not sensitive, technical metadata)
+	anonymized.SetCardStructureVersion(appId.GetCardStructureVersion())
+
+	// Preserve card type (not sensitive, categorical)
+	anonymized.SetCardType(appId.GetCardType())
+
+	// Preserve driver data structure (counts are not sensitive)
+	if driver := appId.GetDriver(); driver != nil {
+		anonymizedDriver := &cardv1.ApplicationIdentification_Driver{}
+		anonymizedDriver.SetEventsPerTypeCount(driver.GetEventsPerTypeCount())
+		anonymizedDriver.SetFaultsPerTypeCount(driver.GetFaultsPerTypeCount())
+		anonymizedDriver.SetActivityStructureLength(driver.GetActivityStructureLength())
+		anonymizedDriver.SetCardVehicleRecordsCount(driver.GetCardVehicleRecordsCount())
+		anonymizedDriver.SetCardPlaceRecordsCount(driver.GetCardPlaceRecordsCount())
+		anonymized.SetDriver(anonymizedDriver)
+	}
+
+	return anonymized
+}

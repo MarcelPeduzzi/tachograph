@@ -201,7 +201,7 @@ func UnmarshalEccCertificate(data []byte) (*securityv1.EccCertificate, error) {
 	return cert, nil
 }
 
-// AppendEccCertificate marshals an ECC certificate to binary format.
+// MarshalEccCertificate marshals an ECC certificate to binary format.
 //
 // This function uses the raw data painting strategy: if raw_data is available,
 // it is used as-is since the certificate is already in ASN.1 DER format.
@@ -211,7 +211,7 @@ func UnmarshalEccCertificate(data []byte) (*securityv1.EccCertificate, error) {
 // typically needed for parsing/marshalling existing card data.
 //
 // See Appendix 11, Section 9.3.2 for the certificate format specification.
-func AppendEccCertificate(dst []byte, cert *securityv1.EccCertificate) ([]byte, error) {
+func MarshalEccCertificate(cert *securityv1.EccCertificate) ([]byte, error) {
 	const (
 		minLenEccCertificate = 204
 		maxLenEccCertificate = 341
@@ -226,7 +226,7 @@ func AppendEccCertificate(dst []byte, cert *securityv1.EccCertificate) ([]byte, 
 		if len(rawData) < minLenEccCertificate || len(rawData) > maxLenEccCertificate {
 			return nil, fmt.Errorf("invalid raw_data length for EccCertificate: got %d, want %d-%d", len(rawData), minLenEccCertificate, maxLenEccCertificate)
 		}
-		return append(dst, rawData...), nil
+		return rawData, nil
 	}
 
 	// If no raw_data, we would need to construct the certificate from semantic fields

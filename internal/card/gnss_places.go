@@ -6,7 +6,9 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // unmarshalGnssPlaces unmarshals GNSS places data from a card EF.
@@ -232,4 +234,77 @@ func (opts MarshalOptions) MarshalGNSSAccumulatedDrivingRecord(record *cardv1.Gn
 	dst = append(dst, odometerBytes...)
 
 	return dst, nil
+}
+
+// anonymizeGnssPlaces creates an anonymized copy of GnssPlaces,
+// replacing sensitive information with static, deterministic test values.
+func (opts AnonymizeOptions) anonymizeGnssPlaces(gnssPlaces *cardv1.GnssPlaces) *cardv1.GnssPlaces {
+	if gnssPlaces == nil {
+		return nil
+	}
+
+	result := &cardv1.GnssPlaces{}
+
+	// Preserve the pointer to newest record
+	result.SetNewestRecordIndex(gnssPlaces.GetNewestRecordIndex())
+
+	// Anonymize each record
+	originalRecords := gnssPlaces.GetRecords()
+	anonymizedRecords := make([]*cardv1.GnssPlaces_Record, len(originalRecords))
+	for i, record := range originalRecords {
+		anonymizedRecords[i] = opts.anonymizeGNSSAccumulatedDrivingRecord(record, i)
+	}
+	result.SetRecords(anonymizedRecords)
+
+	// Preserve signature if present
+	if gnssPlaces.HasSignature() {
+		result.SetSignature(gnssPlaces.GetSignature())
+	}
+
+	return result
+}
+
+// anonymizeGNSSAccumulatedDrivingRecord anonymizes a single GNSS accumulated driving record.
+// Uses index to create sequential timestamps.
+func (opts AnonymizeOptions) anonymizeGNSSAccumulatedDrivingRecord(record *cardv1.GnssPlaces_Record, index int) *cardv1.GnssPlaces_Record {
+	if record == nil {
+		// Return a zero-filled record for nil entries
+		zeroRecord := &cardv1.GnssPlaces_Record{}
+		zeroRecord.SetVehicleOdometerKm(0)
+		return zeroRecord
+	}
+
+	result := &cardv1.GnssPlaces_Record{}
+
+	// Replace outer timestamp with sequential test timestamps
+	// Base: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
+	// Increment by 1 hour per record
+	baseEpoch := int64(1577836800)
+	ts := record.GetTimestamp()
+	if ts != nil && ts.Seconds != 0 {
+		// Non-zero timestamp - replace with sequential test timestamp
+		result.SetTimestamp(&timestamppb.Timestamp{
+			Seconds: baseEpoch + int64(index)*3600,
+			Nanos:   0,
+		})
+	}
+	// else: Zero timestamp - leave unset (nil)
+
+	// Anonymize GNSS place record (replaces coordinates with Helsinki)
+	gnssPlaceRecord := record.GetGnssPlaceRecord()
+	if gnssPlaceRecord != nil {
+		anonymizedGnssPlace := dd.AnonymizeGNSSPlaceRecord(gnssPlaceRecord)
+		// Update the inner timestamp to match the outer one (for consistency)
+		if result.GetTimestamp() != nil {
+			anonymizedGnssPlace.SetTimestamp(result.GetTimestamp())
+		}
+		result.SetGnssPlaceRecord(anonymizedGnssPlace)
+	}
+
+	// Round odometer to nearest 100km (preserves magnitude but not exact correlation)
+	originalOdometer := record.GetVehicleOdometerKm()
+	roundedOdometer := (originalOdometer / 100) * 100
+	result.SetVehicleOdometerKm(roundedOdometer)
+
+	return result
 }

@@ -5,8 +5,10 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // unmarshalDriverActivityData unmarshals driver activity data from a card EF.
@@ -503,4 +505,108 @@ func marshalRecordWithHeader(opts MarshalOptions, rec *cardv1.DriverActivityData
 	}
 
 	return buf, nil
+}
+
+// anonymizeDriverActivityData creates an anonymized copy of DriverActivityData,
+// replacing sensitive information with static, deterministic test values.
+func (opts AnonymizeOptions) anonymizeDriverActivityData(activity *cardv1.DriverActivityData) *cardv1.DriverActivityData {
+	if activity == nil {
+		return nil
+	}
+
+	anonymized := &cardv1.DriverActivityData{}
+
+	// Note: We do NOT preserve raw_data or the cyclic buffer pointers here, as we're modifying
+	// the semantic fields (dates and activity change times), which means the buffer must be
+	// rebuilt from scratch. The marshaller will recalculate appropriate indices.
+	// For simplicity, we'll use indices that correspond to a sequential buffer layout.
+
+	// Base timestamp for anonymization: 2020-01-01 00:00:00 UTC
+	baseEpoch := int64(1577836800)
+
+	// Anonymize the parsed record dates and activity changes
+	var anonymizedRecords []*cardv1.DriverActivityData_DailyRecord
+	for i, record := range activity.GetDailyRecords() {
+		anonymizedRecord := &cardv1.DriverActivityData_DailyRecord{}
+
+		// For invalid records, preserve them as-is with their raw_data
+		if !record.GetValid() {
+			anonymizedRecord.SetValid(false)
+			anonymizedRecord.SetRawData(record.GetRawData())
+			anonymizedRecords = append(anonymizedRecords, anonymizedRecord)
+			continue
+		}
+
+		// For valid records, anonymize semantic fields
+		anonymizedRecord.SetValid(true)
+		// Note: raw_data is NOT preserved for valid records since we're anonymizing
+		// the activity change info, which would make raw_data inconsistent with
+		// the semantic fields. The marshaller will regenerate the binary representation.
+
+		// Anonymize the date field
+		recordDate := &timestamppb.Timestamp{Seconds: baseEpoch + int64(i)*86400}
+		anonymizedRecord.SetActivityRecordDate(recordDate)
+
+		// Preserve data fields including record lengths (needed for consistent buffer layout)
+		anonymizedRecord.SetActivityPreviousRecordLength(record.GetActivityPreviousRecordLength())
+		anonymizedRecord.SetActivityRecordLength(record.GetActivityRecordLength())
+		anonymizedRecord.SetActivityDailyPresenceCounter(record.GetActivityDailyPresenceCounter())
+		anonymizedRecord.SetActivityDayDistance(record.GetActivityDayDistance())
+
+		// Anonymize activity change info (time intervals)
+		if changes := record.GetActivityChangeInfo(); changes != nil {
+			var anonymizedChanges []*ddv1.ActivityChangeInfo
+			for j, change := range changes {
+				anonymizedChange := dd.AnonymizeActivityChangeInfo(change, j)
+				anonymizedChanges = append(anonymizedChanges, anonymizedChange)
+			}
+			anonymizedRecord.SetActivityChangeInfo(anonymizedChanges)
+		}
+
+		anonymizedRecords = append(anonymizedRecords, anonymizedRecord)
+	}
+
+	anonymized.SetDailyRecords(anonymizedRecords)
+
+	// Calculate buffer indices for sequential layout
+	// Oldest record is at position 0, newest is at sum of all record sizes except the last
+	if len(anonymizedRecords) > 0 {
+		anonymized.SetOldestDayRecordIndex(0)
+
+		// Calculate position of newest (last) record
+		newestPos := 0
+		for i := 0; i < len(anonymizedRecords)-1; i++ {
+			recordSize := opts.calculateAnonymizedRecordSize(anonymizedRecords[i])
+			newestPos += recordSize
+		}
+		anonymized.SetNewestDayRecordIndex(int32(newestPos))
+	}
+
+	return anonymized
+}
+
+// calculateAnonymizedRecordSize calculates the size of an anonymized record.
+// For valid records, we use the original activity_record_length to preserve
+// any padding bytes that were in the original record.
+func (opts AnonymizeOptions) calculateAnonymizedRecordSize(rec *cardv1.DriverActivityData_DailyRecord) int {
+	if !rec.GetValid() {
+		return len(rec.GetRawData())
+	}
+
+	// For valid records, use the original record length if available
+	// This preserves padding and ensures consistent buffer layout
+	if recordLength := rec.GetActivityRecordLength(); recordLength > 0 {
+		return int(recordLength)
+	}
+
+	// Fallback: calculate from content
+	// For valid records: 4 byte header + 4 byte date + 2 byte counter + 2 byte distance + (2 bytes * num changes)
+	const (
+		lenHeader               = 4
+		lenTimeReal             = 4
+		lenDailyPresenceCounter = 2
+		lenDayDistance          = 2
+		lenActivityChangeInfo   = 2
+	)
+	return lenHeader + lenTimeReal + lenDailyPresenceCounter + lenDayDistance + (len(rec.GetActivityChangeInfo()) * lenActivityChangeInfo)
 }

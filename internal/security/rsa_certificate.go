@@ -66,7 +66,7 @@ func UnmarshalRsaCertificate(data []byte) (*securityv1.RsaCertificate, error) {
 	return cert, nil
 }
 
-// AppendRsaCertificate marshals an RSA certificate to binary format.
+// MarshalRsaCertificate marshals an RSA certificate to binary format.
 //
 // This function uses the raw data painting strategy: if raw_data is available,
 // it is used as-is. Otherwise, the certificate would need to be reconstructed
@@ -74,7 +74,7 @@ func UnmarshalRsaCertificate(data []byte) (*securityv1.RsaCertificate, error) {
 // requires private key access.
 //
 // See Appendix 11, Section 3.3 for the certificate format specification.
-func AppendRsaCertificate(dst []byte, cert *securityv1.RsaCertificate) ([]byte, error) {
+func MarshalRsaCertificate(cert *securityv1.RsaCertificate) ([]byte, error) {
 	const lenRsaCertificate = 194
 
 	if cert == nil {
@@ -86,7 +86,7 @@ func AppendRsaCertificate(dst []byte, cert *securityv1.RsaCertificate) ([]byte, 
 		if len(rawData) != lenRsaCertificate {
 			return nil, fmt.Errorf("invalid raw_data length for RsaCertificate: got %d, want %d", len(rawData), lenRsaCertificate)
 		}
-		return append(dst, rawData...), nil
+		return rawData, nil
 	}
 
 	// If no raw_data, we would need to construct the certificate from semantic fields

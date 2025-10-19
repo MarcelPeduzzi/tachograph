@@ -94,7 +94,7 @@ func sizeOfDetailedSpeedGen2(data []byte) (totalSize, signatureSize int, err err
 //	    vuDetailedSpeedBlockRecordArray   VuDetailedSpeedBlockRecordArray,
 //	    signatureRecordArray              SignatureRecordArray
 //	}
-func UnmarshalVuDetailedSpeed(data []byte, offset int, target *vuv1.DetailedSpeed, generation int) (int, error) {
+func (opts UnmarshalOptions) unmarshalVuDetailedSpeed(data []byte, offset int, target *vuv1.DetailedSpeed, generation int) (int, error) {
 	startOffset := offset
 
 	// Set generation

@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // unmarshalVehicleUnitsUsed unmarshals vehicle units used data from a card EF.
@@ -247,4 +248,83 @@ func (opts MarshalOptions) MarshalCardVehicleUnitRecord(record *cardv1.VehicleUn
 	}
 
 	return dst, nil
+}
+
+// anonymizeVehicleUnitsUsed creates an anonymized copy of VehicleUnitsUsed,
+// replacing sensitive information with static, deterministic test values.
+func (opts AnonymizeOptions) anonymizeVehicleUnitsUsed(vu *cardv1.VehicleUnitsUsed) *cardv1.VehicleUnitsUsed {
+	if vu == nil {
+		return nil
+	}
+
+	result := &cardv1.VehicleUnitsUsed{}
+
+	// Preserve the pointer to newest record
+	result.SetVehicleUnitPointerNewestRecord(vu.GetVehicleUnitPointerNewestRecord())
+
+	// Anonymize each record
+	originalRecords := vu.GetRecords()
+	anonymizedRecords := make([]*cardv1.VehicleUnitsUsed_Record, len(originalRecords))
+	for i, record := range originalRecords {
+		anonymizedRecords[i] = opts.anonymizeVehicleUnitRecord(record, i)
+	}
+	result.SetRecords(anonymizedRecords)
+
+	// Preserve signature if present
+	if vu.HasSignature() {
+		result.SetSignature(vu.GetSignature())
+	}
+
+	return result
+}
+
+// anonymizeVehicleUnitRecord anonymizes a single vehicle unit record.
+// Uses index to create sequential timestamps.
+func (opts AnonymizeOptions) anonymizeVehicleUnitRecord(record *cardv1.VehicleUnitsUsed_Record, index int) *cardv1.VehicleUnitsUsed_Record {
+	if record == nil {
+		// Return a zero-filled record for nil entries
+		zeroRecord := &cardv1.VehicleUnitsUsed_Record{}
+		zeroRecord.SetManufacturerCode(0)
+		zeroRecord.SetDeviceId([]byte{0})
+		zeroRecord.SetVuSoftwareVersion([]byte{0, 0, 0, 0})
+		return zeroRecord
+	}
+
+	result := &cardv1.VehicleUnitsUsed_Record{}
+
+	// Replace timestamp with sequential test timestamps
+	// Base: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
+	// Increment by 1 hour per record
+	baseEpoch := int64(1577836800)
+	ts := record.GetTimestamp()
+	if ts != nil && ts.Seconds != 0 {
+		// Non-zero timestamp - replace with sequential test timestamp
+		result.SetTimestamp(&timestamppb.Timestamp{
+			Seconds: baseEpoch + int64(index)*3600,
+			Nanos:   0,
+		})
+	}
+	// else: Zero timestamp - leave unset (nil)
+
+	// Replace manufacturer code with test value 0x40 for non-zero values
+	if record.GetManufacturerCode() != 0 {
+		result.SetManufacturerCode(0x40)
+	} else {
+		result.SetManufacturerCode(0)
+	}
+
+	// Replace device ID with test value 0x00
+	if len(record.GetDeviceId()) > 0 {
+		result.SetDeviceId([]byte{0x00})
+	}
+
+	// Replace VU software version with "0000" for non-zero values
+	swVersion := record.GetVuSoftwareVersion()
+	if len(swVersion) > 0 && !bytes.Equal(swVersion, []byte{0, 0, 0, 0}) {
+		result.SetVuSoftwareVersion([]byte("0000"))
+	} else {
+		result.SetVuSoftwareVersion([]byte{0, 0, 0, 0})
+	}
+
+	return result
 }

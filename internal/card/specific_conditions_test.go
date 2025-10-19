@@ -8,12 +8,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
-	"google.golang.org/protobuf/types/known/timestamppb"
-
-	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // TestSpecificConditionsRoundTrip verifies binary fidelity (unmarshal → marshal → unmarshal)
@@ -74,7 +71,8 @@ func TestSpecificConditionsAnonymization(t *testing.T) {
 		t.Fatalf("Unmarshal failed: %v", err)
 	}
 
-	anonymized := AnonymizeSpecificConditions(sc)
+	anonymizeOpts := AnonymizeOptions{}
+	anonymized := anonymizeOpts.anonymizeSpecificConditions(sc)
 
 	marshalOpts := MarshalOptions{}
 	anonymizedData, err := marshalOpts.MarshalCardSpecificConditions(anonymized)
@@ -140,39 +138,3 @@ func TestSpecificConditionsAnonymization(t *testing.T) {
 
 // AnonymizeSpecificConditions creates an anonymized copy of SpecificConditions.
 // Specific conditions are categorical (not personally identifiable), but we anonymize timestamps.
-func AnonymizeSpecificConditions(sc *cardv1.SpecificConditions) *cardv1.SpecificConditions {
-	if sc == nil {
-		return nil
-	}
-
-	anonymized := &cardv1.SpecificConditions{}
-
-	// Base timestamp for anonymization: 2020-01-01 00:00:00 UTC
-	baseEpoch := int64(1577836800)
-
-	var anonymizedRecords []*ddv1.SpecificConditionRecord
-	for i, record := range sc.GetRecords() {
-		anonymizedRecord := &ddv1.SpecificConditionRecord{}
-
-		// Anonymize timestamp with incrementing values (1 day apart)
-		entryTime := &timestamppb.Timestamp{Seconds: baseEpoch + int64(i)*86400}
-		anonymizedRecord.SetEntryTime(entryTime)
-
-		// Preserve condition type (categorical, not sensitive)
-		anonymizedRecord.SetSpecificConditionType(record.GetSpecificConditionType())
-
-		// Preserve unrecognized value if present
-		if record.HasUnrecognizedSpecificConditionType() {
-			anonymizedRecord.SetUnrecognizedSpecificConditionType(record.GetUnrecognizedSpecificConditionType())
-		}
-
-		anonymizedRecords = append(anonymizedRecords, anonymizedRecord)
-	}
-
-	anonymized.SetRecords(anonymizedRecords)
-
-	// Note: We don't preserve raw_data because we've modified the timestamps.
-	// The marshaller will regenerate it from the anonymized records.
-
-	return anonymized
-}

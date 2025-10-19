@@ -241,3 +241,83 @@ func (opts MarshalOptions) MarshalEmbedderIcAssemblerId(eia *cardv1.Icc_Embedder
 
 	return dst, nil
 }
+
+// anonymizeIcc creates an anonymized copy of Icc,
+// replacing sensitive information with static, deterministic test values.
+func (opts AnonymizeOptions) anonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
+	if icc == nil {
+		return nil
+	}
+
+	anonymized := &cardv1.Icc{}
+
+	// Preserve clock stop mode (not sensitive)
+	anonymized.SetClockStop(icc.GetClockStop())
+
+	// Anonymize extended serial number
+	if esn := icc.GetCardExtendedSerialNumber(); esn != nil {
+		anonymizedESN := &ddv1.ExtendedSerialNumber{}
+
+		// Use static test serial number
+		anonymizedESN.SetSerialNumber(12345678)
+
+		// Use static test date: January 2020 (month=1, year=2020)
+		monthYear := &ddv1.MonthYear{}
+		monthYear.SetYear(2020)
+		monthYear.SetMonth(1)
+		anonymizedESN.SetMonthYear(monthYear)
+
+		// Preserve equipment type (not sensitive, categorical data)
+		anonymizedESN.SetType(esn.GetType())
+
+		// Use static test manufacturer code
+		anonymizedESN.SetManufacturerCode(0x99)
+
+		anonymized.SetCardExtendedSerialNumber(anonymizedESN)
+	}
+
+	// Anonymize card approval number (IA5String, 8 bytes)
+	if icc.GetCardApprovalNumber() != nil {
+		sv := &ddv1.Ia5StringValue{}
+		sv.SetValue("TEST0001")
+
+		sv.SetLength(8)
+		anonymized.SetCardApprovalNumber(sv)
+	}
+
+	// Use static test personaliser ID
+	anonymized.SetCardPersonaliserId(0xAA)
+
+	// Anonymize embedder IC assembler ID
+	if eia := icc.GetEmbedderIcAssemblerId(); eia != nil {
+		anonymizedEIA := &cardv1.Icc_EmbedderIcAssemblerId{}
+
+		// Country code (IA5String, 2 bytes)
+		if eia.GetCountryCode() != nil {
+			sv := &ddv1.Ia5StringValue{}
+			sv.SetValue("FI")
+
+			sv.SetLength(2)
+			anonymizedEIA.SetCountryCode(sv)
+		}
+
+		// Module embedder (IA5String, 2 bytes)
+		if eia.GetModuleEmbedder() != nil {
+			sv := &ddv1.Ia5StringValue{}
+			sv.SetValue("AB")
+
+			sv.SetLength(2)
+			anonymizedEIA.SetModuleEmbedder(sv)
+		}
+
+		// Use static test manufacturer information
+		anonymizedEIA.SetManufacturerInformation(0xBB)
+
+		anonymized.SetEmbedderIcAssemblerId(anonymizedEIA)
+	}
+
+	// Use static test IC identifier
+	anonymized.SetIcIdentifier([]byte{0xCC, 0xDD})
+
+	return anonymized
+}

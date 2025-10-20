@@ -21,7 +21,7 @@ if err != nil {
     log.Fatalf("failed to unmarshal: %v", err)
 }
 
-// 2. Authenticate the digital signatures within the RawFile.
+// 2. Authenticate the signatures within the RawFile.
 authenticatedRawFile, err := tachograph.Authenticate(context.Background(), rawFile)
 if err != nil {
     log.Fatalf("failed to authenticate: %v", err)
@@ -60,7 +60,7 @@ if err != nil {
 
 ### Anonymizing
 
-[`tachograph.Anonymize`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Anonymize) removes or obscures personally identifiable information (PII) from a [`tachographv1.File`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#File), making the data usable for unit testing
+[`tachograph.Anonymize`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Anonymize) removes or obscures personal data from a [`tachographv1.File`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#File) - making the data usable for unit testing
 
 ### Marshalling
 

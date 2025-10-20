@@ -5,6 +5,7 @@ import (
 	"crypto/elliptic"
 	"crypto/sha256"
 	"crypto/sha512"
+	"encoding/asn1"
 	"fmt"
 	"math/big"
 
@@ -48,13 +49,32 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 		return fmt.Errorf("failed to parse root certificate curve OID: %w", err)
 	}
 
-	// Hash the certificate body (TBS - To Be Signed)
-	// For Gen2 certificates, the signature is over the entire certificate body
-	certBody := cert.GetRawData()
-	if len(certBody) == 0 {
+	// Extract and hash the certificate body (TBS - To Be Signed)
+	// Per Appendix 11, Section 9.3.2, the signature is over the complete certificate
+	// body (tag '7F 4E', including tag and length bytes), not the entire certificate.
+	certRawData := cert.GetRawData()
+	if len(certRawData) == 0 {
 		return fmt.Errorf("certificate has no raw data")
 	}
 
+	// Parse the outer SEQUENCE to extract the certificate body
+	var outerSeq asn1.RawValue
+	_, err = asn1.Unmarshal(certRawData, &outerSeq)
+	if err != nil {
+		return fmt.Errorf("failed to parse certificate outer SEQUENCE: %w", err)
+	}
+
+	// Parse the certificate body SEQUENCE (this gives us the body with tag and length)
+	var bodySeq asn1.RawValue
+	_, err = asn1.Unmarshal(outerSeq.Bytes, &bodySeq)
+	if err != nil {
+		return fmt.Errorf("failed to parse certificate body SEQUENCE: %w", err)
+	}
+
+	// The certificate body to be signed includes the tag and length
+	certBody := bodySeq.FullBytes
+
+	// Hash the certificate body based on curve size
 	var hash []byte
 	switch hashBits {
 	case 256:

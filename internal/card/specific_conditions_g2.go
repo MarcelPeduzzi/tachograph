@@ -135,5 +135,9 @@ func (opts AnonymizeOptions) anonymizeSpecificConditionsG2(sc *cardv1.SpecificCo
 		return nil
 	}
 	// Specific conditions are regulatory flags, not PII - return clone
-	return proto.Clone(sc).(*cardv1.SpecificConditionsG2)
+	result := proto.Clone(sc).(*cardv1.SpecificConditionsG2)
+
+	// Signature and raw_data fields left unset (nil) - TLV marshaller will omit these blocks
+
+	return result
 }

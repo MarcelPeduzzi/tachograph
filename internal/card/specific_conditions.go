@@ -141,8 +141,7 @@ func (opts AnonymizeOptions) anonymizeSpecificConditions(sc *cardv1.SpecificCond
 
 	anonymized.SetRecords(anonymizedRecords)
 
-	// Note: We don't preserve raw_data because we've modified the timestamps.
-	// The marshaller will regenerate it from the anonymized records.
+	// Signature and raw_data fields left unset (nil) - TLV marshaller will omit these blocks
 
 	return anonymized
 }

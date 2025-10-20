@@ -139,5 +139,7 @@ func (opts AnonymizeOptions) anonymizeDrivingLicenceInfo(dli *cardv1.DrivingLice
 		anonymized.SetDrivingLicenceNumber(sv)
 	}
 
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
+
 	return anonymized
 }

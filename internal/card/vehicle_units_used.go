@@ -270,10 +270,7 @@ func (opts AnonymizeOptions) anonymizeVehicleUnitsUsed(vu *cardv1.VehicleUnitsUs
 	}
 	result.SetRecords(anonymizedRecords)
 
-	// Preserve signature if present
-	if vu.HasSignature() {
-		result.SetSignature(vu.GetSignature())
-	}
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
 
 	return result
 }

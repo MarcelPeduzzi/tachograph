@@ -892,6 +892,37 @@ This avoids heap allocation and improves performance for small, fixed-size struc
 - **Raw data painting**: Use for structures with reserved bits, padding, or unknown vendor-specific data that must be preserved
 - **Simple preference**: Use for simple structures where semantic re-encoding produces identical output to the original
 
+### Anonymization Principles
+
+The goal of anonymization is to produce a structurally valid tachograph file with all personally identifiable and sensitive information removed. The resulting file must be safe for storage and analysis without leaking original data, and it must be marshallable into a compliant binary format.
+
+**Policy:**
+
+1.  **Anonymization is Self-Contained**: The `Anonymize` function is solely responsible for producing a clean, fully anonymized protobuf message. The marshalling logic **must not** contain special cases for anonymized data.
+
+2.  **Strip Raw Data Per Type**: Each type's anonymization method **must** clear its own `raw_data` field after cloning. This ensures raw data is stripped at the same level as semantic anonymization, preventing any original data from leaking via the "raw data painting" strategy.
+
+3.  **Structure-Aware Signature and Certificate Clearing**: The approach to clearing signatures and certificates depends on the file format's structural requirements:
+
+    **For Self-Describing Formats (TLV - Tag-Length-Value):**
+
+    - **Set to `nil`** - The marshaller omits the entire block from output
+    - **Rationale**: TLV format is self-describing; each block declares its own length. Omitting a block entirely is structurally valid and clearly indicates anonymized data.
+    - **Applies to**: Card files (`.DDD`), which use TLV format per Appendix 2, Section 3.4
+
+    **For Fixed-Structure Formats (TV - Tag-Value):**
+
+    - **Set to zero-byte array** of the appropriate fixed length
+    - **Rationale**: TV format has fixed offsets and expected sizes. Zero-filling maintains structural integrity while clearly marking data as invalid/anonymized.
+    - **Applies to**: VU files (`.V1B`), which use TV format per Appendix 7, Section 2.2.6
+    - **Signature sizes**: Gen1 uses 128 bytes (RSA-1024 per Appendix 11, Section 6.1); Gen2 uses variable length ECDSA (Appendix 11, Section 14.2)
+
+4.  **Marshalling Handles Cleared Fields**: The marshalling logic must gracefully handle cleared signature and certificate fields:
+    - **TLV-based structures** (card files): Check if certificate/signature is `nil`. If `nil`, skip writing the entire TLV record.
+    - **TV-based structures** (VU files): Check if signature is zero-filled or empty. Write zero bytes of expected length to maintain structural integrity.
+
+This ensures that anonymized files are both safe and structurally correct, with the clearing strategy respecting each format's structural requirements.
+
 ### Prefer Specific Proto Messages for Specific Protocol Types
 
 When the protocol specification defines distinct types (e.g., code-paged strings vs IA5 strings), prefer creating separate protobuf messages for each type rather than using a single generic message with conditional logic.

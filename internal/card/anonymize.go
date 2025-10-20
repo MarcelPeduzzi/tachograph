@@ -33,6 +33,10 @@ func (opts AnonymizeOptions) AnonymizeDriverCardFile(file *cardv1.DriverCardFile
 
 	// Anonymize Gen1 DF (Tachograph)
 	if tachograph := result.GetTachograph(); tachograph != nil {
+		// Clear certificates (TLV format: set to nil to omit blocks entirely)
+		tachograph.SetCardCertificate(nil)
+		tachograph.SetCaCertificate(nil)
+
 		if appId := tachograph.GetApplicationIdentification(); appId != nil {
 			tachograph.SetApplicationIdentification(opts.anonymizeApplicationIdentification(appId))
 		}
@@ -66,11 +70,16 @@ func (opts AnonymizeOptions) AnonymizeDriverCardFile(file *cardv1.DriverCardFile
 		if specificConditions := tachograph.GetSpecificConditions(); specificConditions != nil {
 			tachograph.SetSpecificConditions(opts.anonymizeSpecificConditions(specificConditions))
 		}
-		// Note: Certificates and CardDownload are not anonymized as they contain structural/metadata information
 	}
 
 	// Anonymize Gen2 DF (Tachograph_G2)
 	if tachographG2 := result.GetTachographG2(); tachographG2 != nil {
+		// Clear certificates (TLV format: set to nil to omit blocks entirely)
+		tachographG2.SetCardMaCertificate(nil)
+		tachographG2.SetCardSignCertificate(nil)
+		tachographG2.SetCaCertificate(nil)
+		tachographG2.SetLinkCertificate(nil)
+
 		// Anonymize Gen2 versions of shared EFs
 		if appIdG2 := tachographG2.GetApplicationIdentification(); appIdG2 != nil {
 			tachographG2.SetApplicationIdentification(opts.anonymizeApplicationIdentificationG2(appIdG2))
@@ -113,7 +122,6 @@ func (opts AnonymizeOptions) AnonymizeDriverCardFile(file *cardv1.DriverCardFile
 		if gnssPlaces := tachographG2.GetGnssPlaces(); gnssPlaces != nil {
 			tachographG2.SetGnssPlaces(opts.anonymizeGnssPlaces(gnssPlaces))
 		}
-		// Note: ApplicationIdentificationV2, certificates, and CardDownload not anonymized
 	}
 
 	return result, nil

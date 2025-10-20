@@ -56,8 +56,6 @@ func (opts MarshalOptions) MarshalTechnicalDataGen1(technicalData *vuv1.Technica
 	return nil, fmt.Errorf("cannot marshal Technical Data Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
 
-
-
 // anonymizeTechnicalDataGen1 anonymizes Gen1 Technical Data.
 // TODO: Implement full anonymization logic for Gen1 technical data.
 func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGen1) *vuv1.TechnicalDataGen1 {
@@ -65,7 +63,9 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGe
 		return nil
 	}
 	result := proto.Clone(td).(*vuv1.TechnicalDataGen1)
-	result.SetSignature(nil)
+	// Set signature to zero bytes (TV format: maintains structure)
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	result.SetSignature(make([]byte, 128))
 	result.SetRawData(nil)
 	return result
 }

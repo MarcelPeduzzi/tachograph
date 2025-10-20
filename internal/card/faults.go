@@ -294,5 +294,8 @@ func (opts AnonymizeOptions) anonymizeFaultsData(faults *cardv1.FaultsData) *car
 	}
 
 	anonymized.SetFaults(anonymizedFaults)
+
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
+
 	return anonymized
 }

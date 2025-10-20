@@ -676,8 +676,7 @@ func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) 
 		}
 	}
 
-	// Don't preserve signature - it will be invalid after anonymization
-	// Users can re-sign if needed for testing
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
 
 	return result
 }

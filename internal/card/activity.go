@@ -582,6 +582,8 @@ func (opts AnonymizeOptions) anonymizeDriverActivityData(activity *cardv1.Driver
 		anonymized.SetNewestDayRecordIndex(int32(newestPos))
 	}
 
+	// Signature and raw_data fields left unset (nil) - TLV marshaller will omit these blocks
+
 	return anonymized
 }
 

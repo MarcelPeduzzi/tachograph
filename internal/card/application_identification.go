@@ -236,5 +236,7 @@ func (opts AnonymizeOptions) anonymizeApplicationIdentification(appId *cardv1.Ap
 		anonymized.SetDriver(anonymizedDriver)
 	}
 
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
+
 	return anonymized
 }

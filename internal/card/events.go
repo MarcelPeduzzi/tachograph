@@ -294,5 +294,8 @@ func (opts AnonymizeOptions) anonymizeEventsData(events *cardv1.EventsData) *car
 	}
 
 	anonymized.SetEvents(anonymizedEvents)
+
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
+
 	return anonymized
 }

@@ -562,8 +562,10 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 	result.SetMemberStateCertificate(nil)
 	result.SetVuCertificate(nil)
 
-	// Clear signature (will be invalid after anonymization)
-	result.SetSignature(nil)
+	// Set signature to zero bytes (TV format: maintains structure)
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	result.SetSignature(make([]byte, 128))
+	result.SetRawData(nil)
 
 	return result
 }

@@ -217,6 +217,10 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x09, 60, uint16(len(activities.GetLoadUnloadOperations())))
 	result = append(result, loadUnloadData...)
 
+	// Append signature at the end (TV format: maintains structure)
+	// Gen2 uses variable-length ECDSA signatures
+	result = append(result, activities.GetSignature()...)
+
 	return result, nil
 }
 
@@ -538,8 +542,9 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V2(activities *vuv1.Activiti
 	}
 	result.SetLoadUnloadOperations(anonLoadUnload)
 
-	// Clear signature and raw_data
-	result.SetSignature(nil)
+	// Set signature to empty bytes (TV format: maintains structure)
+	// Gen2 uses variable-length ECDSA signatures
+	result.SetSignature([]byte{})
 	result.SetRawData(nil)
 
 	return result

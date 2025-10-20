@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/binary"
 	"fmt"
-	"reflect"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -677,50 +676,66 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	opts := MarshalOptions{}
 
 	// 1. EF_ICC (0x0002) - no signature
-	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_ICC, card.GetIcc(), func(dst []byte, msg *cardv1.Icc) ([]byte, error) {
-		bytes, err := opts.MarshalIcc(msg)
+	if icc := card.GetIcc(); icc != nil {
+		dataBytes, err := opts.MarshalIcc(icc)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_ICC,
+			dataBytes,
+			nil, // no signature
+			0x00)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// 2. EF_IC (0x0005) - no signature
-	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_IC, card.GetIc(), func(dst []byte, msg *cardv1.Ic) ([]byte, error) {
-		bytes, err := opts.MarshalCardIc(msg)
+	if ic := card.GetIc(); ic != nil {
+		dataBytes, err := opts.MarshalCardIc(ic)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_IC,
+			dataBytes,
+			nil, // no signature
+			0x00)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// 3. EF_APPLICATION_IDENTIFICATION (0x0501)
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetTachograph().GetApplicationIdentification(), func(dst []byte, msg *cardv1.ApplicationIdentification) ([]byte, error) {
-		bytes, err := opts.MarshalCardApplicationIdentification(msg)
+	if appId := card.GetTachograph().GetApplicationIdentification(); appId != nil {
+		dataBytes, err := opts.MarshalCardApplicationIdentification(appId)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION,
+			dataBytes,
+			appId.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO, card.GetTachograph().GetDrivingLicenceInfo(), func(dst []byte, msg *cardv1.DrivingLicenceInfo) ([]byte, error) {
-		bytes, err := opts.MarshalDrivingLicenceInfo(msg)
+	if drivingLicence := card.GetTachograph().GetDrivingLicenceInfo(); drivingLicence != nil {
+		dataBytes, err := opts.MarshalDrivingLicenceInfo(drivingLicence)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO,
+			dataBytes,
+			drivingLicence.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// 4. EF_IDENTIFICATION (0x0520) - composite file
@@ -736,111 +751,149 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 			return nil, err
 		}
 		valBuf = append(valBuf, driverBytes...)
-		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
-			return append(dst, msg.data...), nil
-		})
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_IDENTIFICATION,
+			valBuf,
+			identification.GetSignature(),
+			0x00) // Gen1
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_EVENTS_DATA, card.GetTachograph().GetEventsData(), func(dst []byte, msg *cardv1.EventsData) ([]byte, error) {
-		bytes, err := opts.MarshalEventsData(msg)
+	if eventsData := card.GetTachograph().GetEventsData(); eventsData != nil {
+		dataBytes, err := opts.MarshalEventsData(eventsData)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_EVENTS_DATA,
+			dataBytes,
+			eventsData.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_FAULTS_DATA, card.GetTachograph().GetFaultsData(), func(dst []byte, msg *cardv1.FaultsData) ([]byte, error) {
-		bytes, err := opts.MarshalFaultsData(msg)
+	if faultsData := card.GetTachograph().GetFaultsData(); faultsData != nil {
+		dataBytes, err := opts.MarshalFaultsData(faultsData)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_FAULTS_DATA,
+			dataBytes,
+			faultsData.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, card.GetTachograph().GetDriverActivityData(), func(dst []byte, msg *cardv1.DriverActivityData) ([]byte, error) {
-		bytes, err := opts.MarshalDriverActivity(msg)
+	if driverActivity := card.GetTachograph().GetDriverActivityData(); driverActivity != nil {
+		dataBytes, err := opts.MarshalDriverActivity(driverActivity)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA,
+			dataBytes,
+			driverActivity.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, card.GetTachograph().GetVehiclesUsed(), func(dst []byte, msg *cardv1.VehiclesUsed) ([]byte, error) {
-		bytes, err := opts.MarshalVehiclesUsed(msg)
+	if vehiclesUsed := card.GetTachograph().GetVehiclesUsed(); vehiclesUsed != nil {
+		dataBytes, err := opts.MarshalVehiclesUsed(vehiclesUsed)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_VEHICLES_USED,
+			dataBytes,
+			vehiclesUsed.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, card.GetTachograph().GetPlaces(), func(dst []byte, msg *cardv1.Places) ([]byte, error) {
-		bytes, err := opts.MarshalPlaces(msg)
+	if places := card.GetTachograph().GetPlaces(); places != nil {
+		dataBytes, err := opts.MarshalPlaces(places)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_PLACES,
+			dataBytes,
+			places.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CURRENT_USAGE, card.GetTachograph().GetCurrentUsage(), func(dst []byte, msg *cardv1.CurrentUsage) ([]byte, error) {
-		bytes, err := opts.MarshalCurrentUsage(msg)
+	if currentUsage := card.GetTachograph().GetCurrentUsage(); currentUsage != nil {
+		dataBytes, err := opts.MarshalCurrentUsage(currentUsage)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_CURRENT_USAGE,
+			dataBytes,
+			currentUsage.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA, card.GetTachograph().GetControlActivityData(), func(dst []byte, msg *cardv1.ControlActivityData) ([]byte, error) {
-		bytes, err := opts.MarshalCardControlActivityData(msg)
+	if controlActivity := card.GetTachograph().GetControlActivityData(); controlActivity != nil {
+		dataBytes, err := opts.MarshalCardControlActivityData(controlActivity)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA,
+			dataBytes,
+			controlActivity.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, card.GetTachograph().GetSpecificConditions(), func(dst []byte, msg *cardv1.SpecificConditions) ([]byte, error) {
-		bytes, err := opts.MarshalCardSpecificConditions(msg)
+	if specificConditions := card.GetTachograph().GetSpecificConditions(); specificConditions != nil {
+		dataBytes, err := opts.MarshalCardSpecificConditions(specificConditions)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS,
+			dataBytes,
+			specificConditions.GetSignature(),
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetTachograph().GetCardDownload(), func(dst []byte, msg *cardv1.CardDownloadDriver) ([]byte, error) {
-		bytes, err := opts.MarshalCardDownload(msg)
+	if cardDownload := card.GetTachograph().GetCardDownload(); cardDownload != nil {
+		dataBytes, err := opts.MarshalCardDownload(cardDownload)
 		if err != nil {
 			return nil, err
 		}
-		return append(dst, bytes...), nil
-	})
-	if err != nil {
-		return nil, err
+		dst, err = appendTlvBlock(dst,
+			cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER,
+			dataBytes,
+			nil,  // no signature
+			0x00) // Gen1
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Gen2 DF - marshal all Gen2 EFs with appendix 0x02/0x03
@@ -848,83 +901,111 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		// Marshal Gen2 versions of shared EFs
 
 		// ApplicationIdentification (Gen2)
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, tachographG2.GetApplicationIdentification(), func(dst []byte, msg *cardv1.ApplicationIdentificationG2) ([]byte, error) {
-			bytes, err := opts.MarshalCardApplicationIdentificationG2(msg)
+		if appId := tachographG2.GetApplicationIdentification(); appId != nil {
+			dataBytes, err := opts.MarshalCardApplicationIdentificationG2(appId)
 			if err != nil {
 				return nil, err
 			}
-			return append(dst, bytes...), nil
-		})
-		if err != nil {
-			return nil, err
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION,
+				dataBytes,
+				appId.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, tachographG2.GetVehiclesUsed(), func(dst []byte, msg *cardv1.VehiclesUsedG2) ([]byte, error) {
-			bytes, err := opts.MarshalVehiclesUsedG2(msg)
+		if vehiclesUsed := tachographG2.GetVehiclesUsed(); vehiclesUsed != nil {
+			dataBytes, err := opts.MarshalVehiclesUsedG2(vehiclesUsed)
 			if err != nil {
 				return nil, err
 			}
-			return append(dst, bytes...), nil
-		})
-		if err != nil {
-			return nil, err
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_VEHICLES_USED,
+				dataBytes,
+				vehiclesUsed.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_PLACES, tachographG2.GetPlaces(), func(dst []byte, msg *cardv1.PlacesG2) ([]byte, error) {
-			bytes, err := opts.MarshalPlacesG2(msg)
+		if places := tachographG2.GetPlaces(); places != nil {
+			dataBytes, err := opts.MarshalPlacesG2(places)
 			if err != nil {
 				return nil, err
 			}
-			return append(dst, bytes...), nil
-		})
-		if err != nil {
-			return nil, err
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_PLACES,
+				dataBytes,
+				places.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		// SpecificConditions (Gen2)
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, tachographG2.GetSpecificConditions(), func(dst []byte, msg *cardv1.SpecificConditionsG2) ([]byte, error) {
-			bytes, err := opts.MarshalCardSpecificConditionsG2(msg)
+		if specificConditions := tachographG2.GetSpecificConditions(); specificConditions != nil {
+			dataBytes, err := opts.MarshalCardSpecificConditionsG2(specificConditions)
 			if err != nil {
 				return nil, err
 			}
-			return append(dst, bytes...), nil
-		})
-		if err != nil {
-			return nil, err
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS,
+				dataBytes,
+				specificConditions.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		// Marshal Gen2-exclusive EFs
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, tachographG2.GetVehicleUnitsUsed(), func(dst []byte, msg *cardv1.VehicleUnitsUsed) ([]byte, error) {
-			bytes, err := opts.MarshalCardVehicleUnitsUsed(msg)
+		if vehicleUnitsUsed := tachographG2.GetVehicleUnitsUsed(); vehicleUnitsUsed != nil {
+			dataBytes, err := opts.MarshalCardVehicleUnitsUsed(vehicleUnitsUsed)
 			if err != nil {
 				return nil, err
 			}
-			return append(dst, bytes...), nil
-		})
-		if err != nil {
-			return nil, err
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED,
+				dataBytes,
+				vehicleUnitsUsed.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, tachographG2.GetGnssPlaces(), func(dst []byte, msg *cardv1.GnssPlaces) ([]byte, error) {
-			bytes, err := opts.MarshalCardGnssPlaces(msg)
+		if gnssPlaces := tachographG2.GetGnssPlaces(); gnssPlaces != nil {
+			dataBytes, err := opts.MarshalCardGnssPlaces(gnssPlaces)
 			if err != nil {
 				return nil, err
 			}
-			return append(dst, bytes...), nil
-		})
-		if err != nil {
-			return nil, err
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_GNSS_PLACES,
+				dataBytes,
+				gnssPlaces.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
 		}
 
-		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, tachographG2.GetApplicationIdentificationV2(), func(dst []byte, msg *cardv1.ApplicationIdentificationV2) ([]byte, error) {
-			bytes, err := opts.MarshalCardApplicationIdentificationV2(msg)
+		if appIdV2 := tachographG2.GetApplicationIdentificationV2(); appIdV2 != nil {
+			dataBytes, err := opts.MarshalCardApplicationIdentificationV2(appIdV2)
 			if err != nil {
 				return nil, err
 			}
-			return append(dst, bytes...), nil
-		})
-		if err != nil {
-			return nil, err
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2,
+				dataBytes,
+				appIdV2.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -999,16 +1080,6 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	return dst, nil
 }
 
-// compositeMessage is a helper type for marshalling composite TLV values
-type compositeMessage struct {
-	data []byte
-}
-
-// ProtoReflect implements proto.Message
-func (m *compositeMessage) ProtoReflect() protoreflect.Message {
-	return nil // Not needed for our use case
-}
-
 // appendCertificateEF appends a Gen1 certificate EF (which are not signed)
 // Uses appendix 0x00 for Gen1 DF (Tachograph)
 func appendCertificateEF(dst []byte, fileType cardv1.ElementaryFileType, certData []byte) ([]byte, error) {
@@ -1049,139 +1120,47 @@ func appendCertificateEFG2(dst []byte, fileType cardv1.ElementaryFileType, certD
 	return dst, nil
 }
 
-// appendTlv is a generic helper for writing TLV records with zero value-allocation.
-func appendTlv[T proto.Message](
+// appendTlvBlock writes a TLV block (and optional signature block) to dst.
+//
+// Parameters:
+//   - fileType: The Elementary File type (used to look up the FID tag)
+//   - dataBytes: Pre-marshalled data bytes (nil = skip writing entirely)
+//   - signature: Signature bytes (nil/empty = skip signature block)
+//   - appendix: Tag appendix byte (0x00 for Gen1 data, 0x02 for Gen2 data)
+//
+// The function writes:
+//  1. Data block: [FID:2][appendix:1][length:2][data:N]
+//  2. Signature block (if signature present): [FID:2][appendix+1:1][length:2][signature:N]
+func appendTlvBlock(
 	dst []byte,
 	fileType cardv1.ElementaryFileType,
-	msg T,
-	appenderFunc func([]byte, T) ([]byte, error),
+	dataBytes []byte,
+	signature []byte,
+	appendix byte,
 ) ([]byte, error) {
-	// Use reflection to check if the message is nil
-	msgValue := reflect.ValueOf(msg)
-	if !msgValue.IsValid() || (msgValue.Kind() == reflect.Ptr && msgValue.IsNil()) {
-		return dst, nil // Don't write anything if the message is nil
+	// Skip if no data to write
+	if dataBytes == nil {
+		return dst, nil
 	}
 
+	// Get FID tag from protobuf enum options
 	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
 	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
 
-	// Write data tag (FID + appendix 0x00) first
+	// Write data block: [FID][appendix][length][value]
 	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
-	dst = append(dst, 0x00) // appendix for data
+	dst = append(dst, appendix)
+	dst = binary.BigEndian.AppendUint16(dst, uint16(len(dataBytes)))
+	dst = append(dst, dataBytes...)
 
-	// Placeholder for length
-	lenPos := len(dst)
-	dst = binary.BigEndian.AppendUint16(dst, 0) // Will be updated later
-
-	valPos := len(dst)
-
-	var err error
-	dst, err = appenderFunc(dst, msg)
-	if err != nil {
-		return nil, err
+	// Write signature block if present: [FID][appendix+1][length][signature]
+	if len(signature) > 0 {
+		sigAppendix := appendix + 1 // 0x01 for Gen1, 0x03 for Gen2
+		dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+		dst = append(dst, sigAppendix)
+		dst = binary.BigEndian.AppendUint16(dst, uint16(len(signature)))
+		dst = append(dst, signature...)
 	}
-
-	valLen := len(dst) - valPos
-
-	// Update the length field
-	binary.BigEndian.PutUint16(dst[lenPos:], uint16(valLen))
-
-	// Add signature block (FID + appendix 0x01, 128 bytes of zeros for now)
-	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
-	dst = append(dst, 0x01)                       // appendix for signature
-	dst = binary.BigEndian.AppendUint16(dst, 128) // Signature length
-	// Add 128 bytes of signature data (zeros for now)
-	signature := make([]byte, 128)
-	dst = append(dst, signature...)
-
-	return dst, nil
-}
-
-// appendTlvUnsigned is like appendTlv but doesn't add a signature block
-func appendTlvUnsigned[T proto.Message](
-	dst []byte,
-	fileType cardv1.ElementaryFileType,
-	msg T,
-	appenderFunc func([]byte, T) ([]byte, error),
-) ([]byte, error) {
-	// Use reflection to check if the message is nil
-	msgValue := reflect.ValueOf(msg)
-	if !msgValue.IsValid() || (msgValue.Kind() == reflect.Ptr && msgValue.IsNil()) {
-		return dst, nil // Don't write anything if the message is nil
-	}
-
-	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
-	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
-
-	// Write data tag (FID + appendix 0x00) first
-	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
-	dst = append(dst, 0x00) // appendix for data
-
-	// Placeholder for length
-	lenPos := len(dst)
-	dst = binary.BigEndian.AppendUint16(dst, 0) // Will be updated later
-
-	valPos := len(dst)
-
-	var err error
-	dst, err = appenderFunc(dst, msg)
-	if err != nil {
-		return nil, err
-	}
-
-	valLen := len(dst) - valPos
-
-	// Update the length field
-	binary.BigEndian.PutUint16(dst[lenPos:], uint16(valLen))
-
-	// No signature block for unsigned EFs
-	return dst, nil
-}
-
-// appendTlvG2 is like appendTlv but uses Gen2 DF appendix (0x02/0x03 instead of 0x00/0x01)
-func appendTlvG2[T proto.Message](
-	dst []byte,
-	fileType cardv1.ElementaryFileType,
-	msg T,
-	appenderFunc func([]byte, T) ([]byte, error),
-) ([]byte, error) {
-	// Use reflection to check if the message is nil
-	msgValue := reflect.ValueOf(msg)
-	if !msgValue.IsValid() || (msgValue.Kind() == reflect.Ptr && msgValue.IsNil()) {
-		return dst, nil // Don't write anything if the message is nil
-	}
-
-	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
-	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
-
-	// Write data tag (FID + appendix 0x02) first - Gen2 DF
-	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
-	dst = append(dst, 0x02) // appendix for Gen2 data
-
-	// Placeholder for length
-	lenPos := len(dst)
-	dst = binary.BigEndian.AppendUint16(dst, 0) // Will be updated later
-
-	valPos := len(dst)
-
-	var err error
-	dst, err = appenderFunc(dst, msg)
-	if err != nil {
-		return nil, err
-	}
-
-	valLen := len(dst) - valPos
-
-	// Update the length field
-	binary.BigEndian.PutUint16(dst[lenPos:], uint16(valLen))
-
-	// Add signature block (FID + appendix 0x03, 128 bytes of zeros for now) - Gen2 DF
-	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
-	dst = append(dst, 0x03)                       // appendix for Gen2 signature
-	dst = binary.BigEndian.AppendUint16(dst, 128) // Signature length
-	// Add 128 bytes of signature data (zeros for now)
-	signature := make([]byte, 128)
-	dst = append(dst, signature...)
 
 	return dst, nil
 }

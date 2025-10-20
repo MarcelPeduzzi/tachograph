@@ -149,14 +149,7 @@ func (opts AnonymizeOptions) anonymizeVehiclesUsed(v *cardv1.VehiclesUsed) *card
 	}
 	result.SetRecords(anonymizedRecords)
 
-	// Regenerate raw_data for binary fidelity
-	cardOpts := MarshalOptions{}
-	if rawData, err := cardOpts.MarshalVehiclesUsed(result); err == nil {
-		result.SetRawData(rawData)
-	}
-
-	// Clear signature (will be invalid after anonymization)
-	result.SetSignature(nil)
+	// Signature and raw_data fields left unset (nil) - TLV marshaller will omit these blocks
 
 	return result
 }

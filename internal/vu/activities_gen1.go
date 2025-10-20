@@ -230,7 +230,9 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		return nil
 	}
 	result := proto.Clone(activities).(*vuv1.ActivitiesGen1)
-	result.SetSignature(nil)
+	// Set signature to zero bytes (TV format: maintains structure)
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	result.SetSignature(make([]byte, 128))
 	result.SetRawData(nil)
 	return result
 }

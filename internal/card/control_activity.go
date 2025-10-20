@@ -340,12 +340,7 @@ func (opts AnonymizeOptions) anonymizeControlActivityData(ca *cardv1.ControlActi
 	anonymized.SetControlDownloadPeriodBegin(&timestamppb.Timestamp{Seconds: 1577836800})
 	anonymized.SetControlDownloadPeriodEnd(&timestamppb.Timestamp{Seconds: 1577836800 + 86400}) // 1 day later
 
-	// Regenerate raw_data
-	marshalOpts := MarshalOptions{}
-	rawData, err := marshalOpts.MarshalCardControlActivityData(anonymized)
-	if err == nil {
-		anonymized.SetRawData(rawData)
-	}
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
 
 	return anonymized
 }

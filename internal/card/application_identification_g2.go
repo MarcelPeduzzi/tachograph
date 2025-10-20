@@ -276,5 +276,9 @@ func (opts AnonymizeOptions) anonymizeApplicationIdentificationG2(appId *cardv1.
 		return nil
 	}
 	// Application identification is metadata, not PII - return clone
-	return proto.Clone(appId).(*cardv1.ApplicationIdentificationG2)
+	result := proto.Clone(appId).(*cardv1.ApplicationIdentificationG2)
+
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
+
+	return result
 }

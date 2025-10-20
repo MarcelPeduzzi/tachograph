@@ -50,8 +50,6 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen1(detailedSpeed *vuv1.Detailed
 	return nil, fmt.Errorf("cannot marshal Detailed Speed Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
 
-
-
 // anonymizeDetailedSpeedGen1 anonymizes Gen1 Detailed Speed data.
 // TODO: Implement full anonymization logic for Gen1 detailed speed.
 func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGen1) *vuv1.DetailedSpeedGen1 {
@@ -59,7 +57,9 @@ func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGe
 		return nil
 	}
 	result := proto.Clone(ds).(*vuv1.DetailedSpeedGen1)
-	result.SetSignature(nil)
+	// Set signature to zero bytes (TV format: maintains structure)
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	result.SetSignature(make([]byte, 128))
 	result.SetRawData(nil)
 	return result
 }

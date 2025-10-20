@@ -256,10 +256,7 @@ func (opts AnonymizeOptions) anonymizeGnssPlaces(gnssPlaces *cardv1.GnssPlaces) 
 	}
 	result.SetRecords(anonymizedRecords)
 
-	// Preserve signature if present
-	if gnssPlaces.HasSignature() {
-		result.SetSignature(gnssPlaces.GetSignature())
-	}
+	// Signature field left unset (nil) - TLV marshaller will omit the signature block
 
 	return result
 }

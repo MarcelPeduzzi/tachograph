@@ -55,8 +55,6 @@ func (opts MarshalOptions) MarshalEventsAndFaultsGen1(eventsAndFaults *vuv1.Even
 	return nil, fmt.Errorf("cannot marshal Events and Faults Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
 
-
-
 // anonymizeEventsAndFaultsGen1 anonymizes Gen1 Events and Faults data.
 // TODO: Implement full anonymization logic for Gen1 events/faults.
 func (opts AnonymizeOptions) anonymizeEventsAndFaultsGen1(ef *vuv1.EventsAndFaultsGen1) *vuv1.EventsAndFaultsGen1 {
@@ -64,7 +62,9 @@ func (opts AnonymizeOptions) anonymizeEventsAndFaultsGen1(ef *vuv1.EventsAndFaul
 		return nil
 	}
 	result := proto.Clone(ef).(*vuv1.EventsAndFaultsGen1)
-	result.SetSignature(nil)
+	// Set signature to zero bytes (TV format: maintains structure)
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	result.SetSignature(make([]byte, 128))
 	result.SetRawData(nil)
 	return result
 }

@@ -155,10 +155,9 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V1(overview *vuv1.OverviewGen2
 		}
 	}
 
-	// Clear signature (will be invalid after anonymization)
-	result.SetSignature(nil)
-
-	// Clear raw_data to ensure it doesn't contain PII
+	// Set signature to empty bytes (TV format: maintains structure)
+	// Gen2 uses variable-length ECDSA signatures
+	result.SetSignature([]byte{})
 	result.SetRawData(nil)
 
 	return result

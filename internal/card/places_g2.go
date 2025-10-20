@@ -157,25 +157,7 @@ func (opts AnonymizeOptions) anonymizePlacesG2(p *cardv1.PlacesG2) *cardv1.Place
 		anonymizeTimestampsInPlaceG2(anonymizedRecords)
 	}
 
-	// Regenerate raw_data for each record after timestamp modification
-	ddOpts := dd.MarshalOptions{}
-	for _, record := range anonymizedRecords {
-		recordBytes, err := ddOpts.MarshalPlaceRecordG2(record)
-		if err == nil {
-			record.SetRawData(recordBytes)
-		}
-	}
-
-	// Regenerate raw_data to match anonymized content
-	// This ensures round-trip fidelity after anonymization
-	cardOpts := MarshalOptions{}
-	anonymizedBytes, err := cardOpts.MarshalPlacesG2(result)
-	if err == nil {
-		result.SetRawData(anonymizedBytes)
-	}
-	// If marshalling fails, we'll have no raw_data, which is acceptable
-
-	// Don't preserve signature - it will be invalid
+	// Signature and raw_data fields left unset (nil) - TLV marshaller will omit these blocks
 
 	return result
 }

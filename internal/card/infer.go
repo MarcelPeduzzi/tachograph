@@ -3,6 +3,7 @@ package card
 import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // InferFileType determines the card type from raw card data.
@@ -37,6 +38,21 @@ func mapFidToElementaryFileType(fid uint16) (cardv1.ElementaryFileType, bool) {
 		}
 	}
 	return cardv1.ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED, false
+}
+
+// getFileId maps an ElementaryFileType to its FID using protobuf annotations.
+// Returns the FID and true if found, or 0 and false if not found.
+func getFileId(fileType cardv1.ElementaryFileType) (uint16, bool) {
+	enumDesc := cardv1.ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED.Descriptor()
+	enumValue := enumDesc.Values().ByNumber(protoreflect.EnumNumber(fileType))
+	if enumValue == nil {
+		return 0, false
+	}
+	fileId, ok := proto.GetExtension(enumValue.Options(), cardv1.E_FileId).(int32)
+	if !ok {
+		return 0, false
+	}
+	return uint16(fileId), true
 }
 
 // hasAllElementaryFiles checks if all required elementary files are present

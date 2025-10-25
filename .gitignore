@@ -8,3 +8,4 @@ proprietary-*
 cmd/tachograph/tachograph
 tools/cmd/fetch-certs/fetch-certs
 *.bin
+testdata/

@@ -1,170 +1,62 @@
 package card
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/testing/protocmp"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// TestGnssPlacesRoundTrip verifies binary fidelity (unmarshal → marshal → unmarshal)
-func TestGnssPlacesRoundTrip(t *testing.T) {
-	b64Data, err := os.ReadFile("testdata/gnss_places.b64")
+func TestGNSSPlaces_Generation2(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_GNSS_PLACES,
+		ddv1.Generation_GENERATION_2,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_GNSS_PLACES GENERATION_2")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	unmarshalOpts := UnmarshalOptions{}
-	gnssPlaces1, err := unmarshalOpts.unmarshalGnssPlaces(data)
-	if err != nil {
-		t.Fatalf("First unmarshal failed: %v", err)
-	}
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	opts := MarshalOptions{}
-	marshaled, err := opts.MarshalCardGnssPlaces(gnssPlaces1)
-	if err != nil {
-		t.Fatalf("Marshal failed: %v", err)
-	}
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			gnssPlaces, err := opts.unmarshalGnssPlaces(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	if diff := cmp.Diff(data, marshaled); diff != "" {
-		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, gnssPlaces, goldenPath)
 
-	gnssPlaces2, err := unmarshalOpts.unmarshalGnssPlaces(marshaled)
-	if err != nil {
-		t.Fatalf("Second unmarshal failed: %v", err)
-	}
-
-	if diff := cmp.Diff(gnssPlaces1, gnssPlaces2, protocmp.Transform()); diff != "" {
-		t.Errorf("Structural mismatch after round-trip (-want +got):\n%s", diff)
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalCardGnssPlaces(gnssPlaces)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
-
-// TestGnssPlacesAnonymization is a golden file test with deterministic anonymization
-//
-//	go test -run TestGnssPlacesAnonymization -update -v  # regenerate
-func TestGnssPlacesAnonymization(t *testing.T) {
-	b64Data, err := os.ReadFile("testdata/gnss_places.b64")
-	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
-	}
-
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
-
-	unmarshalOpts := UnmarshalOptions{}
-	gnssPlaces, err := unmarshalOpts.unmarshalGnssPlaces(data)
-	if err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
-	}
-
-	anonymizeOpts := AnonymizeOptions{}
-	anonymized := anonymizeOpts.anonymizeGnssPlaces(gnssPlaces)
-
-	opts := MarshalOptions{}
-	anonymizedData, err := opts.MarshalCardGnssPlaces(anonymized)
-	if err != nil {
-		t.Fatalf("Failed to marshal anonymized data: %v", err)
-	}
-
-	if *update {
-		anonymizedB64 := base64.StdEncoding.EncodeToString(anonymizedData)
-		if err := os.WriteFile("testdata/gnss_places.b64", []byte(anonymizedB64), 0o644); err != nil {
-			t.Fatalf("Failed to write gnss_places.b64: %v", err)
-		}
-
-		jsonBytes, err := protojson.Marshal(anonymized)
-		if err != nil {
-			t.Fatalf("Failed to marshal protobuf to JSON: %v", err)
-		}
-		var stableJSON bytes.Buffer
-		if err := json.Indent(&stableJSON, jsonBytes, "", "  "); err != nil {
-			t.Fatalf("Failed to format JSON: %v", err)
-		}
-		if err := os.WriteFile("testdata/gnss_places.golden.json", stableJSON.Bytes(), 0o644); err != nil {
-			t.Fatalf("Failed to write gnss_places.golden.json: %v", err)
-		}
-
-		t.Log("Updated golden files")
-	} else {
-		expectedB64, err := os.ReadFile("testdata/gnss_places.b64")
-		if err != nil {
-			t.Fatalf("Failed to read expected gnss_places.b64: %v", err)
-		}
-		expectedData, err := base64.StdEncoding.DecodeString(string(expectedB64))
-		if err != nil {
-			t.Fatalf("Failed to decode expected base64: %v", err)
-		}
-		if diff := cmp.Diff(expectedData, anonymizedData); diff != "" {
-			t.Errorf("Binary mismatch (-want +got):\n%s", diff)
-		}
-
-		expectedJSON, err := os.ReadFile("testdata/gnss_places.golden.json")
-		if err != nil {
-			t.Fatalf("Failed to read expected JSON: %v", err)
-		}
-		var expected cardv1.GnssPlaces
-		if err := protojson.Unmarshal(expectedJSON, &expected); err != nil {
-			t.Fatalf("Failed to unmarshal expected JSON: %v", err)
-		}
-		if diff := cmp.Diff(&expected, anonymized, protocmp.Transform()); diff != "" {
-			t.Errorf("JSON mismatch (-want +got):\n%s", diff)
-		}
-	}
-
-	if anonymized == nil {
-		t.Fatal("Anonymized GnssPlaces is nil")
-	}
-
-	// Verify that all records have been anonymized
-	records := anonymized.GetRecords()
-	for i, record := range records {
-		if record == nil {
-			continue
-		}
-
-		// Check outer timestamp is in the anonymization sequence
-		ts := record.GetTimestamp()
-		if ts != nil && ts.Seconds != 0 {
-			// Verify timestamp is 2020-01-01 00:00:00 UTC + (i * 1 hour)
-			expectedSeconds := int64(1577836800 + i*3600)
-			if ts.Seconds != expectedSeconds {
-				t.Errorf("Record %d: outer timestamp = %d, want %d", i, ts.Seconds, expectedSeconds)
-			}
-		}
-
-		// Check GNSS place record has Helsinki coordinates
-		gnssPlace := record.GetGnssPlaceRecord()
-		if gnssPlace != nil && gnssPlace.GetGeoCoordinates() != nil {
-			coords := gnssPlace.GetGeoCoordinates()
-			// Helsinki: 60°10.0'N (60100), 24°56.0'E (24560)
-			if coords.GetLatitude() != 60100 || coords.GetLongitude() != 24560 {
-				t.Errorf("Record %d: coordinates = (%d, %d), want (60100, 24560)",
-					i, coords.GetLatitude(), coords.GetLongitude())
-			}
-		}
-
-		// Verify odometer is rounded to nearest 100km
-		odometer := record.GetVehicleOdometerKm()
-		if odometer%100 != 0 {
-			t.Errorf("Record %d: odometer = %d, should be rounded to nearest 100km", i, odometer)
-		}
-	}
-}
-
-// AnonymizeGnssPlaces creates an anonymized copy of GnssPlaces,
-// replacing sensitive GNSS data with static, deterministic test values.

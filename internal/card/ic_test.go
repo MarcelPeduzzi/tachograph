@@ -1,160 +1,62 @@
 package card
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/testing/protocmp"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// TestIcRoundTrip verifies binary fidelity (unmarshal → marshal → unmarshal)
-func TestIcRoundTrip(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/ic.b64")
+func TestIC_Generation1(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_IC,
+		ddv1.Generation_GENERATION_1,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_IC GENERATION_1")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// First unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	ic1, err := unmarshalOpts.unmarshalIc(data)
-	if err != nil {
-		t.Fatalf("First unmarshal failed: %v", err)
-	}
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Marshal
-	opts := MarshalOptions{}
-	marshaled, err := opts.MarshalCardIc(ic1)
-	if err != nil {
-		t.Fatalf("Marshal failed: %v", err)
-	}
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			ic, err := opts.unmarshalIc(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Verify binary equality
-	if diff := cmp.Diff(data, marshaled); diff != "" {
-		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, ic, goldenPath)
 
-	// Second unmarshal
-	ic2, err := unmarshalOpts.unmarshalIc(marshaled)
-	if err != nil {
-		t.Fatalf("Second unmarshal failed: %v", err)
-	}
-
-	// Verify structural equality
-	if diff := cmp.Diff(ic1, ic2, protocmp.Transform()); diff != "" {
-		t.Errorf("Structural mismatch after round-trip (-want +got):\n%s", diff)
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalCardIc(ic)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
-
-// TestIcAnonymization is a golden file test with deterministic anonymization
-//
-//	go test -run TestIcAnonymization -update -v  # regenerate
-func TestIcAnonymization(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/ic.b64")
-	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
-	}
-
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
-
-	// Unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	ic, err := unmarshalOpts.unmarshalIc(data)
-	if err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
-	}
-
-	// Anonymize
-	anonymizeOpts := AnonymizeOptions{}
-	anonymized := anonymizeOpts.anonymizeIc(ic)
-
-	// Marshal anonymized data
-	opts := MarshalOptions{}
-	anonymizedData, err := opts.MarshalCardIc(anonymized)
-	if err != nil {
-		t.Fatalf("Failed to marshal anonymized data: %v", err)
-	}
-
-	if *update {
-		// Write anonymized binary
-		anonymizedB64 := base64.StdEncoding.EncodeToString(anonymizedData)
-		if err := os.WriteFile("testdata/ic.b64", []byte(anonymizedB64), 0o644); err != nil {
-			t.Fatalf("Failed to write ic.b64: %v", err)
-		}
-
-		// Write golden JSON with stable formatting
-		// First convert to JSON using protojson
-		jsonBytes, err := protojson.Marshal(anonymized)
-		if err != nil {
-			t.Fatalf("Failed to marshal protobuf to JSON: %v", err)
-		}
-		// Then reformat with json.Indent for stable, deterministic output
-		var stableJSON bytes.Buffer
-		if err := json.Indent(&stableJSON, jsonBytes, "", "  "); err != nil {
-			t.Fatalf("Failed to format JSON: %v", err)
-		}
-		if err := os.WriteFile("testdata/ic.golden.json", stableJSON.Bytes(), 0o644); err != nil {
-			t.Fatalf("Failed to write ic.golden.json: %v", err)
-		}
-
-		t.Log("Updated golden files")
-	} else {
-		// Assert binary matches
-		expectedB64, err := os.ReadFile("testdata/ic.b64")
-		if err != nil {
-			t.Fatalf("Failed to read expected ic.b64: %v", err)
-		}
-		expectedData, err := base64.StdEncoding.DecodeString(string(expectedB64))
-		if err != nil {
-			t.Fatalf("Failed to decode expected base64: %v", err)
-		}
-		if diff := cmp.Diff(expectedData, anonymizedData); diff != "" {
-			t.Errorf("Binary mismatch (-want +got):\n%s", diff)
-		}
-
-		// Assert JSON matches
-		expectedJSON, err := os.ReadFile("testdata/ic.golden.json")
-		if err != nil {
-			t.Fatalf("Failed to read expected JSON: %v", err)
-		}
-		var expected cardv1.Ic
-		if err := protojson.Unmarshal(expectedJSON, &expected); err != nil {
-			t.Fatalf("Failed to unmarshal expected JSON: %v", err)
-		}
-		if diff := cmp.Diff(&expected, anonymized, protocmp.Transform()); diff != "" {
-			t.Errorf("JSON mismatch (-want +got):\n%s", diff)
-		}
-	}
-
-	// Always: structural assertions on anonymized data
-	if anonymized == nil {
-		t.Fatal("Anonymized IC is nil")
-	}
-
-	// IC contains mostly hardware identifiers - anonymized values should be static test data
-	if len(anonymized.GetIcSerialNumber()) != 4 {
-		t.Errorf("IC serial number length = %d, want 4", len(anonymized.GetIcSerialNumber()))
-	}
-	if len(anonymized.GetIcManufacturingReferences()) != 4 {
-		t.Errorf("IC manufacturing references length = %d, want 4", len(anonymized.GetIcManufacturingReferences()))
-	}
-}
-
-// AnonymizeIc creates an anonymized copy of IC data, replacing hardware identifiers
-// with static, deterministic test values.

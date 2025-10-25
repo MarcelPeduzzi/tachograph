@@ -1,172 +1,113 @@
 package card
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/testing/protocmp"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// TestFaultsDataRoundTrip verifies binary fidelity (unmarshal → marshal → unmarshal)
-func TestFaultsDataRoundTrip(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/faults.b64")
+func TestFaults_Generation1(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_FAULTS_DATA,
+		ddv1.Generation_GENERATION_1,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_FAULTS_DATA GENERATION_1")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// First unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	faults1, err := unmarshalOpts.unmarshalFaultsData(data)
-	if err != nil {
-		t.Fatalf("First unmarshal failed: %v", err)
-	}
-
-	// Marshal
-	opts := MarshalOptions{}
-	marshaled, err := opts.MarshalFaultsData(faults1)
-	if err != nil {
-		t.Fatalf("Marshal failed: %v", err)
-	}
-
-	// Verify binary equality
-	if diff := cmp.Diff(data, marshaled); diff != "" {
-		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
-	}
-
-	// Second unmarshal
-	faults2, err := unmarshalOpts.unmarshalFaultsData(marshaled)
-	if err != nil {
-		t.Fatalf("Second unmarshal failed: %v", err)
-	}
-
-	// Verify structural equality
-	if diff := cmp.Diff(faults1, faults2, protocmp.Transform()); diff != "" {
-		t.Errorf("Structural mismatch after round-trip (-want +got):\n%s", diff)
-	}
-}
-
-// TestFaultsDataAnonymization is a golden file test with deterministic anonymization
-//
-//	go test -run TestFaultsDataAnonymization -update -v  # regenerate
-func TestFaultsDataAnonymization(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/faults.b64")
-	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
-	}
-
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
-
-	// Unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	faults, err := unmarshalOpts.unmarshalFaultsData(data)
-	if err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
-	}
-
-	// Anonymize
-	anonymizeOpts := AnonymizeOptions{}
-	anonymized := anonymizeOpts.anonymizeFaultsData(faults)
-
-	// Marshal anonymized data
-	opts := MarshalOptions{}
-	anonymizedData, err := opts.MarshalFaultsData(anonymized)
-	if err != nil {
-		t.Fatalf("Failed to marshal anonymized data: %v", err)
-	}
-
-	if *update {
-		// Write anonymized binary
-		anonymizedB64 := base64.StdEncoding.EncodeToString(anonymizedData)
-		if err := os.WriteFile("testdata/faults.b64", []byte(anonymizedB64), 0o644); err != nil {
-			t.Fatalf("Failed to write faults.b64: %v", err)
-		}
-
-		// Write golden JSON with stable formatting
-		jsonBytes, err := protojson.Marshal(anonymized)
-		if err != nil {
-			t.Fatalf("Failed to marshal protobuf to JSON: %v", err)
-		}
-		var stableJSON bytes.Buffer
-		if err := json.Indent(&stableJSON, jsonBytes, "", "  "); err != nil {
-			t.Fatalf("Failed to format JSON: %v", err)
-		}
-		if err := os.WriteFile("testdata/faults.golden.json", stableJSON.Bytes(), 0o644); err != nil {
-			t.Fatalf("Failed to write faults.golden.json: %v", err)
-		}
-
-		t.Log("Updated golden files")
-	} else {
-		// Assert binary matches
-		expectedB64, err := os.ReadFile("testdata/faults.b64")
-		if err != nil {
-			t.Fatalf("Failed to read expected faults.b64: %v", err)
-		}
-		expectedData, err := base64.StdEncoding.DecodeString(string(expectedB64))
-		if err != nil {
-			t.Fatalf("Failed to decode expected base64: %v", err)
-		}
-		if diff := cmp.Diff(expectedData, anonymizedData); diff != "" {
-			t.Errorf("Binary mismatch (-want +got):\n%s", diff)
-		}
-
-		// Assert JSON matches
-		expectedJSON, err := os.ReadFile("testdata/faults.golden.json")
-		if err != nil {
-			t.Fatalf("Failed to read expected JSON: %v", err)
-		}
-		var expected cardv1.FaultsData
-		if err := protojson.Unmarshal(expectedJSON, &expected); err != nil {
-			t.Fatalf("Failed to unmarshal expected JSON: %v", err)
-		}
-		if diff := cmp.Diff(&expected, anonymized, protocmp.Transform()); diff != "" {
-			t.Errorf("JSON mismatch (-want +got):\n%s", diff)
-		}
-	}
-
-	// Always: structural assertions on anonymized data
-	if anonymized == nil {
-		t.Fatal("Anonymized FaultsData is nil")
-	}
-
-	// Verify fault count is preserved
-	if len(anonymized.GetFaults()) != len(faults.GetFaults()) {
-		t.Errorf("Fault count changed: got %d, want %d", len(anonymized.GetFaults()), len(faults.GetFaults()))
-	}
-
-	// Verify valid/invalid status is preserved for all faults
-	for i, fault := range anonymized.GetFaults() {
-		origFault := faults.GetFaults()[i]
-		if fault.GetValid() != origFault.GetValid() {
-			t.Errorf("Fault %d valid status changed: got %v, want %v", i, fault.GetValid(), origFault.GetValid())
-		}
-
-		// For valid faults, check vehicle registration is anonymized to FINLAND
-		if fault.GetValid() {
-			vehicleReg := fault.GetFaultVehicleRegistration()
-			if vehicleReg != nil && vehicleReg.GetNation() != ddv1.NationNumeric_FINLAND {
-				t.Errorf("Fault %d vehicle nation = %v, want FINLAND", i, vehicleReg.GetNation())
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
 			}
-		}
+
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			faults, err := opts.unmarshalFaultsData(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
+
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, faults, goldenPath)
+
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalFaultsData(faults)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
 
-// AnonymizeFaultsData creates an anonymized copy of FaultsData,
-// replacing sensitive information with static, deterministic test values.
+func TestFaults_Generation2(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_FAULTS_DATA,
+		ddv1.Generation_GENERATION_2,
+		cardv1.ContentType_DATA,
+	)
+	if err != nil {
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_FAULTS_DATA GENERATION_2")
+	}
+
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
+
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
+
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			faults, err := opts.unmarshalFaultsData(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
+
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, faults, goldenPath)
+
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalFaultsData(faults)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
+	}
+}

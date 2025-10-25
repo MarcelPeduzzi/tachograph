@@ -1,0 +1,822 @@
+{
+  "events": [
+    {
+      "valid": true,
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "eventBeginTime": "2020-01-01T00:00:00Z",
+      "eventEndTime": "2020-01-01T00:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T12:00:00Z",
+      "eventEndTime": "2020-01-01T12:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T13:00:00Z",
+      "eventEndTime": "2020-01-01T13:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "eventBeginTime": "2020-01-02T00:00:00Z",
+      "eventEndTime": "2020-01-02T00:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "eventBeginTime": "2020-01-02T01:00:00Z",
+      "eventEndTime": "2020-01-02T01:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_TIME_CONFLICT_GNSS_VS_VU",
+      "eventBeginTime": "2020-01-04T00:00:00Z",
+      "eventEndTime": "2020-01-04T00:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T12:00:00Z",
+      "eventEndTime": "2020-01-04T12:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T13:00:00Z",
+      "eventEndTime": "2020-01-04T13:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T14:00:00Z",
+      "eventEndTime": "2020-01-04T14:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T15:00:00Z",
+      "eventEndTime": "2020-01-04T15:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T16:00:00Z",
+      "eventEndTime": "2020-01-04T16:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T17:00:00Z",
+      "eventEndTime": "2020-01-04T17:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T18:00:00Z",
+      "eventEndTime": "2020-01-04T18:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T19:00:00Z",
+      "eventEndTime": "2020-01-04T19:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T20:00:00Z",
+      "eventEndTime": "2020-01-04T20:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T21:00:00Z",
+      "eventEndTime": "2020-01-04T21:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY",
+      "eventBeginTime": "2020-01-04T22:00:00Z",
+      "eventEndTime": "2020-01-04T22:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T00:00:00Z",
+      "eventEndTime": "2020-01-06T00:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T01:00:00Z",
+      "eventEndTime": "2020-01-06T01:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T02:00:00Z",
+      "eventEndTime": "2020-01-06T02:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T03:00:00Z",
+      "eventEndTime": "2020-01-06T03:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T04:00:00Z",
+      "eventEndTime": "2020-01-06T04:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T05:00:00Z",
+      "eventEndTime": "2020-01-06T05:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T06:00:00Z",
+      "eventEndTime": "2020-01-06T06:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T07:00:00Z",
+      "eventEndTime": "2020-01-06T07:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T08:00:00Z",
+      "eventEndTime": "2020-01-06T08:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T09:00:00Z",
+      "eventEndTime": "2020-01-06T09:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T10:00:00Z",
+      "eventEndTime": "2020-01-06T10:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-06T11:00:00Z",
+      "eventEndTime": "2020-01-06T11:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST-VRN"
+        }
+      }
+    }
+  ]
+}

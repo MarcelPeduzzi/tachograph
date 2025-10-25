@@ -10,18 +10,18 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-func TestICC_Generation1(t *testing.T) {
+func TestApplicationIdentificationG2_Generation2(t *testing.T) {
 	// Discover all matching hexdump files using type-safe enums
 	hexdumpFiles, err := findHexdumpFiles(
-		cardv1.ElementaryFileType_EF_ICC,
-		ddv1.Generation_GENERATION_1,
+		cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION,
+		ddv1.Generation_GENERATION_2,
 		cardv1.ContentType_DATA,
 	)
 	if err != nil {
 		t.Fatalf("Failed to discover hexdump files: %v", err)
 	}
 	if len(hexdumpFiles) == 0 {
-		t.Fatal("No hexdump files found for EF_ICC GENERATION_1")
+		t.Fatal("No hexdump files found for EF_APPLICATION_IDENTIFICATION GENERATION_2")
 	}
 
 	// Run subtest for each discovered file
@@ -39,18 +39,18 @@ func TestICC_Generation1(t *testing.T) {
 
 			// Unmarshal
 			opts := UnmarshalOptions{}
-			icc, err := opts.unmarshalIcc(data)
+			appId, err := opts.unmarshalApplicationIdentificationG2(data)
 			if err != nil {
 				t.Fatalf("Unmarshal failed: %v", err)
 			}
 
 			// Golden JSON comparison
 			goldenPath := goldenJSONPath(hexdumpPath)
-			loadOrCreateGolden(t, icc, goldenPath)
+			loadOrCreateGolden(t, appId, goldenPath)
 
 			// Round-trip test
 			marshalOpts := MarshalOptions{}
-			marshaled, err := marshalOpts.MarshalIcc(icc)
+			marshaled, err := marshalOpts.MarshalCardApplicationIdentificationG2(appId)
 			if err != nil {
 				t.Fatalf("Marshal failed: %v", err)
 			}

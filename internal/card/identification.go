@@ -22,6 +22,14 @@ func createIA5StringValue(value string, length int32) *ddv1.Ia5StringValue {
 
 // unmarshalIdentification parses the binary data for an EF_Identification record.
 //
+// TODO: Refactor to separate card-specific identification types:
+//   - unmarshalDriverCardIdentification
+//   - unmarshalWorkshopCardIdentification
+//   - unmarshalControlCardIdentification
+//   - unmarshalCompanyCardIdentification
+//
+// Each card type has different CardNumber structures (14 vs 13 byte identification).
+//
 // The data type `CardIdentification` is specified in the Data Dictionary, Section 2.1.
 //
 // ASN.1 Definition:
@@ -527,8 +535,9 @@ func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) 
 		}
 
 		// Anonymize issuing authority name (code-paged string: 1 byte code page + 35 bytes data)
+		// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 		authName := &ddv1.StringValue{}
-		authName.SetValue("TEST_AUTHORITY")
+		authName.SetValue("Transport and Communications Agency")
 		authName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 		authName.SetLength(35) // Data length (not including code page byte)
 		anonymizedCard.SetCardIssuingAuthorityName(authName)
@@ -550,14 +559,15 @@ func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) 
 			anonymizedHolder := &cardv1.Identification_DriverCardHolder{}
 
 			// Replace names with test values (code-paged strings: 1 byte code page + 35 bytes data each)
+			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 			surname := &ddv1.StringValue{}
-			surname.SetValue("TEST_SURNAME")
+			surname.SetValue("Doe")
 			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			surname.SetLength(35)
 			anonymizedHolder.SetCardHolderSurname(surname)
 
 			firstName := &ddv1.StringValue{}
-			firstName.SetValue("TEST_FIRSTNAME")
+			firstName.SetValue("John")
 			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			firstName.SetLength(35)
 			anonymizedHolder.SetCardHolderFirstNames(firstName)
@@ -585,27 +595,29 @@ func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) 
 			anonymizedHolder := &cardv1.Identification_WorkshopCardHolder{}
 
 			// Anonymize workshop details (code-paged strings: 1 byte code page + 35 bytes data each)
+			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 			workshopName := &ddv1.StringValue{}
-			workshopName.SetValue("TEST_WORKSHOP")
+			workshopName.SetValue("Test Workshop")
 			workshopName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			workshopName.SetLength(35)
 			anonymizedHolder.SetWorkshopName(workshopName)
 
 			workshopAddr := &ddv1.StringValue{}
-			workshopAddr.SetValue("TEST_ADDRESS")
+			workshopAddr.SetValue("123 Test Street")
 			workshopAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			workshopAddr.SetLength(35)
 			anonymizedHolder.SetWorkshopAddress(workshopAddr)
 
 			// Anonymize holder names (code-paged strings: 1 byte code page + 35 bytes data each)
+			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 			surname := &ddv1.StringValue{}
-			surname.SetValue("TEST_SURNAME")
+			surname.SetValue("Doe")
 			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			surname.SetLength(35)
 			anonymizedHolder.SetCardHolderSurname(surname)
 
 			firstName := &ddv1.StringValue{}
-			firstName.SetValue("TEST_FIRSTNAME")
+			firstName.SetValue("Jane")
 			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			firstName.SetLength(35)
 			anonymizedHolder.SetCardHolderFirstNames(firstName)
@@ -621,27 +633,29 @@ func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) 
 			anonymizedHolder := &cardv1.Identification_ControlCardHolder{}
 
 			// Anonymize control body details (code-paged strings: 1 byte code page + 35 bytes data each)
+			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 			controlBodyName := &ddv1.StringValue{}
-			controlBodyName.SetValue("TEST_CONTROL_BODY")
+			controlBodyName.SetValue("Control Authority")
 			controlBodyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			controlBodyName.SetLength(35)
 			anonymizedHolder.SetControlBodyName(controlBodyName)
 
 			controlBodyAddr := &ddv1.StringValue{}
-			controlBodyAddr.SetValue("TEST_ADDRESS")
+			controlBodyAddr.SetValue("456 Control Avenue")
 			controlBodyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			controlBodyAddr.SetLength(35)
 			anonymizedHolder.SetControlBodyAddress(controlBodyAddr)
 
 			// Anonymize holder names (code-paged strings: 1 byte code page + 35 bytes data each)
+			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 			surname := &ddv1.StringValue{}
-			surname.SetValue("TEST_SURNAME")
+			surname.SetValue("Smith")
 			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			surname.SetLength(35)
 			anonymizedHolder.SetCardHolderSurname(surname)
 
 			firstName := &ddv1.StringValue{}
-			firstName.SetValue("TEST_FIRSTNAME")
+			firstName.SetValue("Bob")
 			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			firstName.SetLength(35)
 			anonymizedHolder.SetCardHolderFirstNames(firstName)
@@ -657,14 +671,15 @@ func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) 
 			anonymizedHolder := &cardv1.Identification_CompanyCardHolder{}
 
 			// Anonymize company details (code-paged strings: 1 byte code page + 35 bytes data each)
+			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 			companyName := &ddv1.StringValue{}
-			companyName.SetValue("TEST_COMPANY")
+			companyName.SetValue("ACME Transport Company")
 			companyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			companyName.SetLength(35)
 			anonymizedHolder.SetCompanyName(companyName)
 
 			companyAddr := &ddv1.StringValue{}
-			companyAddr.SetValue("TEST_ADDRESS")
+			companyAddr.SetValue("789 Business Boulevard")
 			companyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			companyAddr.SetLength(35)
 			anonymizedHolder.SetCompanyAddress(companyAddr)

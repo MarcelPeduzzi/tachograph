@@ -1,0 +1,3806 @@
+{
+  "newestRecordIndex": 64,
+  "records": [
+    {
+      "vehicleOdometerBeginKm": 22497,
+      "vehicleOdometerEndKm": 22573,
+      "vehicleFirstUse": "2025-04-11T03:50:14Z",
+      "vehicleLastUse": "2025-04-11T13:34:33Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 201,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 23203,
+      "vehicleOdometerEndKm": 23348,
+      "vehicleFirstUse": "2025-04-22T03:52:54Z",
+      "vehicleLastUse": "2025-04-22T14:32:01Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 202,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 23348,
+      "vehicleOdometerEndKm": 23424,
+      "vehicleFirstUse": "2025-04-23T03:50:58Z",
+      "vehicleLastUse": "2025-04-23T11:59:40Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 203,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 23807,
+      "vehicleOdometerEndKm": 23907,
+      "vehicleFirstUse": "2025-04-24T03:51:40Z",
+      "vehicleLastUse": "2025-04-24T13:17:34Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 204,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 23907,
+      "vehicleOdometerEndKm": 24035,
+      "vehicleFirstUse": "2025-04-25T03:51:53Z",
+      "vehicleLastUse": "2025-04-25T13:15:25Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 205,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 24323,
+      "vehicleOdometerEndKm": 24445,
+      "vehicleFirstUse": "2025-04-28T03:51:02Z",
+      "vehicleLastUse": "2025-04-28T12:19:25Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 206,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 24445,
+      "vehicleOdometerEndKm": 24562,
+      "vehicleFirstUse": "2025-04-29T03:54:26Z",
+      "vehicleLastUse": "2025-04-29T15:08:31Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 207,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 24562,
+      "vehicleOdometerEndKm": 24648,
+      "vehicleFirstUse": "2025-04-30T03:58:05Z",
+      "vehicleLastUse": "2025-04-30T13:28:00Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 208,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 24648,
+      "vehicleOdometerEndKm": 24716,
+      "vehicleFirstUse": "2025-05-02T03:55:59Z",
+      "vehicleLastUse": "2025-05-02T11:47:01Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 209,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 28855,
+      "vehicleOdometerEndKm": 28983,
+      "vehicleFirstUse": "2025-06-23T04:03:46Z",
+      "vehicleLastUse": "2025-06-23T12:57:40Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 210,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 28983,
+      "vehicleOdometerEndKm": 29090,
+      "vehicleFirstUse": "2025-06-24T03:52:22Z",
+      "vehicleLastUse": "2025-06-24T13:36:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 211,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 29090,
+      "vehicleOdometerEndKm": 29185,
+      "vehicleFirstUse": "2025-06-25T03:51:17Z",
+      "vehicleLastUse": "2025-06-25T12:28:49Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 212,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 29185,
+      "vehicleOdometerEndKm": 29286,
+      "vehicleFirstUse": "2025-06-26T03:51:38Z",
+      "vehicleLastUse": "2025-06-26T12:41:17Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 213,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 29286,
+      "vehicleOdometerEndKm": 29393,
+      "vehicleFirstUse": "2025-06-27T03:53:42Z",
+      "vehicleLastUse": "2025-06-27T13:15:31Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 214,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 29687,
+      "vehicleOdometerEndKm": 29800,
+      "vehicleFirstUse": "2025-06-30T03:52:36Z",
+      "vehicleLastUse": "2025-06-30T14:01:55Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 215,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 29800,
+      "vehicleOdometerEndKm": 29909,
+      "vehicleFirstUse": "2025-07-01T03:54:06Z",
+      "vehicleLastUse": "2025-07-01T13:58:42Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 216,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 29909,
+      "vehicleOdometerEndKm": 30018,
+      "vehicleFirstUse": "2025-07-02T03:56:21Z",
+      "vehicleLastUse": "2025-07-02T13:34:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 217,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 30018,
+      "vehicleOdometerEndKm": 30138,
+      "vehicleFirstUse": "2025-07-03T03:54:57Z",
+      "vehicleLastUse": "2025-07-03T13:59:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 218,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 30139,
+      "vehicleOdometerEndKm": 30247,
+      "vehicleFirstUse": "2025-07-04T04:00:16Z",
+      "vehicleLastUse": "2025-07-04T13:52:49Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 219,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 83291,
+      "vehicleOdometerEndKm": 83416,
+      "vehicleFirstUse": "2025-07-07T03:53:56Z",
+      "vehicleLastUse": "2025-07-07T13:14:42Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 220,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 83416,
+      "vehicleOdometerEndKm": 83537,
+      "vehicleFirstUse": "2025-07-08T03:54:02Z",
+      "vehicleLastUse": "2025-07-08T23:59:59Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 221,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 83537,
+      "vehicleOdometerEndKm": 83607,
+      "vehicleFirstUse": "2025-07-09T00:00:00Z",
+      "vehicleLastUse": "2025-07-09T12:44:03Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 222,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 83607,
+      "vehicleOdometerEndKm": 83702,
+      "vehicleFirstUse": "2025-07-10T03:51:00Z",
+      "vehicleLastUse": "2025-07-10T11:51:24Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 223,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 83702,
+      "vehicleOdometerEndKm": 83805,
+      "vehicleFirstUse": "2025-07-11T03:46:47Z",
+      "vehicleLastUse": "2025-07-11T12:06:19Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 224,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 44857,
+      "vehicleOdometerEndKm": 44964,
+      "vehicleFirstUse": "2025-07-14T04:19:22Z",
+      "vehicleLastUse": "2025-07-14T12:23:37Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 225,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 44964,
+      "vehicleOdometerEndKm": 45064,
+      "vehicleFirstUse": "2025-07-15T03:58:17Z",
+      "vehicleLastUse": "2025-07-15T23:59:59Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 226,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 45064,
+      "vehicleOdometerEndKm": 45163,
+      "vehicleFirstUse": "2025-07-16T00:00:00Z",
+      "vehicleLastUse": "2025-07-16T11:34:21Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 227,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 45165,
+      "vehicleOdometerEndKm": 45267,
+      "vehicleFirstUse": "2025-07-18T04:31:17Z",
+      "vehicleLastUse": "2025-07-18T11:57:59Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 228,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 31084,
+      "vehicleOdometerEndKm": 31180,
+      "vehicleFirstUse": "2025-07-21T04:57:22Z",
+      "vehicleLastUse": "2025-07-21T11:58:57Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 229,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 31180,
+      "vehicleOdometerEndKm": 31244,
+      "vehicleFirstUse": "2025-07-22T03:51:27Z",
+      "vehicleLastUse": "2025-07-22T11:47:22Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 230,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 31246,
+      "vehicleOdometerEndKm": 31700,
+      "vehicleFirstUse": "2025-07-23T05:11:43Z",
+      "vehicleLastUse": "2025-07-23T19:26:33Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 231,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 31703,
+      "vehicleOdometerEndKm": 31809,
+      "vehicleFirstUse": "2025-07-24T05:52:15Z",
+      "vehicleLastUse": "2025-07-24T14:31:16Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 232,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 31809,
+      "vehicleOdometerEndKm": 31957,
+      "vehicleFirstUse": "2025-07-25T03:56:48Z",
+      "vehicleLastUse": "2025-07-25T13:08:28Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 233,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 31957,
+      "vehicleOdometerEndKm": 32064,
+      "vehicleFirstUse": "2025-07-28T03:54:18Z",
+      "vehicleLastUse": "2025-07-28T12:30:07Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 234,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 32065,
+      "vehicleOdometerEndKm": 32166,
+      "vehicleFirstUse": "2025-07-29T04:35:42Z",
+      "vehicleLastUse": "2025-07-29T11:35:04Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 235,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 32459,
+      "vehicleOdometerEndKm": 32563,
+      "vehicleFirstUse": "2025-07-30T03:57:09Z",
+      "vehicleLastUse": "2025-07-30T13:26:11Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 236,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 32565,
+      "vehicleOdometerEndKm": 32623,
+      "vehicleFirstUse": "2025-07-31T04:59:16Z",
+      "vehicleLastUse": "2025-07-31T10:53:12Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 237,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 32623,
+      "vehicleOdometerEndKm": 32723,
+      "vehicleFirstUse": "2025-08-01T03:51:57Z",
+      "vehicleLastUse": "2025-08-01T12:14:39Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 238,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 32985,
+      "vehicleOdometerEndKm": 33133,
+      "vehicleFirstUse": "2025-08-05T03:54:38Z",
+      "vehicleLastUse": "2025-08-05T14:55:30Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 239,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 33425,
+      "vehicleOdometerEndKm": 33533,
+      "vehicleFirstUse": "2025-08-06T03:52:27Z",
+      "vehicleLastUse": "2025-08-06T14:07:52Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 240,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 33533,
+      "vehicleOdometerEndKm": 33635,
+      "vehicleFirstUse": "2025-08-07T03:59:10Z",
+      "vehicleLastUse": "2025-08-07T12:37:30Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 241,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 28355,
+      "vehicleOdometerEndKm": 28463,
+      "vehicleFirstUse": "2025-08-08T04:56:11Z",
+      "vehicleLastUse": "2025-08-08T13:49:51Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-712"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 242,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 33856,
+      "vehicleOdometerEndKm": 33958,
+      "vehicleFirstUse": "2025-08-11T03:51:53Z",
+      "vehicleLastUse": "2025-08-11T12:48:24Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 243,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 33960,
+      "vehicleOdometerEndKm": 34071,
+      "vehicleFirstUse": "2025-08-12T05:03:26Z",
+      "vehicleLastUse": "2025-08-12T14:08:46Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 244,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 34071,
+      "vehicleOdometerEndKm": 34170,
+      "vehicleFirstUse": "2025-08-13T03:56:18Z",
+      "vehicleLastUse": "2025-08-13T13:40:55Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 245,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 34368,
+      "vehicleOdometerEndKm": 34438,
+      "vehicleFirstUse": "2025-08-14T05:03:25Z",
+      "vehicleLastUse": "2025-08-14T12:22:02Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 246,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 34738,
+      "vehicleOdometerEndKm": 34889,
+      "vehicleFirstUse": "2025-08-15T04:26:56Z",
+      "vehicleLastUse": "2025-08-15T13:42:31Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 247,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 35220,
+      "vehicleOdometerEndKm": 35332,
+      "vehicleFirstUse": "2025-08-18T03:51:25Z",
+      "vehicleLastUse": "2025-08-18T13:49:30Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 248,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 35578,
+      "vehicleOdometerEndKm": 35688,
+      "vehicleFirstUse": "2025-08-19T04:53:20Z",
+      "vehicleLastUse": "2025-08-19T13:23:22Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 249,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 35690,
+      "vehicleOdometerEndKm": 35792,
+      "vehicleFirstUse": "2025-08-20T04:58:17Z",
+      "vehicleLastUse": "2025-08-20T13:45:01Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 250,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 35982,
+      "vehicleOdometerEndKm": 36080,
+      "vehicleFirstUse": "2025-08-25T03:53:44Z",
+      "vehicleLastUse": "2025-08-25T13:37:19Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 251,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36081,
+      "vehicleOdometerEndKm": 36220,
+      "vehicleFirstUse": "2025-08-26T05:00:41Z",
+      "vehicleLastUse": "2025-08-26T14:10:41Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 252,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36498,
+      "vehicleOdometerEndKm": 36596,
+      "vehicleFirstUse": "2025-08-27T04:25:08Z",
+      "vehicleLastUse": "2025-08-27T12:36:03Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 253,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36598,
+      "vehicleOdometerEndKm": 36670,
+      "vehicleFirstUse": "2025-08-28T05:14:08Z",
+      "vehicleLastUse": "2025-08-28T12:56:44Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 254,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36671,
+      "vehicleOdometerEndKm": 36775,
+      "vehicleFirstUse": "2025-08-29T05:07:39Z",
+      "vehicleLastUse": "2025-08-29T13:36:07Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 255,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36919,
+      "vehicleOdometerEndKm": 37002,
+      "vehicleFirstUse": "2025-09-01T04:39:10Z",
+      "vehicleLastUse": "2025-09-01T12:48:04Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 256,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 37003,
+      "vehicleOdometerEndKm": 37106,
+      "vehicleFirstUse": "2025-09-02T04:55:37Z",
+      "vehicleLastUse": "2025-09-02T13:20:19Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 257,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 37107,
+      "vehicleOdometerEndKm": 37208,
+      "vehicleFirstUse": "2025-09-03T04:41:27Z",
+      "vehicleLastUse": "2025-09-03T13:02:40Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 258,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 37527,
+      "vehicleOdometerEndKm": 37585,
+      "vehicleFirstUse": "2025-09-04T05:12:53Z",
+      "vehicleLastUse": "2025-09-04T11:17:19Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 259,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 37586,
+      "vehicleOdometerEndKm": 37641,
+      "vehicleFirstUse": "2025-09-05T05:16:13Z",
+      "vehicleLastUse": "2025-09-05T12:07:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 260,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 37641,
+      "vehicleOdometerEndKm": 37757,
+      "vehicleFirstUse": "2025-09-08T03:52:57Z",
+      "vehicleLastUse": "2025-09-08T12:27:30Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 261,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 38194,
+      "vehicleOdometerEndKm": 38289,
+      "vehicleFirstUse": "2025-09-09T04:57:59Z",
+      "vehicleLastUse": "2025-09-09T12:49:35Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 262,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 38435,
+      "vehicleOdometerEndKm": 38512,
+      "vehicleFirstUse": "2025-09-10T04:54:22Z",
+      "vehicleLastUse": "2025-09-10T12:00:25Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 263,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 38660,
+      "vehicleOdometerEndKm": 38755,
+      "vehicleFirstUse": "2025-09-11T05:18:14Z",
+      "vehicleLastUse": "2025-09-11T13:27:42Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 264,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 39036,
+      "vehicleOdometerEndKm": 39111,
+      "vehicleFirstUse": "2025-09-12T05:04:12Z",
+      "vehicleLastUse": "2025-09-12T11:35:56Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 265,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 96943,
+      "vehicleOdometerEndKm": 96992,
+      "vehicleFirstUse": "2024-04-26T11:46:41Z",
+      "vehicleLastUse": "2024-04-26T13:11:39Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "KTV-895"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 66,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 162973,
+      "vehicleOdometerEndKm": 163087,
+      "vehicleFirstUse": "2024-04-29T02:49:29Z",
+      "vehicleLastUse": "2024-04-29T11:36:25Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "ESE-760"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 67,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 163390,
+      "vehicleOdometerEndKm": 163491,
+      "vehicleFirstUse": "2024-04-30T02:54:44Z",
+      "vehicleLastUse": "2024-04-30T12:47:48Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "ESE-760"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 68,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 98388,
+      "vehicleOdometerEndKm": 98457,
+      "vehicleFirstUse": "2024-05-15T05:35:43Z",
+      "vehicleLastUse": "2024-05-15T14:39:53Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "KTV-895"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 69,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 12561,
+      "vehicleOdometerEndKm": 12675,
+      "vehicleFirstUse": "2024-07-29T03:55:32Z",
+      "vehicleLastUse": "2024-07-29T13:49:37Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-711"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 70,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 12675,
+      "vehicleOdometerEndKm": 12758,
+      "vehicleFirstUse": "2024-07-30T03:54:37Z",
+      "vehicleLastUse": "2024-07-30T13:15:30Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-711"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 71,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 12758,
+      "vehicleOdometerEndKm": 12870,
+      "vehicleFirstUse": "2024-07-31T04:54:23Z",
+      "vehicleLastUse": "2024-07-31T13:57:28Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-711"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 72,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 12870,
+      "vehicleOdometerEndKm": 12972,
+      "vehicleFirstUse": "2024-08-01T04:02:23Z",
+      "vehicleLastUse": "2024-08-01T13:02:46Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-711"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 73,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 12972,
+      "vehicleOdometerEndKm": 13076,
+      "vehicleFirstUse": "2024-08-02T04:00:53Z",
+      "vehicleLastUse": "2024-08-02T13:25:12Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-711"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 74,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 9142,
+      "vehicleOdometerEndKm": 9203,
+      "vehicleFirstUse": "2024-08-08T03:55:43Z",
+      "vehicleLastUse": "2024-08-08T13:08:22Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-712"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 75,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 9203,
+      "vehicleOdometerEndKm": 9262,
+      "vehicleFirstUse": "2024-08-09T03:58:15Z",
+      "vehicleLastUse": "2024-08-09T11:31:00Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-712"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 76,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 17300,
+      "vehicleOdometerEndKm": 17415,
+      "vehicleFirstUse": "2024-08-19T03:25:51Z",
+      "vehicleLastUse": "2024-08-19T13:40:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 77,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 17415,
+      "vehicleOdometerEndKm": 17540,
+      "vehicleFirstUse": "2024-08-20T03:25:54Z",
+      "vehicleLastUse": "2024-08-20T15:07:40Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 78,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 191973,
+      "vehicleOdometerEndKm": 192082,
+      "vehicleFirstUse": "2024-08-22T03:05:09Z",
+      "vehicleLastUse": "2024-08-22T12:01:27Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "ESE-760"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 79,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 192427,
+      "vehicleOdometerEndKm": 192745,
+      "vehicleFirstUse": "2024-08-23T02:55:05Z",
+      "vehicleLastUse": "2024-08-23T18:44:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "ESE-760"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 80,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 120925,
+      "vehicleOdometerEndKm": 121010,
+      "vehicleFirstUse": "2024-08-27T03:15:50Z",
+      "vehicleLastUse": "2024-08-27T14:10:07Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "ESM-930"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 81,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 168955,
+      "vehicleOdometerEndKm": 169065,
+      "vehicleFirstUse": "2024-08-28T03:42:57Z",
+      "vehicleLastUse": "2024-08-28T13:22:39Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "KTV-905"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 82,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 169377,
+      "vehicleOdometerEndKm": 169480,
+      "vehicleFirstUse": "2024-08-29T04:12:32Z",
+      "vehicleLastUse": "2024-08-29T12:43:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "KTV-905"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 83,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 19232,
+      "vehicleOdometerEndKm": 19375,
+      "vehicleFirstUse": "2024-09-02T03:49:40Z",
+      "vehicleLastUse": "2024-09-02T11:43:29Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 84,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 19375,
+      "vehicleOdometerEndKm": 19487,
+      "vehicleFirstUse": "2024-09-03T03:49:46Z",
+      "vehicleLastUse": "2024-09-03T13:31:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 85,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 19487,
+      "vehicleOdometerEndKm": 19585,
+      "vehicleFirstUse": "2024-09-04T03:52:43Z",
+      "vehicleLastUse": "2024-09-04T12:05:30Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 86,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 19585,
+      "vehicleOdometerEndKm": 19678,
+      "vehicleFirstUse": "2024-09-05T03:52:22Z",
+      "vehicleLastUse": "2024-09-05T14:04:12Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 87,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 19678,
+      "vehicleOdometerEndKm": 19735,
+      "vehicleFirstUse": "2024-09-06T03:52:01Z",
+      "vehicleLastUse": "2024-09-06T10:53:18Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 88,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 20947,
+      "vehicleOdometerEndKm": 21055,
+      "vehicleFirstUse": "2024-09-23T03:50:50Z",
+      "vehicleLastUse": "2024-09-23T14:54:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 89,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 21055,
+      "vehicleOdometerEndKm": 21151,
+      "vehicleFirstUse": "2024-09-24T03:55:01Z",
+      "vehicleLastUse": "2024-09-24T12:51:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 90,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 21151,
+      "vehicleOdometerEndKm": 21260,
+      "vehicleFirstUse": "2024-09-25T03:54:31Z",
+      "vehicleLastUse": "2024-09-25T14:38:18Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 91,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 21260,
+      "vehicleOdometerEndKm": 21321,
+      "vehicleFirstUse": "2024-09-26T03:54:26Z",
+      "vehicleLastUse": "2024-09-26T13:17:27Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 92,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 21321,
+      "vehicleOdometerEndKm": 21440,
+      "vehicleFirstUse": "2024-09-27T03:55:28Z",
+      "vehicleLastUse": "2024-09-27T15:14:22Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 93,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 21440,
+      "vehicleOdometerEndKm": 21554,
+      "vehicleFirstUse": "2024-09-30T03:59:17Z",
+      "vehicleLastUse": "2024-09-30T13:52:51Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 94,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 21554,
+      "vehicleOdometerEndKm": 21661,
+      "vehicleFirstUse": "2024-10-01T03:44:50Z",
+      "vehicleLastUse": "2024-10-01T13:33:46Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 95,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 22009,
+      "vehicleOdometerEndKm": 22105,
+      "vehicleFirstUse": "2024-10-07T03:52:38Z",
+      "vehicleLastUse": "2024-10-07T12:15:20Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 96,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 1303,
+      "vehicleOdometerEndKm": 1411,
+      "vehicleFirstUse": "2024-10-08T03:54:04Z",
+      "vehicleLastUse": "2024-10-08T13:32:41Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 97,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 1411,
+      "vehicleOdometerEndKm": 1502,
+      "vehicleFirstUse": "2024-10-09T03:53:52Z",
+      "vehicleLastUse": "2024-10-09T11:49:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 98,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 1502,
+      "vehicleOdometerEndKm": 1597,
+      "vehicleFirstUse": "2024-10-10T03:51:45Z",
+      "vehicleLastUse": "2024-10-10T12:21:03Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 99,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 1597,
+      "vehicleOdometerEndKm": 1715,
+      "vehicleFirstUse": "2024-10-11T03:49:27Z",
+      "vehicleLastUse": "2024-10-11T14:16:20Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 100,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 1715,
+      "vehicleOdometerEndKm": 1803,
+      "vehicleFirstUse": "2024-10-14T03:55:16Z",
+      "vehicleLastUse": "2024-10-14T12:03:41Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 101,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 1803,
+      "vehicleOdometerEndKm": 1899,
+      "vehicleFirstUse": "2024-10-15T03:51:30Z",
+      "vehicleLastUse": "2024-10-15T13:10:08Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 102,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 1899,
+      "vehicleOdometerEndKm": 1975,
+      "vehicleFirstUse": "2024-10-16T03:58:04Z",
+      "vehicleLastUse": "2024-10-16T11:54:58Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 103,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 1975,
+      "vehicleOdometerEndKm": 2071,
+      "vehicleFirstUse": "2024-10-17T03:52:59Z",
+      "vehicleLastUse": "2024-10-17T12:28:48Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 104,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 2071,
+      "vehicleOdometerEndKm": 2177,
+      "vehicleFirstUse": "2024-10-18T03:57:05Z",
+      "vehicleLastUse": "2024-10-18T13:10:45Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 105,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 2177,
+      "vehicleOdometerEndKm": 2312,
+      "vehicleFirstUse": "2024-10-21T03:54:05Z",
+      "vehicleLastUse": "2024-10-21T14:19:47Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 106,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 2312,
+      "vehicleOdometerEndKm": 2411,
+      "vehicleFirstUse": "2024-10-22T03:52:05Z",
+      "vehicleLastUse": "2024-10-22T14:07:55Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 107,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 2553,
+      "vehicleOdometerEndKm": 2607,
+      "vehicleFirstUse": "2024-10-23T03:54:18Z",
+      "vehicleLastUse": "2024-10-23T12:48:58Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 108,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 2607,
+      "vehicleOdometerEndKm": 2670,
+      "vehicleFirstUse": "2024-10-24T03:52:26Z",
+      "vehicleLastUse": "2024-10-24T11:14:00Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 109,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 2670,
+      "vehicleOdometerEndKm": 2727,
+      "vehicleFirstUse": "2024-10-25T03:53:52Z",
+      "vehicleLastUse": "2024-10-25T12:27:10Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 110,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 2727,
+      "vehicleOdometerEndKm": 2822,
+      "vehicleFirstUse": "2024-10-28T04:53:00Z",
+      "vehicleLastUse": "2024-10-28T13:20:04Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 111,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 2822,
+      "vehicleOdometerEndKm": 2934,
+      "vehicleFirstUse": "2024-10-29T04:58:06Z",
+      "vehicleLastUse": "2024-10-29T14:12:49Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 112,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 26473,
+      "vehicleOdometerEndKm": 26585,
+      "vehicleFirstUse": "2024-10-31T05:01:24Z",
+      "vehicleLastUse": "2024-10-31T15:20:00Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 113,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 26585,
+      "vehicleOdometerEndKm": 26699,
+      "vehicleFirstUse": "2024-11-01T04:57:08Z",
+      "vehicleLastUse": "2024-11-01T16:13:46Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 114,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 26699,
+      "vehicleOdometerEndKm": 26815,
+      "vehicleFirstUse": "2024-11-04T05:00:17Z",
+      "vehicleLastUse": "2024-11-04T15:38:26Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 115,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 26815,
+      "vehicleOdometerEndKm": 26923,
+      "vehicleFirstUse": "2024-11-05T04:58:14Z",
+      "vehicleLastUse": "2024-11-05T15:14:42Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 116,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 26923,
+      "vehicleOdometerEndKm": 27020,
+      "vehicleFirstUse": "2024-11-06T04:55:44Z",
+      "vehicleLastUse": "2024-11-06T14:45:48Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "JNE-710"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 117,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 3708,
+      "vehicleOdometerEndKm": 3769,
+      "vehicleFirstUse": "2024-11-07T04:55:17Z",
+      "vehicleLastUse": "2024-11-07T12:18:15Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 118,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 3769,
+      "vehicleOdometerEndKm": 3900,
+      "vehicleFirstUse": "2024-11-08T04:55:19Z",
+      "vehicleLastUse": "2024-11-08T15:11:25Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 119,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 3900,
+      "vehicleOdometerEndKm": 3955,
+      "vehicleFirstUse": "2024-11-11T04:53:30Z",
+      "vehicleLastUse": "2024-11-11T11:18:11Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 120,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 3955,
+      "vehicleOdometerEndKm": 4069,
+      "vehicleFirstUse": "2024-11-12T04:55:20Z",
+      "vehicleLastUse": "2024-11-12T13:38:04Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 121,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 4069,
+      "vehicleOdometerEndKm": 4123,
+      "vehicleFirstUse": "2024-11-13T04:53:29Z",
+      "vehicleLastUse": "2024-11-13T12:20:56Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 122,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 4123,
+      "vehicleOdometerEndKm": 4182,
+      "vehicleFirstUse": "2024-11-14T04:53:11Z",
+      "vehicleLastUse": "2024-11-14T12:03:33Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 123,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 4182,
+      "vehicleOdometerEndKm": 4358,
+      "vehicleFirstUse": "2024-11-15T04:56:20Z",
+      "vehicleLastUse": "2024-11-15T15:28:13Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 124,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 4358,
+      "vehicleOdometerEndKm": 4491,
+      "vehicleFirstUse": "2024-11-18T04:55:51Z",
+      "vehicleLastUse": "2024-11-18T14:41:10Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 125,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 4594,
+      "vehicleOdometerEndKm": 4685,
+      "vehicleFirstUse": "2024-11-20T04:54:54Z",
+      "vehicleLastUse": "2024-11-20T13:46:48Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 126,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 4685,
+      "vehicleOdometerEndKm": 4742,
+      "vehicleFirstUse": "2024-11-21T04:56:06Z",
+      "vehicleLastUse": "2024-11-21T11:52:11Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 127,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 4742,
+      "vehicleOdometerEndKm": 4843,
+      "vehicleFirstUse": "2024-11-22T05:03:39Z",
+      "vehicleLastUse": "2024-11-22T14:31:57Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 128,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 36487,
+      "vehicleOdometerEndKm": 36604,
+      "vehicleFirstUse": "2024-11-26T04:45:48Z",
+      "vehicleLastUse": "2024-11-26T14:28:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "OZO-501"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 129,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 6706,
+      "vehicleOdometerEndKm": 6774,
+      "vehicleFirstUse": "2024-11-28T04:53:10Z",
+      "vehicleLastUse": "2024-11-28T14:28:37Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 130,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 6774,
+      "vehicleOdometerEndKm": 6837,
+      "vehicleFirstUse": "2024-11-29T04:54:31Z",
+      "vehicleLastUse": "2024-11-29T12:29:03Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 131,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 7065,
+      "vehicleOdometerEndKm": 7164,
+      "vehicleFirstUse": "2024-12-02T04:53:16Z",
+      "vehicleLastUse": "2024-12-02T14:16:09Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 132,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 7506,
+      "vehicleOdometerEndKm": 7573,
+      "vehicleFirstUse": "2024-12-03T04:54:51Z",
+      "vehicleLastUse": "2024-12-03T13:59:55Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 133,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 7714,
+      "vehicleOdometerEndKm": 7773,
+      "vehicleFirstUse": "2024-12-04T05:05:09Z",
+      "vehicleLastUse": "2024-12-04T13:09:51Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 134,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 7773,
+      "vehicleOdometerEndKm": 7848,
+      "vehicleFirstUse": "2024-12-05T04:56:53Z",
+      "vehicleLastUse": "2024-12-05T13:16:31Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 135,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 221752,
+      "vehicleOdometerEndKm": 222060,
+      "vehicleFirstUse": "2024-12-07T06:47:37Z",
+      "vehicleLastUse": "2024-12-07T15:29:54Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "ESE-760"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 136,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 8120,
+      "vehicleOdometerEndKm": 8196,
+      "vehicleFirstUse": "2024-12-09T04:56:34Z",
+      "vehicleLastUse": "2024-12-09T14:18:43Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 137,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 8196,
+      "vehicleOdometerEndKm": 8258,
+      "vehicleFirstUse": "2024-12-10T04:53:09Z",
+      "vehicleLastUse": "2024-12-10T13:30:51Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 138,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 8643,
+      "vehicleOdometerEndKm": 8704,
+      "vehicleFirstUse": "2024-12-12T04:58:22Z",
+      "vehicleLastUse": "2024-12-12T14:35:08Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 139,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 9006,
+      "vehicleOdometerEndKm": 9108,
+      "vehicleFirstUse": "2024-12-13T04:56:47Z",
+      "vehicleLastUse": "2024-12-13T13:53:04Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 140,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 9465,
+      "vehicleOdometerEndKm": 9571,
+      "vehicleFirstUse": "2024-12-16T05:04:21Z",
+      "vehicleLastUse": "2024-12-16T14:40:13Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 141,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 9880,
+      "vehicleOdometerEndKm": 10015,
+      "vehicleFirstUse": "2024-12-17T04:57:20Z",
+      "vehicleLastUse": "2024-12-17T15:45:51Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 142,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 10295,
+      "vehicleOdometerEndKm": 10358,
+      "vehicleFirstUse": "2024-12-18T04:55:20Z",
+      "vehicleLastUse": "2024-12-18T14:09:39Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 143,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 10733,
+      "vehicleOdometerEndKm": 10818,
+      "vehicleFirstUse": "2024-12-19T04:57:48Z",
+      "vehicleLastUse": "2024-12-19T12:13:49Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 144,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 11090,
+      "vehicleOdometerEndKm": 11226,
+      "vehicleFirstUse": "2024-12-20T04:54:58Z",
+      "vehicleLastUse": "2024-12-20T15:02:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 145,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 11795,
+      "vehicleOdometerEndKm": 11877,
+      "vehicleFirstUse": "2024-12-23T05:01:51Z",
+      "vehicleLastUse": "2024-12-23T13:30:34Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 146,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 12290,
+      "vehicleOdometerEndKm": 12399,
+      "vehicleFirstUse": "2024-12-27T04:54:26Z",
+      "vehicleLastUse": "2024-12-27T13:27:01Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 147,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 12662,
+      "vehicleOdometerEndKm": 12788,
+      "vehicleFirstUse": "2024-12-30T04:52:33Z",
+      "vehicleLastUse": "2024-12-30T13:23:34Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 148,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 13195,
+      "vehicleOdometerEndKm": 13279,
+      "vehicleFirstUse": "2024-12-31T04:55:19Z",
+      "vehicleLastUse": "2024-12-31T11:10:33Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 149,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 13279,
+      "vehicleOdometerEndKm": 13342,
+      "vehicleFirstUse": "2025-01-02T05:00:42Z",
+      "vehicleLastUse": "2025-01-02T14:20:38Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 150,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 13342,
+      "vehicleOdometerEndKm": 13454,
+      "vehicleFirstUse": "2025-01-03T04:54:35Z",
+      "vehicleLastUse": "2025-01-03T14:25:58Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 151,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 13454,
+      "vehicleOdometerEndKm": 13526,
+      "vehicleFirstUse": "2025-01-07T04:55:38Z",
+      "vehicleLastUse": "2025-01-07T14:05:53Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 152,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 13526,
+      "vehicleOdometerEndKm": 13613,
+      "vehicleFirstUse": "2025-01-08T04:55:25Z",
+      "vehicleLastUse": "2025-01-08T13:09:06Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 153,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 13613,
+      "vehicleOdometerEndKm": 13687,
+      "vehicleFirstUse": "2025-01-09T04:59:29Z",
+      "vehicleLastUse": "2025-01-09T13:01:18Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 154,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 13687,
+      "vehicleOdometerEndKm": 13787,
+      "vehicleFirstUse": "2025-01-10T04:57:52Z",
+      "vehicleLastUse": "2025-01-10T14:45:32Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 155,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 13787,
+      "vehicleOdometerEndKm": 13888,
+      "vehicleFirstUse": "2025-01-13T05:00:18Z",
+      "vehicleLastUse": "2025-01-13T14:50:32Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 156,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 14134,
+      "vehicleOdometerEndKm": 14203,
+      "vehicleFirstUse": "2025-01-14T04:52:51Z",
+      "vehicleLastUse": "2025-01-14T14:07:56Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 157,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 14203,
+      "vehicleOdometerEndKm": 14307,
+      "vehicleFirstUse": "2025-01-15T04:45:18Z",
+      "vehicleLastUse": "2025-01-15T14:34:39Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 158,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 14307,
+      "vehicleOdometerEndKm": 14369,
+      "vehicleFirstUse": "2025-01-16T04:54:31Z",
+      "vehicleLastUse": "2025-01-16T11:51:38Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 159,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 14369,
+      "vehicleOdometerEndKm": 14509,
+      "vehicleFirstUse": "2025-01-17T04:49:12Z",
+      "vehicleLastUse": "2025-01-17T14:39:26Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 160,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 14715,
+      "vehicleOdometerEndKm": 14816,
+      "vehicleFirstUse": "2025-01-22T04:50:54Z",
+      "vehicleLastUse": "2025-01-22T13:30:31Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 161,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 14816,
+      "vehicleOdometerEndKm": 14893,
+      "vehicleFirstUse": "2025-01-23T04:50:34Z",
+      "vehicleLastUse": "2025-01-23T12:49:03Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 162,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 14893,
+      "vehicleOdometerEndKm": 14946,
+      "vehicleFirstUse": "2025-01-24T04:49:06Z",
+      "vehicleLastUse": "2025-01-24T12:25:23Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 163,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 15328,
+      "vehicleOdometerEndKm": 15419,
+      "vehicleFirstUse": "2025-02-03T04:54:43Z",
+      "vehicleLastUse": "2025-02-03T13:56:36Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 164,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 15419,
+      "vehicleOdometerEndKm": 15522,
+      "vehicleFirstUse": "2025-02-04T04:47:50Z",
+      "vehicleLastUse": "2025-02-04T13:54:37Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 165,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 15522,
+      "vehicleOdometerEndKm": 15583,
+      "vehicleFirstUse": "2025-02-05T04:45:42Z",
+      "vehicleLastUse": "2025-02-05T12:44:32Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 166,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 15583,
+      "vehicleOdometerEndKm": 15644,
+      "vehicleFirstUse": "2025-02-06T04:44:23Z",
+      "vehicleLastUse": "2025-02-06T12:30:25Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 167,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 15644,
+      "vehicleOdometerEndKm": 15740,
+      "vehicleFirstUse": "2025-02-07T04:49:33Z",
+      "vehicleLastUse": "2025-02-07T14:13:46Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 168,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 15740,
+      "vehicleOdometerEndKm": 15805,
+      "vehicleFirstUse": "2025-02-10T04:42:17Z",
+      "vehicleLastUse": "2025-02-10T12:41:04Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 169,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 15805,
+      "vehicleOdometerEndKm": 15906,
+      "vehicleFirstUse": "2025-02-11T04:44:23Z",
+      "vehicleLastUse": "2025-02-11T14:35:56Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 170,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 15906,
+      "vehicleOdometerEndKm": 16117,
+      "vehicleFirstUse": "2025-02-12T04:47:25Z",
+      "vehicleLastUse": "2025-02-12T15:54:12Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 171,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 16117,
+      "vehicleOdometerEndKm": 16177,
+      "vehicleFirstUse": "2025-02-13T04:59:50Z",
+      "vehicleLastUse": "2025-02-13T12:39:33Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 172,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 16177,
+      "vehicleOdometerEndKm": 16229,
+      "vehicleFirstUse": "2025-02-14T04:47:43Z",
+      "vehicleLastUse": "2025-02-14T12:58:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 173,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 17197,
+      "vehicleOdometerEndKm": 17312,
+      "vehicleFirstUse": "2025-02-24T04:46:17Z",
+      "vehicleLastUse": "2025-02-24T12:53:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 174,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 17312,
+      "vehicleOdometerEndKm": 17366,
+      "vehicleFirstUse": "2025-02-25T04:45:48Z",
+      "vehicleLastUse": "2025-02-25T10:53:40Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 175,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 17676,
+      "vehicleOdometerEndKm": 17771,
+      "vehicleFirstUse": "2025-02-28T04:41:25Z",
+      "vehicleLastUse": "2025-02-28T12:25:19Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 176,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 17771,
+      "vehicleOdometerEndKm": 17836,
+      "vehicleFirstUse": "2025-03-03T04:42:55Z",
+      "vehicleLastUse": "2025-03-03T13:26:27Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 177,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 17836,
+      "vehicleOdometerEndKm": 17936,
+      "vehicleFirstUse": "2025-03-04T04:44:47Z",
+      "vehicleLastUse": "2025-03-04T12:49:38Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 178,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 17936,
+      "vehicleOdometerEndKm": 18260,
+      "vehicleFirstUse": "2025-03-05T04:46:31Z",
+      "vehicleLastUse": "2025-03-05T19:17:04Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 179,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 18260,
+      "vehicleOdometerEndKm": 18349,
+      "vehicleFirstUse": "2025-03-06T04:45:55Z",
+      "vehicleLastUse": "2025-03-06T14:21:20Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 180,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 18349,
+      "vehicleOdometerEndKm": 18412,
+      "vehicleFirstUse": "2025-03-07T04:41:48Z",
+      "vehicleLastUse": "2025-03-07T12:47:47Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 181,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 18757,
+      "vehicleOdometerEndKm": 18857,
+      "vehicleFirstUse": "2025-03-10T04:41:43Z",
+      "vehicleLastUse": "2025-03-10T14:14:40Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 182,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 18857,
+      "vehicleOdometerEndKm": 18928,
+      "vehicleFirstUse": "2025-03-11T04:44:25Z",
+      "vehicleLastUse": "2025-03-11T12:57:51Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 183,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 18928,
+      "vehicleOdometerEndKm": 19029,
+      "vehicleFirstUse": "2025-03-12T04:43:33Z",
+      "vehicleLastUse": "2025-03-12T15:03:41Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 184,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 19029,
+      "vehicleOdometerEndKm": 19090,
+      "vehicleFirstUse": "2025-03-13T04:47:25Z",
+      "vehicleLastUse": "2025-03-13T14:00:21Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 185,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 19090,
+      "vehicleOdometerEndKm": 19166,
+      "vehicleFirstUse": "2025-03-14T04:44:01Z",
+      "vehicleLastUse": "2025-03-14T12:44:05Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 186,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 19527,
+      "vehicleOdometerEndKm": 19626,
+      "vehicleFirstUse": "2025-03-17T04:48:37Z",
+      "vehicleLastUse": "2025-03-17T13:28:13Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 187,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 19626,
+      "vehicleOdometerEndKm": 19733,
+      "vehicleFirstUse": "2025-03-18T04:48:04Z",
+      "vehicleLastUse": "2025-03-18T15:35:50Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 188,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 19733,
+      "vehicleOdometerEndKm": 19846,
+      "vehicleFirstUse": "2025-03-19T04:46:21Z",
+      "vehicleLastUse": "2025-03-19T13:03:47Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 189,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 19846,
+      "vehicleOdometerEndKm": 19925,
+      "vehicleFirstUse": "2025-03-20T04:47:02Z",
+      "vehicleLastUse": "2025-03-20T13:57:24Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 190,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 19926,
+      "vehicleOdometerEndKm": 20027,
+      "vehicleFirstUse": "2025-03-21T04:43:13Z",
+      "vehicleLastUse": "2025-03-21T14:24:59Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 191,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 20027,
+      "vehicleOdometerEndKm": 20137,
+      "vehicleFirstUse": "2025-03-24T04:44:34Z",
+      "vehicleLastUse": "2025-03-24T14:57:59Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 192,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 20137,
+      "vehicleOdometerEndKm": 20236,
+      "vehicleFirstUse": "2025-03-25T04:38:27Z",
+      "vehicleLastUse": "2025-03-25T12:48:23Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 193,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 20236,
+      "vehicleOdometerEndKm": 20307,
+      "vehicleFirstUse": "2025-03-26T04:38:32Z",
+      "vehicleLastUse": "2025-03-26T12:55:51Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 194,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 20689,
+      "vehicleOdometerEndKm": 20750,
+      "vehicleFirstUse": "2025-03-27T05:47:11Z",
+      "vehicleLastUse": "2025-03-27T13:16:01Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 195,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 20750,
+      "vehicleOdometerEndKm": 20849,
+      "vehicleFirstUse": "2025-03-28T04:52:32Z",
+      "vehicleLastUse": "2025-03-28T14:45:30Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 196,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 22114,
+      "vehicleOdometerEndKm": 22207,
+      "vehicleFirstUse": "2025-04-07T03:49:40Z",
+      "vehicleLastUse": "2025-04-07T11:56:24Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 197,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 22207,
+      "vehicleOdometerEndKm": 22306,
+      "vehicleFirstUse": "2025-04-08T03:50:44Z",
+      "vehicleLastUse": "2025-04-08T12:57:33Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 198,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 22306,
+      "vehicleOdometerEndKm": 22399,
+      "vehicleFirstUse": "2025-04-09T03:49:08Z",
+      "vehicleLastUse": "2025-04-09T12:33:48Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 199,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 22399,
+      "vehicleOdometerEndKm": 22497,
+      "vehicleFirstUse": "2025-04-10T03:53:37Z",
+      "vehicleLastUse": "2025-04-10T12:41:46Z",
+      "vehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "NNY-174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 200,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000020"
+    }
+  ],
+  "rawData": "AEAAV+EAWC1n+JF2Z/kaaRIPTk5ZLTE3NCAgICAgIAIBVEVTVFZJTjAwMDAwMDAwMDAAWqMAWzRoBxKWaAeoYRIPTk5ZLTE3NCAgICAgIAICVEVTVFZJTjAwMDAwMDAwMDAAWzQAW4BoCGOiaAjWLBIPTk5ZLTE3NCAgICAgIAIDVEVTVFZJTjAwMDAwMDAwMDAAXP8AXWNoCbVMaAo57hIPTk5ZLTE3NCAgICAgIAIEVEVTVFZJTjAwMDAwMDAwMDAAXWMAXeNoCwbZaAuK7RIPTk5ZLTE3NCAgICAgIAIFVEVTVFZJTjAwMDAwMDAwMDAAXwMAX31oDvsmaA9yTRIPTk5ZLTE3NCAgICAgIAIGVEVTVFZJTjAwMDAwMDAwMDAAX30AX/JoEE1yaBDrbxIPTk5ZLTE3NCAgICAgIAIHVEVTVFZJTjAwMDAwMDAwMDAAX/IAYEhoEZ/NaBIlYBIPTk5ZLTE3NCAgICAgIAIIVEVTVFZJTjAwMDAwMDAwMDAAYEgAYIxoFEJPaBSwtRIPTk5ZLTE3NCAgICAgIAIJVEVTVFZJTjAwMDAwMDAwMDAAcLcAcTdoWNIiaFlPRBIPTk5ZLTE3NCAgICAgIAIQVEVTVFZJTjAwMDAwMDAwMDEAcTcAcaJoWiD2aFqp8hIPTk5ZLTE3NCAgICAgIAIRVEVTVFZJTjAwMDAwMDAwMDEAcaIAcgFoW3I1aFvrgRIPTk5ZLTE3NCAgICAgIAISVEVTVFZJTjAwMDAwMDAwMDEAcgEAcmZoXMPKaF0/7RIPTk5ZLTE3NCAgICAgIAITVEVTVFZJTjAwMDAwMDAwMDEAcmYActFoXhXGaF6ZcxIPTk5ZLTE3NCAgICAgIAIUVEVTVFZJTjAwMDAwMDAwMDEAc/cAdGhoYgoEaGKY0xIPTk5ZLTE3NCAgICAgIAIVVEVTVFZJTjAwMDAwMDAwMDEAdGgAdNVoY1veaGPpkhIPTk5ZLTE3NCAgICAgIAIWVEVTVFZJTjAwMDAwMDAwMDEAdNUAdUJoZK3laGU1ThIPTk5ZLTE3NCAgICAgIAIXVEVTVFZJTjAwMDAwMDAwMDEAdUIAdbpoZf8RaGaMqhIPTk5ZLTE3NCAgICAgIAIYVEVTVFZJTjAwMDAwMDAwMDEAdbsAdidoZ1HQaGfcsRIPTk5ZLTE3NCAgICAgIAIZVEVTVFZJTjAwMDAwMDAwMDEBRVsBRdhoa0TUaGvIQhIBT1pPLTUwMSAgICAgIAIgVEVTVFZJTjAwMDAwMDAwMDIBRdgBRlFobJZaaG2w/xIBT1pPLTUwMSAgICAgIAIhVEVTVFZJTjAwMDAwMDAwMDIBRlEBRpdobbEAaG5kExIBT1pPLTUwMSAgICAgIAIiVEVTVFZJTjAwMDAwMDAwMDIBRpcBRvZobzikaG+pPBIBT1pPLTUwMSAgICAgIAIjVEVTVFZJTjAwMDAwMDAwMDIBRvYBR11ocIknaHD+OxIBT1pPLTUwMSAgICAgIAIkVEVTVFZJTjAwMDAwMDAwMDIArzkAr6RodIVKaHT2yRIBSk5FLTcxMCAgICAgIAIlVEVTVFZJTjAwMDAwMDAwMDIAr6QAsAhoddHZaHbrfxIBSk5FLTcxMCAgICAgIAImVEVTVFZJTjAwMDAwMDAwMDIAsAgAsGtoduuAaHeOPRIBSk5FLTcxMCAgICAgIAInVEVTVFZJTjAwMDAwMDAwMDIAsG0AsNNoec4VaHo2xxIBSk5FLTcxMCAgICAgIAIoVEVTVFZJTjAwMDAwMDAwMDIAeWwAecxofciyaH4rgRIPTk5ZLTE3NCAgICAgIAIpVEVTVFZJTjAwMDAwMDAwMDIAecwAegxofwq/aH96ShIPTk5ZLTE3NCAgICAgIAIwVEVTVFZJTjAwMDAwMDAwMDMAeg4Ae9RogG8PaIE3aRIPTk5ZLTE3NCAgICAgIAIxVEVTVFZJTjAwMDAwMDAwMDMAe9cAfEFogcoPaIJDtBIPTk5ZLTE3NCAgICAgIAIyVEVTVFZJTjAwMDAwMDAwMDMAfEEAfNVogwCAaIOBzBIPTk5ZLTE3NCAgICAgIAIzVEVTVFZJTjAwMDAwMDAwMDMAfNUAfUBohvRqaIdtTxIPTk5ZLTE3NCAgICAgIAI0VEVTVFZJTjAwMDAwMDAwMDMAfUEAfaZoiE+eaIix6BIPTk5ZLTE3NCAgICAgIAI1VEVTVFZJTjAwMDAwMDAwMDMAfssAfzNoiZgVaIodcxIPTk5ZLTE3NCAgICAgIAI2VEVTVFZJTjAwMDAwMDAwMDMAfzUAf29oivgkaItLGBIPTk5ZLTE3NCAgICAgIAI3VEVTVFZJTjAwMDAwMDAwMDMAf28Af9NojDndaIyvrxIPTk5ZLTE3NCAgICAgIAI4VEVTVFZJTjAwMDAwMDAwMDMAgNkAgW1okYB+aJIbYhIPTk5ZLTE3NCAgICAgIAI5VEVTVFZJTjAwMDAwMDAwMDMAgpEAgv1oktF7aJNhuBIPTk5ZLTE3NCAgICAgIAJAVEVTVFZJTjAwMDAwMDAwMDQAgv0Ag2NolCSOaJSeChIPTk5ZLTE3NCAgICAgIAJBVEVTVFZJTjAwMDAwMDAwMDQAbsMAby9olYNraJYAfxIBSk5FLTcxMiAgICAgIAJCVEVTVFZJTjAwMDAwMDAwMDQAhEAAhKZomWjZaJnmmBIPTk5ZLTE3NCAgICAgIAJDVEVTVFZJTjAwMDAwMDAwMDQAhKgAhRdomsseaJtK7hIPTk5ZLTE3NCAgICAgIAJEVEVTVFZJTjAwMDAwMDAwMDQAhRcAhXponAziaJyV5xIPTk5ZLTE3NCAgICAgIAJFVEVTVFZJTjAwMDAwMDAwMDQAhkAAhoZonW4daJ3U6hIPTk5ZLTE3NCAgICAgIAJGVEVTVFZJTjAwMDAwMDAwMDQAh7IAiElonrcQaJ85RxIPTk5ZLTE3NCAgICAgIAJHVEVTVFZJTjAwMDAwMDAwMDQAiZQAigRooqM9aKMvahIPTk5ZLTE3NCAgICAgIAJIVEVTVFZJTjAwMDAwMDAwMDQAivoAi2hopANAaKR6yhIPTk5ZLTE3NCAgICAgIAJJVEVTVFZJTjAwMDAwMDAwMDQAi2oAi9BopVXpaKXRXRIPTk5ZLTE3NCAgICAgIAJQVEVTVFZJTjAwMDAwMDAwMDUAjI4AjPBoq95IaKxnDxIPTk5ZLTE3NCAgICAgIAJRVEVTVFZJTjAwMDAwMDAwMDUAjPEAjXxorT95aK3AYRIPTk5ZLTE3NCAgICAgIAJSVEVTVFZJTjAwMDAwMDAwMDUAjpIAjvRoroikaK77sxIPTk5ZLTE3NCAgICAgIAJTVEVTVFZJTjAwMDAwMDAwMDUAjvYAjz5or+WgaLBSDBIPTk5ZLTE3NCAgICAgIAJUVEVTVFZJTjAwMDAwMDAwMDUAjz8Aj6dosTWbaLGsxxIPTk5ZLTE3NCAgICAgIAJVVEVTVFZJTjAwMDAwMDAwMDUAkDcAkIpotSNuaLWWBBIPTk5ZLTE3NCAgICAgIAJWVEVTVFZJTjAwMDAwMDAwMDUAkIsAkPJotnjJaLbvExIPTk5ZLTE3NCAgICAgIAJXVEVTVFZJTjAwMDAwMDAwMDUAkPMAkVhot8b3aLg8cBIPTk5ZLTE3NCAgICAgIAJYVEVTVFZJTjAwMDAwMDAwMDUAkpcAktFouR/VaLl1PxIPTk5ZLTE3NCAgICAgIAJZVEVTVFZJTjAwMDAwMDAwMDUAktIAkwlounIdaLrSahIPTk5ZLTE3NCAgICAgIAJgVEVTVFZJTjAwMDAwMDAwMDYAkwkAk31ovlMZaL7LshIPTk5ZLTE3NCAgICAgIAJhVEVTVFZJTjAwMDAwMDAwMDYAlTIAlZFov7PXaMAiXxIPTk5ZLTE3NCAgICAgIAJiVEVTVFZJTjAwMDAwMDAwMDYAliMAlnBowQR+aMFoWRIPTk5ZLTE3NCAgICAgIAJjVEVTVFZJTjAwMDAwMDAwMDYAlwQAl2NowluWaMLOThIPTk5ZLTE3NCAgICAgIAJkVEVTVFZJTjAwMDAwMDAwMDYAmHwAmMdow6nMaMQFnBIPTk5ZLTE3NCAgICAgIAJlVEVTVFZJTjAwMDAwMDAwMDYBeq8BeuBmK5QhZiuoCxIBS1RWLTg5NSAgICAgIABmVEVTVFZJTjAwMDAwMDAwMDYCfJ0CfQ9mLwq5Zi+GORIBRVNFLTc2MCAgICAgIABnVEVTVFZJTjAwMDAwMDAwMDYCfj4CfqNmMF10ZjDodBIBRVNFLTc2MCAgICAgIABoVEVTVFZJTjAwMDAwMDAwMDYBgFQBgJlmREmvZkTJORIBS1RWLTg5NSAgICAgIABpVEVTVFZJTjAwMDAwMDAwMDYAMREAMYNmpxK0Zqed8RIBSk5FLTcxMSAgICAgIABwVEVTVFZJTjAwMDAwMDAwMDcAMYMAMdZmqGP9ZqjnchIBSk5FLTcxMSAgICAgIABxVEVTVFZJTjAwMDAwMDAwMDcAMdYAMkZmqcN/ZqpCyBIBSk5FLTcxMSAgICAgIAByVEVTVFZJTjAwMDAwMDAwMDcAMkYAMqxmqwjPZquHdhIBSk5FLTcxMSAgICAgIABzVEVTVFZJTjAwMDAwMDAwMDcAMqwAMxRmrFn1ZqzeOBIBSk5FLTcxMSAgICAgIAB0VEVTVFZJTjAwMDAwMDAwMDcAI7YAI/NmtEG/ZrTDRhIBSk5FLTcxMiAgICAgIAB1VEVTVFZJTjAwMDAwMDAwMDcAI/MAJC5mtZPXZrX99BIBSk5FLTcxMiAgICAgIAB2VEVTVFZJTjAwMDAwMDAwMDcAQ5QARAdmwrs/ZsNLNhIBT1pPLTUwMSAgICAgIAB3VEVTVFZJTjAwMDAwMDAwMDcARAcARIRmxAzCZsSxPBIBT1pPLTUwMSAgICAgIAB4VEVTVFZJTjAwMDAwMDAwMDcC7eUC7lJmxqrlZscolxIBRVNFLTc2MCAgICAgIAB5VEVTVFZJTjAwMDAwMDAwMDcC76sC8Olmx/oJZsjYdhIBRVNFLTc2MCAgICAgIACAVEVTVFZJTjAwMDAwMDAwMDgB2F0B2LJmzUTmZs3ePxIBRVNNLTkzMCAgICAgIACBVEVTVFZJTjAwMDAwMDAwMDgCk/sClGlmzpzBZs8knxIBS1RWLTkwNSAgICAgIACCVEVTVFZJTjAwMDAwMDAwMDgClaEClghmz/UwZtBs2hIBS1RWLTkwNSAgICAgIACDVEVTVFZJTjAwMDAwMDAwMDgASyAAS69m1TXUZtWk4RIBT1pPLTUwMSAgICAgIACEVEVTVFZJTjAwMDAwMDAwMDgAS68ATB9m1odaZtcPxhIBT1pPLTUwMSAgICAgIACFVEVTVFZJTjAwMDAwMDAwMDgATB8ATIFm19mLZthNChIBT1pPLTUwMSAgICAgIACGVEVTVFZJTjAwMDAwMDAwMDgATIEATN5m2Sr2Ztm6XBIBT1pPLTUwMSAgICAgIACHVEVTVFZJTjAwMDAwMDAwMDgATN4ATRdm2nxhZtrfHhIBT1pPLTUwMSAgICAgIACIVEVTVFZJTjAwMDAwMDAwMDgAUdMAUj9m8OWaZvGBDhIBT1pPLTUwMSAgICAgIACJVEVTVFZJTjAwMDAwMDAwMDgAUj8AUp9m8jgVZvK15hIBT1pPLTUwMSAgICAgIACQVEVTVFZJTjAwMDAwMDAwMDkAUp8AUwxm84l3ZvQgWhIBT1pPLTUwMSAgICAgIACRVEVTVFZJTjAwMDAwMDAwMDkAUwwAU0lm9NryZvVe5xIBT1pPLTUwMSAgICAgIACSVEVTVFZJTjAwMDAwMDAwMDkAU0kAU8Bm9iywZvbLzhIBT1pPLTUwMSAgICAgIACTVEVTVFZJTjAwMDAwMDAwMDkAU8AAVDJm+iIVZvqtMxIBT1pPLTUwMSAgICAgIACUVEVTVFZJTjAwMDAwMDAwMDkAVDIAVJ1m+3AyZvv6OhIBT1pPLTUwMSAgICAgIACVVEVTVFZJTjAwMDAwMDAwMDkAVfkAVllnA1sGZwPQ2BIBT1pPLTUwMSAgICAgIACWVEVTVFZJTjAwMDAwMDAwMDkABRcABYNnBKzcZwU0eRIPTk5ZLTE3NCAgICAgIACXVEVTVFZJTjAwMDAwMDAwMDkABYMABd5nBf5QZwZtshIPTk5ZLTE3NCAgICAgIACYVEVTVFZJTjAwMDAwMDAwMDkABd4ABj1nB09RZwfGrxIPTk5ZLTE3NCAgICAgIACZVEVTVFZJTjAwMDAwMDAwMDkABj0ABrNnCKBHZwkzNBIPTk5ZLTE3NCAgICAgIAEAVEVTVFZJTjAwMDAwMDAwMTAABrMABwtnDJYkZw0InRIPTk5ZLTE3NCAgICAgIAEBVEVTVFZJTjAwMDAwMDAwMTAABwsAB2tnDebCZw5psBIPTk5ZLTE3NCAgICAgIAECVEVTVFZJTjAwMDAwMDAwMTAAB2sAB7dnDznMZw+pkhIPTk5ZLTE3NCAgICAgIAEDVEVTVFZJTjAwMDAwMDAwMTAAB7cACBdnEIobZxEDABIPTk5ZLTE3NCAgICAgIAEEVEVTVFZJTjAwMDAwMDAwMTAACBcACIFnEdyRZxJeVRIPTk5ZLTE3NCAgICAgIAEFVEVTVFZJTjAwMDAwMDAwMTAACIEACQhnFdBdZxZjAxIPTk5ZLTE3NCAgICAgIAEGVEVTVFZJTjAwMDAwMDAwMTAACQgACWtnFyFlZxexuxIPTk5ZLTE3NCAgICAgIAEHVEVTVFZJTjAwMDAwMDAwMTAACfkACi9nGHNqZxjwuhIPTk5ZLTE3NCAgICAgIAEIVEVTVFZJTjAwMDAwMDAwMTAACi8ACm5nGcR6Zxor+BIPTk5ZLTE3NCAgICAgIAEJVEVTVFZJTjAwMDAwMDAwMTAACm4ACqdnGxZQZxuOnhIPTk5ZLTE3NCAgICAgIAEQVEVTVFZJTjAwMDAwMDAwMTEACqcACwZnHxisZx+PhBIPTk5ZLTE3NCAgICAgIAERVEVTVFZJTjAwMDAwMDAwMTEACwYAC3ZnIGteZyDtYRIPTk5ZLTE3NCAgICAgIAESVEVTVFZJTjAwMDAwMDAwMTEAZ2kAZ9lnIw8kZyOgIBIBSk5FLTcxMCAgICAgIAETVEVTVFZJTjAwMDAwMDAwMTEAZ9kAaEtnJF+kZyT+OhIBSk5FLTcxMCAgICAgIAEUVEVTVFZJTjAwMDAwMDAwMTEAaEsAaL9nKFThZyjqchIBSk5FLTcxMCAgICAgIAEVVEVTVFZJTjAwMDAwMDAwMTEAaL8AaStnKaXmZyo2YhIBSk5FLTcxMCAgICAgIAEWVEVTVFZJTjAwMDAwMDAwMTEAaSsAaYxnKvbQZyuBHBIBSk5FLTcxMCAgICAgIAEXVEVTVFZJTjAwMDAwMDAwMTEADnwADrlnLEg1ZyywBxIPTk5ZLTE3NCAgICAgIAEYVEVTVFZJTjAwMDAwMDAwMTEADrkADzxnLZm3Zy4qHRIPTk5ZLTE3NCAgICAgIAEZVEVTVFZJTjAwMDAwMDAwMTEADzwAD3NnMY3KZzHn8xIPTk5ZLTE3NCAgICAgIAEgVEVTVFZJTjAwMDAwMDAwMTIAD3MAD+VnMt+4ZzNaPBIPTk5ZLTE3NCAgICAgIAEhVEVTVFZJTjAwMDAwMDAwMTIAD+UAEBtnNDDJZzSZqBIPTk5ZLTE3NCAgICAgIAEiVEVTVFZJTjAwMDAwMDAwMTIAEBsAEFZnNYI3ZzXnFRIPTk5ZLTE3NCAgICAgIAEjVEVTVFZJTjAwMDAwMDAwMTIAEFYAEQZnNtR0ZzdojRIPTk5ZLTE3NCAgICAgIAEkVEVTVFZJTjAwMDAwMDAwMTIAEQYAEYtnOsjXZztSBhIPTk5ZLTE3NCAgICAgIAElVEVTVFZJTjAwMDAwMDAwMTIAEfIAEk1nPWueZz3oSBIPTk5ZLTE3NCAgICAgIAEmVEVTVFZJTjAwMDAwMDAwMTIAEk0AEoZnPr1mZz8e6xIPTk5ZLTE3NCAgICAgIAEnVEVTVFZJTjAwMDAwMDAwMTIAEoYAEutnQBCrZ0CV3RIPTk5ZLTE3NCAgICAgIAEoVEVTVFZJTjAwMDAwMDAwMTIAjocAjvxnRVJ8Z0XbIhIBT1pPLTUwMSAgICAgIAEpVEVTVFZJTjAwMDAwMDAwMTIAGjIAGnZnR/c2Z0h+FRIPTk5ZLTE3NCAgICAgIAEwVEVTVFZJTjAwMDAwMDAwMTMAGnYAGrVnSUkHZ0mzjxIPTk5ZLTE3NCAgICAgIAExVEVTVFZJTjAwMDAwMDAwMTMAG5kAG/xnTT08Z03BKRIPTk5ZLTE3NCAgICAgIAEyVEVTVFZJTjAwMDAwMDAwMTMAHVIAHZVnTo8bZ08O2xIPTk5ZLTE3NCAgICAgIAEzVEVTVFZJTjAwMDAwMDAwMTMAHiIAHl1nT+MFZ1BUnxIPTk5ZLTE3NCAgICAgIAE0VEVTVFZJTjAwMDAwMDAwMTMAHl0AHqhnUTKVZ1GnrxIPTk5ZLTE3NCAgICAgIAE1VEVTVFZJTjAwMDAwMDAwMTMDYjgDY2xnU++JZ1Rp8hIBRVNFLTc2MCAgICAgIAE2VEVTVFZJTjAwMDAwMDAwMTMAH7gAIARnVniCZ1b8QxIPTk5ZLTE3NCAgICAgIAE3VEVTVFZJTjAwMDAwMDAwMTMAIAQAIEJnV8k1Z1hCixIPTk5ZLTE3NCAgICAgIAE4VEVTVFZJTjAwMDAwMDAwMTMAIcMAIgBnWm1uZ1r0nBIPTk5ZLTE3NCAgICAgIAE5VEVTVFZJTjAwMDAwMDAwMTMAIy4AI5RnW76PZ1w8QBIPTk5ZLTE3NCAgICAgIAFAVEVTVFZJTjAwMDAwMDAwMTQAJPkAJWNnX7TVZ2A7zRIPTk5ZLTE3NCAgICAgIAFBVEVTVFZJTjAwMDAwMDAwMTQAJpgAJx9nYQSwZ2GcrxIPTk5ZLTE3NCAgICAgIAFCVEVTVFZJTjAwMDAwMDAwMTQAKDcAKHZnYlW4Z2LXoxIPTk5ZLTE3NCAgICAgIAFDVEVTVFZJTjAwMDAwMDAwMTQAKe0AKkJnY6fMZ2QN/RIPTk5ZLTE3NCAgICAgIAFEVEVTVFZJTjAwMDAwMDAwMTQAK1IAK9pnZPiiZ2WHGhIPTk5ZLTE3NCAgICAgIAFFVEVTVFZJTjAwMDAwMDAwMTQALhMALmVnaO6/Z2ll+hIPTk5ZLTE3NCAgICAgIAFGVEVTVFZJTjAwMDAwMDAwMTQAMAIAMG9nbjMCZ26rJRIPTk5ZLTE3NCAgICAgIAFHVEVTVFZJTjAwMDAwMDAwMTQAMXYAMfRncicRZ3Ke1hIPTk5ZLTE3NCAgICAgIAFIVEVTVFZJTjAwMDAwMDAwMTQAM4sAM99nc3k3Z3PRKRIPTk5ZLTE3NCAgICAgIAFJVEVTVFZJTjAwMDAwMDAwMTQAM98ANB5ndh16Z3agthIPTk5ZLTE3NCAgICAgIAFQVEVTVFZJTjAwMDAwMDAwMTUANB4ANI5nd22LZ3fzdhIPTk5ZLTE3NCAgICAgIAFRVEVTVFZJTjAwMDAwMDAwMTUANI4ANNZnfLPKZ300wRIPTk5ZLTE3NCAgICAgIAFSVEVTVFZJTjAwMDAwMDAwMTUANNYANS1nfgU9Z3548hIPTk5ZLTE3NCAgICAgIAFTVEVTVFZJTjAwMDAwMDAwMTUANS0ANXdnf1exZ3/InhIPTk5ZLTE3NCAgICAgIAFUVEVTVFZJTjAwMDAwMDAwMTUANXcANdtngKjQZ4EyjBIPTk5ZLTE3NCAgICAgIAFVVEVTVFZJTjAwMDAwMDAwMTUANdsANkBnhJ3iZ4UoOBIPTk5ZLTE3NCAgICAgIAFWVEVTVFZJTjAwMDAwMDAwMTUANzYAN3tnhe2jZ4ZvvBIPTk5ZLTE3NCAgICAgIAFXVEVTVFZJTjAwMDAwMDAwMTUAN3sAN+Nnhz1eZ4fHfxIPTk5ZLTE3NCAgICAgIAFYVEVTVFZJTjAwMDAwMDAwMTUAN+MAOCFniJEHZ4jyyhIPTk5ZLTE3NCAgICAgIAFZVEVTVFZJTjAwMDAwMDAwMTUAOCEAOK1nieFIZ4prnhIPTk5ZLTE3NCAgICAgIAFgVEVTVFZJTjAwMDAwMDAwMTYAOXsAOeBnkHkuZ5Dy9xIPTk5ZLTE3NCAgICAgIAFhVEVTVFZJTjAwMDAwMDAwMTYAOeAAOi1nkcqaZ5I6vxIPTk5ZLTE3NCAgICAgIAFiVEVTVFZJTjAwMDAwMDAwMTYAOi0AOmJnkxvCZ5OGsxIPTk5ZLTE3NCAgICAgIAFjVEVTVFZJTjAwMDAwMDAwMTYAO+AAPDtnoEwTZ6DLFBIPTk5ZLTE3NCAgICAgIAFkVEVTVFZJTjAwMDAwMDAwMTYAPDsAPKJnoZv2Z6IcHRIPTk5ZLTE3NCAgICAgIAFlVEVTVFZJTjAwMDAwMDAwMTYAPKIAPN9nouz2Z6NdMBIPTk5ZLTE3NCAgICAgIAFmVEVTVFZJTjAwMDAwMDAwMTYAPN8APRxnpD4nZ6SrYRIPTk5ZLTE3NCAgICAgIAFnVEVTVFZJTjAwMDAwMDAwMTYAPRwAPXxnpZDdZ6YVGhIPTk5ZLTE3NCAgICAgIAFoVEVTVFZJTjAwMDAwMDAwMTYAPXwAPb1nqYOpZ6nz4BIPTk5ZLTE3NCAgICAgIAFpVEVTVFZJTjAwMDAwMDAwMTYAPb0APiJnqtWnZ6tgTBIPTk5ZLTE3NCAgICAgIAFwVEVTVFZJTjAwMDAwMDAwMTcAPiIAPvVnrCfdZ6zEJBIPTk5ZLTE3NCAgICAgIAFxVEVTVFZJTjAwMDAwMDAwMTcAPvUAPzFnrXxGZ63oBRIPTk5ZLTE3NCAgICAgIAFyVEVTVFZJTjAwMDAwMDAwMTcAPzEAP2VnrsrvZ68+ChIPTk5ZLTE3NCAgICAgIAFzVEVTVFZJTjAwMDAwMDAwMTcAQy0AQ6Bnu/mZZ7xr3hIPTk5ZLTE3NCAgICAgIAF0VEVTVFZJTjAwMDAwMDAwMTcAQ6AAQ9ZnvUr8Z72hNBIPTk5ZLTE3NCAgICAgIAF1VEVTVFZJTjAwMDAwMDAwMTcARQwARWtnwT51Z8GrLxIPTk5ZLTE3NCAgICAgIAF2VEVTVFZJTjAwMDAwMDAwMTcARWsARaxnxTNPZ8WuAxIPTk5ZLTE3NCAgICAgIAF3VEVTVFZJTjAwMDAwMDAwMTcARawARhBnxoU/Z8b24hIPTk5ZLTE3NCAgICAgIAF4VEVTVFZJTjAwMDAwMDAwMTcARhAAR1Rnx9cnZ8ijMBIPTk5ZLTE3NCAgICAgIAF5VEVTVFZJTjAwMDAwMDAwMTcAR1QAR61nySiDZ8mvYBIPTk5ZLTE3NCAgICAgIAGAVEVTVFZJTjAwMDAwMDAwMTgAR60AR+xnynkMZ8rq8xIPTk5ZLTE3NCAgICAgIAGBVEVTVFZJTjAwMDAwMDAwMTgASUUASalnzm2HZ87z0BIPTk5ZLTE3NCAgICAgIAGCVEVTVFZJTjAwMDAwMDAwMTgASakASfBnz7+pZ9AzTxIPTk5ZLTE3NCAgICAgIAGDVEVTVFZJTjAwMDAwMDAwMTgASfAASlVn0RD1Z9GiTRIPTk5ZLTE3NCAgICAgIAGEVEVTVFZJTjAwMDAwMDAwMTgASlUASpJn0mNdZ9Lk9RIPTk5ZLTE3NCAgICAgIAGFVEVTVFZJTjAwMDAwMDAwMTgASpIASt5n07QRZ9QklRIPTk5ZLTE3NCAgICAgIAGGVEVTVFZJTjAwMDAwMDAwMTgATEcATKpn16mlZ9gjbRIPTk5ZLTE3NCAgICAgIAGHVEVTVFZJTjAwMDAwMDAwMTgATKoATRVn2PsEZ9mS1hIPTk5ZLTE3NCAgICAgIAGIVEVTVFZJTjAwMDAwMDAwMTgATRUATYZn2kwdZ9rAsxIPTk5ZLTE3NCAgICAgIAGJVEVTVFZJTjAwMDAwMDAwMTgATYYATdVn253GZ9wexBIPTk5ZLTE3NCAgICAgIAGQVEVTVFZJTjAwMDAwMDAwMTkATdYATjtn3O5hZ912uxIPTk5ZLTE3NCAgICAgIAGRVEVTVFZJTjAwMDAwMDAwMTkATjsATqln4OMyZ+Fy9xIPTk5ZLTE3NCAgICAgIAGSVEVTVFZJTjAwMDAwMDAwMTkATqkATwxn4jNDZ+KmFxIPTk5ZLTE3NCAgICAgIAGTVEVTVFZJTjAwMDAwMDAwMTkATwwAT1Nn44TIZ+P5VxIPTk5ZLTE3NCAgICAgIAGUVEVTVFZJTjAwMDAwMDAwMTkAUNEAUQ5n5OZfZ+VPkRIPTk5ZLTE3NCAgICAgIAGVVEVTVFZJTjAwMDAwMDAwMTkAUQ4AUXFn5isQZ+a2ChIPTk5ZLTE3NCAgICAgIAGWVEVTVFZJTjAwMDAwMDAwMTkAVmIAVr9n80tUZ/O9aBIPTk5ZLTE3NCAgICAgIAGXVEVTVFZJTjAwMDAwMDAwMTkAVr8AVyJn9J0UZ/UdPRIPTk5ZLTE3NCAgICAgIAGYVEVTVFZJTjAwMDAwMDAwMTkAVyIAV39n9e40Z/ZpLBIPTk5ZLTE3NCAgICAgIAGZVEVTVFZJTjAwMDAwMDAwMTkAV38AV+Fn90DBZ/e8ihIPTk5ZLTE3NCAgICAgIAIAVEVTVFZJTjAwMDAwMDAwMjA="
+}

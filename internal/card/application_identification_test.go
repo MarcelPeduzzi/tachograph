@@ -1,174 +1,62 @@
 package card
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/testing/protocmp"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// TestApplicationIdentificationRoundTrip verifies binary fidelity (unmarshal → marshal → unmarshal)
-func TestApplicationIdentificationRoundTrip(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/application_identification.b64")
+func TestApplicationIdentification_Generation1(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION,
+		ddv1.Generation_GENERATION_1,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_APPLICATION_IDENTIFICATION GENERATION_1")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// First unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	appId1, err := unmarshalOpts.unmarshalApplicationIdentification(data)
-	if err != nil {
-		t.Fatalf("First unmarshal failed: %v", err)
-	}
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Marshal
-	opts := MarshalOptions{}
-	marshaled, err := opts.MarshalCardApplicationIdentification(appId1)
-	if err != nil {
-		t.Fatalf("Marshal failed: %v", err)
-	}
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			appId, err := opts.unmarshalApplicationIdentification(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Verify binary equality
-	if diff := cmp.Diff(data, marshaled); diff != "" {
-		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, appId, goldenPath)
 
-	// Second unmarshal
-	appId2, err := unmarshalOpts.unmarshalApplicationIdentification(marshaled)
-	if err != nil {
-		t.Fatalf("Second unmarshal failed: %v", err)
-	}
-
-	// Verify structural equality
-	if diff := cmp.Diff(appId1, appId2, protocmp.Transform()); diff != "" {
-		t.Errorf("Structural mismatch after round-trip (-want +got):\n%s", diff)
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalCardApplicationIdentification(appId)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
-
-// TestApplicationIdentificationAnonymization is a golden file test with deterministic anonymization
-//
-//	go test -run TestApplicationIdentificationAnonymization -update -v  # regenerate
-func TestApplicationIdentificationAnonymization(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/application_identification.b64")
-	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
-	}
-
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
-
-	// Unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	appId, err := unmarshalOpts.unmarshalApplicationIdentification(data)
-	if err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
-	}
-
-	// Anonymize
-	anonymizeOpts := AnonymizeOptions{}
-	anonymized := anonymizeOpts.anonymizeApplicationIdentification(appId)
-
-	// Marshal anonymized data
-	opts := MarshalOptions{}
-	anonymizedData, err := opts.MarshalCardApplicationIdentification(anonymized)
-	if err != nil {
-		t.Fatalf("Failed to marshal anonymized data: %v", err)
-	}
-
-	if *update {
-		// Write anonymized binary
-		anonymizedB64 := base64.StdEncoding.EncodeToString(anonymizedData)
-		if err := os.WriteFile("testdata/application_identification.b64", []byte(anonymizedB64), 0o644); err != nil {
-			t.Fatalf("Failed to write application_identification.b64: %v", err)
-		}
-
-		// Write golden JSON with stable formatting
-		// First convert to JSON using protojson
-		jsonBytes, err := protojson.Marshal(anonymized)
-		if err != nil {
-			t.Fatalf("Failed to marshal protobuf to JSON: %v", err)
-		}
-		// Then reformat with json.Indent for stable output
-		var stableJSON bytes.Buffer
-		if err := json.Indent(&stableJSON, jsonBytes, "", "  "); err != nil {
-			t.Fatalf("Failed to format JSON: %v", err)
-		}
-		if err := os.WriteFile("testdata/application_identification.golden.json", stableJSON.Bytes(), 0o644); err != nil {
-			t.Fatalf("Failed to write application_identification.golden.json: %v", err)
-		}
-
-		t.Log("Updated golden files")
-	} else {
-		// Assert binary matches
-		expectedB64, err := os.ReadFile("testdata/application_identification.b64")
-		if err != nil {
-			t.Fatalf("Failed to read expected application_identification.b64: %v", err)
-		}
-		expectedData, err := base64.StdEncoding.DecodeString(string(expectedB64))
-		if err != nil {
-			t.Fatalf("Failed to decode expected base64: %v", err)
-		}
-		if diff := cmp.Diff(expectedData, anonymizedData); diff != "" {
-			t.Errorf("Binary mismatch (-want +got):\n%s", diff)
-		}
-
-		// Assert JSON matches
-		expectedJSON, err := os.ReadFile("testdata/application_identification.golden.json")
-		if err != nil {
-			t.Fatalf("Failed to read expected JSON: %v", err)
-		}
-		var expected cardv1.ApplicationIdentification
-		if err := protojson.Unmarshal(expectedJSON, &expected); err != nil {
-			t.Fatalf("Failed to unmarshal expected JSON: %v", err)
-		}
-		if diff := cmp.Diff(&expected, anonymized, protocmp.Transform()); diff != "" {
-			t.Errorf("JSON mismatch (-want +got):\n%s", diff)
-		}
-	}
-
-	// Always: structural assertions on anonymized data
-	if anonymized == nil {
-		t.Fatal("Anonymized ApplicationIdentification is nil")
-	}
-
-	// Verify card type is set
-	if anonymized.GetCardType() != cardv1.CardType_DRIVER_CARD {
-		t.Errorf("Card type = %v, want DRIVER_CARD", anonymized.GetCardType())
-	}
-
-	// Verify type of tachograph card ID is set
-	if anonymized.GetTypeOfTachographCardId() == ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED {
-		t.Error("Type of tachograph card ID should be set")
-	}
-
-	// Verify card structure version is set
-	if anonymized.GetCardStructureVersion() == nil {
-		t.Error("Card structure version should not be nil")
-	}
-
-	// Verify driver data is present
-	driver := anonymized.GetDriver()
-	if driver == nil {
-		t.Fatal("Driver data should not be nil for driver card")
-	}
-}
-
-// AnonymizeApplicationIdentification creates an anonymized copy of ApplicationIdentification data,
-// preserving structural information while using static test values for version information.

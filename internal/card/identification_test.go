@@ -1,217 +1,133 @@
 package card
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/testing/protocmp"
 
+	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// TestIdentificationRoundTrip verifies that Identification can be marshalled and unmarshalled
-// with perfect binary fidelity (unmarshal → marshal → unmarshal produces identical results).
-func TestIdentificationRoundTrip(t *testing.T) {
-	input, err := os.ReadFile("testdata/identification.b64")
+func TestIdentification_Generation1(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_IDENTIFICATION,
+		ddv1.Generation_GENERATION_1,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read input: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
 	}
-	originalBytes, err := base64.StdEncoding.DecodeString(string(input))
-	if err != nil {
-		t.Fatalf("Failed to decode input: %v", err)
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_IDENTIFICATION GENERATION_1")
 	}
 
-	t.Logf("Original data: %d bytes", len(originalBytes))
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// First unmarshal
-	identification1, err := (UnmarshalOptions{}).unmarshalIdentification(originalBytes)
-	if err != nil {
-		t.Fatalf("First unmarshal failed: %v", err)
-	}
-	cardNumber := ""
-	if card := identification1.GetCard(); card != nil {
-		if driverID := card.GetDriverIdentification(); driverID != nil {
-			cardNumber = driverID.GetDriverIdentificationNumber().GetValue()
-		}
-	}
-	holderSurname := ""
-	if holder := identification1.GetDriverCardHolder(); holder != nil {
-		holderSurname = holder.GetCardHolderSurname().GetValue()
-	}
-	t.Logf("First unmarshal: card_number=%s, holder_surname=%s", cardNumber, holderSurname)
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Marshal both parts
-	marshalOpts := MarshalOptions{}
-	marshalledBytes, err := marshalOpts.MarshalCardIdentification(identification1.GetCard())
-	if err != nil {
-		t.Fatalf("Marshal Card failed: %v", err)
-	}
-	driverBytes, err := marshalOpts.MarshalDriverCardHolderIdentification(identification1.GetDriverCardHolder())
-	if err != nil {
-		t.Fatalf("Marshal DriverCardHolder failed: %v", err)
-	}
-	marshalledBytes = append(marshalledBytes, driverBytes...)
-	t.Logf("Marshalled data: %d bytes", len(marshalledBytes))
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			identification, err := opts.unmarshalIdentification(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Verify binary equality
-	if !bytes.Equal(originalBytes, marshalledBytes) {
-		t.Errorf("Binary round-trip failed: original and marshalled bytes differ")
-		t.Logf("Original length: %d, Marshalled length: %d", len(originalBytes), len(marshalledBytes))
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, identification, goldenPath)
 
-	// Second unmarshal
-	identification2, err := (UnmarshalOptions{}).unmarshalIdentification(marshalledBytes)
-	if err != nil {
-		t.Fatalf("Second unmarshal failed: %v", err)
-	}
-	cardNumber2 := ""
-	if card := identification2.GetCard(); card != nil {
-		if driverID := card.GetDriverIdentification(); driverID != nil {
-			cardNumber2 = driverID.GetDriverIdentificationNumber().GetValue()
-		}
-	}
-	holderSurname2 := ""
-	if holder := identification2.GetDriverCardHolder(); holder != nil {
-		holderSurname2 = holder.GetCardHolderSurname().GetValue()
-	}
-	t.Logf("Second unmarshal: card_number=%s, holder_surname=%s", cardNumber2, holderSurname2)
+			// Round-trip test - marshal both parts
+			marshalOpts := MarshalOptions{}
+			marshaledCard, err := marshalOpts.MarshalCardIdentification(identification.GetCard())
+			if err != nil {
+				t.Fatalf("Marshal card failed: %v", err)
+			}
+			marshaledDriver, err := marshalOpts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
+			if err != nil {
+				t.Fatalf("Marshal driver failed: %v", err)
+			}
 
-	// Verify structural equality
-	if diff := cmp.Diff(identification1, identification2, protocmp.Transform()); diff != "" {
-		t.Errorf("Structural round-trip failed (-first +second):\n%s", diff)
+			// Combine marshaled parts
+			var marshaled []byte
+			marshaled = append(marshaled, marshaledCard...)
+			marshaled = append(marshaled, marshaledDriver...)
+
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
 
-// TestIdentificationAnonymization verifies that anonymization is deterministic and stable.
-// By default, this test asserts that re-anonymizing the test data produces
-// identical results (no changes). When run with -update flag, it regenerates
-// the anonymized test data:
-//
-//	go test -run TestIdentificationAnonymization -update -v
-//
-// Since anonymization is deterministic, this acts as a golden file test that
-// catches unintended changes while allowing intentional updates.
-func TestIdentificationAnonymization(t *testing.T) {
-	// Read current test data
-	input, err := os.ReadFile("testdata/identification.b64")
+func TestIdentification_Generation2(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_IDENTIFICATION,
+		ddv1.Generation_GENERATION_2,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read input: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
 	}
-	currentBytes, err := base64.StdEncoding.DecodeString(string(input))
-	if err != nil {
-		t.Fatalf("Failed to decode input: %v", err)
-	}
-
-	// Unmarshal
-	identification, err := (UnmarshalOptions{}).unmarshalIdentification(currentBytes)
-	if err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_IDENTIFICATION GENERATION_2")
 	}
 
-	// Re-anonymize (should be idempotent since data is already anonymized)
-	opts := AnonymizeOptions{}
-	anonymized := opts.anonymizeIdentification(identification)
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// Marshal both parts
-	marshalOpts := MarshalOptions{}
-	anonymizedBytes, err := marshalOpts.MarshalCardIdentification(anonymized.GetCard())
-	if err != nil {
-		t.Fatalf("Marshal Card failed: %v", err)
-	}
-	driverBytes, err := marshalOpts.MarshalDriverCardHolderIdentification(anonymized.GetDriverCardHolder())
-	if err != nil {
-		t.Fatalf("Marshal DriverCardHolder failed: %v", err)
-	}
-	anonymizedBytes = append(anonymizedBytes, driverBytes...)
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Verify round-trip works
-	identification2, err := (UnmarshalOptions{}).unmarshalIdentification(anonymizedBytes)
-	if err != nil {
-		t.Fatalf("Round-trip unmarshal failed: %v", err)
-	}
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			identification, err := opts.unmarshalIdentification(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Generate golden JSON
-	// Convert to JSON with stable formatting
-	jsonBytes, err := protojson.Marshal(identification2)
-	if err != nil {
-		t.Fatalf("Failed to marshal protobuf to JSON: %v", err)
-	}
-	// Then reformat with json.Indent for stable output
-	var stableJSON bytes.Buffer
-	if err := json.Indent(&stableJSON, jsonBytes, "", "  "); err != nil {
-		t.Fatalf("Failed to format JSON: %v", err)
-	}
-	jsonData := stableJSON.Bytes()
-	if err != nil {
-		t.Fatalf("Failed to marshal JSON: %v", err)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, identification, goldenPath)
 
-	if *update {
-		// Update mode: write new files
-		anonymizedBase64 := base64.StdEncoding.EncodeToString(anonymizedBytes)
-		if err := os.WriteFile("testdata/identification.b64", []byte(anonymizedBase64), 0o644); err != nil {
-			t.Fatalf("Failed to write identification.b64: %v", err)
-		}
-		t.Logf("✅ Updated: testdata/identification.b64 (%d bytes)", len(anonymizedBytes))
+			// Round-trip test - marshal both parts
+			marshalOpts := MarshalOptions{}
+			marshaledCard, err := marshalOpts.MarshalCardIdentification(identification.GetCard())
+			if err != nil {
+				t.Fatalf("Marshal card failed: %v", err)
+			}
+			marshaledDriver, err := marshalOpts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
+			if err != nil {
+				t.Fatalf("Marshal driver failed: %v", err)
+			}
 
-		if err := os.WriteFile("testdata/identification.golden.json", jsonData, 0o644); err != nil {
-			t.Fatalf("Failed to write golden JSON: %v", err)
-		}
-		t.Logf("✅ Updated: testdata/identification.golden.json")
-	} else {
-		// Assert mode: verify files haven't changed
-		if !bytes.Equal(currentBytes, anonymizedBytes) {
-			t.Errorf("Re-anonymizing identification.b64 produced different output.\n" +
-				"This means anonymization is not deterministic or the test data is stale.\n" +
-				"Run 'go test -update' to regenerate the golden files.")
-		}
+			// Combine marshaled parts
+			var marshaled []byte
+			marshaled = append(marshaled, marshaledCard...)
+			marshaled = append(marshaled, marshaledDriver...)
 
-		currentJSON, err := os.ReadFile("testdata/identification.golden.json")
-		if err != nil {
-			t.Fatalf("Failed to read golden JSON: %v", err)
-		}
-		if !bytes.Equal(currentJSON, jsonData) {
-			t.Errorf("Golden JSON mismatch.\n"+
-				"Run 'go test -update' to regenerate the golden files.\n"+
-				"Diff:\n%s", cmp.Diff(string(currentJSON), string(jsonData)))
-		}
-	}
-
-	// Additional structural assertions (always run)
-	card := identification2.GetCard()
-	if card == nil {
-		t.Fatal("Card is nil")
-	}
-
-	// Verify anonymized card number pattern (DRIVER00000001)
-	driverID := card.GetDriverIdentification()
-	if driverID == nil {
-		t.Fatal("DriverIdentification is nil")
-	}
-	cardNumberStr := driverID.GetDriverIdentificationNumber().GetValue()
-	if len(cardNumberStr) < 6 || cardNumberStr[0:6] != "DRIVER" {
-		t.Errorf("Card number should start with 'DRIVER': got %s", cardNumberStr)
-	}
-
-	// Verify anonymized names
-	holder := identification2.GetDriverCardHolder()
-	if holder == nil {
-		t.Fatal("DriverCardHolder is nil")
-	}
-	if holder.GetCardHolderSurname().GetValue() != "TEST_SURNAME" {
-		t.Errorf("Expected anonymized surname 'TEST_SURNAME', got %s", holder.GetCardHolderSurname().GetValue())
-	}
-	if holder.GetCardHolderFirstNames().GetValue() != "TEST_FIRSTNAME" {
-		t.Errorf("Expected anonymized first names 'TEST_FIRSTNAME', got %s", holder.GetCardHolderFirstNames().GetValue())
-	}
-
-	// Verify country is Finland (our test default)
-	if card.GetCardIssuingMemberState() != ddv1.NationNumeric_FINLAND {
-		t.Errorf("Expected issuing country FINLAND, got %v", card.GetCardIssuingMemberState())
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }

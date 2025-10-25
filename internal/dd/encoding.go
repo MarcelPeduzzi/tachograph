@@ -186,8 +186,7 @@ func decodeWithCodePage(codePage byte, data []byte) (string, error) {
 // encodeWithCodePage encodes a string to bytes using the specified code page.
 //
 // This function handles the conversion from UTF-8 strings to tachograph protocol
-// string data using various character encodings. Currently supports ASCII-compatible
-// encodings with a fallback to ISO-8859-1.
+// string data using various character encodings.
 //
 // Parameters:
 //   - codePage: The code page byte to use for encoding (0-255)
@@ -196,22 +195,50 @@ func decodeWithCodePage(codePage byte, data []byte) (string, error) {
 // Returns:
 //   - The encoded bytes in the specified character set
 //   - An error if encoding fails
-//
-// Note: This is currently a simplified implementation. Full support for all
-// code pages using charmap.Encoder should be implemented in a future version.
 func encodeWithCodePage(codePage byte, s string) ([]byte, error) {
 	// For code page 255 (empty), return empty bytes
 	if codePage == 255 {
 		return []byte{}, nil
 	}
 
-	// For ASCII-compatible code pages (0, 1), we can just convert to bytes
-	// TODO: Implement proper encoding for other code pages using charmap.Encoder
-	if codePage == 0 || codePage == 1 {
-		return []byte(s), nil
+	// Map code page to character map
+	var cmap *charmap.Charmap
+	switch codePage {
+	case 0:
+		// Default to ISO-8859-1 for code page 0 (ASCII-compatible)
+		cmap = charmap.ISO8859_1
+	case 1:
+		cmap = charmap.ISO8859_1
+	case 2:
+		cmap = charmap.ISO8859_2
+	case 3:
+		cmap = charmap.ISO8859_3
+	case 5:
+		cmap = charmap.ISO8859_5
+	case 7:
+		cmap = charmap.ISO8859_7
+	case 9:
+		cmap = charmap.ISO8859_9
+	case 13:
+		cmap = charmap.ISO8859_13
+	case 15:
+		cmap = charmap.ISO8859_15
+	case 16:
+		cmap = charmap.ISO8859_16
+	case 80:
+		cmap = charmap.KOI8R
+	case 85:
+		cmap = charmap.KOI8U
+	default:
+		// For unrecognized code pages, fall back to ISO-8859-1
+		cmap = charmap.ISO8859_1
 	}
 
-	// For now, fall back to ISO-8859-1 encoding for other code pages
-	// This is a simplification and should be enhanced for full support
-	return []byte(s), nil
+	enc := cmap.NewEncoder()
+	result, err := enc.String(s)
+	if err != nil {
+		return nil, fmt.Errorf("could not encode string to code page %d: %w", codePage, err)
+	}
+
+	return []byte(result), nil
 }

@@ -1,0 +1,49 @@
+{
+  "card": {
+    "cardIssuingMemberState": "FINLAND",
+    "driverIdentification": {
+      "driverIdentificationNumber": {
+        "length": 14,
+        "value": "DRIVER00000001"
+      },
+      "cardReplacementIndex": {
+        "length": 1,
+        "value": "0"
+      },
+      "cardRenewalIndex": {
+        "length": 1,
+        "value": "0"
+      }
+    },
+    "cardIssuingAuthorityName": {
+      "encoding": "ISO_8859_1",
+      "length": 35,
+      "value": "TEST_AUTHORITY"
+    },
+    "cardIssueDate": "2020-01-01T00:00:00Z",
+    "cardValidityBegin": "2020-01-01T00:00:00Z",
+    "cardExpiryDate": "2024-12-31T23:59:59Z"
+  },
+  "cardType": "DRIVER_CARD",
+  "driverCardHolder": {
+    "cardHolderSurname": {
+      "encoding": "ISO_8859_1",
+      "length": 35,
+      "value": "TEST_SURNAME"
+    },
+    "cardHolderFirstNames": {
+      "encoding": "ISO_8859_1",
+      "length": 35,
+      "value": "TEST_FIRSTNAME"
+    },
+    "cardHolderBirthDate": {
+      "year": 2000,
+      "month": 1,
+      "day": 1
+    },
+    "cardHolderPreferredLanguage": {
+      "length": 2,
+      "value": "fi"
+    }
+  }
+}

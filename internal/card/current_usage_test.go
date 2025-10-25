@@ -1,173 +1,113 @@
 package card
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/testing/protocmp"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// TestCurrentUsageRoundTrip verifies binary fidelity (unmarshal → marshal → unmarshal)
-func TestCurrentUsageRoundTrip(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/current_usage.b64")
+func TestCurrentUsage_Generation1(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_CURRENT_USAGE,
+		ddv1.Generation_GENERATION_1,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_CURRENT_USAGE GENERATION_1")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// First unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	cu1, err := unmarshalOpts.unmarshalCurrentUsage(data)
-	if err != nil {
-		t.Fatalf("First unmarshal failed: %v", err)
-	}
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Marshal
-	opts := MarshalOptions{}
-	marshaled, err := opts.MarshalCurrentUsage(cu1)
-	if err != nil {
-		t.Fatalf("Marshal failed: %v", err)
-	}
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			currentUsage, err := opts.unmarshalCurrentUsage(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Verify binary equality
-	if diff := cmp.Diff(data, marshaled); diff != "" {
-		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, currentUsage, goldenPath)
 
-	// Second unmarshal
-	cu2, err := unmarshalOpts.unmarshalCurrentUsage(marshaled)
-	if err != nil {
-		t.Fatalf("Second unmarshal failed: %v", err)
-	}
-
-	// Verify structural equality
-	if diff := cmp.Diff(cu1, cu2, protocmp.Transform()); diff != "" {
-		t.Errorf("Structural mismatch after round-trip (-want +got):\n%s", diff)
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalCurrentUsage(currentUsage)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
 
-// TestCurrentUsageAnonymization is a golden file test with deterministic anonymization
-//
-//	go test -run TestCurrentUsageAnonymization -update -v  # regenerate
-func TestCurrentUsageAnonymization(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/current_usage.b64")
+func TestCurrentUsage_Generation2(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_CURRENT_USAGE,
+		ddv1.Generation_GENERATION_2,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_CURRENT_USAGE GENERATION_2")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// Unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	cu, err := unmarshalOpts.unmarshalCurrentUsage(data)
-	if err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
-	}
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Anonymize
-	anonymizeOpts := AnonymizeOptions{}
-	anonymized := anonymizeOpts.anonymizeCurrentUsage(cu)
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			currentUsage, err := opts.unmarshalCurrentUsage(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Marshal anonymized data
-	opts := MarshalOptions{}
-	anonymizedData, err := opts.MarshalCurrentUsage(anonymized)
-	if err != nil {
-		t.Fatalf("Failed to marshal anonymized data: %v", err)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, currentUsage, goldenPath)
 
-	if *update {
-		// Write anonymized binary
-		anonymizedB64 := base64.StdEncoding.EncodeToString(anonymizedData)
-		if err := os.WriteFile("testdata/current_usage.b64", []byte(anonymizedB64), 0o644); err != nil {
-			t.Fatalf("Failed to write current_usage.b64: %v", err)
-		}
-
-		// Write golden JSON with stable formatting
-		// First convert to JSON using protojson
-		jsonBytes, err := protojson.Marshal(anonymized)
-		if err != nil {
-			t.Fatalf("Failed to marshal protobuf to JSON: %v", err)
-		}
-		// Then reformat with json.Indent for stable output
-		var stableJSON bytes.Buffer
-		if err := json.Indent(&stableJSON, jsonBytes, "", "  "); err != nil {
-			t.Fatalf("Failed to format JSON: %v", err)
-		}
-		if err := os.WriteFile("testdata/current_usage.golden.json", stableJSON.Bytes(), 0o644); err != nil {
-			t.Fatalf("Failed to write current_usage.golden.json: %v", err)
-		}
-
-		t.Log("Updated golden files")
-	} else {
-		// Assert binary matches
-		expectedB64, err := os.ReadFile("testdata/current_usage.b64")
-		if err != nil {
-			t.Fatalf("Failed to read expected current_usage.b64: %v", err)
-		}
-		expectedData, err := base64.StdEncoding.DecodeString(string(expectedB64))
-		if err != nil {
-			t.Fatalf("Failed to decode expected base64: %v", err)
-		}
-		if diff := cmp.Diff(expectedData, anonymizedData); diff != "" {
-			t.Errorf("Binary mismatch (-want +got):\n%s", diff)
-		}
-
-		// Assert JSON matches
-		expectedJSON, err := os.ReadFile("testdata/current_usage.golden.json")
-		if err != nil {
-			t.Fatalf("Failed to read expected JSON: %v", err)
-		}
-		var expected cardv1.CurrentUsage
-		if err := protojson.Unmarshal(expectedJSON, &expected); err != nil {
-			t.Fatalf("Failed to unmarshal expected JSON: %v", err)
-		}
-		if diff := cmp.Diff(&expected, anonymized, protocmp.Transform()); diff != "" {
-			t.Errorf("JSON mismatch (-want +got):\n%s", diff)
-		}
-	}
-
-	// Always: structural assertions on anonymized data
-	if anonymized == nil {
-		t.Fatal("Anonymized CurrentUsage is nil")
-	}
-
-	// Verify session open time is set to static test value
-	if anonymized.GetSessionOpenTime() == nil {
-		t.Error("Session open time should not be nil")
-	}
-
-	// Verify vehicle registration is anonymized
-	vehicleReg := anonymized.GetSessionOpenVehicle()
-	if vehicleReg == nil {
-		t.Error("Vehicle registration should not be nil")
-	} else {
-		// Should be FINLAND
-		if vehicleReg.GetNation() != ddv1.NationNumeric_FINLAND {
-			t.Errorf("Nation = %v, want FINLAND", vehicleReg.GetNation())
-		}
-		// Should have a registration number
-		if vehicleReg.GetNumber() == nil || vehicleReg.GetNumber().GetValue() == "" {
-			t.Error("Registration number should not be empty")
-		}
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalCurrentUsage(currentUsage)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
-
-// AnonymizeCurrentUsage creates an anonymized copy of CurrentUsage data,
-// replacing sensitive information with static, deterministic test values.

@@ -8,4 +8,6 @@ proprietary-*
 cmd/tachograph/tachograph
 tools/cmd/fetch-certs/fetch-certs
 *.bin
+
+# Ignore all testdata directories
 testdata/

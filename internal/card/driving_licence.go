@@ -119,9 +119,10 @@ func (opts AnonymizeOptions) anonymizeDrivingLicenceInfo(dli *cardv1.DrivingLice
 	anonymized := &cardv1.DrivingLicenceInfo{}
 
 	// Replace issuing authority with static test value (code-paged string: 1 byte code page + 35 bytes data)
+	// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
 	if dli.GetDrivingLicenceIssuingAuthority() != nil {
 		sv := &ddv1.StringValue{}
-		sv.SetValue("TEST AUTHORITY")
+		sv.SetValue("Motor Vehicle Authority")
 		sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
 		sv.SetLength(35)
 		anonymized.SetDrivingLicenceIssuingAuthority(sv)

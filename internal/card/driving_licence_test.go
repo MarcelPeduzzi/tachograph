@@ -1,170 +1,113 @@
 package card
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/json"
-	"os"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/testing/protocmp"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// TestDrivingLicenceInfoRoundTrip verifies binary fidelity (unmarshal → marshal → unmarshal)
-func TestDrivingLicenceInfoRoundTrip(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/driving_licence.b64")
+func TestDrivingLicence_Generation1(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO,
+		ddv1.Generation_GENERATION_1,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_DRIVING_LICENCE_INFO GENERATION_1")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// First unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	dli1, err := unmarshalOpts.unmarshalDrivingLicenceInfo(data)
-	if err != nil {
-		t.Fatalf("First unmarshal failed: %v", err)
-	}
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Marshal
-	opts := MarshalOptions{}
-	marshaled, err := opts.MarshalDrivingLicenceInfo(dli1)
-	if err != nil {
-		t.Fatalf("Marshal failed: %v", err)
-	}
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			drivingLicence, err := opts.unmarshalDrivingLicenceInfo(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Verify binary equality
-	if diff := cmp.Diff(data, marshaled); diff != "" {
-		t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, drivingLicence, goldenPath)
 
-	// Second unmarshal
-	dli2, err := unmarshalOpts.unmarshalDrivingLicenceInfo(marshaled)
-	if err != nil {
-		t.Fatalf("Second unmarshal failed: %v", err)
-	}
-
-	// Verify structural equality
-	if diff := cmp.Diff(dli1, dli2, protocmp.Transform()); diff != "" {
-		t.Errorf("Structural mismatch after round-trip (-want +got):\n%s", diff)
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalDrivingLicenceInfo(drivingLicence)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
 
-// TestDrivingLicenceInfoAnonymization is a golden file test with deterministic anonymization
-//
-//	go test -run TestDrivingLicenceInfoAnonymization -update -v  # regenerate
-func TestDrivingLicenceInfoAnonymization(t *testing.T) {
-	// Read test data
-	b64Data, err := os.ReadFile("testdata/driving_licence.b64")
+func TestDrivingLicence_Generation2(t *testing.T) {
+	// Discover all matching hexdump files using type-safe enums
+	hexdumpFiles, err := findHexdumpFiles(
+		cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO,
+		ddv1.Generation_GENERATION_2,
+		cardv1.ContentType_DATA,
+	)
 	if err != nil {
-		t.Fatalf("Failed to read test data: %v", err)
+		t.Fatalf("Failed to discover hexdump files: %v", err)
+	}
+	if len(hexdumpFiles) == 0 {
+		t.Fatal("No hexdump files found for EF_DRIVING_LICENCE_INFO GENERATION_2")
 	}
 
-	data, err := base64.StdEncoding.DecodeString(string(b64Data))
-	if err != nil {
-		t.Fatalf("Failed to decode base64: %v", err)
-	}
+	// Run subtest for each discovered file
+	for _, hexdumpPath := range hexdumpFiles {
+		// Use relative path from testdata as subtest name
+		relPath := strings.TrimPrefix(hexdumpPath, "testdata/records/")
+		testName := strings.TrimSuffix(relPath, ".hexdump")
 
-	// Unmarshal
-	unmarshalOpts := UnmarshalOptions{}
-	dli, err := unmarshalOpts.unmarshalDrivingLicenceInfo(data)
-	if err != nil {
-		t.Fatalf("Unmarshal failed: %v", err)
-	}
+		t.Run(testName, func(t *testing.T) {
+			// Read hexdump
+			data, err := readHexdump(hexdumpPath)
+			if err != nil {
+				t.Fatalf("Failed to read hexdump: %v", err)
+			}
 
-	// Anonymize
-	anonymizeOpts := AnonymizeOptions{}
-	anonymized := anonymizeOpts.anonymizeDrivingLicenceInfo(dli)
+			// Unmarshal
+			opts := UnmarshalOptions{}
+			drivingLicence, err := opts.unmarshalDrivingLicenceInfo(data)
+			if err != nil {
+				t.Fatalf("Unmarshal failed: %v", err)
+			}
 
-	// Marshal anonymized data
-	opts := MarshalOptions{}
-	anonymizedData, err := opts.MarshalDrivingLicenceInfo(anonymized)
-	if err != nil {
-		t.Fatalf("Failed to marshal anonymized data: %v", err)
-	}
+			// Golden JSON comparison
+			goldenPath := goldenJSONPath(hexdumpPath)
+			loadOrCreateGolden(t, drivingLicence, goldenPath)
 
-	if *update {
-		// Write anonymized binary
-		anonymizedB64 := base64.StdEncoding.EncodeToString(anonymizedData)
-		if err := os.WriteFile("testdata/driving_licence.b64", []byte(anonymizedB64), 0o644); err != nil {
-			t.Fatalf("Failed to write driving_licence.b64: %v", err)
-		}
-
-		// Write golden JSON with stable formatting
-		// First convert to JSON using protojson
-		jsonBytes, err := protojson.Marshal(anonymized)
-		if err != nil {
-			t.Fatalf("Failed to marshal protobuf to JSON: %v", err)
-		}
-		// Then reformat with json.Indent for stable output
-		var stableJSON bytes.Buffer
-		if err := json.Indent(&stableJSON, jsonBytes, "", "  "); err != nil {
-			t.Fatalf("Failed to format JSON: %v", err)
-		}
-		if err := os.WriteFile("testdata/driving_licence.golden.json", stableJSON.Bytes(), 0o644); err != nil {
-			t.Fatalf("Failed to write driving_licence.golden.json: %v", err)
-		}
-
-		t.Log("Updated golden files")
-	} else {
-		// Assert binary matches
-		expectedB64, err := os.ReadFile("testdata/driving_licence.b64")
-		if err != nil {
-			t.Fatalf("Failed to read expected driving_licence.b64: %v", err)
-		}
-		expectedData, err := base64.StdEncoding.DecodeString(string(expectedB64))
-		if err != nil {
-			t.Fatalf("Failed to decode expected base64: %v", err)
-		}
-		if diff := cmp.Diff(expectedData, anonymizedData); diff != "" {
-			t.Errorf("Binary mismatch (-want +got):\n%s", diff)
-		}
-
-		// Assert JSON matches
-		expectedJSON, err := os.ReadFile("testdata/driving_licence.golden.json")
-		if err != nil {
-			t.Fatalf("Failed to read expected JSON: %v", err)
-		}
-		var expected cardv1.DrivingLicenceInfo
-		if err := protojson.Unmarshal(expectedJSON, &expected); err != nil {
-			t.Fatalf("Failed to unmarshal expected JSON: %v", err)
-		}
-		if diff := cmp.Diff(&expected, anonymized, protocmp.Transform()); diff != "" {
-			t.Errorf("JSON mismatch (-want +got):\n%s", diff)
-		}
-	}
-
-	// Always: structural assertions on anonymized data
-	if anonymized == nil {
-		t.Fatal("Anonymized DrivingLicenceInfo is nil")
-	}
-
-	// Verify issuing authority is anonymized
-	authority := anonymized.GetDrivingLicenceIssuingAuthority()
-	if authority == nil || authority.GetValue() == "" {
-		t.Error("Driving licence issuing authority should not be empty")
-	}
-
-	// Verify issuing nation is FINLAND
-	if anonymized.GetDrivingLicenceIssuingNation() != ddv1.NationNumeric_FINLAND {
-		t.Errorf("Issuing nation = %v, want FINLAND", anonymized.GetDrivingLicenceIssuingNation())
-	}
-
-	// Verify licence number is anonymized
-	licenceNumber := anonymized.GetDrivingLicenceNumber()
-	if licenceNumber == nil || licenceNumber.GetValue() == "" {
-		t.Error("Driving licence number should not be empty")
+			// Round-trip test
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalDrivingLicenceInfo(drivingLicence)
+			if err != nil {
+				t.Fatalf("Marshal failed: %v", err)
+			}
+			if diff := cmp.Diff(data, marshaled); diff != "" {
+				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
 	}
 }
-
-// AnonymizeDrivingLicenceInfo creates an anonymized copy of DrivingLicenceInfo data,
-// replacing sensitive information with static, deterministic test values.

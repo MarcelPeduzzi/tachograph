@@ -1,0 +1,790 @@
+{
+  "newestRecordIndex": 1,
+  "records": [
+    {
+      "entryTime": "2020-01-01T00:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 284200
+    },
+    {
+      "entryTime": "2020-01-01T01:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 284200
+    },
+    {
+      "entryTime": "2020-01-01T02:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32400
+    },
+    {
+      "entryTime": "2020-01-01T03:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32500
+    },
+    {
+      "entryTime": "2020-01-01T04:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32500
+    },
+    {
+      "entryTime": "2020-01-01T05:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32600
+    },
+    {
+      "entryTime": "2020-01-01T06:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32600
+    },
+    {
+      "entryTime": "2020-01-01T07:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32700
+    },
+    {
+      "entryTime": "2020-01-01T08:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32700
+    },
+    {
+      "entryTime": "2020-01-01T09:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32800
+    },
+    {
+      "entryTime": "2020-01-01T10:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32800
+    },
+    {
+      "entryTime": "2020-01-01T11:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32900
+    },
+    {
+      "entryTime": "2020-01-01T12:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 32900
+    },
+    {
+      "entryTime": "2020-01-01T13:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 33100
+    },
+    {
+      "entryTime": "2020-01-01T14:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 33100
+    },
+    {
+      "entryTime": "2020-01-01T15:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 33200
+    },
+    {
+      "entryTime": "2020-01-01T16:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 33200
+    },
+    {
+      "entryTime": "2020-01-01T17:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 33200
+    },
+    {
+      "entryTime": "2020-01-01T18:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 33200
+    },
+    {
+      "entryTime": "2020-01-01T19:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 33300
+    },
+    {
+      "entryTime": "2020-01-01T20:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 25800
+    },
+    {
+      "entryTime": "2020-01-01T21:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 25900
+    },
+    {
+      "entryTime": "2020-01-01T22:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 25900
+    },
+    {
+      "entryTime": "2020-01-01T23:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26000
+    },
+    {
+      "entryTime": "2020-01-02T00:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26000
+    },
+    {
+      "entryTime": "2020-01-02T01:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26100
+    },
+    {
+      "entryTime": "2020-01-02T02:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26100
+    },
+    {
+      "entryTime": "2020-01-02T03:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26200
+    },
+    {
+      "entryTime": "2020-01-02T04:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26200
+    },
+    {
+      "entryTime": "2020-01-02T05:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26300
+    },
+    {
+      "entryTime": "2020-01-02T06:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26300
+    },
+    {
+      "entryTime": "2020-01-02T07:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26400
+    },
+    {
+      "entryTime": "2020-01-02T08:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26400
+    },
+    {
+      "entryTime": "2020-01-02T09:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26500
+    },
+    {
+      "entryTime": "2020-01-02T10:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26500
+    },
+    {
+      "entryTime": "2020-01-02T11:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26600
+    },
+    {
+      "entryTime": "2020-01-02T12:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26600
+    },
+    {
+      "entryTime": "2020-01-02T13:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26700
+    },
+    {
+      "entryTime": "2020-01-02T14:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26700
+    },
+    {
+      "entryTime": "2020-01-02T15:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26800
+    },
+    {
+      "entryTime": "2020-01-02T16:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26800
+    },
+    {
+      "entryTime": "2020-01-02T17:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26900
+    },
+    {
+      "entryTime": "2020-01-02T18:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 26900
+    },
+    {
+      "entryTime": "2020-01-02T19:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27000
+    },
+    {
+      "entryTime": "2020-01-02T20:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27000
+    },
+    {
+      "entryTime": "2020-01-02T21:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27100
+    },
+    {
+      "entryTime": "2020-01-02T22:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27100
+    },
+    {
+      "entryTime": "2020-01-02T23:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27200
+    },
+    {
+      "entryTime": "2020-01-03T00:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27200
+    },
+    {
+      "entryTime": "2020-01-03T01:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27300
+    },
+    {
+      "entryTime": "2020-01-03T02:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27300
+    },
+    {
+      "entryTime": "2020-01-03T03:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27300
+    },
+    {
+      "entryTime": "2020-01-03T04:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27300
+    },
+    {
+      "entryTime": "2020-01-03T05:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27400
+    },
+    {
+      "entryTime": "2020-01-03T06:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27400
+    },
+    {
+      "entryTime": "2020-01-03T07:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27600
+    },
+    {
+      "entryTime": "2020-01-03T08:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27600
+    },
+    {
+      "entryTime": "2020-01-03T09:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 27700
+    },
+    {
+      "entryTime": "2020-01-03T10:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46500
+    },
+    {
+      "entryTime": "2020-01-03T11:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46600
+    },
+    {
+      "entryTime": "2020-01-03T12:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46600
+    },
+    {
+      "entryTime": "2020-01-03T13:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46700
+    },
+    {
+      "entryTime": "2020-01-03T14:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46700
+    },
+    {
+      "entryTime": "2020-01-03T15:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46800
+    },
+    {
+      "entryTime": "2020-01-03T16:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46800
+    },
+    {
+      "entryTime": "2020-01-03T17:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46900
+    },
+    {
+      "entryTime": "2020-01-03T18:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 46900
+    },
+    {
+      "entryTime": "2020-01-03T19:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47000
+    },
+    {
+      "entryTime": "2020-01-03T20:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47000
+    },
+    {
+      "entryTime": "2020-01-03T21:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47100
+    },
+    {
+      "entryTime": "2020-01-03T22:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47100
+    },
+    {
+      "entryTime": "2020-01-03T23:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47200
+    },
+    {
+      "entryTime": "2020-01-04T00:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47200
+    },
+    {
+      "entryTime": "2020-01-04T01:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47300
+    },
+    {
+      "entryTime": "2020-01-04T02:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47300
+    },
+    {
+      "entryTime": "2020-01-04T03:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47400
+    },
+    {
+      "entryTime": "2020-01-04T04:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47400
+    },
+    {
+      "entryTime": "2020-01-04T05:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47500
+    },
+    {
+      "entryTime": "2020-01-04T06:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47500
+    },
+    {
+      "entryTime": "2020-01-04T07:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47600
+    },
+    {
+      "entryTime": "2020-01-04T08:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47600
+    },
+    {
+      "entryTime": "2020-01-04T09:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47700
+    },
+    {
+      "entryTime": "2020-01-04T10:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47700
+    },
+    {
+      "entryTime": "2020-01-04T11:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47800
+    },
+    {
+      "entryTime": "2020-01-04T12:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47800
+    },
+    {
+      "entryTime": "2020-01-04T13:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47900
+    },
+    {
+      "entryTime": "2020-01-04T14:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 47900
+    },
+    {
+      "entryTime": "2020-01-04T15:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48000
+    },
+    {
+      "entryTime": "2020-01-04T16:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48000
+    },
+    {
+      "entryTime": "2020-01-04T17:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48100
+    },
+    {
+      "entryTime": "2020-01-04T18:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48100
+    },
+    {
+      "entryTime": "2020-01-04T19:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48200
+    },
+    {
+      "entryTime": "2020-01-04T20:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48200
+    },
+    {
+      "entryTime": "2020-01-04T21:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48300
+    },
+    {
+      "entryTime": "2020-01-04T22:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48300
+    },
+    {
+      "entryTime": "2020-01-04T23:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48500
+    },
+    {
+      "entryTime": "2020-01-05T00:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48500
+    },
+    {
+      "entryTime": "2020-01-05T01:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 48600
+    },
+    {
+      "entryTime": "2020-01-05T02:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 283200
+    },
+    {
+      "entryTime": "2020-01-05T03:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 283300
+    },
+    {
+      "entryTime": "2020-01-05T04:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 225800
+    },
+    {
+      "entryTime": "2020-01-05T05:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 225900
+    },
+    {
+      "entryTime": "2020-01-05T06:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 225900
+    },
+    {
+      "entryTime": "2020-01-05T07:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 226000
+    },
+    {
+      "entryTime": "2020-01-05T08:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 283400
+    },
+    {
+      "entryTime": "2020-01-05T09:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 283700
+    },
+    {
+      "entryTime": "2020-01-05T10:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 201200
+    },
+    {
+      "entryTime": "2020-01-05T11:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 283800
+    },
+    {
+      "entryTime": "2020-01-05T12:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 283800
+    },
+    {
+      "entryTime": "2020-01-05T13:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 284000
+    },
+    {
+      "entryTime": "2020-01-05T14:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 284100
+    },
+    {
+      "entryTime": "2020-01-05T15:00:00Z",
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 284100
+    }
+  ],
+  "rawData": "AV4L4QABEgEEViheC+8QABIBBFYoXgv9IAASAQB+kF4MCzABEgEAfvReDBlAABIBAH70XgwnUAESAQB/WF4MNWAAEgEAf1heDENwARIBAH+8XgxRgAASAQB/vF4MX5ABEgEAgCBeDG2gABIBAIAgXgx7sAESAQCAhF4MicAAEgEAgIReDJfQARIBAIFMXgyl4AASAQCBTF4Ms/ABEgEAgbBeDMIAABIBAIGwXgzQEAESAQCBsF4M3iAAEgEAgbBeDOwwARIBAIIUXgz6QAASAQBkyF4NCFABEgEAZSxeDRZgABIBAGUsXg0kcAESAQBlkF4NMoAAEgEAZZBeDUCQARIBAGX0Xg1OoAASAQBl9F4NXLABEgEAZlheDWrAABIBAGZYXg140AESAQBmvF4NhuAAEgEAZrxeDZTwARIBAGcgXg2jAAASAQBnIF4NsRABEgEAZ4ReDb8gABIBAGeEXg3NMAESAQBn6F4N20AAEgEAZ+heDelQARIBAGhMXg33YAASAQBoTF4OBXABEgEAaLBeDhOAABIBAGiwXg4hkAESAQBpFF4OL6AAEgEAaRReDj2wARIBAGl4Xg5LwAASAQBpeF4OWdABEgEAadxeDmfgABIBAGncXg518AESAQBqQF4OhAAAEgEAakBeDpIQARIBAGqkXg6gIAASAQBqpF4OrjABEgEAaqReDrxAABIBAGqkXg7KUAESAQBrCF4O2GAAEgEAawheDuZwARIBAGvQXg70gAASAQBr0F4PApABEgEAbDReDxCgABIBALWkXg8esAESAQC2CF4PLMAAEgEAtgheDzrQARIBALZsXg9I4AASAQC2bF4PVvABEgEAttBeD2UAABIBALbQXg9zEAESAQC3NF4PgSAAEgEAtzReD48wARIBALeYXg+dQAASAQC3mF4Pq1ABEgEAt/xeD7lgABIBALf8Xg/HcAESAQC4YF4P1YAAEgEAuGBeD+OQARIBALjEXg/xoAASAQC4xF4P/7ABEgEAuSheEA3AABIBALkoXhAb0AESAQC5jF4QKeAAEgEAuYxeEDfwARIBALnwXhBGAAASAQC58F4QVBABEgEAulReEGIgABIBALpUXhBwMAESAQC6uF4QfkAAEgEAurheEIxQARIBALscXhCaYAASAQC7HF4QqHABEgEAu4BeELaAABIBALuAXhDEkAESAQC75F4Q0qAAEgEAu+ReEOCwARIBALxIXhDuwAASAQC8SF4Q/NABEgEAvKxeEQrgABIBALysXhEY8AESAQC9dF4RJwAAEgEAvXReETUQARIBAL3YXhFDIAASAQRSQF4RUTABEgEEUqReEV9AABIBA3IIXhFtUAESAQNybF4Re2AAEgEDcmxeEYlwARIBA3LQXhGXgAASAQRTCF4RpZABEgEEVDReEbOgARIBAxHwXhHBsAESAQRUmF4Rz8AAEgEEVJheEd3QARIBBFVgXhHr4AESAQRVxF4R+fAAEgEEVcQ="
+}

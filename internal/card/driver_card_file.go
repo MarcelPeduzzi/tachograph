@@ -89,7 +89,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			output.SetIc(ic)
 
 		case cardv1.ElementaryFileType_EF_IDENTIFICATION:
-			identification, err := unmarshalOpts.unmarshalIdentification(record.GetValue())
+			identification, err := unmarshalOpts.unmarshalDriverCardIdentification(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -794,15 +794,10 @@ func (opts ParseOptions) UnparseDriverCardFile(file *cardv1.DriverCardFile) (*ca
 
 		// EF_IDENTIFICATION
 		if identification := tachograph.GetIdentification(); identification != nil {
-			cardBytes, err := marshalOpts.MarshalCardIdentification(identification.GetCard())
+			dataBytes, err := marshalOpts.MarshalDriverCardIdentification(identification)
 			if err != nil {
-				return nil, fmt.Errorf("failed to marshal CardIdentification: %w", err)
+				return nil, fmt.Errorf("failed to marshal DriverCardIdentification: %w", err)
 			}
-			driverBytes, err := marshalOpts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
-			if err != nil {
-				return nil, fmt.Errorf("failed to marshal DriverCardHolderIdentification: %w", err)
-			}
-			dataBytes := append(cardBytes, driverBytes...)
 			if err := appendRecord(cardv1.ElementaryFileType_EF_IDENTIFICATION, ddv1.Generation_GENERATION_1, dataBytes, identification.GetSignature()); err != nil {
 				return nil, err
 			}
@@ -978,15 +973,10 @@ func (opts ParseOptions) UnparseDriverCardFile(file *cardv1.DriverCardFile) (*ca
 
 		// EF_IDENTIFICATION (Gen2)
 		if identification := tachographG2.GetIdentification(); identification != nil {
-			cardBytes, err := marshalOpts.MarshalCardIdentification(identification.GetCard())
+			dataBytes, err := marshalOpts.MarshalDriverCardIdentification(identification)
 			if err != nil {
-				return nil, fmt.Errorf("failed to marshal CardIdentification (Gen2): %w", err)
+				return nil, fmt.Errorf("failed to marshal DriverCardIdentification (Gen2): %w", err)
 			}
-			driverBytes, err := marshalOpts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
-			if err != nil {
-				return nil, fmt.Errorf("failed to marshal DriverCardHolderIdentification (Gen2): %w", err)
-			}
-			dataBytes := append(cardBytes, driverBytes...)
 			if err := appendRecord(cardv1.ElementaryFileType_EF_IDENTIFICATION, ddv1.Generation_GENERATION_2, dataBytes, identification.GetSignature()); err != nil {
 				return nil, err
 			}
@@ -1202,22 +1192,15 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		}
 	}
 
-	// 4. EF_IDENTIFICATION (0x0520) - composite file
+	// 4. EF_IDENTIFICATION (0x0520)
 	if identification := card.GetTachograph().GetIdentification(); identification != nil {
-		valBuf := make([]byte, 0, 143)
-		cardBytes, err := opts.MarshalCardIdentification(identification.GetCard())
+		dataBytes, err := opts.MarshalDriverCardIdentification(identification)
 		if err != nil {
 			return nil, err
 		}
-		valBuf = append(valBuf, cardBytes...)
-		driverBytes, err := opts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
-		if err != nil {
-			return nil, err
-		}
-		valBuf = append(valBuf, driverBytes...)
 		dst, err = appendTlvBlock(dst,
 			cardv1.ElementaryFileType_EF_IDENTIFICATION,
-			valBuf,
+			dataBytes,
 			identification.GetSignature(),
 			0x00) // Gen1
 		if err != nil {

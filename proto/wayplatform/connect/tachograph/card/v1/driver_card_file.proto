@@ -24,7 +24,7 @@ import "wayplatform/connect/tachograph/card/v1/gnss_places.proto";
 import "wayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto";
 import "wayplatform/connect/tachograph/card/v1/ic.proto";
 import "wayplatform/connect/tachograph/card/v1/icc.proto";
-import "wayplatform/connect/tachograph/card/v1/identification.proto";
+import "wayplatform/connect/tachograph/card/v1/driver_card_identification.proto";
 import "wayplatform/connect/tachograph/card/v1/load_type_entries.proto";
 import "wayplatform/connect/tachograph/card/v1/load_unload_operations.proto";
 import "wayplatform/connect/tachograph/card/v1/places.proto";
@@ -109,7 +109,7 @@ message DriverCardFile {
 
     // Data from EF Identification (File ID '0520h').
     // Signed (see Section 3.3, DDP_035).
-    Identification identification = 2;
+    DriverCardIdentification identification = 2;
 
     // Data from EF Card_Download (File ID '050Eh').
     // Not signed (see Section 3.3, DDP_035).
@@ -213,7 +213,7 @@ message DriverCardFile {
 
     // Data from EF Identification (File ID '0520h').
     // Signed (see Section 3.3, DDP_035).
-    Identification identification = 2;
+    DriverCardIdentification identification = 2;
 
     // Data from EF Card_Download (File ID '050Eh').
     // Not signed (see Section 3.3, DDP_035).

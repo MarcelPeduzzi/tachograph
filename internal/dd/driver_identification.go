@@ -73,5 +73,18 @@ func AnonymizeDriverIdentification(driverID *ddv1.DriverIdentification) *ddv1.Dr
 	testDriverID.SetValue("DRIVER00000001")
 	testDriverID.SetLength(14)
 	result.SetDriverIdentificationNumber(testDriverID)
+
+	// Card replacement index (IA5String, 1 byte)
+	replacementIndex := &ddv1.Ia5StringValue{}
+	replacementIndex.SetValue("0")
+	replacementIndex.SetLength(1)
+	result.SetCardReplacementIndex(replacementIndex)
+
+	// Card renewal index (IA5String, 1 byte)
+	renewalIndex := &ddv1.Ia5StringValue{}
+	renewalIndex.SetValue("0")
+	renewalIndex.SetLength(1)
+	result.SetCardRenewalIndex(renewalIndex)
+
 	return result
 }

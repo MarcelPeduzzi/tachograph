@@ -218,7 +218,7 @@ func (b0 DriverCardFile_builder) Build() *DriverCardFile {
 type DriverCardFile_Tachograph struct {
 	state                                protoimpl.MessageState     `protogen:"opaque.v1"`
 	xxx_hidden_ApplicationIdentification *ApplicationIdentification `protobuf:"bytes,1,opt,name=application_identification,json=applicationIdentification"`
-	xxx_hidden_Identification            *Identification            `protobuf:"bytes,2,opt,name=identification"`
+	xxx_hidden_Identification            *DriverCardIdentification  `protobuf:"bytes,2,opt,name=identification"`
 	xxx_hidden_CardDownload              *CardDownloadDriver        `protobuf:"bytes,3,opt,name=card_download,json=cardDownload"`
 	xxx_hidden_DrivingLicenceInfo        *DrivingLicenceInfo        `protobuf:"bytes,4,opt,name=driving_licence_info,json=drivingLicenceInfo"`
 	xxx_hidden_EventsData                *EventsData                `protobuf:"bytes,5,opt,name=events_data,json=eventsData"`
@@ -267,7 +267,7 @@ func (x *DriverCardFile_Tachograph) GetApplicationIdentification() *ApplicationI
 	return nil
 }
 
-func (x *DriverCardFile_Tachograph) GetIdentification() *Identification {
+func (x *DriverCardFile_Tachograph) GetIdentification() *DriverCardIdentification {
 	if x != nil {
 		return x.xxx_hidden_Identification
 	}
@@ -362,7 +362,7 @@ func (x *DriverCardFile_Tachograph) SetApplicationIdentification(v *ApplicationI
 	x.xxx_hidden_ApplicationIdentification = v
 }
 
-func (x *DriverCardFile_Tachograph) SetIdentification(v *Identification) {
+func (x *DriverCardFile_Tachograph) SetIdentification(v *DriverCardIdentification) {
 	x.xxx_hidden_Identification = v
 }
 
@@ -576,7 +576,7 @@ type DriverCardFile_Tachograph_builder struct {
 	ApplicationIdentification *ApplicationIdentification
 	// Data from EF Identification (File ID '0520h').
 	// Signed (see Section 3.3, DDP_035).
-	Identification *Identification
+	Identification *DriverCardIdentification
 	// Data from EF Card_Download (File ID '050Eh').
 	// Not signed (see Section 3.3, DDP_035).
 	CardDownload *CardDownloadDriver
@@ -684,7 +684,7 @@ func (b0 DriverCardFile_Tachograph_builder) Build() *DriverCardFile_Tachograph {
 type DriverCardFile_TachographG2 struct {
 	state                                  protoimpl.MessageState       `protogen:"opaque.v1"`
 	xxx_hidden_ApplicationIdentification   *ApplicationIdentificationG2 `protobuf:"bytes,1,opt,name=application_identification,json=applicationIdentification"`
-	xxx_hidden_Identification              *Identification              `protobuf:"bytes,2,opt,name=identification"`
+	xxx_hidden_Identification              *DriverCardIdentification    `protobuf:"bytes,2,opt,name=identification"`
 	xxx_hidden_CardDownload                *CardDownloadDriver          `protobuf:"bytes,3,opt,name=card_download,json=cardDownload"`
 	xxx_hidden_DrivingLicenceInfo          *DrivingLicenceInfo          `protobuf:"bytes,4,opt,name=driving_licence_info,json=drivingLicenceInfo"`
 	xxx_hidden_EventsData                  *EventsData                  `protobuf:"bytes,5,opt,name=events_data,json=eventsData"`
@@ -745,7 +745,7 @@ func (x *DriverCardFile_TachographG2) GetApplicationIdentification() *Applicatio
 	return nil
 }
 
-func (x *DriverCardFile_TachographG2) GetIdentification() *Identification {
+func (x *DriverCardFile_TachographG2) GetIdentification() *DriverCardIdentification {
 	if x != nil {
 		return x.xxx_hidden_Identification
 	}
@@ -924,7 +924,7 @@ func (x *DriverCardFile_TachographG2) SetApplicationIdentification(v *Applicatio
 	x.xxx_hidden_ApplicationIdentification = v
 }
 
-func (x *DriverCardFile_TachographG2) SetIdentification(v *Identification) {
+func (x *DriverCardFile_TachographG2) SetIdentification(v *DriverCardIdentification) {
 	x.xxx_hidden_Identification = v
 }
 
@@ -1319,7 +1319,7 @@ type DriverCardFile_TachographG2_builder struct {
 	ApplicationIdentification *ApplicationIdentificationG2
 	// Data from EF Identification (File ID '0520h').
 	// Signed (see Section 3.3, DDP_035).
-	Identification *Identification
+	Identification *DriverCardIdentification
 	// Data from EF Card_Download (File ID '050Eh').
 	// Not signed (see Section 3.3, DDP_035).
 	CardDownload *CardDownloadDriver
@@ -1441,19 +1441,19 @@ var File_wayplatform_connect_tachograph_card_v1_driver_card_file_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aGwayplatform/connect/tachograph/card/v1/application_identification.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_g2.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1a;wayplatform/connect/tachograph/card/v1/ca_certificate.proto\x1a>wayplatform/connect/tachograph/card/v1/ca_certificate_g2.proto\x1a=wayplatform/connect/tachograph/card/v1/card_certificate.proto\x1aAwayplatform/connect/tachograph/card/v1/card_download_driver.proto\x1a@wayplatform/connect/tachograph/card/v1/card_ma_certificate.proto\x1aBwayplatform/connect/tachograph/card/v1/card_sign_certificate.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1a=wayplatform/connect/tachograph/card/v1/link_certificate.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1aAwayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a8wayplatform/connect/tachograph/card/v1/events_data.proto\x1a8wayplatform/connect/tachograph/card/v1/faults_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a/wayplatform/connect/tachograph/card/v1/ic.proto\x1a0wayplatform/connect/tachograph/card/v1/icc.proto\x1a;wayplatform/connect/tachograph/card/v1/identification.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a6wayplatform/connect/tachograph/card/v1/places_g2.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1aCwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\xfa\"\n" +
+	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aGwayplatform/connect/tachograph/card/v1/application_identification.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_g2.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1a;wayplatform/connect/tachograph/card/v1/ca_certificate.proto\x1a>wayplatform/connect/tachograph/card/v1/ca_certificate_g2.proto\x1a=wayplatform/connect/tachograph/card/v1/card_certificate.proto\x1aAwayplatform/connect/tachograph/card/v1/card_download_driver.proto\x1a@wayplatform/connect/tachograph/card/v1/card_ma_certificate.proto\x1aBwayplatform/connect/tachograph/card/v1/card_sign_certificate.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1a=wayplatform/connect/tachograph/card/v1/link_certificate.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1aAwayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a8wayplatform/connect/tachograph/card/v1/events_data.proto\x1a8wayplatform/connect/tachograph/card/v1/faults_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a/wayplatform/connect/tachograph/card/v1/ic.proto\x1a0wayplatform/connect/tachograph/card/v1/icc.proto\x1aGwayplatform/connect/tachograph/card/v1/driver_card_identification.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a6wayplatform/connect/tachograph/card/v1/places_g2.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1aCwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\x8e#\n" +
 	"\x0eDriverCardFile\x12=\n" +
 	"\x03icc\x18\x01 \x01(\v2+.wayplatform.connect.tachograph.card.v1.IccR\x03icc\x12:\n" +
 	"\x02ic\x18\x02 \x01(\v2*.wayplatform.connect.tachograph.card.v1.IcR\x02ic\x12a\n" +
 	"\n" +
 	"tachograph\x18\x03 \x01(\v2A.wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographR\n" +
 	"tachograph\x12h\n" +
-	"\rtachograph_g2\x18\x04 \x01(\v2C.wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2R\ftachographG2\x1a\xf4\n" +
+	"\rtachograph_g2\x18\x04 \x01(\v2C.wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2R\ftachographG2\x1a\xfe\n" +
 	"\n" +
 	"\n" +
 	"Tachograph\x12\x80\x01\n" +
-	"\x1aapplication_identification\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationR\x19applicationIdentification\x12^\n" +
-	"\x0eidentification\x18\x02 \x01(\v26.wayplatform.connect.tachograph.card.v1.IdentificationR\x0eidentification\x12_\n" +
+	"\x1aapplication_identification\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationR\x19applicationIdentification\x12h\n" +
+	"\x0eidentification\x18\x02 \x01(\v2@.wayplatform.connect.tachograph.card.v1.DriverCardIdentificationR\x0eidentification\x12_\n" +
 	"\rcard_download\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.card.v1.CardDownloadDriverR\fcardDownload\x12l\n" +
 	"\x14driving_licence_info\x18\x04 \x01(\v2:.wayplatform.connect.tachograph.card.v1.DrivingLicenceInfoR\x12drivingLicenceInfo\x12S\n" +
 	"\vevents_data\x18\x05 \x01(\v22.wayplatform.connect.tachograph.card.v1.EventsDataR\n" +
@@ -1468,10 +1468,10 @@ const file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc
 	"\x15control_activity_data\x18\v \x01(\v2;.wayplatform.connect.tachograph.card.v1.ControlActivityDataR\x13controlActivityData\x12k\n" +
 	"\x13specific_conditions\x18\f \x01(\v2:.wayplatform.connect.tachograph.card.v1.SpecificConditionsR\x12specificConditions\x12b\n" +
 	"\x10card_certificate\x18\r \x01(\v27.wayplatform.connect.tachograph.card.v1.CardCertificateR\x0fcardCertificate\x12\\\n" +
-	"\x0eca_certificate\x18\x0e \x01(\v25.wayplatform.connect.tachograph.card.v1.CaCertificateR\rcaCertificate\x1a\xa8\x15\n" +
+	"\x0eca_certificate\x18\x0e \x01(\v25.wayplatform.connect.tachograph.card.v1.CaCertificateR\rcaCertificate\x1a\xb2\x15\n" +
 	"\fTachographG2\x12\x82\x01\n" +
-	"\x1aapplication_identification\x18\x01 \x01(\v2C.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationG2R\x19applicationIdentification\x12^\n" +
-	"\x0eidentification\x18\x02 \x01(\v26.wayplatform.connect.tachograph.card.v1.IdentificationR\x0eidentification\x12_\n" +
+	"\x1aapplication_identification\x18\x01 \x01(\v2C.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationG2R\x19applicationIdentification\x12h\n" +
+	"\x0eidentification\x18\x02 \x01(\v2@.wayplatform.connect.tachograph.card.v1.DriverCardIdentificationR\x0eidentification\x12_\n" +
 	"\rcard_download\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.card.v1.CardDownloadDriverR\fcardDownload\x12l\n" +
 	"\x14driving_licence_info\x18\x04 \x01(\v2:.wayplatform.connect.tachograph.card.v1.DrivingLicenceInfoR\x12drivingLicenceInfo\x12S\n" +
 	"\vevents_data\x18\x05 \x01(\v22.wayplatform.connect.tachograph.card.v1.EventsDataR\n" +
@@ -1510,7 +1510,7 @@ var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_goTypes =
 	(*Icc)(nil),                         // 3: wayplatform.connect.tachograph.card.v1.Icc
 	(*Ic)(nil),                          // 4: wayplatform.connect.tachograph.card.v1.Ic
 	(*ApplicationIdentification)(nil),   // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentification
-	(*Identification)(nil),              // 6: wayplatform.connect.tachograph.card.v1.Identification
+	(*DriverCardIdentification)(nil),    // 6: wayplatform.connect.tachograph.card.v1.DriverCardIdentification
 	(*CardDownloadDriver)(nil),          // 7: wayplatform.connect.tachograph.card.v1.CardDownloadDriver
 	(*DrivingLicenceInfo)(nil),          // 8: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
 	(*EventsData)(nil),                  // 9: wayplatform.connect.tachograph.card.v1.EventsData
@@ -1548,7 +1548,7 @@ var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_depIdxs =
 	1,  // 2: wayplatform.connect.tachograph.card.v1.DriverCardFile.tachograph:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph
 	2,  // 3: wayplatform.connect.tachograph.card.v1.DriverCardFile.tachograph_g2:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2
 	5,  // 4: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.application_identification:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification
-	6,  // 5: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.identification:type_name -> wayplatform.connect.tachograph.card.v1.Identification
+	6,  // 5: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.identification:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardIdentification
 	7,  // 6: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.card_download:type_name -> wayplatform.connect.tachograph.card.v1.CardDownloadDriver
 	8,  // 7: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.driving_licence_info:type_name -> wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
 	9,  // 8: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.events_data:type_name -> wayplatform.connect.tachograph.card.v1.EventsData
@@ -1562,7 +1562,7 @@ var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_depIdxs =
 	17, // 16: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.card_certificate:type_name -> wayplatform.connect.tachograph.card.v1.CardCertificate
 	18, // 17: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.ca_certificate:type_name -> wayplatform.connect.tachograph.card.v1.CaCertificate
 	19, // 18: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.application_identification:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationG2
-	6,  // 19: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.identification:type_name -> wayplatform.connect.tachograph.card.v1.Identification
+	6,  // 19: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.identification:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardIdentification
 	7,  // 20: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.card_download:type_name -> wayplatform.connect.tachograph.card.v1.CardDownloadDriver
 	8,  // 21: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.driving_licence_info:type_name -> wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
 	9,  // 22: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.events_data:type_name -> wayplatform.connect.tachograph.card.v1.EventsData
@@ -1621,7 +1621,7 @@ func file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_init() {
 	file_wayplatform_connect_tachograph_card_v1_gnss_places_authentication_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_ic_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_icc_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_identification_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_driver_card_identification_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_places_proto_init()

@@ -1,7 +1,6 @@
 package card
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
@@ -11,685 +10,392 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// createIA5StringValue creates a Ia5StringValue with fixed length.
-// This is a helper for creating test/anonymized string data.
-func createIA5StringValue(value string, length int32) *ddv1.Ia5StringValue {
-	sv := &ddv1.Ia5StringValue{}
-	sv.SetValue(value)
-	sv.SetLength(length)
-	return sv
-}
-
-// unmarshalIdentification parses the binary data for an EF_Identification record.
+// unmarshalDriverCardIdentification parses the binary data for an EF_Identification record
+// from a driver card.
 //
-// TODO: Refactor to separate card-specific identification types:
-//   - unmarshalDriverCardIdentification
-//   - unmarshalWorkshopCardIdentification
-//   - unmarshalControlCardIdentification
-//   - unmarshalCompanyCardIdentification
+// The data type `DriverCardIdentification` combines two structures:
+//   - CardIdentification (Data Dictionary Section 2.24) - 65 bytes
+//   - DriverCardHolderIdentification (Data Dictionary Section 2.62) - 78 bytes
 //
-// Each card type has different CardNumber structures (14 vs 13 byte identification).
+// Total binary size: 143 bytes (fixed)
 //
-// The data type `CardIdentification` is specified in the Data Dictionary, Section 2.1.
-//
-// ASN.1 Definition:
+// CardIdentification ASN.1 Specification (Data Dictionary Section 2.24):
 //
 //	CardIdentification ::= SEQUENCE {
 //	    cardIssuingMemberState    NationNumeric,
 //	    cardNumber                CardNumber,
 //	    cardIssuingAuthorityName  Name,
-//	    cardIssueDate            TimeReal,
-//	    cardValidityBegin        TimeReal,
-//	    cardExpiryDate           TimeReal
+//	    cardIssueDate             TimeReal,
+//	    cardValidityBegin         TimeReal,
+//	    cardExpiryDate            TimeReal
 //	}
 //
+// DriverCardHolderIdentification ASN.1 Specification (Data Dictionary Section 2.62):
+//
 //	DriverCardHolderIdentification ::= SEQUENCE {
-//	    cardHolderSurname            Name,
-//	    cardHolderFirstNames         Name,
-//	    cardHolderBirthDate          Datef,
-//	    cardHolderPreferredLanguage  Language
+//	    cardHolderName                  HolderName,
+//	    cardHolderBirthDate             Datef,
+//	    cardHolderPreferredLanguage     Language
 //	}
-func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
+//
+// Binary Layout (143 bytes total):
+//   - cardIssuingMemberState: 1 byte (NationNumeric)
+//   - driverIdentification: 14 bytes (IA5String for driver cards)
+//   - cardReplacementIndex: 1 byte (IA5String)
+//   - cardRenewalIndex: 1 byte (IA5String)
+//   - cardIssuingAuthorityName: 36 bytes (1 byte code page + 35 bytes data)
+//   - cardIssueDate: 4 bytes (TimeReal)
+//   - cardValidityBegin: 4 bytes (TimeReal)
+//   - cardExpiryDate: 4 bytes (TimeReal)
+//   - cardHolderSurname: 36 bytes (1 byte code page + 35 bytes data)
+//   - cardHolderFirstNames: 36 bytes (1 byte code page + 35 bytes data)
+//   - cardHolderBirthDate: 4 bytes (Datef)
+//   - cardHolderPreferredLanguage: 2 bytes (Language)
+func (opts UnmarshalOptions) unmarshalDriverCardIdentification(data []byte) (*cardv1.DriverCardIdentification, error) {
 	const (
-		lenMinIdentification = 143 // Minimum size for EF_Identification
+		lenDriverCardIdentification = 143
+
+		// CardIdentification part (65 bytes)
+		idxIssuingMemberState   = 0
+		lenIssuingMemberState   = 1
+		idxDriverIdentification = 1
+		lenDriverIdentification = 14
+		idxReplacementIndex     = 15
+		lenReplacementIndex     = 1
+		idxRenewalIndex         = 16
+		lenRenewalIndex         = 1
+		idxAuthorityName        = 17
+		lenAuthorityName        = 36
+		idxIssueDate            = 53
+		lenIssueDate            = 4
+		idxValidityBegin        = 57
+		lenValidityBegin        = 4
+		idxExpiryDate           = 61
+		lenExpiryDate           = 4
+
+		// DriverCardHolderIdentification part (78 bytes)
+		idxSurname    = 65
+		lenSurname    = 36
+		idxFirstNames = 101
+		lenFirstNames = 36
+		idxBirthDate  = 137
+		lenBirthDate  = 4
+		idxLanguage   = 141
+		lenLanguage   = 2
 	)
 
-	if len(data) < lenMinIdentification {
-		return nil, errors.New("not enough data for EF_Identification")
+	if len(data) != lenDriverCardIdentification {
+		return nil, fmt.Errorf("invalid data length for DriverCardIdentification: got %d, want %d", len(data), lenDriverCardIdentification)
 	}
 
-	var identification cardv1.Identification
-	offset := 0
+	var id cardv1.DriverCardIdentification
 
-	// Create and populate CardIdentification part (65 bytes)
-	cardId := &cardv1.Identification_Card{}
+	// Parse CardIdentification part (65 bytes)
 
-	// Read nation as byte and convert to NationNumeric
-	if offset+1 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card issuing member state")
-	}
-	if nation, err := dd.UnmarshalEnum[ddv1.NationNumeric](data[offset]); err == nil {
-		cardId.SetCardIssuingMemberState(nation)
+	// Nation (1 byte)
+	if nation, err := dd.UnmarshalEnum[ddv1.NationNumeric](data[idxIssuingMemberState]); err == nil {
+		id.SetCardIssuingMemberState(nation)
 	} else {
-		// Value not recognized - set UNRECOGNIZED (no unrecognized field for this type)
-		cardId.SetCardIssuingMemberState(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
-	}
-	offset++
-
-	// Handle the CardNumber CHOICE type (16 bytes total)
-	// CardNumber ::= CHOICE {
-	//     -- Driver Card: 14 bytes identification + 1 byte replacement + 1 byte renewal
-	//     -- Other Cards: 13 bytes identification + 1 byte consecutive + 1 byte replacement + 1 byte renewal
-	// }
-	if offset+16 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card number")
+		id.SetCardIssuingMemberState(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 	}
 
-	cardNumberData := data[offset : offset+16]
-	offset += 16
+	// DriverIdentification (14 + 1 + 1 = 16 bytes for driver cards)
+	// Driver cards use the driverIdentification variant of CardNumber:
+	//   - 14 bytes: driverIdentificationNumber (IA5String)
+	//   - 1 byte: cardReplacementIndex (IA5String)
+	//   - 1 byte: cardRenewalIndex (IA5String)
+	driverID := &ddv1.DriverIdentification{}
 
-	// Determine card type based on the data structure
-	// Driver cards have 14 bytes for identification, other cards have 13 bytes
-	// We can detect this by checking if the 14th byte is a valid IA5String character
-	// and if the 15th and 16th bytes are single digits (replacement/renewal indices)
-
-	// Try to parse as driver card first (14 + 1 + 1 format)
-	driverIdentification, err := opts.UnmarshalIa5StringValue(cardNumberData[0:14])
-	if err == nil {
-		// Check if bytes 14 and 15 are single digits (0-9)
-		replacementByte := cardNumberData[14]
-		renewalByte := cardNumberData[15]
-		if replacementByte >= '0' && replacementByte <= '9' && renewalByte >= '0' && renewalByte <= '9' {
-			// This looks like a driver card format
-			driverID := &ddv1.DriverIdentification{}
-			driverID.SetDriverIdentificationNumber(driverIdentification)
-
-			// Parse replacement and renewal indices (1 byte each)
-			replacementIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[14:15])
-			if err == nil {
-				driverID.SetCardReplacementIndex(replacementIndex)
-			}
-			renewalIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[15:16])
-			if err == nil {
-				driverID.SetCardRenewalIndex(renewalIndex)
-			}
-
-			cardId.SetDriverIdentification(driverID)
-			identification.SetCardType(cardv1.CardType_DRIVER_CARD)
-		} else {
-			// Fall back to other card format
-			ownerID := &ddv1.OwnerIdentification{}
-
-			// Owner identification (13 bytes)
-			ownerIdentification, err := opts.UnmarshalIa5StringValue(cardNumberData[0:13])
-			if err != nil {
-				return nil, fmt.Errorf("failed to read owner identification: %w", err)
-			}
-			ownerID.SetOwnerIdentification(ownerIdentification)
-
-			// Consecutive index (1 byte)
-			consecutiveIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[13:14])
-			if err != nil {
-				return nil, fmt.Errorf("failed to read consecutive index: %w", err)
-			}
-			ownerID.SetConsecutiveIndex(consecutiveIndex)
-
-			// Replacement index (1 byte)
-			replacementIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[14:15])
-			if err != nil {
-				return nil, fmt.Errorf("failed to read replacement index: %w", err)
-			}
-			ownerID.SetReplacementIndex(replacementIndex)
-
-			// Renewal index (1 byte)
-			renewalIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[15:16])
-			if err != nil {
-				return nil, fmt.Errorf("failed to read renewal index: %w", err)
-			}
-			ownerID.SetRenewalIndex(renewalIndex)
-
-			cardId.SetOwnerIdentification(ownerID)
-			identification.SetCardType(cardv1.CardType_WORKSHOP_CARD) // Default to workshop card
-		}
-	} else {
-		// Try to parse as other card format (13 + 1 + 1 + 1 format)
-		ownerID := &ddv1.OwnerIdentification{}
-
-		// Owner identification (13 bytes)
-		ownerIdentification, err := opts.UnmarshalIa5StringValue(cardNumberData[0:13])
-		if err != nil {
-			return nil, fmt.Errorf("failed to read owner identification: %w", err)
-		}
-		ownerID.SetOwnerIdentification(ownerIdentification)
-
-		// Consecutive index (1 byte)
-		consecutiveIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[13:14])
-		if err != nil {
-			return nil, fmt.Errorf("failed to read consecutive index: %w", err)
-		}
-		ownerID.SetConsecutiveIndex(consecutiveIndex)
-
-		// Replacement index (1 byte)
-		replacementIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[14:15])
-		if err != nil {
-			return nil, fmt.Errorf("failed to read replacement index: %w", err)
-		}
-		ownerID.SetReplacementIndex(replacementIndex)
-
-		// Renewal index (1 byte)
-		renewalIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[15:16])
-		if err != nil {
-			return nil, fmt.Errorf("failed to read renewal index: %w", err)
-		}
-		ownerID.SetRenewalIndex(renewalIndex)
-
-		cardId.SetOwnerIdentification(ownerID)
-		identification.SetCardType(cardv1.CardType_WORKSHOP_CARD) // Default to workshop card
+	// Parse driver identification number (14 bytes)
+	identificationNumber, err := opts.UnmarshalIa5StringValue(data[idxDriverIdentification : idxDriverIdentification+lenDriverIdentification])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse driver identification number: %w", err)
 	}
+	driverID.SetDriverIdentificationNumber(identificationNumber)
+
+	// Parse replacement index (1 byte)
+	replacementIndex, err := opts.UnmarshalIa5StringValue(data[idxReplacementIndex : idxReplacementIndex+lenReplacementIndex])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card replacement index: %w", err)
+	}
+	driverID.SetCardReplacementIndex(replacementIndex)
+
+	// Parse renewal index (1 byte)
+	renewalIndex, err := opts.UnmarshalIa5StringValue(data[idxRenewalIndex : idxRenewalIndex+lenRenewalIndex])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card renewal index: %w", err)
+	}
+	driverID.SetCardRenewalIndex(renewalIndex)
+
+	id.SetDriverIdentification(driverID)
 
 	// Authority name (36 bytes)
-	if offset+36 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card issuing authority name")
-	}
-	authorityName, err := opts.UnmarshalStringValue(data[offset : offset+36])
+	authorityName, err := opts.UnmarshalStringValue(data[idxAuthorityName : idxAuthorityName+lenAuthorityName])
 	if err != nil {
-		return nil, fmt.Errorf("failed to read card issuing authority name: %w", err)
+		return nil, fmt.Errorf("failed to parse card issuing authority name: %w", err)
 	}
-	cardId.SetCardIssuingAuthorityName(authorityName)
-	offset += 36
+	id.SetCardIssuingAuthorityName(authorityName)
 
 	// Card issue date (4 bytes)
-	if offset+4 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card issue date")
-	}
-	cardIssueDate, err := opts.UnmarshalTimeReal(data[offset : offset+4])
+	cardIssueDate, err := opts.UnmarshalTimeReal(data[idxIssueDate : idxIssueDate+lenIssueDate])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card issue date: %w", err)
 	}
-	cardId.SetCardIssueDate(cardIssueDate)
-	offset += 4
+	id.SetCardIssueDate(cardIssueDate)
 
 	// Card validity begin (4 bytes)
-	if offset+4 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card validity begin")
-	}
-	cardValidityBegin, err := opts.UnmarshalTimeReal(data[offset : offset+4])
+	cardValidityBegin, err := opts.UnmarshalTimeReal(data[idxValidityBegin : idxValidityBegin+lenValidityBegin])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card validity begin: %w", err)
 	}
-	cardId.SetCardValidityBegin(cardValidityBegin)
-	offset += 4
+	id.SetCardValidityBegin(cardValidityBegin)
 
 	// Card expiry date (4 bytes)
-	if offset+4 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card expiry date")
-	}
-	cardExpiryDate, err := opts.UnmarshalTimeReal(data[offset : offset+4])
+	cardExpiryDate, err := opts.UnmarshalTimeReal(data[idxExpiryDate : idxExpiryDate+lenExpiryDate])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card expiry date: %w", err)
 	}
-	cardId.SetCardExpiryDate(cardExpiryDate)
-	offset += 4
+	id.SetCardExpiryDate(cardExpiryDate)
 
-	identification.SetCard(cardId)
-
-	// Create and populate DriverCardHolderIdentification part (78 bytes)
-	holderId := &cardv1.Identification_DriverCardHolder{}
+	// Parse DriverCardHolderIdentification part (78 bytes)
 
 	// Card holder surname (36 bytes)
-	if offset+36 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card holder surname")
-	}
-	surname, err := opts.UnmarshalStringValue(data[offset : offset+36])
+	surname, err := opts.UnmarshalStringValue(data[idxSurname : idxSurname+lenSurname])
 	if err != nil {
-		return nil, fmt.Errorf("failed to read card holder surname: %w", err)
+		return nil, fmt.Errorf("failed to parse card holder surname: %w", err)
 	}
-	holderId.SetCardHolderSurname(surname)
-	offset += 36
+	id.SetCardHolderSurname(surname)
 
 	// Card holder first names (36 bytes)
-	if offset+36 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card holder first names")
-	}
-	firstNames, err := opts.UnmarshalStringValue(data[offset : offset+36])
+	firstNames, err := opts.UnmarshalStringValue(data[idxFirstNames : idxFirstNames+lenFirstNames])
 	if err != nil {
-		return nil, fmt.Errorf("failed to read card holder first names: %w", err)
+		return nil, fmt.Errorf("failed to parse card holder first names: %w", err)
 	}
-	holderId.SetCardHolderFirstNames(firstNames)
-	offset += 36
+	id.SetCardHolderFirstNames(firstNames)
 
 	// Card holder birth date (4 bytes)
-	if offset+4 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card holder birth date")
-	}
-	birthDate, err := opts.UnmarshalDate(data[offset : offset+4])
+	birthDate, err := opts.UnmarshalDate(data[idxBirthDate : idxBirthDate+lenBirthDate])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card holder birth date: %w", err)
 	}
-	holderId.SetCardHolderBirthDate(birthDate)
-	offset += 4
+	id.SetCardHolderBirthDate(birthDate)
 
-	// Card holder preferred language (2 bytes) - Language ::= IA5String(SIZE(2))
-	if offset+2 > len(data) {
-		return nil, fmt.Errorf("insufficient data for card holder preferred language")
-	}
-	preferredLanguage, err := opts.UnmarshalIa5StringValue(data[offset : offset+2])
+	// Card holder preferred language (2 bytes)
+	preferredLanguage, err := opts.UnmarshalIa5StringValue(data[idxLanguage : idxLanguage+lenLanguage])
 	if err != nil {
-		return nil, fmt.Errorf("failed to read card holder preferred language: %w", err)
+		return nil, fmt.Errorf("failed to parse card holder preferred language: %w", err)
 	}
-	holderId.SetCardHolderPreferredLanguage(preferredLanguage)
-	// offset += 2 // Not needed as this is the last field
+	id.SetCardHolderPreferredLanguage(preferredLanguage)
 
-	identification.SetDriverCardHolder(holderId)
-
-	return &identification, nil
+	return &id, nil
 }
 
-// MarshalCardIdentification marshals the binary representation of CardIdentification to bytes.
+// MarshalDriverCardIdentification marshals the binary representation of DriverCardIdentification to bytes.
 //
-// The data type `CardIdentification` is specified in the Data Dictionary, Section 2.1.
+// The data type `DriverCardIdentification` combines two structures:
+//   - CardIdentification (Data Dictionary Section 2.24) - 65 bytes
+//   - DriverCardHolderIdentification (Data Dictionary Section 2.62) - 78 bytes
 //
-// ASN.1 Definition:
+// Total binary size: 143 bytes (fixed)
+//
+// CardIdentification ASN.1 Specification (Data Dictionary Section 2.24):
 //
 //	CardIdentification ::= SEQUENCE {
 //	    cardIssuingMemberState    NationNumeric,
 //	    cardNumber                CardNumber,
 //	    cardIssuingAuthorityName  Name,
-//	    cardIssueDate            TimeReal,
-//	    cardValidityBegin        TimeReal,
-//	    cardExpiryDate           TimeReal
+//	    cardIssueDate             TimeReal,
+//	    cardValidityBegin         TimeReal,
+//	    cardExpiryDate            TimeReal
 //	}
-func (opts MarshalOptions) MarshalCardIdentification(id *cardv1.Identification_Card) ([]byte, error) {
+//
+// DriverCardHolderIdentification ASN.1 Specification (Data Dictionary Section 2.62):
+//
+//	DriverCardHolderIdentification ::= SEQUENCE {
+//	    cardHolderName                  HolderName,
+//	    cardHolderBirthDate             Datef,
+//	    cardHolderPreferredLanguage     Language
+//	}
+func (opts MarshalOptions) MarshalDriverCardIdentification(id *cardv1.DriverCardIdentification) ([]byte, error) {
 	if id == nil {
-		return nil, nil
+		return nil, fmt.Errorf("driver card identification cannot be nil")
 	}
 
-	var dst []byte
+	const lenDriverCardIdentification = 143
+	dst := make([]byte, 0, lenDriverCardIdentification)
 
-	// Append cardIssuingMemberState (1 byte) - get protocol value from enum
-	memberState := id.GetCardIssuingMemberState()
-	var memberStateByte byte
-	if memberState == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
-		// UNRECOGNIZED values should not occur during marshalling
-		return nil, fmt.Errorf("cannot marshal UNRECOGNIZED member state (no unrecognized field)")
-	} else {
-		var err error
-		memberStateByte, err = dd.MarshalEnum(memberState)
-		if err != nil {
-			return nil, fmt.Errorf("failed to marshal member state: %w", err)
-		}
+	// Marshal CardIdentification part (65 bytes)
+
+	// Nation (1 byte)
+	memberStateByte, err := dd.MarshalEnum(id.GetCardIssuingMemberState())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal member state: %w", err)
 	}
 	dst = append(dst, memberStateByte)
-	var err error
-	// Handle the CardNumber CHOICE type
-	// CardNumber ::= CHOICE {
-	//     -- Driver Card
-	//     SEQUENCE {
-	//         driverIdentification    IA5String(SIZE(14)),
-	//         cardReplacementIndex    CardReplacementIndex, -- 1 byte
-	//         cardRenewalIndex        CardRenewalIndex,     -- 1 byte
-	//     },
-	//     -- Other Cards (Workshop, Control, Company)
-	//     SEQUENCE {
-	//         ownerIdentification     IA5String(SIZE(13)),
-	//         cardConsecutiveIndex    CardConsecutiveIndex, -- 1 byte
-	//         cardReplacementIndex    CardReplacementIndex, -- 1 byte
-	//         cardRenewalIndex        CardRenewalIndex      -- 1 byte
-	//     }
-	// }
-	// Total size is always 16 bytes
-	cardNumberBytes := make([]byte, 16)
-	if driverID := id.GetDriverIdentification(); driverID != nil {
-		// Driver card: 14 bytes identification + 1 byte replacement + 1 byte renewal
-		identification := driverID.GetDriverIdentificationNumber()
-		if identification != nil {
-			// Pad or truncate to exactly 14 bytes
-			identStr := identification.GetValue()
-			if len(identStr) > 14 {
-				identStr = identStr[:14]
-			}
-			copy(cardNumberBytes[0:14], []byte(identStr))
-			// Pad with spaces if needed
-			for i := len(identStr); i < 14; i++ {
-				cardNumberBytes[i] = ' '
-			}
-		}
-		// Write replacement and renewal indices (1 byte each)
-		replacementIndex := driverID.GetCardReplacementIndex()
-		if replacementIndex != nil && len(replacementIndex.GetValue()) > 0 {
-			cardNumberBytes[14] = replacementIndex.GetValue()[0]
-		} else {
-			cardNumberBytes[14] = '0' // Default replacement index
-		}
-		renewalIndex := driverID.GetCardRenewalIndex()
-		if renewalIndex != nil && len(renewalIndex.GetValue()) > 0 {
-			cardNumberBytes[15] = renewalIndex.GetValue()[0]
-		} else {
-			cardNumberBytes[15] = '0' // Default renewal index
-		}
-	} else if ownerID := id.GetOwnerIdentification(); ownerID != nil {
-		// Other cards: 13 bytes identification + 1 byte consecutive + 1 byte replacement + 1 byte renewal
-		identification := ownerID.GetOwnerIdentification()
-		if identification != nil {
-			// Pad or truncate to exactly 13 bytes
-			identStr := identification.GetValue()
-			if len(identStr) > 13 {
-				identStr = identStr[:13]
-			}
-			copy(cardNumberBytes[0:13], []byte(identStr))
-			// Pad with spaces if needed
-			for i := len(identStr); i < 13; i++ {
-				cardNumberBytes[i] = ' '
-			}
-		}
-		consecutive := ownerID.GetConsecutiveIndex()
-		if consecutive != nil {
-			// Convert string to byte value
-			consecutiveStr := consecutive.GetValue()
-			if len(consecutiveStr) > 0 {
-				cardNumberBytes[13] = consecutiveStr[0]
-			}
-		}
-		replacement := ownerID.GetReplacementIndex()
-		if replacement != nil {
-			// Convert string to byte value
-			replacementStr := replacement.GetValue()
-			if len(replacementStr) > 0 {
-				cardNumberBytes[14] = replacementStr[0]
-			}
-		}
-		renewal := ownerID.GetRenewalIndex()
-		if renewal != nil {
-			// Convert string to byte value
-			renewalStr := renewal.GetValue()
-			if len(renewalStr) > 0 {
-				cardNumberBytes[15] = renewalStr[0]
-			}
-		}
-	}
-	dst = append(dst, cardNumberBytes...)
 
-	issuingAuthorityNameBytes, err := opts.MarshalStringValue(id.GetCardIssuingAuthorityName())
+	// DriverIdentification (14 + 1 + 1 = 16 bytes)
+	driverID := id.GetDriverIdentification()
+	if driverID == nil {
+		return nil, fmt.Errorf("driver identification cannot be nil")
+	}
+
+	// Driver identification number (14 bytes)
+	identificationBytes, err := opts.MarshalIa5StringValue(driverID.GetDriverIdentificationNumber())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal driver identification number: %w", err)
+	}
+	dst = append(dst, identificationBytes...)
+
+	// Card replacement index (1 byte)
+	replacementBytes, err := opts.MarshalIa5StringValue(driverID.GetCardReplacementIndex())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal card replacement index: %w", err)
+	}
+	dst = append(dst, replacementBytes...)
+
+	// Card renewal index (1 byte)
+	renewalBytes, err := opts.MarshalIa5StringValue(driverID.GetCardRenewalIndex())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal card renewal index: %w", err)
+	}
+	dst = append(dst, renewalBytes...)
+
+	// Authority name (36 bytes)
+	authorityNameBytes, err := opts.MarshalStringValue(id.GetCardIssuingAuthorityName())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card issuing authority name: %w", err)
 	}
-	dst = append(dst, issuingAuthorityNameBytes...)
+	dst = append(dst, authorityNameBytes...)
 
+	// Card issue date (4 bytes)
 	issueDateBytes, err := opts.MarshalTimeReal(id.GetCardIssueDate())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card issue date: %w", err)
 	}
 	dst = append(dst, issueDateBytes...)
 
+	// Card validity begin (4 bytes)
 	validityBeginBytes, err := opts.MarshalTimeReal(id.GetCardValidityBegin())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card validity begin: %w", err)
 	}
 	dst = append(dst, validityBeginBytes...)
 
+	// Card expiry date (4 bytes)
 	expiryDateBytes, err := opts.MarshalTimeReal(id.GetCardExpiryDate())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card expiry date: %w", err)
 	}
 	dst = append(dst, expiryDateBytes...)
 
-	return dst, nil
-}
+	// Marshal DriverCardHolderIdentification part (78 bytes)
 
-// MarshalDriverCardHolderIdentification marshals the binary representation of DriverCardHolderIdentification to bytes.
-//
-// The data type `DriverCardHolderIdentification` is specified in the Data Dictionary, Section 2.1.
-//
-// ASN.1 Definition:
-//
-//	DriverCardHolderIdentification ::= SEQUENCE {
-//	    cardHolderSurname            Name,
-//	    cardHolderFirstNames         Name,
-//	    cardHolderBirthDate          Datef,
-//	    cardHolderPreferredLanguage  Language
-//	}
-func (opts MarshalOptions) MarshalDriverCardHolderIdentification(h *cardv1.Identification_DriverCardHolder) ([]byte, error) {
-	if h == nil {
-		return nil, nil
-	}
-
-	var dst []byte
-
-	nameBlock := make([]byte, 0, 72)
-	surnameBytes, err := opts.MarshalStringValue(h.GetCardHolderSurname())
+	// Card holder surname (36 bytes)
+	surnameBytes, err := opts.MarshalStringValue(id.GetCardHolderSurname())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card holder surname: %w", err)
 	}
-	nameBlock = append(nameBlock, surnameBytes...)
+	dst = append(dst, surnameBytes...)
 
-	firstNamesBytes, err := opts.MarshalStringValue(h.GetCardHolderFirstNames())
+	// Card holder first names (36 bytes)
+	firstNamesBytes, err := opts.MarshalStringValue(id.GetCardHolderFirstNames())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card holder first names: %w", err)
 	}
-	nameBlock = append(nameBlock, firstNamesBytes...)
-	dst = append(dst, nameBlock...)
+	dst = append(dst, firstNamesBytes...)
 
-	birthDate := h.GetCardHolderBirthDate()
-	if birthDate != nil {
-		birthDateBytes, err := opts.MarshalDate(birthDate)
-		if err != nil {
-			return nil, fmt.Errorf("failed to marshal birth date: %w", err)
-		}
-		dst = append(dst, birthDateBytes...)
-	} else {
-		// Append default date (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	preferredLanguageBytes, err := opts.MarshalIa5StringValue(h.GetCardHolderPreferredLanguage())
+	// Card holder birth date (4 bytes)
+	birthDateBytes, err := opts.MarshalDate(id.GetCardHolderBirthDate())
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal preferred language: %w", err)
+		return nil, fmt.Errorf("failed to marshal card holder birth date: %w", err)
 	}
-	dst = append(dst, preferredLanguageBytes...)
+	dst = append(dst, birthDateBytes...)
+
+	// Card holder preferred language (2 bytes)
+	languageBytes, err := opts.MarshalIa5StringValue(id.GetCardHolderPreferredLanguage())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal card holder preferred language: %w", err)
+	}
+	dst = append(dst, languageBytes...)
 
 	return dst, nil
 }
 
-// AnonymizeIdentification creates an anonymized copy of Identification, replacing all
-// personally identifiable information with safe, deterministic test values while
+// anonymizeDriverCardIdentification creates an anonymized copy of DriverCardIdentification,
+// replacing all personally identifiable information with safe, deterministic test values while
 // preserving the structure and validity for testing.
 //
 // Anonymization strategy:
-// - Names: Replaced with generic test names
-// - Card numbers: Replaced with test values
-// - Addresses: Replaced with generic test addresses
-// - Birth dates: Replaced with static test date (2000-01-01)
-// - Card dates: Replaced with static test dates (issue/validity: 2020-01-01, expiry: 2024-12-31)
-// - Countries: Preserved (structural info)
-// - Signatures: Cleared (will be invalid after anonymization anyway)
-func (opts AnonymizeOptions) anonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
+//   - Names: Replaced with generic test names
+//   - Driver identification: Replaced with test value
+//   - Addresses: Replaced with generic test addresses
+//   - Birth dates: Replaced with static test date (2000-01-01)
+//   - Card dates: Replaced with static test dates (issue/validity: 2020-01-01, expiry: 2024-12-31)
+//   - Countries: Preserved (structural info)
+//   - Signatures: Cleared (will be invalid after anonymization anyway)
+func (opts AnonymizeOptions) anonymizeDriverCardIdentification(id *cardv1.DriverCardIdentification) *cardv1.DriverCardIdentification {
 	if id == nil {
 		return nil
 	}
 
-	result := &cardv1.Identification{}
-	result.SetCardType(id.GetCardType())
+	result := &cardv1.DriverCardIdentification{}
 
-	// Anonymize card identification
-	if card := id.GetCard(); card != nil {
-		anonymizedCard := &cardv1.Identification_Card{}
+	// Preserve country (structural info)
+	result.SetCardIssuingMemberState(id.GetCardIssuingMemberState())
 
-		// Preserve country (structural info)
-		anonymizedCard.SetCardIssuingMemberState(card.GetCardIssuingMemberState())
-
-		// Anonymize driver identification
-		if driverID := card.GetDriverIdentification(); driverID != nil {
-			anonymizedCard.SetDriverIdentification(dd.AnonymizeDriverIdentification(driverID))
-		}
-
-		// Anonymize owner identification (for workshop/control/company cards)
-		if ownerID := card.GetOwnerIdentification(); ownerID != nil {
-			anonymizedOwner := &ddv1.OwnerIdentification{}
-			// Use generic owner ID (IA5String, 13 bytes)
-			anonymizedOwner.SetOwnerIdentification(createIA5StringValue("OWNER00000001", 13))
-			// Preserve indices (structural info)
-			anonymizedOwner.SetConsecutiveIndex(ownerID.GetConsecutiveIndex())
-			anonymizedOwner.SetReplacementIndex(ownerID.GetReplacementIndex())
-			anonymizedOwner.SetRenewalIndex(ownerID.GetRenewalIndex())
-			anonymizedCard.SetOwnerIdentification(anonymizedOwner)
-		}
-
-		// Anonymize issuing authority name (code-paged string: 1 byte code page + 35 bytes data)
-		// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-		authName := &ddv1.StringValue{}
-		authName.SetValue("Transport and Communications Agency")
-		authName.SetEncoding(ddv1.Encoding_ISO_8859_1)
-		authName.SetLength(35) // Data length (not including code page byte)
-		anonymizedCard.SetCardIssuingAuthorityName(authName)
-
-		// Replace card dates with static test dates (valid 5-year period)
-		// Issue/validity: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
-		// Expiry: 2024-12-31 23:59:59 UTC (epoch: 1735689599)
-		anonymizedCard.SetCardIssueDate(&timestamppb.Timestamp{Seconds: 1577836800})
-		anonymizedCard.SetCardValidityBegin(&timestamppb.Timestamp{Seconds: 1577836800})
-		anonymizedCard.SetCardExpiryDate(&timestamppb.Timestamp{Seconds: 1735689599})
-
-		result.SetCard(anonymizedCard)
+	// Anonymize driver identification
+	if driverID := id.GetDriverIdentification(); driverID != nil {
+		result.SetDriverIdentification(dd.AnonymizeDriverIdentification(driverID))
 	}
 
-	// Anonymize holder identification based on card type
-	switch id.GetCardType() {
-	case cardv1.CardType_DRIVER_CARD:
-		if holder := id.GetDriverCardHolder(); holder != nil {
-			anonymizedHolder := &cardv1.Identification_DriverCardHolder{}
+	// Anonymize issuing authority (ASCII-only to avoid encoding issues)
+	authName := &ddv1.StringValue{}
+	authName.SetValue("Transport and Communications Agency")
+	authName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+	authName.SetLength(35) // Data length (not including code page byte)
+	result.SetCardIssuingAuthorityName(authName)
 
-			// Replace names with test values (code-paged strings: 1 byte code page + 35 bytes data each)
-			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-			surname := &ddv1.StringValue{}
-			surname.SetValue("Doe")
-			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			surname.SetLength(35)
-			anonymizedHolder.SetCardHolderSurname(surname)
+	// Replace card dates with static test dates (valid 5-year period)
+	// Issue/validity: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
+	// Expiry: 2024-12-31 23:59:59 UTC (epoch: 1735689599)
+	result.SetCardIssueDate(&timestamppb.Timestamp{Seconds: 1577836800})
+	result.SetCardValidityBegin(&timestamppb.Timestamp{Seconds: 1577836800})
+	result.SetCardExpiryDate(&timestamppb.Timestamp{Seconds: 1735689599})
 
-			firstName := &ddv1.StringValue{}
-			firstName.SetValue("John")
-			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			firstName.SetLength(35)
-			anonymizedHolder.SetCardHolderFirstNames(firstName)
+	// Anonymize holder names (ASCII-only to avoid encoding issues)
+	surname := &ddv1.StringValue{}
+	surname.SetValue("Doe")
+	surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
+	surname.SetLength(35)
+	result.SetCardHolderSurname(surname)
 
-			// Replace birth date with static test date (2000-01-01)
-			birthDate := &ddv1.Date{}
-			birthDate.SetYear(2000)
-			birthDate.SetMonth(1)
-			birthDate.SetDay(1)
-			// Regenerate raw_data for binary fidelity
-			defOpts := dd.MarshalOptions{}
-			if rawData, err := defOpts.MarshalDate(birthDate); err == nil {
-				birthDate.SetRawData(rawData)
-			}
-			anonymizedHolder.SetCardHolderBirthDate(birthDate)
+	firstName := &ddv1.StringValue{}
+	firstName.SetValue("John")
+	firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+	firstName.SetLength(35)
+	result.SetCardHolderFirstNames(firstName)
 
-			// Preserve language (not sensitive)
-			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
-
-			result.SetDriverCardHolder(anonymizedHolder)
-		}
-
-	case cardv1.CardType_WORKSHOP_CARD:
-		if holder := id.GetWorkshopCardHolder(); holder != nil {
-			anonymizedHolder := &cardv1.Identification_WorkshopCardHolder{}
-
-			// Anonymize workshop details (code-paged strings: 1 byte code page + 35 bytes data each)
-			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-			workshopName := &ddv1.StringValue{}
-			workshopName.SetValue("Test Workshop")
-			workshopName.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			workshopName.SetLength(35)
-			anonymizedHolder.SetWorkshopName(workshopName)
-
-			workshopAddr := &ddv1.StringValue{}
-			workshopAddr.SetValue("123 Test Street")
-			workshopAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			workshopAddr.SetLength(35)
-			anonymizedHolder.SetWorkshopAddress(workshopAddr)
-
-			// Anonymize holder names (code-paged strings: 1 byte code page + 35 bytes data each)
-			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-			surname := &ddv1.StringValue{}
-			surname.SetValue("Doe")
-			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			surname.SetLength(35)
-			anonymizedHolder.SetCardHolderSurname(surname)
-
-			firstName := &ddv1.StringValue{}
-			firstName.SetValue("Jane")
-			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			firstName.SetLength(35)
-			anonymizedHolder.SetCardHolderFirstNames(firstName)
-
-			// Preserve language
-			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
-
-			result.SetWorkshopCardHolder(anonymizedHolder)
-		}
-
-	case cardv1.CardType_CONTROL_CARD:
-		if holder := id.GetControlCardHolder(); holder != nil {
-			anonymizedHolder := &cardv1.Identification_ControlCardHolder{}
-
-			// Anonymize control body details (code-paged strings: 1 byte code page + 35 bytes data each)
-			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-			controlBodyName := &ddv1.StringValue{}
-			controlBodyName.SetValue("Control Authority")
-			controlBodyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			controlBodyName.SetLength(35)
-			anonymizedHolder.SetControlBodyName(controlBodyName)
-
-			controlBodyAddr := &ddv1.StringValue{}
-			controlBodyAddr.SetValue("456 Control Avenue")
-			controlBodyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			controlBodyAddr.SetLength(35)
-			anonymizedHolder.SetControlBodyAddress(controlBodyAddr)
-
-			// Anonymize holder names (code-paged strings: 1 byte code page + 35 bytes data each)
-			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-			surname := &ddv1.StringValue{}
-			surname.SetValue("Smith")
-			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			surname.SetLength(35)
-			anonymizedHolder.SetCardHolderSurname(surname)
-
-			firstName := &ddv1.StringValue{}
-			firstName.SetValue("Bob")
-			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			firstName.SetLength(35)
-			anonymizedHolder.SetCardHolderFirstNames(firstName)
-
-			// Preserve language
-			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
-
-			result.SetControlCardHolder(anonymizedHolder)
-		}
-
-	case cardv1.CardType_COMPANY_CARD:
-		if holder := id.GetCompanyCardHolder(); holder != nil {
-			anonymizedHolder := &cardv1.Identification_CompanyCardHolder{}
-
-			// Anonymize company details (code-paged strings: 1 byte code page + 35 bytes data each)
-			// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-			companyName := &ddv1.StringValue{}
-			companyName.SetValue("ACME Transport Company")
-			companyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			companyName.SetLength(35)
-			anonymizedHolder.SetCompanyName(companyName)
-
-			companyAddr := &ddv1.StringValue{}
-			companyAddr.SetValue("789 Business Boulevard")
-			companyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
-			companyAddr.SetLength(35)
-			anonymizedHolder.SetCompanyAddress(companyAddr)
-
-			// Preserve language
-			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
-
-			result.SetCompanyCardHolder(anonymizedHolder)
-		}
+	// Replace birth date with static test date (2000-01-01)
+	birthDate := &ddv1.Date{}
+	birthDate.SetYear(2000)
+	birthDate.SetMonth(1)
+	birthDate.SetDay(1)
+	// Regenerate raw_data for binary fidelity
+	defOpts := dd.MarshalOptions{}
+	if rawData, err := defOpts.MarshalDate(birthDate); err == nil {
+		birthDate.SetRawData(rawData)
 	}
+	result.SetCardHolderBirthDate(birthDate)
+
+	// Preserve language (not sensitive), but ensure it's always set with proper length
+	language := id.GetCardHolderPreferredLanguage()
+	if language == nil || !language.HasLength() {
+		// Create a default language if missing (2 bytes for IA5String)
+		language = &ddv1.Ia5StringValue{}
+		language.SetValue("en")
+		language.SetLength(2)
+	}
+	result.SetCardHolderPreferredLanguage(language)
 
 	// Signature field left unset (nil) - TLV marshaller will omit the signature block
 

@@ -2,7 +2,7 @@
   "drivingLicenceIssuingAuthority": {
     "encoding": "ISO_8859_1",
     "length": 35,
-    "value": "TEST AUTHORITY"
+    "value": "Motor Vehicle Authority"
   },
   "drivingLicenceIssuingNation": "FINLAND",
   "drivingLicenceNumber": {

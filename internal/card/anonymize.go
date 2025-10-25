@@ -41,7 +41,7 @@ func (opts AnonymizeOptions) AnonymizeDriverCardFile(file *cardv1.DriverCardFile
 			tachograph.SetApplicationIdentification(opts.anonymizeApplicationIdentification(appId))
 		}
 		if identification := tachograph.GetIdentification(); identification != nil {
-			tachograph.SetIdentification(opts.anonymizeIdentification(identification))
+			tachograph.SetIdentification(opts.anonymizeDriverCardIdentification(identification))
 		}
 		if drivingLicenceInfo := tachograph.GetDrivingLicenceInfo(); drivingLicenceInfo != nil {
 			tachograph.SetDrivingLicenceInfo(opts.anonymizeDrivingLicenceInfo(drivingLicenceInfo))
@@ -85,7 +85,7 @@ func (opts AnonymizeOptions) AnonymizeDriverCardFile(file *cardv1.DriverCardFile
 			tachographG2.SetApplicationIdentification(opts.anonymizeApplicationIdentificationG2(appIdG2))
 		}
 		if identification := tachographG2.GetIdentification(); identification != nil {
-			tachographG2.SetIdentification(opts.anonymizeIdentification(identification))
+			tachographG2.SetIdentification(opts.anonymizeDriverCardIdentification(identification))
 		}
 		if drivingLicenceInfo := tachographG2.GetDrivingLicenceInfo(); drivingLicenceInfo != nil {
 			tachographG2.SetDrivingLicenceInfo(opts.anonymizeDrivingLicenceInfo(drivingLicenceInfo))

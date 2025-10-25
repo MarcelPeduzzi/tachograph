@@ -39,7 +39,7 @@ func TestIdentification_Generation1(t *testing.T) {
 
 			// Unmarshal
 			opts := UnmarshalOptions{}
-			identification, err := opts.unmarshalIdentification(data)
+			identification, err := opts.unmarshalDriverCardIdentification(data)
 			if err != nil {
 				t.Fatalf("Unmarshal failed: %v", err)
 			}
@@ -48,21 +48,12 @@ func TestIdentification_Generation1(t *testing.T) {
 			goldenPath := goldenJSONPath(hexdumpPath)
 			loadOrCreateGolden(t, identification, goldenPath)
 
-			// Round-trip test - marshal both parts
+			// Round-trip test - marshal
 			marshalOpts := MarshalOptions{}
-			marshaledCard, err := marshalOpts.MarshalCardIdentification(identification.GetCard())
+			marshaled, err := marshalOpts.MarshalDriverCardIdentification(identification)
 			if err != nil {
-				t.Fatalf("Marshal card failed: %v", err)
+				t.Fatalf("Marshal failed: %v", err)
 			}
-			marshaledDriver, err := marshalOpts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
-			if err != nil {
-				t.Fatalf("Marshal driver failed: %v", err)
-			}
-
-			// Combine marshaled parts
-			var marshaled []byte
-			marshaled = append(marshaled, marshaledCard...)
-			marshaled = append(marshaled, marshaledDriver...)
 
 			if diff := cmp.Diff(data, marshaled); diff != "" {
 				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)
@@ -100,7 +91,7 @@ func TestIdentification_Generation2(t *testing.T) {
 
 			// Unmarshal
 			opts := UnmarshalOptions{}
-			identification, err := opts.unmarshalIdentification(data)
+			identification, err := opts.unmarshalDriverCardIdentification(data)
 			if err != nil {
 				t.Fatalf("Unmarshal failed: %v", err)
 			}
@@ -109,21 +100,12 @@ func TestIdentification_Generation2(t *testing.T) {
 			goldenPath := goldenJSONPath(hexdumpPath)
 			loadOrCreateGolden(t, identification, goldenPath)
 
-			// Round-trip test - marshal both parts
+			// Round-trip test - marshal
 			marshalOpts := MarshalOptions{}
-			marshaledCard, err := marshalOpts.MarshalCardIdentification(identification.GetCard())
+			marshaled, err := marshalOpts.MarshalDriverCardIdentification(identification)
 			if err != nil {
-				t.Fatalf("Marshal card failed: %v", err)
+				t.Fatalf("Marshal failed: %v", err)
 			}
-			marshaledDriver, err := marshalOpts.MarshalDriverCardHolderIdentification(identification.GetDriverCardHolder())
-			if err != nil {
-				t.Fatalf("Marshal driver failed: %v", err)
-			}
-
-			// Combine marshaled parts
-			var marshaled []byte
-			marshaled = append(marshaled, marshaledCard...)
-			marshaled = append(marshaled, marshaledDriver...)
 
 			if diff := cmp.Diff(data, marshaled); diff != "" {
 				t.Errorf("Binary round-trip mismatch (-want +got):\n%s", diff)

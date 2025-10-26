@@ -396,7 +396,13 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		anonRecord.SetOdometerAtInsertionKm(ddOpts.AnonymizeOdometerValue(record.GetOdometerAtInsertionKm()))
 		anonRecord.SetOdometerAtWithdrawalKm(ddOpts.AnonymizeOdometerValue(record.GetOdometerAtWithdrawalKm()))
 
-		// Previous vehicle info and manual input flag are not PII - keep as-is
+		// Anonymize previous vehicle info (contains vehicle registration which is PII)
+		if prevVehicle := record.GetPreviousVehicleInfo(); prevVehicle != nil {
+			anonRecord.SetPreviousVehicleInfo(ddOpts.AnonymizePreviousVehicleInfo(prevVehicle))
+		}
+
+		// Manual input flag is not PII - keep as-is
+		anonRecord.SetManualInputFlag(record.GetManualInputFlag())
 
 		// Clear raw_data
 		anonRecord.ClearRawData()

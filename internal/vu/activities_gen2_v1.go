@@ -621,8 +621,10 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V1(activities *vuv1.Activiti
 		anonCardIW[i].SetCardSlotNumber(rec.GetCardSlotNumber())
 		anonCardIW[i].SetManualInputFlag(rec.GetManualInputFlag())
 
-		// Zero out previous vehicle info
-		anonCardIW[i].SetPreviousVehicleInfo(&ddv1.PreviousVehicleInfoG2{})
+		// Anonymize previous vehicle info
+		if prevVehicle := rec.GetPreviousVehicleInfo(); prevVehicle != nil {
+			anonCardIW[i].SetPreviousVehicleInfo(ddOpts.AnonymizePreviousVehicleInfoG2(prevVehicle))
+		}
 	}
 	result.SetCardIwData(anonCardIW)
 

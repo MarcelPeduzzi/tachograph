@@ -79,3 +79,25 @@ func (opts MarshalOptions) MarshalPreviousVehicleInfo(info *ddv1.PreviousVehicle
 
 	return canvas[:], nil
 }
+
+// AnonymizePreviousVehicleInfo anonymizes PreviousVehicleInfo data.
+func (opts AnonymizeOptions) AnonymizePreviousVehicleInfo(info *ddv1.PreviousVehicleInfo) *ddv1.PreviousVehicleInfo {
+	if info == nil {
+		return nil
+	}
+
+	result := &ddv1.PreviousVehicleInfo{}
+
+	// Anonymize vehicle registration
+	if vreg := info.GetVehicleRegistration(); vreg != nil {
+		result.SetVehicleRegistration(opts.AnonymizeVehicleRegistrationIdentification(vreg))
+	}
+
+	// Anonymize withdrawal time
+	result.SetCardWithdrawalTime(opts.AnonymizeTimestamp(info.GetCardWithdrawalTime()))
+
+	// Clear raw_data
+	result.ClearRawData()
+
+	return result
+}

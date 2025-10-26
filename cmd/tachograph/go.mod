@@ -6,7 +6,7 @@ require (
 	github.com/charmbracelet/fang v0.4.3
 	github.com/charmbracelet/lipgloss/v2 v2.0.0-beta.3.0.20250917201909-41ff0bf215ea
 	github.com/spf13/cobra v1.10.1
-	github.com/way-platform/tachograph-go v0.12.0
+	github.com/way-platform/tachograph-go v0.14.1
 	google.golang.org/protobuf v1.36.10
 )
 

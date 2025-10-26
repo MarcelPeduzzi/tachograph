@@ -1,0 +1,24 @@
+{
+  "dateOfDay": "2025-09-07T23:59:59Z",
+  "odometerMidnightKm": 371532,
+  "activityChanges": [
+    {
+      "rawData": "IAA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 0
+    },
+    {
+      "rawData": "oAA=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 0
+    }
+  ],
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "rawData": "aL4cfwWrTAAAAAIgAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+}

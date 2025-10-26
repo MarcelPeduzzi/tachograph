@@ -1,0 +1,813 @@
+{
+  "dateOfDay": "2025-09-10T23:59:59Z",
+  "odometerMidnightKm": 857542,
+  "cardIwData": [
+    {
+      "cardHolderName": {
+        "holderSurname": {
+          "encoding": "ISO_8859_1",
+          "length": 35,
+          "value": "***********************************",
+          "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+        },
+        "holderFirstNames": {
+          "encoding": "ISO_8859_1",
+          "length": 35,
+          "value": "***********************************",
+          "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+        }
+      },
+      "fullCardNumber": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "cardInsertionTime": "2020-01-01T00:00:00Z",
+      "odometerAtInsertionKm": 857000,
+      "cardSlotNumber": "DRIVER_SLOT",
+      "cardWithdrawalTime": "2020-01-01T00:00:00Z",
+      "odometerAtWithdrawalKm": 857000,
+      "previousVehicleInfo": {
+        "vehicleRegistration": {
+          "nation": "FINLAND",
+          "number": {
+            "encoding": "ISO_8859_1",
+            "length": 13,
+            "value": "*************",
+            "rawData": "ASoqKioqKioqKioqKio="
+          }
+        },
+        "cardWithdrawalTime": "2020-01-01T00:00:00Z",
+        "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
+      },
+      "manualInputFlag": true,
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
+    }
+  ],
+  "activityChanges": [
+    {
+      "rawData": "IAA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 0
+    },
+    {
+      "rawData": "E1A=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 848
+    },
+    {
+      "rawData": "G1g=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 856
+    },
+    {
+      "rawData": "A1o=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 858
+    },
+    {
+      "rawData": "E2c=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 871
+    },
+    {
+      "rawData": "G2g=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 872
+    },
+    {
+      "rawData": "E40=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 909
+    },
+    {
+      "rawData": "G48=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 911
+    },
+    {
+      "rawData": "E5w=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 924
+    },
+    {
+      "rawData": "A50=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 925
+    },
+    {
+      "rawData": "G6g=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 936
+    },
+    {
+      "rawData": "A6k=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 937
+    },
+    {
+      "rawData": "E7o=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 954
+    },
+    {
+      "rawData": "G7s=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 955
+    },
+    {
+      "rawData": "A7w=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 956
+    },
+    {
+      "rawData": "G8c=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 967
+    },
+    {
+      "rawData": "E8s=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 971
+    },
+    {
+      "rawData": "A8w=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 972
+    },
+    {
+      "rawData": "E9g=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 984
+    },
+    {
+      "rawData": "A9k=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 985
+    },
+    {
+      "rawData": "G+A=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 992
+    },
+    {
+      "rawData": "A+c=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 999
+    },
+    {
+      "rawData": "E+s=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1003
+    },
+    {
+      "rawData": "G+w=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1004
+    },
+    {
+      "rawData": "BCY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1062
+    },
+    {
+      "rawData": "FEY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1094
+    },
+    {
+      "rawData": "HEg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1096
+    },
+    {
+      "rawData": "FEo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1098
+    },
+    {
+      "rawData": "HEw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1100
+    },
+    {
+      "rawData": "FFQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1108
+    },
+    {
+      "rawData": "HFY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1110
+    },
+    {
+      "rawData": "FFw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1116
+    },
+    {
+      "rawData": "HF4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1118
+    },
+    {
+      "rawData": "BGk=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1129
+    },
+    {
+      "rawData": "FIw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1164
+    },
+    {
+      "rawData": "HJE=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1169
+    },
+    {
+      "rawData": "FME=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1217
+    },
+    {
+      "rawData": "BMI=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1218
+    },
+    {
+      "rawData": "HM0=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1229
+    },
+    {
+      "rawData": "BM4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1230
+    },
+    {
+      "rawData": "HOA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1248
+    },
+    {
+      "rawData": "BOE=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1249
+    },
+    {
+      "rawData": "HOg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1256
+    },
+    {
+      "rawData": "FPQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1268
+    },
+    {
+      "rawData": "HPY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1270
+    },
+    {
+      "rawData": "BSU=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1317
+    },
+    {
+      "rawData": "FUc=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1351
+    },
+    {
+      "rawData": "HUk=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1353
+    },
+    {
+      "rawData": "BVA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1360
+    },
+    {
+      "rawData": "FYg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1416
+    },
+    {
+      "rawData": "HYs=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1419
+    },
+    {
+      "rawData": "oAA=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 0
+    },
+    {
+      "rawData": "s1A=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 848
+    },
+    {
+      "rawData": "q1E=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 849
+    },
+    {
+      "rawData": "o1s=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 859
+    },
+    {
+      "rawData": "s2c=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 871
+    },
+    {
+      "rawData": "q2g=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 872
+    },
+    {
+      "rawData": "o54=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 926
+    },
+    {
+      "rawData": "q6g=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 936
+    },
+    {
+      "rawData": "o6k=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 937
+    },
+    {
+      "rawData": "q7o=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 954
+    },
+    {
+      "rawData": "o7w=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 956
+    },
+    {
+      "rawData": "q8c=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 967
+    },
+    {
+      "rawData": "o80=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 973
+    },
+    {
+      "rawData": "q9g=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 984
+    },
+    {
+      "rawData": "o9k=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 985
+    },
+    {
+      "rawData": "q+A=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 992
+    },
+    {
+      "rawData": "o+c=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 999
+    },
+    {
+      "rawData": "s+s=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1003
+    },
+    {
+      "rawData": "q+w=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1004
+    },
+    {
+      "rawData": "pCg=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1064
+    },
+    {
+      "rawData": "tEY=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1094
+    },
+    {
+      "rawData": "rEc=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1095
+    },
+    {
+      "rawData": "pGo=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1130
+    },
+    {
+      "rawData": "tIw=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1164
+    },
+    {
+      "rawData": "rI4=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1166
+    },
+    {
+      "rawData": "pMI=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1218
+    },
+    {
+      "rawData": "rM0=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1229
+    },
+    {
+      "rawData": "pM4=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1230
+    },
+    {
+      "rawData": "rOA=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1248
+    },
+    {
+      "rawData": "pOE=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1249
+    },
+    {
+      "rawData": "rOg=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1256
+    },
+    {
+      "rawData": "pSU=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1317
+    },
+    {
+      "rawData": "tUc=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1351
+    },
+    {
+      "rawData": "rUk=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1353
+    },
+    {
+      "rawData": "pVE=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1361
+    },
+    {
+      "rawData": "tYg=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1416
+    },
+    {
+      "rawData": "rYs=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1419
+    }
+  ],
+  "placeRecords": [
+    {
+      "fullCardNumber": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "placeRecord": {
+        "entryTime": "2020-01-01T00:00:00Z",
+        "entryTypeDailyWorkPeriod": "BEGIN",
+        "dailyWorkPeriodCountry": "FINLAND",
+        "dailyWorkPeriodRegion": "AA==",
+        "vehicleOdometerKm": 857000,
+        "rawData": "XgvhAAASAA0TqA=="
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqXgvhAAASAA0TqA=="
+    }
+  ],
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "rawData": "aMIQ/w0VxgABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABAFggABNQG1gDWhNnG2gTjRuPE5wDnRuoA6kTuhu7A7wbxxPLA8wT2APZG+AD5xPrG+wEJhRGHEgUShxMFFQcVhRcHF4EaRSMHJEUwQTCHM0EzhzgBOEc6BT0HPYFJRVHHUkFUBWIHYugALNQq1GjW7Nnq2ijnquoo6mruqO8q8ejzavYo9mr4KPns+ur7KQotEasR6RqtIysjqTCrM2kzqzgpOGs6KUltUetSaVRtYitiwEBACoqKioqKioqKioqKioqKipeC+EAABIADROoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+}

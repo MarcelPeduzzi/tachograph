@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -244,6 +245,12 @@ func (opts AnonymizeOptions) anonymizeControlActivityData(ca *cardv1.ControlActi
 		return anonymized
 	}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Preserve control type (categorical)
 	anonymized.SetControlType(ca.GetControlType())
 
@@ -323,17 +330,7 @@ func (opts AnonymizeOptions) anonymizeControlActivityData(ca *cardv1.ControlActi
 
 	// Anonymize vehicle registration
 	if vehicleReg := ca.GetControlVehicleRegistration(); vehicleReg != nil {
-		anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-		anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
-
-		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
-		testRegNum := &ddv1.StringValue{}
-		testRegNum.SetValue("TEST-VRN")
-		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-		testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
-		anonymizedReg.SetNumber(testRegNum)
-
-		anonymized.SetControlVehicleRegistration(anonymizedReg)
+		anonymized.SetControlVehicleRegistration(ddOpts.AnonymizeVehicleRegistrationIdentification(vehicleReg))
 	}
 
 	// Static download period

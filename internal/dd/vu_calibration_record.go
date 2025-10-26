@@ -423,11 +423,11 @@ func (opts AnonymizeOptions) AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibratio
 
 	result := proto.Clone(rec).(*ddv1.VuCalibrationRecord)
 
-	// Anonymize workshop name (35 bytes)
-	result.SetWorkshopName(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST WORKSHOP"))
+	// Anonymize workshop name
+	result.SetWorkshopName(opts.AnonymizeStringValue(rec.GetWorkshopName()))
 
-	// Anonymize workshop address (35 bytes)
-	result.SetWorkshopAddress(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST ADDRESS, 00000 TEST CITY"))
+	// Anonymize workshop address
+	result.SetWorkshopAddress(opts.AnonymizeStringValue(rec.GetWorkshopAddress()))
 
 	// Anonymize workshop card number
 	result.SetWorkshopCardNumber(opts.AnonymizeFullCardNumber(rec.GetWorkshopCardNumber()))
@@ -438,14 +438,11 @@ func (opts AnonymizeOptions) AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibratio
 		result.SetWorkshopCardExpiryDate(NewDate(2025, 12, 31))
 	}
 
-	// Anonymize VIN (17 bytes IA5String)
-	result.SetVin(NewIa5StringValue(17, "TESTVIN1234567890"))
+	// Anonymize VIN
+	result.SetVin(opts.AnonymizeIa5StringValue(rec.GetVin()))
 
 	// Anonymize vehicle registration
-	vreg := &ddv1.VehicleRegistrationIdentification{}
-	vreg.SetNation(ddv1.NationNumeric_FINLAND)
-	vreg.SetNumber(NewStringValue(ddv1.Encoding_ISO_8859_1, 13, "TEST123"))
-	result.SetVehicleRegistration(vreg)
+	result.SetVehicleRegistration(opts.AnonymizeVehicleRegistrationIdentification(rec.GetVehicleRegistration()))
 
 	// Anonymize odometer values
 	result.SetOldOdometerValueKm(opts.AnonymizeOdometerValue(rec.GetOldOdometerValueKm()))

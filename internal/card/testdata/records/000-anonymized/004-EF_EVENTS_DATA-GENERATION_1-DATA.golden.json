@@ -58,7 +58,7 @@
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
-          "value": "TEST-VRN"
+          "value": "*************"
         }
       }
     },

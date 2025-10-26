@@ -1,0 +1,2980 @@
+{
+  "faults": [
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 64,
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "QABeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w=="
+    },
+    {
+      "faultType": 53,
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "rawData": "NQZeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////w=="
+    }
+  ],
+  "events": [
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 10,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wo="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 15,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////w8="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 21,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////xU="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 3,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wM="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 9,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wk="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 5,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wU="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_CARD_CONFLICT",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKgEAKioqKioqKioqKioqKioqKgEAKioqKioqKioqKioqKioqKgEAKioqKioqKioqKioqKioqKgI="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "BgBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 4,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wQ="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 3,
+      "rawData": "CQFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wM="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 29,
+      "rawData": "CQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////x0="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 10,
+      "rawData": "CQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wo="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 6,
+      "rawData": "CQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wY="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 35,
+      "rawData": "CQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////yM="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "CQFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 9,
+      "rawData": "CQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wk="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "CQFeC+EAXgvhAP///////////////////////////////////////////////wIAKioqKioqKioqKioqKioqKv///////////////////////wE="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CQFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CQJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CQJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CQJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CQJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_OVER_SPEEDING",
+      "recordPurpose": "TEN_MOST_RECENT",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "CQJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAP///////////////////////////////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_GNSS_ANOMALY",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
+    },
+    {
+      "eventType": "VU_SEC_NO_FURTHER_DETAILS",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 0,
+      "rawData": "EgBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
+    },
+    {
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 4,
+      "rawData": "CgFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wQ="
+    },
+    {
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "beginTime": "2020-01-01T00:00:00Z",
+      "endTime": "2020-01-01T00:00:00Z",
+      "cardNumberDriverSlotBegin": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotBegin": {
+        "rawData": "////////////////////////"
+      },
+      "cardNumberDriverSlotEnd": {
+        "cardType": "DRIVER_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "driverIdentification": {
+          "driverIdentificationNumber": {
+            "length": 14,
+            "value": "**************",
+            "rawData": "KioqKioqKioqKioqKio="
+          },
+          "cardReplacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "cardRenewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AQAqKioqKioqKioqKioqKioq"
+      },
+      "cardNumberCodriverSlotEnd": {
+        "rawData": "////////////////////////"
+      },
+      "similarEventsNumber": 13,
+      "rawData": "CgFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////w0="
+    }
+  ],
+  "overspeedingControl": {
+    "lastOverspeedControlTime": "2106-02-07T06:28:15Z",
+    "firstOverspeedSinceLastControl": "2106-02-07T06:28:15Z",
+    "numberOfOverspeedSinceLastControl": 0,
+    "rawData": "//////////8A"
+  },
+  "timeAdjustments": [
+    {
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "TEST WORKSHOP",
+        "rawData": "AVRFU1QgV09SS1NIT1AgICAgICAgICAgICAgICAgICAgICAg"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "TEST ADDRESS, 00000 TEST CITY",
+        "rawData": "AVRFU1QgQUREUkVTUywgMDAwMDAgVEVTVCBDSVRZICAgICAg"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "rawData": "XgvhAF4L4QABVEVTVCBXT1JLU0hPUCAgICAgICAgICAgICAgICAgICAgICABVEVTVCBBRERSRVNTLCAwMDAwMCBURVNUIENJVFkgICAgICACACoqKioqKioqKioqKioqKio="
+    }
+  ],
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "rawData": "DDUAXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////81AF4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////zUAXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////81AF4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////NQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////zUAXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////81AF4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////NQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////zUAXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////9AAF4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////NQZeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////0UEAV4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////CgQBXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8PBAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////xUEAV4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////AwQBXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8CBAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wIEAV4L4QBeC+EA////////////////////////////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AgQBXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8JBAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wUEAV4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////AQQCXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8ABAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wAEAl4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////AAQCXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8ABAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wAFA14L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AQUDXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8BBQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wEFA14L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AQUDXgvhAF4L4QABACoqKioqKioqKioqKioqKioBACoqKioqKioqKioqKioqKioBACoqKioqKioqKioqKioqKioBACoqKioqKioqKioqKioqKioCBQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wEFA14L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AQUDXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8BBQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wEFA14L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AQYAXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8ACAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wEIAV4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////AggBXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8BCAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wEIAV4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////BAgBXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8CCAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wEIAV4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////AggBXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8CCAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wIIAl4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////AAgCXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8ACAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wAIAl4L4QBeC+EA////////////////////////////////////////////////////////////////////////////////////////////////AAgCXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8ACQFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wMJAV4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////HQkBXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8KCQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wYJAV4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////IwkBXgvhAF4L4QD///////////////////////////////////////////////////////////////////////////////////////////////8BCQFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wkJAV4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////////////////////////////////////////////////////AgkBXgvhAF4L4QD///////////////////////////////////////////////8CACoqKioqKioqKioqKioqKir///////////////////////8BCQFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wIJAl4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AAkCXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8ACQJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wAJAl4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AAkCXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////////////////////////////////////////////////////8AEQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wARAF4L4QBeC+EA////////////////////////////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////ABEAXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8AEQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////////////////////////////////////////////////////wARAF4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////ABEAXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////////////////////////////////////////////////////8AEQBeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wARAF4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////ABEAXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8AEQBeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wASAF4L4QBeC+EAAQAqKioqKioqKioqKioqKioq////////////////////////AQAqKioqKioqKioqKioqKioq////////////////////////AAoBXgvhAF4L4QABACoqKioqKioqKioqKioqKir///////////////////////8BACoqKioqKioqKioqKioqKir///////////////////////8ECgFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////w3//////////wAAAV4L4QBeC+EAAVRFU1QgV09SS1NIT1AgICAgICAgICAgICAgICAgICAgICAgAVRFU1QgQUREUkVTUywgMDAwMDAgVEVTVCBDSVRZICAgICAgAgAqKioqKioqKioqKioqKioqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+}

@@ -1,0 +1,681 @@
+{
+  "vuIdentification": {
+    "manufacturerName": {
+      "encoding": "ISO_8859_1",
+      "length": 35,
+      "value": "***********************************",
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+    },
+    "manufacturerAddress": {
+      "encoding": "ISO_8859_1",
+      "length": 35,
+      "value": "***********************************",
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+    },
+    "partNumber": {
+      "length": 16,
+      "value": "****************",
+      "rawData": "KioqKioqKioqKioqKioqKg=="
+    },
+    "serialNumber": {
+      "serialNumber": "0",
+      "monthYear": {
+        "rawData": "AAA="
+      },
+      "type": "VEHICLE_UNIT",
+      "manufacturerCode": 161
+    },
+    "softwareIdentification": {
+      "softwareVersion": {
+        "length": 4,
+        "value": "****",
+        "rawData": "KioqKg=="
+      },
+      "softwareInstallationDate": "2015-10-27T20:15:51Z"
+    },
+    "manufacturingDate": "2015-10-27T00:00:00Z",
+    "approvalNumber": {
+      "length": 8,
+      "value": "TEST0001",
+      "rawData": "VEVTVDAwMDE="
+    },
+    "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgAAAAAAAAahKioqKlYv23dWLr6AVEVTVDAwMDE="
+  },
+  "pairedSensor": {
+    "serialNumber": {
+      "serialNumber": "0",
+      "monthYear": {
+        "rawData": "AAA="
+      },
+      "type": "MOTION_SENSOR",
+      "manufacturerCode": 161
+    },
+    "approvalNumber": {
+      "length": 8,
+      "value": "SENSOR01",
+      "rawData": "U0VOU09SMDE="
+    },
+    "pairingDate": "2015-11-11T19:57:49Z",
+    "rawData": "AAAAAAAAB6FTRU5TT1IwMVZDnb0="
+  },
+  "calibrationRecords": [
+    {
+      "purpose": "CALIBRATION_PURPOSE_UNRECOGNIZED",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 16315,
+      "kConstantOfRecordingEquipment": 16315,
+      "lTyreCircumferenceEighthsMm": 25344,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 0,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "AQEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKgABKioqKioqKioqKioqKj+7P7tjADMxNS83MCBSIDIyLjUuLloAAAD//yheC+EAXgvhAF4L4QA="
+    },
+    {
+      "purpose": "CALIBRATION_PURPOSE_RESERVED",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 16315,
+      "kConstantOfRecordingEquipment": 16315,
+      "lTyreCircumferenceEighthsMm": 25344,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 0,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "AgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKgABKioqKioqKioqKioqKj+7P7tjADMxNS83MCBSIDIyLjUuLloAAAD//yheC+EAXgvhAF4L4QA="
+    },
+    {
+      "purpose": "ACTIVATION",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 16315,
+      "kConstantOfRecordingEquipment": 16315,
+      "lTyreCircumferenceEighthsMm": 25344,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 0,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "AwEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKgABKioqKioqKioqKioqKj+7P7tjADMxNS83MCBSIDIyLjUuLloAAAD//yheC+EAXgvhAF4L4QA="
+    },
+    {
+      "purpose": "FIRST_INSTALLATION",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "SPAIN",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 16486,
+      "kConstantOfRecordingEquipment": 16486,
+      "lTyreCircumferenceEighthsMm": 25344,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 0,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKkBmQGZjADMxNS83MCBSIDIyLjUuLloAAAD//yheC+EAXgvhAF4L4QA="
+    },
+    {
+      "purpose": "FIRST_INSTALLATION",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "SPAIN",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 16545,
+      "kConstantOfRecordingEquipment": 16545,
+      "lTyreCircumferenceEighthsMm": 25344,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 77000,
+      "newOdometerValueKm": 77000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKkChQKFjADMxNS83MCBSIDIyLjUuLloBLMgBLMheC+EAXgvhAF4L4QA="
+    },
+    {
+      "purpose": "FIRST_INSTALLATION",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "SPAIN",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 16352,
+      "kConstantOfRecordingEquipment": 16352,
+      "lTyreCircumferenceEighthsMm": 25336,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 159000,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKj/gP+Bi+DMxNS83MCBSIDIyLjUuLloCbRj//yheC+EAXgvhAF4L4QA="
+    },
+    {
+      "purpose": "FIRST_INSTALLATION",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "SPAIN",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 17430,
+      "kConstantOfRecordingEquipment": 17430,
+      "lTyreCircumferenceEighthsMm": 24160,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 234000,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKkQWRBZeYDMxNS83MCBSIDIyLjUuLloDkhD//yheC+EAXgvhAF4L4QA="
+    },
+    {
+      "purpose": "FIRST_INSTALLATION",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "AgAqKioqKioqKioqKioqKioq"
+      },
+      "workshopCardExpiryDate": {
+        "rawData": "ICUSMQ==",
+        "year": 2025,
+        "month": 12,
+        "day": 31
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************",
+        "rawData": "KioqKioqKioqKioqKioqKio="
+      },
+      "vehicleRegistration": {
+        "nation": "SPAIN",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************",
+          "rawData": "ASoqKioqKioqKioqKio="
+        }
+      },
+      "wVehicleCharacteristicConstant": 16549,
+      "kConstantOfRecordingEquipment": 16549,
+      "lTyreCircumferenceEighthsMm": 24864,
+      "tyreSize": {
+        "length": 15,
+        "value": "315/70 R 22.5..",
+        "rawData": "MzE1LzcwIFIgMjIuNS4u"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 315000,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKkClQKVhIDMxNS83MCBSIDIyLjUuLloEznj//yheC+EAXgvhAF4L4QA="
+    }
+  ],
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgAAAAAAAAahKioqKlYv23dWLr6AVEVTVDAwMDEAAAAAAAAHoVNFTlNPUjAxVkOdvQgBASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqICUSMSoqKioqKioqKioqKioqKioqAAEqKioqKioqKioqKioqP7s/u2MAMzE1LzcwIFIgMjIuNS4uWgAAAP//KF4L4QBeC+EAXgvhAAIBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKiogJRIxKioqKioqKioqKioqKioqKioAASoqKioqKioqKioqKio/uz+7YwAzMTUvNzAgUiAyMi41Li5aAAAA//8oXgvhAF4L4QBeC+EAAwEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKgABKioqKioqKioqKioqKj+7P7tjADMxNS83MCBSIDIyLjUuLloAAAD//yheC+EAXgvhAF4L4QAEASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqICUSMSoqKioqKioqKioqKioqKioqEgEqKioqKioqKioqKioqQGZAZmMAMzE1LzcwIFIgMjIuNS4uWgAAAP//KF4L4QBeC+EAXgvhAAQBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKiogJRIxKioqKioqKioqKioqKioqKioSASoqKioqKioqKioqKipAoUChYwAzMTUvNzAgUiAyMi41Li5aASzIASzIXgvhAF4L4QBeC+EABAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKj/gP+Bi+DMxNS83MCBSIDIyLjUuLloCbRj//yheC+EAXgvhAF4L4QAEASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqICUSMSoqKioqKioqKioqKioqKioqEgEqKioqKioqKioqKioqRBZEFl5gMzE1LzcwIFIgMjIuNS4uWgOSEP//KF4L4QBeC+EAXgvhAAQBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKiogJRIxKioqKioqKioqKioqKioqKioSASoqKioqKioqKioqKipApUClYSAzMTUvNzAgUiAyMi41Li5aBM54//8oXgvhAF4L4QBeC+EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+}

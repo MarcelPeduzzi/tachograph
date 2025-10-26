@@ -1,0 +1,110 @@
+{
+  "memberStateCertificate": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "vuCertificate": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "vehicleIdentificationNumber": {
+    "length": 17,
+    "value": "*****************",
+    "rawData": "KioqKioqKioqKioqKioqKio="
+  },
+  "vehicleRegistrationWithNation": {
+    "nation": "NATION_NUMERIC_DEFAULT",
+    "number": {
+      "encoding": "ISO_8859_1",
+      "length": 13,
+      "value": "*************",
+      "rawData": "ASoqKioqKioqKioqKio="
+    }
+  },
+  "currentDateTime": "2025-09-12T13:32:45Z",
+  "downloadablePeriod": {
+    "minTime": "2024-09-03T00:00:00Z",
+    "maxTime": "2025-09-12T13:31:00Z"
+  },
+  "driverSlotCard": "DRIVER_CARD_INSERTED",
+  "coDriverSlotCard": "NO_CARD",
+  "downloadActivities": [
+    {
+      "downloadingTime": "2025-09-12T12:35:13Z",
+      "fullCardNumber": {
+        "cardType": "COMPANY_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "BAAqKioqKioqKioqKioqKioq"
+      },
+      "companyOrWorkshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      }
+    }
+  ],
+  "companyLocks": [
+    {
+      "lockInTime": "2017-08-18T13:40:00Z",
+      "lockOutTime": "2106-02-07T06:28:15Z",
+      "companyName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "companyAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************",
+        "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq"
+      },
+      "companyCardNumber": {
+        "cardType": "COMPANY_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************",
+            "rawData": "KioqKioqKioqKioqKg=="
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*",
+            "rawData": "Kg=="
+          }
+        },
+        "rawData": "BAAqKioqKioqKioqKioqKioq"
+      }
+    }
+  ],
+  "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACoqKioqKioqKioqKioqKioqAAEqKioqKioqKioqKioqaMQg/WbWUYBoxCCUAWjEE4EEACoqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBWZbuMP////8BKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioEACoqKioqKioqKioqKioqKioAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+}

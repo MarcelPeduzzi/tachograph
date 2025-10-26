@@ -146,3 +146,28 @@ func NewStringValue(encoding ddv1.Encoding, length int32, value string) *ddv1.St
 	sv.SetValue(value)
 	return sv
 }
+
+// AnonymizeStringValue anonymizes a StringValue by replacing its content with asterisks.
+func (opts AnonymizeOptions) AnonymizeStringValue(sv *ddv1.StringValue) *ddv1.StringValue {
+	if sv == nil {
+		return nil
+	}
+
+	// Create a new StringValue with Latin-1 encoding (safe default for anonymized data)
+	result := &ddv1.StringValue{}
+	result.SetEncoding(ddv1.Encoding_ISO_8859_1)
+	result.SetLength(sv.GetLength())
+
+	// Replace the value with asterisks (as many as there are bytes)
+	length := int(sv.GetLength())
+	asterisks := ""
+	for i := 0; i < length; i++ {
+		asterisks += "*"
+	}
+	result.SetValue(asterisks)
+
+	// Clear raw_data to force semantic marshalling
+	result.ClearRawData()
+
+	return result
+}

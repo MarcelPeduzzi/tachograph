@@ -172,7 +172,7 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V1(overview *vuv1.OverviewGen2
 
 	// Anonymize VIN
 	if vin := result.GetVehicleIdentificationNumber(); vin != nil {
-		result.SetVehicleIdentificationNumber(dd.NewIa5StringValue(17, "TESTVIN1234567890"))
+		result.SetVehicleIdentificationNumber(ddOpts.AnonymizeIa5StringValue(vin))
 	}
 
 	// Anonymize VRN
@@ -183,6 +183,54 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V1(overview *vuv1.OverviewGen2
 	// Set signature to empty bytes (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
 	result.SetSignature([]byte{})
+
+	// Anonymize download activities
+	var anonymizedDownloadActivities []*vuv1.OverviewGen2V1_DownloadActivity
+	for _, activity := range result.GetDownloadActivities() {
+		anonActivity := proto.Clone(activity).(*vuv1.OverviewGen2V1_DownloadActivity)
+		// Anonymize card number and generation
+		if anonActivity.GetFullCardNumberAndGeneration() != nil {
+			anonActivity.SetFullCardNumberAndGeneration(ddOpts.AnonymizeFullCardNumberAndGeneration(anonActivity.GetFullCardNumberAndGeneration()))
+		}
+		// Anonymize company/workshop name
+		if anonActivity.GetCompanyOrWorkshopName() != nil {
+			anonActivity.SetCompanyOrWorkshopName(ddOpts.AnonymizeStringValue(anonActivity.GetCompanyOrWorkshopName()))
+		}
+		anonymizedDownloadActivities = append(anonymizedDownloadActivities, anonActivity)
+	}
+	result.SetDownloadActivities(anonymizedDownloadActivities)
+
+	// Anonymize company locks
+	var anonymizedCompanyLocks []*vuv1.OverviewGen2V1_CompanyLock
+	for _, lock := range result.GetCompanyLocks() {
+		anonLock := proto.Clone(lock).(*vuv1.OverviewGen2V1_CompanyLock)
+		// Anonymize company name
+		if anonLock.GetCompanyName() != nil {
+			anonLock.SetCompanyName(ddOpts.AnonymizeStringValue(anonLock.GetCompanyName()))
+		}
+		// Anonymize company address
+		if anonLock.GetCompanyAddress() != nil {
+			anonLock.SetCompanyAddress(ddOpts.AnonymizeStringValue(anonLock.GetCompanyAddress()))
+		}
+		// Anonymize company card number and generation
+		if anonLock.GetCompanyCardNumberAndGeneration() != nil {
+			anonLock.SetCompanyCardNumberAndGeneration(ddOpts.AnonymizeFullCardNumberAndGeneration(anonLock.GetCompanyCardNumberAndGeneration()))
+		}
+		anonymizedCompanyLocks = append(anonymizedCompanyLocks, anonLock)
+	}
+	result.SetCompanyLocks(anonymizedCompanyLocks)
+
+	// Anonymize control activities
+	var anonymizedControlActivities []*vuv1.OverviewGen2V1_ControlActivity
+	for _, activity := range result.GetControlActivities() {
+		anonActivity := proto.Clone(activity).(*vuv1.OverviewGen2V1_ControlActivity)
+		// Anonymize control card number and generation
+		if anonActivity.GetControlCardNumberAndGeneration() != nil {
+			anonActivity.SetControlCardNumberAndGeneration(ddOpts.AnonymizeFullCardNumberAndGeneration(anonActivity.GetControlCardNumberAndGeneration()))
+		}
+		anonymizedControlActivities = append(anonymizedControlActivities, anonActivity)
+	}
+	result.SetControlActivities(anonymizedControlActivities)
 
 	// Clear raw_data
 	result.ClearRawData()

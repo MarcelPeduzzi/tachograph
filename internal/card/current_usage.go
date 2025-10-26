@@ -3,8 +3,8 @@ package card
 import (
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -102,25 +102,18 @@ func (opts AnonymizeOptions) anonymizeCurrentUsage(cu *cardv1.CurrentUsage) *car
 
 	anonymized := &cardv1.CurrentUsage{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Use static test timestamp: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
 	anonymized.SetSessionOpenTime(&timestamppb.Timestamp{Seconds: 1577836800})
 
 	// Anonymize vehicle registration
 	if vehicleReg := cu.GetSessionOpenVehicle(); vehicleReg != nil {
-		anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-
-		// Country → FINLAND (always)
-		anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
-
-		// Registration number → static test value
-		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
-		testRegNum := &ddv1.StringValue{}
-		testRegNum.SetValue("TEST-123")
-		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-		testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
-		anonymizedReg.SetNumber(testRegNum)
-
-		anonymized.SetSessionOpenVehicle(anonymizedReg)
+		anonymized.SetSessionOpenVehicle(ddOpts.AnonymizeVehicleRegistrationIdentification(vehicleReg))
 	}
 
 	// Signature field left unset (nil) - TLV marshaller will omit the signature block

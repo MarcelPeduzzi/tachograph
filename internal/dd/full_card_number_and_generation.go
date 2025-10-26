@@ -95,3 +95,20 @@ func (opts MarshalOptions) MarshalFullCardNumberAndGeneration(fullCardNumberAndG
 
 	return dst, nil
 }
+
+// AnonymizeFullCardNumberAndGeneration anonymizes a full card number with generation.
+func (opts AnonymizeOptions) AnonymizeFullCardNumberAndGeneration(fc *ddv1.FullCardNumberAndGeneration) *ddv1.FullCardNumberAndGeneration {
+	if fc == nil {
+		return nil
+	}
+
+	result := &ddv1.FullCardNumberAndGeneration{}
+
+	// Anonymize the nested FullCardNumber
+	result.SetFullCardNumber(opts.AnonymizeFullCardNumber(fc.GetFullCardNumber()))
+
+	// Preserve the generation
+	result.SetGeneration(fc.GetGeneration())
+
+	return result
+}

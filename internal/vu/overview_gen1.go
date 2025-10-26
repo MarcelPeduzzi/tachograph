@@ -586,7 +586,7 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 
 	// Anonymize VIN
 	if vin := result.GetVehicleIdentificationNumber(); vin != nil {
-		result.SetVehicleIdentificationNumber(dd.NewIa5StringValue(17, "TESTVIN1234567890"))
+		result.SetVehicleIdentificationNumber(ddOpts.AnonymizeIa5StringValue(vin))
 	}
 
 	// Anonymize VRN
@@ -602,13 +602,57 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
 
-	// TODO: Implement comprehensive anonymization for timestamps, downloading activities,
-	// company locks, and control activities. For now, we just anonymize VIN/VRN and
-	// clear certificates/signature to maintain a stable codebase.
+	// Anonymize download activities
+	var anonymizedDownloadActivities []*vuv1.OverviewGen1_DownloadActivity
+	for _, activity := range result.GetDownloadActivities() {
+		anonActivity := proto.Clone(activity).(*vuv1.OverviewGen1_DownloadActivity)
+		// Anonymize card number
+		if anonActivity.GetFullCardNumber() != nil {
+			anonActivity.SetFullCardNumber(ddOpts.AnonymizeFullCardNumber(anonActivity.GetFullCardNumber()))
+		}
+		// Anonymize company/workshop name
+		if anonActivity.GetCompanyOrWorkshopName() != nil {
+			anonActivity.SetCompanyOrWorkshopName(ddOpts.AnonymizeStringValue(anonActivity.GetCompanyOrWorkshopName()))
+		}
+		anonymizedDownloadActivities = append(anonymizedDownloadActivities, anonActivity)
+	}
+	result.SetDownloadActivities(anonymizedDownloadActivities)
+
+	// Anonymize company locks
+	var anonymizedCompanyLocks []*vuv1.OverviewGen1_CompanyLock
+	for _, lock := range result.GetCompanyLocks() {
+		anonLock := proto.Clone(lock).(*vuv1.OverviewGen1_CompanyLock)
+		// Anonymize company name
+		if anonLock.GetCompanyName() != nil {
+			anonLock.SetCompanyName(ddOpts.AnonymizeStringValue(anonLock.GetCompanyName()))
+		}
+		// Anonymize company address
+		if anonLock.GetCompanyAddress() != nil {
+			anonLock.SetCompanyAddress(ddOpts.AnonymizeStringValue(anonLock.GetCompanyAddress()))
+		}
+		// Anonymize company card number
+		if anonLock.GetCompanyCardNumber() != nil {
+			anonLock.SetCompanyCardNumber(ddOpts.AnonymizeFullCardNumber(anonLock.GetCompanyCardNumber()))
+		}
+		anonymizedCompanyLocks = append(anonymizedCompanyLocks, anonLock)
+	}
+	result.SetCompanyLocks(anonymizedCompanyLocks)
+
+	// Anonymize control activities
+	var anonymizedControlActivities []*vuv1.OverviewGen1_ControlActivity
+	for _, activity := range result.GetControlActivities() {
+		anonActivity := proto.Clone(activity).(*vuv1.OverviewGen1_ControlActivity)
+		// Anonymize control card number
+		if anonActivity.GetControlCardNumber() != nil {
+			anonActivity.SetControlCardNumber(ddOpts.AnonymizeFullCardNumber(anonActivity.GetControlCardNumber()))
+		}
+		anonymizedControlActivities = append(anonymizedControlActivities, anonActivity)
+	}
+	result.SetControlActivities(anonymizedControlActivities)
 
 	// Note: We intentionally keep raw_data here because MarshalOverviewGen1 uses
 	// raw_data painting to serialize. The painting will apply the anonymized
-	// semantic values (VIN, VRN) over the raw_data canvas during marshalling.
+	// semantic values (VIN, VRN, company data) over the raw_data canvas during marshalling.
 	// This is the recommended approach per the raw data painting policy.
 
 	return result

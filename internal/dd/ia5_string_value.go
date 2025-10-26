@@ -102,3 +102,27 @@ func NewIa5StringValue(length int32, value string) *ddv1.Ia5StringValue {
 	isv.SetValue(value)
 	return isv
 }
+
+// AnonymizeIa5StringValue anonymizes an Ia5StringValue by replacing its content with asterisks.
+func (opts AnonymizeOptions) AnonymizeIa5StringValue(isv *ddv1.Ia5StringValue) *ddv1.Ia5StringValue {
+	if isv == nil {
+		return nil
+	}
+
+	// Create a new Ia5StringValue preserving the length
+	result := &ddv1.Ia5StringValue{}
+	result.SetLength(isv.GetLength())
+
+	// Replace the value with asterisks (as many as there are bytes)
+	length := int(isv.GetLength())
+	asterisks := ""
+	for i := 0; i < length; i++ {
+		asterisks += "*"
+	}
+	result.SetValue(asterisks)
+
+	// Clear raw_data to force semantic marshalling
+	result.ClearRawData()
+
+	return result
+}

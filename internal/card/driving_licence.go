@@ -118,26 +118,23 @@ func (opts AnonymizeOptions) anonymizeDrivingLicenceInfo(dli *cardv1.DrivingLice
 
 	anonymized := &cardv1.DrivingLicenceInfo{}
 
-	// Replace issuing authority with static test value (code-paged string: 1 byte code page + 35 bytes data)
-	// Use ASCII-only characters to avoid encoding issues between UTF-8 and ISO-8859-1
-	if dli.GetDrivingLicenceIssuingAuthority() != nil {
-		sv := &ddv1.StringValue{}
-		sv.SetValue("Motor Vehicle Authority")
-		sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
-		sv.SetLength(35)
-		anonymized.SetDrivingLicenceIssuingAuthority(sv)
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
 	}
 
-	// Country → FINLAND (always)
-	anonymized.SetDrivingLicenceIssuingNation(ddv1.NationNumeric_FINLAND)
+	// Anonymize issuing authority
+	if dli.GetDrivingLicenceIssuingAuthority() != nil {
+		anonymized.SetDrivingLicenceIssuingAuthority(ddOpts.AnonymizeStringValue(dli.GetDrivingLicenceIssuingAuthority()))
+	}
 
-	// Replace licence number with static test value (IA5String, 16 bytes)
+	// Preserve country (structural info)
+	anonymized.SetDrivingLicenceIssuingNation(dli.GetDrivingLicenceIssuingNation())
+
+	// Anonymize licence number
 	if dli.GetDrivingLicenceNumber() != nil {
-		sv := &ddv1.Ia5StringValue{}
-		sv.SetValue("TEST-DL-123")
-
-		sv.SetLength(16)
-		anonymized.SetDrivingLicenceNumber(sv)
+		anonymized.SetDrivingLicenceNumber(ddOpts.AnonymizeIa5StringValue(dli.GetDrivingLicenceNumber()))
 	}
 
 	// Signature field left unset (nil) - TLV marshaller will omit the signature block

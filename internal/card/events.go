@@ -243,6 +243,12 @@ func (opts AnonymizeOptions) anonymizeEventsData(events *cardv1.EventsData) *car
 
 	anonymized := &cardv1.EventsData{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Base timestamp for anonymization: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
 	baseEpoch := int64(1577836800)
 
@@ -265,18 +271,7 @@ func (opts AnonymizeOptions) anonymizeEventsData(events *cardv1.EventsData) *car
 
 			// Anonymize vehicle registration
 			if vehicleReg := event.GetEventVehicleRegistration(); vehicleReg != nil {
-				anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-				anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
-
-				// Use static test registration number
-				// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
-				testRegNum := &ddv1.StringValue{}
-				testRegNum.SetValue("TEST-VRN")
-				testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-				testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
-				anonymizedReg.SetNumber(testRegNum)
-
-				anonymizedEvent.SetEventVehicleRegistration(anonymizedReg)
+				anonymizedEvent.SetEventVehicleRegistration(ddOpts.AnonymizeVehicleRegistrationIdentification(vehicleReg))
 			}
 
 			// Regenerate raw_data for binary fidelity

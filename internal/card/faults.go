@@ -243,6 +243,12 @@ func (opts AnonymizeOptions) anonymizeFaultsData(faults *cardv1.FaultsData) *car
 
 	anonymized := &cardv1.FaultsData{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Base timestamp for anonymization: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
 	baseEpoch := int64(1577836800)
 
@@ -265,18 +271,7 @@ func (opts AnonymizeOptions) anonymizeFaultsData(faults *cardv1.FaultsData) *car
 
 			// Anonymize vehicle registration
 			if vehicleReg := fault.GetFaultVehicleRegistration(); vehicleReg != nil {
-				anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-				anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
-
-				// Use static test registration number
-				// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
-				testRegNum := &ddv1.StringValue{}
-				testRegNum.SetValue("TEST-VRN")
-				testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-				testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
-				anonymizedReg.SetNumber(testRegNum)
-
-				anonymizedFault.SetFaultVehicleRegistration(anonymizedReg)
+				anonymizedFault.SetFaultVehicleRegistration(ddOpts.AnonymizeVehicleRegistrationIdentification(vehicleReg))
 			}
 
 			// Regenerate raw_data for binary fidelity

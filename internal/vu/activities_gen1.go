@@ -369,11 +369,13 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		}
 		anonRecord := proto.Clone(record).(*ddv1.VuCardIWRecord)
 
-		// Anonymize holder name (surname and first names, each 35 bytes)
-		holderName := &ddv1.HolderName{}
-		holderName.SetHolderSurname(dd.NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST"))
-		holderName.SetHolderFirstNames(dd.NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "DRIVER"))
-		anonRecord.SetCardHolderName(holderName)
+		// Anonymize holder name
+		if origHolderName := record.GetCardHolderName(); origHolderName != nil {
+			holderName := &ddv1.HolderName{}
+			holderName.SetHolderSurname(ddOpts.AnonymizeStringValue(origHolderName.GetHolderSurname()))
+			holderName.SetHolderFirstNames(ddOpts.AnonymizeStringValue(origHolderName.GetHolderFirstNames()))
+			anonRecord.SetCardHolderName(holderName)
+		}
 
 		// Anonymize card number
 		anonRecord.SetFullCardNumber(ddOpts.AnonymizeFullCardNumber(record.GetFullCardNumber()))

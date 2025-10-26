@@ -206,17 +206,27 @@ func (opts AnonymizeOptions) AnonymizeFullCardNumber(fc *ddv1.FullCardNumber) *d
 	}
 
 	result := &ddv1.FullCardNumber{}
-	result.SetCardType(ddv1.EquipmentType_DRIVER_CARD)
+	// Preserve the card type from the original
+	result.SetCardType(fc.GetCardType())
+	// Set issuing member state to UNSPECIFIED
+	result.SetCardIssuingMemberState(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED)
 
-	// Use test driver identification
-	driverID := &ddv1.DriverIdentification{}
-	driverID.SetDriverIdentificationNumber(NewIa5StringValue(14, "12345678"))
-	driverID.SetCardReplacementIndex(NewIa5StringValue(1, "0"))
-	driverID.SetCardRenewalIndex(NewIa5StringValue(1, "0"))
-	result.SetDriverIdentification(driverID)
-
-	// Clear raw_data to force semantic marshalling
-	result.ClearRawData()
+	// Anonymize driver identification if present
+	if driverID := fc.GetDriverIdentification(); driverID != nil {
+		anonDriverID := &ddv1.DriverIdentification{}
+		anonDriverID.SetDriverIdentificationNumber(opts.AnonymizeIa5StringValue(driverID.GetDriverIdentificationNumber()))
+		anonDriverID.SetCardReplacementIndex(opts.AnonymizeIa5StringValue(driverID.GetCardReplacementIndex()))
+		anonDriverID.SetCardRenewalIndex(opts.AnonymizeIa5StringValue(driverID.GetCardRenewalIndex()))
+		result.SetDriverIdentification(anonDriverID)
+	} else if ownerID := fc.GetOwnerIdentification(); ownerID != nil {
+		// Anonymize owner identification if present (company cards)
+		anonOwnerID := &ddv1.OwnerIdentification{}
+		anonOwnerID.SetOwnerIdentification(opts.AnonymizeIa5StringValue(ownerID.GetOwnerIdentification()))
+		anonOwnerID.SetConsecutiveIndex(opts.AnonymizeIa5StringValue(ownerID.GetConsecutiveIndex()))
+		anonOwnerID.SetReplacementIndex(opts.AnonymizeIa5StringValue(ownerID.GetReplacementIndex()))
+		anonOwnerID.SetRenewalIndex(opts.AnonymizeIa5StringValue(ownerID.GetRenewalIndex()))
+		result.SetOwnerIdentification(anonOwnerID)
+	}
 
 	return result
 }

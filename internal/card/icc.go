@@ -251,6 +251,12 @@ func (opts AnonymizeOptions) anonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 
 	anonymized := &cardv1.Icc{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Preserve clock stop mode (not sensitive)
 	anonymized.SetClockStop(icc.GetClockStop())
 
@@ -276,13 +282,9 @@ func (opts AnonymizeOptions) anonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 		anonymized.SetCardExtendedSerialNumber(anonymizedESN)
 	}
 
-	// Anonymize card approval number (IA5String, 8 bytes)
+	// Anonymize card approval number
 	if icc.GetCardApprovalNumber() != nil {
-		sv := &ddv1.Ia5StringValue{}
-		sv.SetValue("TEST0001")
-
-		sv.SetLength(8)
-		anonymized.SetCardApprovalNumber(sv)
+		anonymized.SetCardApprovalNumber(ddOpts.AnonymizeIa5StringValue(icc.GetCardApprovalNumber()))
 	}
 
 	// Use static test personaliser ID
@@ -292,22 +294,14 @@ func (opts AnonymizeOptions) anonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 	if eia := icc.GetEmbedderIcAssemblerId(); eia != nil {
 		anonymizedEIA := &cardv1.Icc_EmbedderIcAssemblerId{}
 
-		// Country code (IA5String, 2 bytes)
+		// Anonymize country code
 		if eia.GetCountryCode() != nil {
-			sv := &ddv1.Ia5StringValue{}
-			sv.SetValue("FI")
-
-			sv.SetLength(2)
-			anonymizedEIA.SetCountryCode(sv)
+			anonymizedEIA.SetCountryCode(ddOpts.AnonymizeIa5StringValue(eia.GetCountryCode()))
 		}
 
-		// Module embedder (IA5String, 2 bytes)
+		// Anonymize module embedder
 		if eia.GetModuleEmbedder() != nil {
-			sv := &ddv1.Ia5StringValue{}
-			sv.SetValue("AB")
-
-			sv.SetLength(2)
-			anonymizedEIA.SetModuleEmbedder(sv)
+			anonymizedEIA.SetModuleEmbedder(ddOpts.AnonymizeIa5StringValue(eia.GetModuleEmbedder()))
 		}
 
 		// Use static test manufacturer information

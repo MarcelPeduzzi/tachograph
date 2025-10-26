@@ -102,7 +102,9 @@ func (opts AnonymizeOptions) AnonymizeVehicleRegistrationIdentification(vreg *dd
 	}
 
 	result := &ddv1.VehicleRegistrationIdentification{}
-	result.SetNation(ddv1.NationNumeric_FINLAND)
-	result.SetNumber(NewStringValue(ddv1.Encoding_ISO_8859_1, 13, "TEST123"))
+	// Preserve country (structural info)
+	result.SetNation(vreg.GetNation())
+	// Anonymize the registration number
+	result.SetNumber(opts.AnonymizeStringValue(vreg.GetNumber()))
 	return result
 }

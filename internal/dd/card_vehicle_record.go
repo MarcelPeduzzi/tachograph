@@ -178,20 +178,7 @@ func (opts AnonymizeOptions) AnonymizeCardVehicleRecord(record *ddv1.CardVehicle
 
 	// Anonymize vehicle registration
 	if vreg := record.GetVehicleRegistration(); vreg != nil {
-		anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
-
-		// Preserve country (structural info)
-		anonymizedReg.SetNation(vreg.GetNation())
-
-		// Replace VRN with test value
-		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
-		testRegNum := &ddv1.StringValue{}
-		testRegNum.SetValue("TEST-VRN")
-		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-		testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
-		anonymizedReg.SetNumber(testRegNum)
-
-		anonymized.SetVehicleRegistration(anonymizedReg)
+		anonymized.SetVehicleRegistration(opts.AnonymizeVehicleRegistrationIdentification(vreg))
 	}
 
 	// Preserve VU counter (structural info)

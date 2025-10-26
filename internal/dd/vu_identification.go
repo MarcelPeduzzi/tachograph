@@ -292,14 +292,14 @@ func (opts AnonymizeOptions) AnonymizeVuIdentification(ident *ddv1.VuIdentificat
 
 	result := proto.Clone(ident).(*ddv1.VuIdentification)
 
-	// Anonymize manufacturer name (35 bytes)
-	result.SetManufacturerName(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST MANUFACTURER"))
+	// Anonymize manufacturer name
+	result.SetManufacturerName(opts.AnonymizeStringValue(ident.GetManufacturerName()))
 
-	// Anonymize manufacturer address (35 bytes)
-	result.SetManufacturerAddress(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST ADDRESS, 00000 TEST CITY"))
+	// Anonymize manufacturer address
+	result.SetManufacturerAddress(opts.AnonymizeStringValue(ident.GetManufacturerAddress()))
 
-	// Anonymize part number (16 bytes IA5String)
-	result.SetPartNumber(NewIa5StringValue(16, "TESTPART12345678"))
+	// Anonymize part number
+	result.SetPartNumber(opts.AnonymizeIa5StringValue(ident.GetPartNumber()))
 
 	// Anonymize serial number (ExtendedSerialNumber)
 	// Preserve equipment type and manufacturer code (structural info) but anonymize the serial number
@@ -312,9 +312,9 @@ func (opts AnonymizeOptions) AnonymizeVuIdentification(ident *ddv1.VuIdentificat
 	result.SetSerialNumber(serialNum)
 
 	// Anonymize software identification
-	if softwareIdent := result.GetSoftwareIdentification(); softwareIdent != nil {
+	if softwareIdent := ident.GetSoftwareIdentification(); softwareIdent != nil {
 		anonymizedSoftware := &ddv1.SoftwareIdentification{}
-		anonymizedSoftware.SetSoftwareVersion(NewIa5StringValue(4, "TEST"))
+		anonymizedSoftware.SetSoftwareVersion(opts.AnonymizeIa5StringValue(softwareIdent.GetSoftwareVersion()))
 		// Keep installation date as-is or anonymize if needed
 		if softwareIdent.GetSoftwareInstallationDate() != nil {
 			anonymizedSoftware.SetSoftwareInstallationDate(softwareIdent.GetSoftwareInstallationDate())

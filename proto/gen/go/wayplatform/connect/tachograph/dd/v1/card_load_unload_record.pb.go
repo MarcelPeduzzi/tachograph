@@ -39,11 +39,13 @@ const (
 //	}
 type CardLoadUnloadRecord struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_TimeStamp           *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=time_stamp,json=timeStamp,proto3"`
-	xxx_hidden_OperationType       OperationType          `protobuf:"varint,2,opt,name=operation_type,json=operationType,proto3,enum=wayplatform.connect.tachograph.dd.v1.OperationType"`
-	xxx_hidden_GnssPlaceAuthRecord *GNSSPlaceAuthRecord   `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord,proto3"`
-	xxx_hidden_VehicleOdometerKm   int32                  `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm,proto3"`
-	xxx_hidden_RawData             []byte                 `protobuf:"bytes,5,opt,name=raw_data,json=rawData,proto3"`
+	xxx_hidden_TimeStamp           *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=time_stamp,json=timeStamp"`
+	xxx_hidden_OperationType       OperationType          `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.dd.v1.OperationType"`
+	xxx_hidden_GnssPlaceAuthRecord *GNSSPlaceAuthRecord   `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
+	xxx_hidden_VehicleOdometerKm   int32                  `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
+	xxx_hidden_RawData             []byte                 `protobuf:"bytes,5,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
+	XXX_presence                   [1]uint32
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -82,7 +84,9 @@ func (x *CardLoadUnloadRecord) GetTimeStamp() *timestamppb.Timestamp {
 
 func (x *CardLoadUnloadRecord) GetOperationType() OperationType {
 	if x != nil {
-		return x.xxx_hidden_OperationType
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+			return x.xxx_hidden_OperationType
+		}
 	}
 	return OperationType_OPERATION_TYPE_UNSPECIFIED
 }
@@ -114,6 +118,7 @@ func (x *CardLoadUnloadRecord) SetTimeStamp(v *timestamppb.Timestamp) {
 
 func (x *CardLoadUnloadRecord) SetOperationType(v OperationType) {
 	x.xxx_hidden_OperationType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *CardLoadUnloadRecord) SetGnssPlaceAuthRecord(v *GNSSPlaceAuthRecord) {
@@ -122,6 +127,7 @@ func (x *CardLoadUnloadRecord) SetGnssPlaceAuthRecord(v *GNSSPlaceAuthRecord) {
 
 func (x *CardLoadUnloadRecord) SetVehicleOdometerKm(v int32) {
 	x.xxx_hidden_VehicleOdometerKm = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
 func (x *CardLoadUnloadRecord) SetRawData(v []byte) {
@@ -129,6 +135,7 @@ func (x *CardLoadUnloadRecord) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *CardLoadUnloadRecord) HasTimeStamp() bool {
@@ -138,6 +145,13 @@ func (x *CardLoadUnloadRecord) HasTimeStamp() bool {
 	return x.xxx_hidden_TimeStamp != nil
 }
 
+func (x *CardLoadUnloadRecord) HasOperationType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
 func (x *CardLoadUnloadRecord) HasGnssPlaceAuthRecord() bool {
 	if x == nil {
 		return false
@@ -145,12 +159,41 @@ func (x *CardLoadUnloadRecord) HasGnssPlaceAuthRecord() bool {
 	return x.xxx_hidden_GnssPlaceAuthRecord != nil
 }
 
+func (x *CardLoadUnloadRecord) HasVehicleOdometerKm() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *CardLoadUnloadRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *CardLoadUnloadRecord) ClearTimeStamp() {
 	x.xxx_hidden_TimeStamp = nil
 }
 
+func (x *CardLoadUnloadRecord) ClearOperationType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_OperationType = OperationType_OPERATION_TYPE_UNSPECIFIED
+}
+
 func (x *CardLoadUnloadRecord) ClearGnssPlaceAuthRecord() {
 	x.xxx_hidden_GnssPlaceAuthRecord = nil
+}
+
+func (x *CardLoadUnloadRecord) ClearVehicleOdometerKm() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_VehicleOdometerKm = 0
+}
+
+func (x *CardLoadUnloadRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_RawData = nil
 }
 
 type CardLoadUnloadRecord_builder struct {
@@ -159,11 +202,11 @@ type CardLoadUnloadRecord_builder struct {
 	// Date and time at the beginning of the load/unload operation
 	TimeStamp *timestamppb.Timestamp
 	// Type of operation entered (load, unload, or simultaneous load/unload)
-	OperationType OperationType
+	OperationType *OperationType
 	// GNSS position and authentication status at load/unload operation
 	GnssPlaceAuthRecord *GNSSPlaceAuthRecord
 	// Vehicle odometer value (in km) at load/unload operation
-	VehicleOdometerKm int32
+	VehicleOdometerKm *int32
 	// Raw binary data for round-trip fidelity (20 bytes)
 	RawData []byte
 }
@@ -173,10 +216,19 @@ func (b0 CardLoadUnloadRecord_builder) Build() *CardLoadUnloadRecord {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_TimeStamp = b.TimeStamp
-	x.xxx_hidden_OperationType = b.OperationType
+	if b.OperationType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		x.xxx_hidden_OperationType = *b.OperationType
+	}
 	x.xxx_hidden_GnssPlaceAuthRecord = b.GnssPlaceAuthRecord
-	x.xxx_hidden_VehicleOdometerKm = b.VehicleOdometerKm
-	x.xxx_hidden_RawData = b.RawData
+	if b.VehicleOdometerKm != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
+		x.xxx_hidden_VehicleOdometerKm = *b.VehicleOdometerKm
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -192,7 +244,7 @@ const file_wayplatform_connect_tachograph_dd_v1_card_load_unload_record_proto_ra
 	"\x16gnss_place_auth_record\x18\x03 \x01(\v29.wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecordR\x13gnssPlaceAuthRecord\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x04 \x01(\x05R\x11vehicleOdometerKm\x12\x19\n" +
 	"\braw_data\x18\x05 \x01(\fR\arawDataB\xd8\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x19CardLoadUnloadRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x19CardLoadUnloadRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_card_load_unload_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_card_load_unload_record_proto_goTypes = []any{

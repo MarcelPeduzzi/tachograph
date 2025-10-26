@@ -327,7 +327,7 @@ func (opts AnonymizeOptions) anonymizeEventsAndFaultsGen1(ef *vuv1.EventsAndFaul
 	result.SetSignature(make([]byte, 128))
 
 	// Clear raw_data to force semantic marshalling
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

@@ -145,7 +145,8 @@ func (opts MarshalOptions) MarshalVuCardIWRecord(record *ddv1.VuCardIWRecord) ([
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuCardIWRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenVuCardIWRecord {
 			return nil, fmt.Errorf("invalid raw_data length for VuCardIWRecord: got %d, want %d", len(rawData), lenVuCardIWRecord)
 		}

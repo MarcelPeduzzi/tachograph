@@ -41,13 +41,15 @@ const (
 //	}
 type VuBorderCrossingRecord struct {
 	state                             protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_CardNumberDriverSlot   *FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=card_number_driver_slot,json=cardNumberDriverSlot,proto3"`
-	xxx_hidden_CardNumberCodriverSlot *FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=card_number_codriver_slot,json=cardNumberCodriverSlot,proto3"`
-	xxx_hidden_CountryLeft            NationNumeric                `protobuf:"varint,3,opt,name=country_left,json=countryLeft,proto3,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_CountryEntered         NationNumeric                `protobuf:"varint,4,opt,name=country_entered,json=countryEntered,proto3,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_GnssPlaceAuthRecord    *GNSSPlaceAuthRecord         `protobuf:"bytes,5,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord,proto3"`
-	xxx_hidden_VehicleOdometerKm      int32                        `protobuf:"varint,6,opt,name=vehicle_odometer_km,json=vehicleOdometerKm,proto3"`
-	xxx_hidden_RawData                []byte                       `protobuf:"bytes,7,opt,name=raw_data,json=rawData,proto3"`
+	xxx_hidden_CardNumberDriverSlot   *FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=card_number_driver_slot,json=cardNumberDriverSlot"`
+	xxx_hidden_CardNumberCodriverSlot *FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=card_number_codriver_slot,json=cardNumberCodriverSlot"`
+	xxx_hidden_CountryLeft            NationNumeric                `protobuf:"varint,3,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
+	xxx_hidden_CountryEntered         NationNumeric                `protobuf:"varint,4,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
+	xxx_hidden_GnssPlaceAuthRecord    *GNSSPlaceAuthRecord         `protobuf:"bytes,5,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
+	xxx_hidden_VehicleOdometerKm      int32                        `protobuf:"varint,6,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
+	xxx_hidden_RawData                []byte                       `protobuf:"bytes,7,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
 	sizeCache                         protoimpl.SizeCache
 }
@@ -93,14 +95,18 @@ func (x *VuBorderCrossingRecord) GetCardNumberCodriverSlot() *FullCardNumberAndG
 
 func (x *VuBorderCrossingRecord) GetCountryLeft() NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_CountryLeft
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
+			return x.xxx_hidden_CountryLeft
+		}
 	}
 	return NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
 func (x *VuBorderCrossingRecord) GetCountryEntered() NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_CountryEntered
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
+			return x.xxx_hidden_CountryEntered
+		}
 	}
 	return NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
@@ -136,10 +142,12 @@ func (x *VuBorderCrossingRecord) SetCardNumberCodriverSlot(v *FullCardNumberAndG
 
 func (x *VuBorderCrossingRecord) SetCountryLeft(v NationNumeric) {
 	x.xxx_hidden_CountryLeft = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
 }
 
 func (x *VuBorderCrossingRecord) SetCountryEntered(v NationNumeric) {
 	x.xxx_hidden_CountryEntered = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
 }
 
 func (x *VuBorderCrossingRecord) SetGnssPlaceAuthRecord(v *GNSSPlaceAuthRecord) {
@@ -148,6 +156,7 @@ func (x *VuBorderCrossingRecord) SetGnssPlaceAuthRecord(v *GNSSPlaceAuthRecord) 
 
 func (x *VuBorderCrossingRecord) SetVehicleOdometerKm(v int32) {
 	x.xxx_hidden_VehicleOdometerKm = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
 }
 
 func (x *VuBorderCrossingRecord) SetRawData(v []byte) {
@@ -155,6 +164,7 @@ func (x *VuBorderCrossingRecord) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
 }
 
 func (x *VuBorderCrossingRecord) HasCardNumberDriverSlot() bool {
@@ -171,11 +181,39 @@ func (x *VuBorderCrossingRecord) HasCardNumberCodriverSlot() bool {
 	return x.xxx_hidden_CardNumberCodriverSlot != nil
 }
 
+func (x *VuBorderCrossingRecord) HasCountryLeft() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *VuBorderCrossingRecord) HasCountryEntered() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *VuBorderCrossingRecord) HasGnssPlaceAuthRecord() bool {
 	if x == nil {
 		return false
 	}
 	return x.xxx_hidden_GnssPlaceAuthRecord != nil
+}
+
+func (x *VuBorderCrossingRecord) HasVehicleOdometerKm() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *VuBorderCrossingRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
 func (x *VuBorderCrossingRecord) ClearCardNumberDriverSlot() {
@@ -186,8 +224,28 @@ func (x *VuBorderCrossingRecord) ClearCardNumberCodriverSlot() {
 	x.xxx_hidden_CardNumberCodriverSlot = nil
 }
 
+func (x *VuBorderCrossingRecord) ClearCountryLeft() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_CountryLeft = NationNumeric_NATION_NUMERIC_UNSPECIFIED
+}
+
+func (x *VuBorderCrossingRecord) ClearCountryEntered() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_CountryEntered = NationNumeric_NATION_NUMERIC_UNSPECIFIED
+}
+
 func (x *VuBorderCrossingRecord) ClearGnssPlaceAuthRecord() {
 	x.xxx_hidden_GnssPlaceAuthRecord = nil
+}
+
+func (x *VuBorderCrossingRecord) ClearVehicleOdometerKm() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_VehicleOdometerKm = 0
+}
+
+func (x *VuBorderCrossingRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_RawData = nil
 }
 
 type VuBorderCrossingRecord_builder struct {
@@ -199,14 +257,14 @@ type VuBorderCrossingRecord_builder struct {
 	CardNumberCodriverSlot *FullCardNumberAndGeneration
 	// Country which was left by the vehicle
 	// 'Rest of the World' (0xFF) shall be used when the VU cannot determine the country
-	CountryLeft NationNumeric
+	CountryLeft *NationNumeric
 	// Country into which the vehicle has entered
 	// 'Rest of the World' (0xFF) shall be used when the VU cannot determine the country
-	CountryEntered NationNumeric
+	CountryEntered *NationNumeric
 	// GNSS position and authentication status when border crossing was detected
 	GnssPlaceAuthRecord *GNSSPlaceAuthRecord
 	// Vehicle odometer value (in km) when border crossing was detected
-	VehicleOdometerKm int32
+	VehicleOdometerKm *int32
 	// Raw binary data for round-trip fidelity (57 bytes)
 	RawData []byte
 }
@@ -217,11 +275,23 @@ func (b0 VuBorderCrossingRecord_builder) Build() *VuBorderCrossingRecord {
 	_, _ = b, x
 	x.xxx_hidden_CardNumberDriverSlot = b.CardNumberDriverSlot
 	x.xxx_hidden_CardNumberCodriverSlot = b.CardNumberCodriverSlot
-	x.xxx_hidden_CountryLeft = b.CountryLeft
-	x.xxx_hidden_CountryEntered = b.CountryEntered
+	if b.CountryLeft != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
+		x.xxx_hidden_CountryLeft = *b.CountryLeft
+	}
+	if b.CountryEntered != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
+		x.xxx_hidden_CountryEntered = *b.CountryEntered
+	}
 	x.xxx_hidden_GnssPlaceAuthRecord = b.GnssPlaceAuthRecord
-	x.xxx_hidden_VehicleOdometerKm = b.VehicleOdometerKm
-	x.xxx_hidden_RawData = b.RawData
+	if b.VehicleOdometerKm != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
+		x.xxx_hidden_VehicleOdometerKm = *b.VehicleOdometerKm
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -238,7 +308,7 @@ const file_wayplatform_connect_tachograph_dd_v1_vu_border_crossing_record_proto_
 	"\x16gnss_place_auth_record\x18\x05 \x01(\v29.wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecordR\x13gnssPlaceAuthRecord\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x06 \x01(\x05R\x11vehicleOdometerKm\x12\x19\n" +
 	"\braw_data\x18\a \x01(\fR\arawDataB\xda\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x1bVuBorderCrossingRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x1bVuBorderCrossingRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_vu_border_crossing_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_vu_border_crossing_record_proto_goTypes = []any{

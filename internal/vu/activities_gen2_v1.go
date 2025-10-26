@@ -667,7 +667,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V1(activities *vuv1.Activiti
 	// Set signature to empty bytes (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
 	result.SetSignature([]byte{})
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

@@ -399,7 +399,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		// Previous vehicle info and manual input flag are not PII - keep as-is
 
 		// Clear raw_data
-		anonRecord.SetRawData(nil)
+		anonRecord.ClearRawData()
 		anonymizedCardIWRecords = append(anonymizedCardIWRecords, anonRecord)
 	}
 	result.SetCardIwData(anonymizedCardIWRecords)
@@ -416,7 +416,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		// (slot, crew mode, inserted status, activity type, time of change are not personally identifiable)
 
 		// Clear raw_data
-		anonActivity.SetRawData(nil)
+		anonActivity.ClearRawData()
 		anonymizedActivityChanges = append(anonymizedActivityChanges, anonActivity)
 	}
 	result.SetActivityChanges(anonymizedActivityChanges)
@@ -433,7 +433,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 	result.SetSignature(make([]byte, 128))
 
 	// Clear raw_data to force semantic marshalling
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

@@ -98,7 +98,8 @@ func (opts MarshalOptions) MarshalVuGNSSADRecord(record *ddv1.VuGNSSADRecord) ([
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuGNSSADRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenVuGNSSADRecord {
 			return nil, fmt.Errorf("invalid raw_data length for VuGNSSADRecord: got %d, want %d", len(rawData), lenVuGNSSADRecord)
 		}

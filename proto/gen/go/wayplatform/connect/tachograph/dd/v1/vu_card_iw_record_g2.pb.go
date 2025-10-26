@@ -50,17 +50,19 @@ const (
 // - Gen2: Uses FullCardNumberAndGeneration (20 bytes) and PreviousVehicleInfoGen2 (20 bytes) = 132 bytes total
 type VuCardIWRecordG2 struct {
 	state                             protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_CardHolderName         *HolderName                  `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName,proto3"`
-	xxx_hidden_FullCardNumber         *FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber,proto3"`
-	xxx_hidden_CardExpiryDate         *Date                        `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate,proto3"`
-	xxx_hidden_CardInsertionTime      *timestamppb.Timestamp       `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime,proto3"`
-	xxx_hidden_OdometerAtInsertionKm  int32                        `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm,proto3"`
-	xxx_hidden_CardSlotNumber         CardSlotNumber               `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,proto3,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
-	xxx_hidden_CardWithdrawalTime     *timestamppb.Timestamp       `protobuf:"bytes,7,opt,name=card_withdrawal_time,json=cardWithdrawalTime,proto3"`
-	xxx_hidden_OdometerAtWithdrawalKm int32                        `protobuf:"varint,8,opt,name=odometer_at_withdrawal_km,json=odometerAtWithdrawalKm,proto3"`
-	xxx_hidden_PreviousVehicleInfo    *PreviousVehicleInfoG2       `protobuf:"bytes,9,opt,name=previous_vehicle_info,json=previousVehicleInfo,proto3"`
-	xxx_hidden_ManualInputFlag        bool                         `protobuf:"varint,10,opt,name=manual_input_flag,json=manualInputFlag,proto3"`
-	xxx_hidden_RawData                []byte                       `protobuf:"bytes,11,opt,name=raw_data,json=rawData,proto3"`
+	xxx_hidden_CardHolderName         *HolderName                  `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
+	xxx_hidden_FullCardNumber         *FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber"`
+	xxx_hidden_CardExpiryDate         *Date                        `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
+	xxx_hidden_CardInsertionTime      *timestamppb.Timestamp       `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
+	xxx_hidden_OdometerAtInsertionKm  int32                        `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
+	xxx_hidden_CardSlotNumber         CardSlotNumber               `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
+	xxx_hidden_CardWithdrawalTime     *timestamppb.Timestamp       `protobuf:"bytes,7,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
+	xxx_hidden_OdometerAtWithdrawalKm int32                        `protobuf:"varint,8,opt,name=odometer_at_withdrawal_km,json=odometerAtWithdrawalKm"`
+	xxx_hidden_PreviousVehicleInfo    *PreviousVehicleInfoG2       `protobuf:"bytes,9,opt,name=previous_vehicle_info,json=previousVehicleInfo"`
+	xxx_hidden_ManualInputFlag        bool                         `protobuf:"varint,10,opt,name=manual_input_flag,json=manualInputFlag"`
+	xxx_hidden_RawData                []byte                       `protobuf:"bytes,11,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
 	sizeCache                         protoimpl.SizeCache
 }
@@ -127,7 +129,9 @@ func (x *VuCardIWRecordG2) GetOdometerAtInsertionKm() int32 {
 
 func (x *VuCardIWRecordG2) GetCardSlotNumber() CardSlotNumber {
 	if x != nil {
-		return x.xxx_hidden_CardSlotNumber
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 5) {
+			return x.xxx_hidden_CardSlotNumber
+		}
 	}
 	return CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
 }
@@ -185,10 +189,12 @@ func (x *VuCardIWRecordG2) SetCardInsertionTime(v *timestamppb.Timestamp) {
 
 func (x *VuCardIWRecordG2) SetOdometerAtInsertionKm(v int32) {
 	x.xxx_hidden_OdometerAtInsertionKm = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 11)
 }
 
 func (x *VuCardIWRecordG2) SetCardSlotNumber(v CardSlotNumber) {
 	x.xxx_hidden_CardSlotNumber = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 11)
 }
 
 func (x *VuCardIWRecordG2) SetCardWithdrawalTime(v *timestamppb.Timestamp) {
@@ -197,6 +203,7 @@ func (x *VuCardIWRecordG2) SetCardWithdrawalTime(v *timestamppb.Timestamp) {
 
 func (x *VuCardIWRecordG2) SetOdometerAtWithdrawalKm(v int32) {
 	x.xxx_hidden_OdometerAtWithdrawalKm = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 11)
 }
 
 func (x *VuCardIWRecordG2) SetPreviousVehicleInfo(v *PreviousVehicleInfoG2) {
@@ -205,6 +212,7 @@ func (x *VuCardIWRecordG2) SetPreviousVehicleInfo(v *PreviousVehicleInfoG2) {
 
 func (x *VuCardIWRecordG2) SetManualInputFlag(v bool) {
 	x.xxx_hidden_ManualInputFlag = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 11)
 }
 
 func (x *VuCardIWRecordG2) SetRawData(v []byte) {
@@ -212,6 +220,7 @@ func (x *VuCardIWRecordG2) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 11)
 }
 
 func (x *VuCardIWRecordG2) HasCardHolderName() bool {
@@ -242,6 +251,20 @@ func (x *VuCardIWRecordG2) HasCardInsertionTime() bool {
 	return x.xxx_hidden_CardInsertionTime != nil
 }
 
+func (x *VuCardIWRecordG2) HasOdometerAtInsertionKm() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *VuCardIWRecordG2) HasCardSlotNumber() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
 func (x *VuCardIWRecordG2) HasCardWithdrawalTime() bool {
 	if x == nil {
 		return false
@@ -249,11 +272,32 @@ func (x *VuCardIWRecordG2) HasCardWithdrawalTime() bool {
 	return x.xxx_hidden_CardWithdrawalTime != nil
 }
 
+func (x *VuCardIWRecordG2) HasOdometerAtWithdrawalKm() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
 func (x *VuCardIWRecordG2) HasPreviousVehicleInfo() bool {
 	if x == nil {
 		return false
 	}
 	return x.xxx_hidden_PreviousVehicleInfo != nil
+}
+
+func (x *VuCardIWRecordG2) HasManualInputFlag() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+}
+
+func (x *VuCardIWRecordG2) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
 }
 
 func (x *VuCardIWRecordG2) ClearCardHolderName() {
@@ -272,12 +316,37 @@ func (x *VuCardIWRecordG2) ClearCardInsertionTime() {
 	x.xxx_hidden_CardInsertionTime = nil
 }
 
+func (x *VuCardIWRecordG2) ClearOdometerAtInsertionKm() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_OdometerAtInsertionKm = 0
+}
+
+func (x *VuCardIWRecordG2) ClearCardSlotNumber() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_CardSlotNumber = CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
+}
+
 func (x *VuCardIWRecordG2) ClearCardWithdrawalTime() {
 	x.xxx_hidden_CardWithdrawalTime = nil
 }
 
+func (x *VuCardIWRecordG2) ClearOdometerAtWithdrawalKm() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_OdometerAtWithdrawalKm = 0
+}
+
 func (x *VuCardIWRecordG2) ClearPreviousVehicleInfo() {
 	x.xxx_hidden_PreviousVehicleInfo = nil
+}
+
+func (x *VuCardIWRecordG2) ClearManualInputFlag() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
+	x.xxx_hidden_ManualInputFlag = false
+}
+
+func (x *VuCardIWRecordG2) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
+	x.xxx_hidden_RawData = nil
 }
 
 type VuCardIWRecordG2_builder struct {
@@ -292,17 +361,17 @@ type VuCardIWRecordG2_builder struct {
 	// Date and time when the card was inserted
 	CardInsertionTime *timestamppb.Timestamp
 	// Vehicle odometer value (in km) at card insertion
-	OdometerAtInsertionKm int32
+	OdometerAtInsertionKm *int32
 	// Slot number where the card was inserted (driver or co-driver)
-	CardSlotNumber CardSlotNumber
+	CardSlotNumber *CardSlotNumber
 	// Date and time when the card was withdrawn
 	CardWithdrawalTime *timestamppb.Timestamp
 	// Vehicle odometer value (in km) at card withdrawal
-	OdometerAtWithdrawalKm int32
+	OdometerAtWithdrawalKm *int32
 	// Information about the previous vehicle used by the driver
 	PreviousVehicleInfo *PreviousVehicleInfoG2
 	// Flag indicating if driver manually entered activities at card insertion
-	ManualInputFlag bool
+	ManualInputFlag *bool
 	// Raw binary data for round-trip fidelity (132 bytes)
 	RawData []byte
 }
@@ -315,13 +384,28 @@ func (b0 VuCardIWRecordG2_builder) Build() *VuCardIWRecordG2 {
 	x.xxx_hidden_FullCardNumber = b.FullCardNumber
 	x.xxx_hidden_CardExpiryDate = b.CardExpiryDate
 	x.xxx_hidden_CardInsertionTime = b.CardInsertionTime
-	x.xxx_hidden_OdometerAtInsertionKm = b.OdometerAtInsertionKm
-	x.xxx_hidden_CardSlotNumber = b.CardSlotNumber
+	if b.OdometerAtInsertionKm != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 11)
+		x.xxx_hidden_OdometerAtInsertionKm = *b.OdometerAtInsertionKm
+	}
+	if b.CardSlotNumber != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 11)
+		x.xxx_hidden_CardSlotNumber = *b.CardSlotNumber
+	}
 	x.xxx_hidden_CardWithdrawalTime = b.CardWithdrawalTime
-	x.xxx_hidden_OdometerAtWithdrawalKm = b.OdometerAtWithdrawalKm
+	if b.OdometerAtWithdrawalKm != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 11)
+		x.xxx_hidden_OdometerAtWithdrawalKm = *b.OdometerAtWithdrawalKm
+	}
 	x.xxx_hidden_PreviousVehicleInfo = b.PreviousVehicleInfo
-	x.xxx_hidden_ManualInputFlag = b.ManualInputFlag
-	x.xxx_hidden_RawData = b.RawData
+	if b.ManualInputFlag != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 11)
+		x.xxx_hidden_ManualInputFlag = *b.ManualInputFlag
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 11)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -343,7 +427,7 @@ const file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto_rawDe
 	"\x11manual_input_flag\x18\n" +
 	" \x01(\bR\x0fmanualInputFlag\x12\x19\n" +
 	"\braw_data\x18\v \x01(\fR\arawDataB\xd4\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x15VuCardIwRecordG2ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x15VuCardIwRecordG2ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto_goTypes = []any{

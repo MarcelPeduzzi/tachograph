@@ -88,7 +88,8 @@ func (opts MarshalOptions) MarshalCardLoadUnloadRecord(record *ddv1.CardLoadUnlo
 
 	// Use raw data painting strategy if available
 	var canvas [lenCardLoadUnloadRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenCardLoadUnloadRecord {
 			return nil, fmt.Errorf("invalid raw_data length for CardLoadUnloadRecord: got %d, want %d", len(rawData), lenCardLoadUnloadRecord)
 		}

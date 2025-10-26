@@ -255,7 +255,7 @@ func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGe
 		// (speeds_kmh array contains actual speed measurements which are not personally identifiable)
 
 		// Clear raw_data
-		anonBlock.SetRawData(nil)
+		anonBlock.ClearRawData()
 
 		anonymizedBlocks = append(anonymizedBlocks, anonBlock)
 	}
@@ -266,7 +266,7 @@ func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGe
 	result.SetSignature(make([]byte, 128))
 
 	// Clear raw_data to force semantic marshalling
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

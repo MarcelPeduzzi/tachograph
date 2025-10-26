@@ -45,12 +45,14 @@ const (
 // - Gen2v2: Uses GNSSPlaceAuthRecord (12 bytes) = 59 bytes total (see VuGNSSADRecordG2)
 type VuGNSSADRecord struct {
 	state                             protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_TimeStamp              *timestamppb.Timestamp       `protobuf:"bytes,1,opt,name=time_stamp,json=timeStamp,proto3"`
-	xxx_hidden_CardNumberDriverSlot   *FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=card_number_driver_slot,json=cardNumberDriverSlot,proto3"`
-	xxx_hidden_CardNumberCodriverSlot *FullCardNumberAndGeneration `protobuf:"bytes,3,opt,name=card_number_codriver_slot,json=cardNumberCodriverSlot,proto3"`
-	xxx_hidden_GnssPlaceRecord        *GNSSPlaceRecord             `protobuf:"bytes,4,opt,name=gnss_place_record,json=gnssPlaceRecord,proto3"`
-	xxx_hidden_VehicleOdometerKm      int32                        `protobuf:"varint,5,opt,name=vehicle_odometer_km,json=vehicleOdometerKm,proto3"`
-	xxx_hidden_RawData                []byte                       `protobuf:"bytes,6,opt,name=raw_data,json=rawData,proto3"`
+	xxx_hidden_TimeStamp              *timestamppb.Timestamp       `protobuf:"bytes,1,opt,name=time_stamp,json=timeStamp"`
+	xxx_hidden_CardNumberDriverSlot   *FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=card_number_driver_slot,json=cardNumberDriverSlot"`
+	xxx_hidden_CardNumberCodriverSlot *FullCardNumberAndGeneration `protobuf:"bytes,3,opt,name=card_number_codriver_slot,json=cardNumberCodriverSlot"`
+	xxx_hidden_GnssPlaceRecord        *GNSSPlaceRecord             `protobuf:"bytes,4,opt,name=gnss_place_record,json=gnssPlaceRecord"`
+	xxx_hidden_VehicleOdometerKm      int32                        `protobuf:"varint,5,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
+	xxx_hidden_RawData                []byte                       `protobuf:"bytes,6,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
 	sizeCache                         protoimpl.SizeCache
 }
@@ -140,6 +142,7 @@ func (x *VuGNSSADRecord) SetGnssPlaceRecord(v *GNSSPlaceRecord) {
 
 func (x *VuGNSSADRecord) SetVehicleOdometerKm(v int32) {
 	x.xxx_hidden_VehicleOdometerKm = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
 }
 
 func (x *VuGNSSADRecord) SetRawData(v []byte) {
@@ -147,6 +150,7 @@ func (x *VuGNSSADRecord) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
 func (x *VuGNSSADRecord) HasTimeStamp() bool {
@@ -177,6 +181,20 @@ func (x *VuGNSSADRecord) HasGnssPlaceRecord() bool {
 	return x.xxx_hidden_GnssPlaceRecord != nil
 }
 
+func (x *VuGNSSADRecord) HasVehicleOdometerKm() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *VuGNSSADRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
 func (x *VuGNSSADRecord) ClearTimeStamp() {
 	x.xxx_hidden_TimeStamp = nil
 }
@@ -193,6 +211,16 @@ func (x *VuGNSSADRecord) ClearGnssPlaceRecord() {
 	x.xxx_hidden_GnssPlaceRecord = nil
 }
 
+func (x *VuGNSSADRecord) ClearVehicleOdometerKm() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_VehicleOdometerKm = 0
+}
+
+func (x *VuGNSSADRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_RawData = nil
+}
+
 type VuGNSSADRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -205,7 +233,7 @@ type VuGNSSADRecord_builder struct {
 	// GNSS position when accumulated driving reaches multiple of three hours
 	GnssPlaceRecord *GNSSPlaceRecord
 	// Vehicle odometer value (in km) when accumulated driving reaches multiple of three hours
-	VehicleOdometerKm int32
+	VehicleOdometerKm *int32
 	// Raw binary data for round-trip fidelity (58 bytes)
 	RawData []byte
 }
@@ -218,8 +246,14 @@ func (b0 VuGNSSADRecord_builder) Build() *VuGNSSADRecord {
 	x.xxx_hidden_CardNumberDriverSlot = b.CardNumberDriverSlot
 	x.xxx_hidden_CardNumberCodriverSlot = b.CardNumberCodriverSlot
 	x.xxx_hidden_GnssPlaceRecord = b.GnssPlaceRecord
-	x.xxx_hidden_VehicleOdometerKm = b.VehicleOdometerKm
-	x.xxx_hidden_RawData = b.RawData
+	if b.VehicleOdometerKm != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		x.xxx_hidden_VehicleOdometerKm = *b.VehicleOdometerKm
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -236,7 +270,7 @@ const file_wayplatform_connect_tachograph_dd_v1_vu_gnss_ad_record_proto_rawDesc 
 	"\x11gnss_place_record\x18\x04 \x01(\v25.wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecordR\x0fgnssPlaceRecord\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x05 \x01(\x05R\x11vehicleOdometerKm\x12\x19\n" +
 	"\braw_data\x18\x06 \x01(\fR\arawDataB\xd2\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x13VuGnssAdRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x13VuGnssAdRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_vu_gnss_ad_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_vu_gnss_ad_record_proto_goTypes = []any{

@@ -87,7 +87,8 @@ func (opts MarshalOptions) MarshalCardBorderCrossingRecord(record *ddv1.CardBord
 
 	// Use raw data painting strategy if available
 	var canvas [lenCardBorderCrossingRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenCardBorderCrossingRecord {
 			return nil, fmt.Errorf("invalid raw_data length for CardBorderCrossingRecord: got %d, want %d", len(rawData), lenCardBorderCrossingRecord)
 		}

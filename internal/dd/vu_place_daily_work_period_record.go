@@ -68,7 +68,8 @@ func (opts MarshalOptions) MarshalVuPlaceDailyWorkPeriodRecord(record *ddv1.VuPl
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuPlaceDailyWorkPeriodRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenVuPlaceDailyWorkPeriodRecord {
 			return nil, fmt.Errorf("invalid raw_data length for VuPlaceDailyWorkPeriodRecord: got %d, want %d", len(rawData), lenVuPlaceDailyWorkPeriodRecord)
 		}
@@ -119,13 +120,13 @@ func (opts AnonymizeOptions) AnonymizeVuPlaceDailyWorkPeriodRecord(rec *ddv1.VuP
 		anonymizedPlace.SetVehicleOdometerKm(opts.AnonymizeOdometerValue(place.GetVehicleOdometerKm()))
 
 		// Clear raw_data
-		anonymizedPlace.SetRawData(nil)
+		anonymizedPlace.ClearRawData()
 
 		result.SetPlaceRecord(anonymizedPlace)
 	}
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

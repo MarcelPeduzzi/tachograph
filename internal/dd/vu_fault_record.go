@@ -253,7 +253,7 @@ func (opts AnonymizeOptions) AnonymizeVuFaultRecord(rec *ddv1.VuFaultRecord) *dd
 	result.SetCardNumberCodriverSlotEnd(opts.AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotEnd()))
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

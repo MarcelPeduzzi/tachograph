@@ -96,7 +96,8 @@ func (opts MarshalOptions) MarshalCardVehicleRecordG2(record *ddv1.CardVehicleRe
 
 	// Use raw data painting strategy if available
 	var canvas [lenCardVehicleRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenCardVehicleRecord {
 			return nil, fmt.Errorf("invalid raw_data length for CardVehicleRecordG2: got %d, want %d", len(rawData), lenCardVehicleRecord)
 		}

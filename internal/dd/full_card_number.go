@@ -117,7 +117,8 @@ func (opts MarshalOptions) MarshalFullCardNumber(cardNumber *ddv1.FullCardNumber
 
 	// Use raw data painting strategy if available
 	var canvas [lenFullCardNumber]byte
-	if rawData := cardNumber.GetRawData(); len(rawData) > 0 {
+	if cardNumber.HasRawData() {
+		rawData := cardNumber.GetRawData()
 		if len(rawData) != lenFullCardNumber {
 			return nil, fmt.Errorf("invalid raw_data length for FullCardNumber: got %d, want %d", len(rawData), lenFullCardNumber)
 		}
@@ -215,7 +216,7 @@ func (opts AnonymizeOptions) AnonymizeFullCardNumber(fc *ddv1.FullCardNumber) *d
 	result.SetDriverIdentification(driverID)
 
 	// Clear raw_data to force semantic marshalling
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

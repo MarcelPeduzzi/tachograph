@@ -231,7 +231,7 @@ func (opts AnonymizeOptions) AnonymizeVuEventRecord(rec *ddv1.VuEventRecord) *dd
 	}
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

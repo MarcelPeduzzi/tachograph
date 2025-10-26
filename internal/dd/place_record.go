@@ -82,7 +82,8 @@ func (opts MarshalOptions) MarshalPlaceRecord(rec *ddv1.PlaceRecord) ([]byte, er
 
 	// Use raw data painting strategy if available
 	var canvas [lenPlaceRecord]byte
-	if rawData := rec.GetRawData(); len(rawData) > 0 {
+	if rec.HasRawData() {
+		rawData := rec.GetRawData()
 		if len(rawData) != lenPlaceRecord {
 			return nil, fmt.Errorf("invalid raw_data length for PlaceRecord: got %d, want %d", len(rawData), lenPlaceRecord)
 		}

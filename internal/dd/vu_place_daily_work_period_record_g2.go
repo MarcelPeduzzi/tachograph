@@ -66,7 +66,8 @@ func (opts MarshalOptions) MarshalVuPlaceDailyWorkPeriodRecordG2(record *ddv1.Vu
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuPlaceDailyWorkPeriodRecordG2]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenVuPlaceDailyWorkPeriodRecordG2 {
 			return nil, fmt.Errorf("invalid raw_data length for VuPlaceDailyWorkPeriodRecordG2: got %d, want %d", len(rawData), lenVuPlaceDailyWorkPeriodRecordG2)
 		}

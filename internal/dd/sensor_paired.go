@@ -181,7 +181,12 @@ func (opts AnonymizeOptions) AnonymizeSensorPaired(sensor *ddv1.SensorPaired) *d
 	result := proto.Clone(sensor).(*ddv1.SensorPaired)
 
 	// Anonymize sensor serial number (ExtendedSerialNumber)
+	// Preserve equipment type and manufacturer code (structural info) but anonymize the serial number
 	serialNum := &ddv1.ExtendedSerialNumber{}
+	if origSerial := sensor.GetSerialNumber(); origSerial != nil {
+		serialNum.SetType(origSerial.GetType())
+		serialNum.SetManufacturerCode(origSerial.GetManufacturerCode())
+	}
 	serialNum.SetSerialNumber(0)
 	result.SetSerialNumber(serialNum)
 
@@ -191,7 +196,7 @@ func (opts AnonymizeOptions) AnonymizeSensorPaired(sensor *ddv1.SensorPaired) *d
 	// Keep pairing date as-is (could be anonymized if needed)
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

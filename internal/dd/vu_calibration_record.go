@@ -460,7 +460,7 @@ func (opts AnonymizeOptions) AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibratio
 	// k_constant_of_recording_equipment, l_tyre_circumference, tyre_size, authorised_speed
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

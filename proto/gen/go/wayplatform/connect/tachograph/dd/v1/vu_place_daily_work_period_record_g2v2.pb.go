@@ -42,9 +42,11 @@ const (
 // - Gen2v2: Uses FullCardNumberAndGeneration (20 bytes) and PlaceAuthRecord (22 bytes) = 42 bytes
 type VuPlaceDailyWorkPeriodRecordG2V2 struct {
 	state                      protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber  *FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber,proto3"`
-	xxx_hidden_PlaceAuthRecord *PlaceAuthRecord             `protobuf:"bytes,2,opt,name=place_auth_record,json=placeAuthRecord,proto3"`
-	xxx_hidden_RawData         []byte                       `protobuf:"bytes,3,opt,name=raw_data,json=rawData,proto3"`
+	xxx_hidden_FullCardNumber  *FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
+	xxx_hidden_PlaceAuthRecord *PlaceAuthRecord             `protobuf:"bytes,2,opt,name=place_auth_record,json=placeAuthRecord"`
+	xxx_hidden_RawData         []byte                       `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
+	XXX_presence               [1]uint32
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -108,6 +110,7 @@ func (x *VuPlaceDailyWorkPeriodRecordG2V2) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *VuPlaceDailyWorkPeriodRecordG2V2) HasFullCardNumber() bool {
@@ -124,12 +127,24 @@ func (x *VuPlaceDailyWorkPeriodRecordG2V2) HasPlaceAuthRecord() bool {
 	return x.xxx_hidden_PlaceAuthRecord != nil
 }
 
+func (x *VuPlaceDailyWorkPeriodRecordG2V2) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *VuPlaceDailyWorkPeriodRecordG2V2) ClearFullCardNumber() {
 	x.xxx_hidden_FullCardNumber = nil
 }
 
 func (x *VuPlaceDailyWorkPeriodRecordG2V2) ClearPlaceAuthRecord() {
 	x.xxx_hidden_PlaceAuthRecord = nil
+}
+
+func (x *VuPlaceDailyWorkPeriodRecordG2V2) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RawData = nil
 }
 
 type VuPlaceDailyWorkPeriodRecordG2V2_builder struct {
@@ -149,7 +164,10 @@ func (b0 VuPlaceDailyWorkPeriodRecordG2V2_builder) Build() *VuPlaceDailyWorkPeri
 	_, _ = b, x
 	x.xxx_hidden_FullCardNumber = b.FullCardNumber
 	x.xxx_hidden_PlaceAuthRecord = b.PlaceAuthRecord
-	x.xxx_hidden_RawData = b.RawData
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -162,7 +180,7 @@ const file_wayplatform_connect_tachograph_dd_v1_vu_place_daily_work_period_recor
 	"\x10full_card_number\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0efullCardNumber\x12a\n" +
 	"\x11place_auth_record\x18\x02 \x01(\v25.wayplatform.connect.tachograph.dd.v1.PlaceAuthRecordR\x0fplaceAuthRecord\x12\x19\n" +
 	"\braw_data\x18\x03 \x01(\fR\arawDataB\xe4\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B%VuPlaceDailyWorkPeriodRecordG2v2ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B%VuPlaceDailyWorkPeriodRecordG2v2ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_vu_place_daily_work_period_record_g2v2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_vu_place_daily_work_period_record_g2v2_proto_goTypes = []any{

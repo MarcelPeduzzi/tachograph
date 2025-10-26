@@ -193,7 +193,7 @@ func (opts AnonymizeOptions) AnonymizeVuOverspeedEventRecord(rec *ddv1.VuOverspe
 	// (max_speed_kmh, average_speed_kmh, similar_events_number are not personally identifiable)
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

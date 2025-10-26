@@ -108,7 +108,8 @@ func (opts MarshalOptions) MarshalVuBorderCrossingRecord(record *ddv1.VuBorderCr
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuBorderCrossingRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenVuBorderCrossingRecord {
 			return nil, fmt.Errorf("invalid raw_data length for VuBorderCrossingRecord: got %d, want %d", len(rawData), lenVuBorderCrossingRecord)
 		}

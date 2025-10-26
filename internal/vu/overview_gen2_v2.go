@@ -3,6 +3,7 @@ package vu
 import (
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/proto"
 )
@@ -167,20 +168,20 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V2(overview *vuv1.OverviewGen2
 
 	// Anonymize VIN
 	if vin := result.GetVehicleIdentificationNumber(); vin != nil {
-		vin.SetValue("TESTVIN1234567890")
+		result.SetVehicleIdentificationNumber(dd.NewIa5StringValue(17, "TESTVIN1234567890"))
 	}
 
-	// Anonymize VRN
+	// Anonymize VRN (just an IA5String in Gen2 V2)
 	if vrn := result.GetVehicleRegistrationNumber(); vrn != nil {
-		vrn.SetValue("TEST123")
+		result.SetVehicleRegistrationNumber(dd.NewIa5StringValue(vrn.GetLength(), "TEST123"))
 	}
 
 	// Set signature to empty bytes (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
 	result.SetSignature([]byte{})
 
-	// Note: We intentionally keep raw_data here because MarshalOverviewGen2V2
-	// currently requires raw_data (semantic marshalling not yet implemented).
+	// Clear raw_data
+	result.ClearRawData()
 
 	return result
 }

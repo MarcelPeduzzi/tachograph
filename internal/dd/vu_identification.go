@@ -302,7 +302,12 @@ func (opts AnonymizeOptions) AnonymizeVuIdentification(ident *ddv1.VuIdentificat
 	result.SetPartNumber(NewIa5StringValue(16, "TESTPART12345678"))
 
 	// Anonymize serial number (ExtendedSerialNumber)
+	// Preserve equipment type and manufacturer code (structural info) but anonymize the serial number
 	serialNum := &ddv1.ExtendedSerialNumber{}
+	if origSerial := ident.GetSerialNumber(); origSerial != nil {
+		serialNum.SetType(origSerial.GetType())
+		serialNum.SetManufacturerCode(origSerial.GetManufacturerCode())
+	}
 	serialNum.SetSerialNumber(0)
 	result.SetSerialNumber(serialNum)
 
@@ -321,7 +326,7 @@ func (opts AnonymizeOptions) AnonymizeVuIdentification(ident *ddv1.VuIdentificat
 	result.SetApprovalNumber(NewIa5StringValue(8, "TEST0001"))
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

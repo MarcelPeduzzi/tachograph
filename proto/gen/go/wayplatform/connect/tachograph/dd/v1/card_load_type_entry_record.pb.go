@@ -38,9 +38,11 @@ const (
 //	}
 type CardLoadTypeEntryRecord struct {
 	state                      protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_TimeStamp       *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=time_stamp,json=timeStamp,proto3"`
-	xxx_hidden_LoadTypeEntered LoadType               `protobuf:"varint,2,opt,name=load_type_entered,json=loadTypeEntered,proto3,enum=wayplatform.connect.tachograph.dd.v1.LoadType"`
-	xxx_hidden_RawData         []byte                 `protobuf:"bytes,3,opt,name=raw_data,json=rawData,proto3"`
+	xxx_hidden_TimeStamp       *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=time_stamp,json=timeStamp"`
+	xxx_hidden_LoadTypeEntered LoadType               `protobuf:"varint,2,opt,name=load_type_entered,json=loadTypeEntered,enum=wayplatform.connect.tachograph.dd.v1.LoadType"`
+	xxx_hidden_RawData         []byte                 `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
+	XXX_presence               [1]uint32
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -79,7 +81,9 @@ func (x *CardLoadTypeEntryRecord) GetTimeStamp() *timestamppb.Timestamp {
 
 func (x *CardLoadTypeEntryRecord) GetLoadTypeEntered() LoadType {
 	if x != nil {
-		return x.xxx_hidden_LoadTypeEntered
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+			return x.xxx_hidden_LoadTypeEntered
+		}
 	}
 	return LoadType_LOAD_TYPE_UNSPECIFIED
 }
@@ -97,6 +101,7 @@ func (x *CardLoadTypeEntryRecord) SetTimeStamp(v *timestamppb.Timestamp) {
 
 func (x *CardLoadTypeEntryRecord) SetLoadTypeEntered(v LoadType) {
 	x.xxx_hidden_LoadTypeEntered = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
 func (x *CardLoadTypeEntryRecord) SetRawData(v []byte) {
@@ -104,6 +109,7 @@ func (x *CardLoadTypeEntryRecord) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *CardLoadTypeEntryRecord) HasTimeStamp() bool {
@@ -113,8 +119,32 @@ func (x *CardLoadTypeEntryRecord) HasTimeStamp() bool {
 	return x.xxx_hidden_TimeStamp != nil
 }
 
+func (x *CardLoadTypeEntryRecord) HasLoadTypeEntered() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *CardLoadTypeEntryRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *CardLoadTypeEntryRecord) ClearTimeStamp() {
 	x.xxx_hidden_TimeStamp = nil
+}
+
+func (x *CardLoadTypeEntryRecord) ClearLoadTypeEntered() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_LoadTypeEntered = LoadType_LOAD_TYPE_UNSPECIFIED
+}
+
+func (x *CardLoadTypeEntryRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RawData = nil
 }
 
 type CardLoadTypeEntryRecord_builder struct {
@@ -123,7 +153,7 @@ type CardLoadTypeEntryRecord_builder struct {
 	// Date and time when the load type was entered
 	TimeStamp *timestamppb.Timestamp
 	// Load type entered by the driver
-	LoadTypeEntered LoadType
+	LoadTypeEntered *LoadType
 	// Raw binary data for round-trip fidelity (5 bytes)
 	RawData []byte
 }
@@ -133,8 +163,14 @@ func (b0 CardLoadTypeEntryRecord_builder) Build() *CardLoadTypeEntryRecord {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_TimeStamp = b.TimeStamp
-	x.xxx_hidden_LoadTypeEntered = b.LoadTypeEntered
-	x.xxx_hidden_RawData = b.RawData
+	if b.LoadTypeEntered != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_LoadTypeEntered = *b.LoadTypeEntered
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -148,7 +184,7 @@ const file_wayplatform_connect_tachograph_dd_v1_card_load_type_entry_record_prot
 	"time_stamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimeStamp\x12Z\n" +
 	"\x11load_type_entered\x18\x02 \x01(\x0e2..wayplatform.connect.tachograph.dd.v1.LoadTypeR\x0floadTypeEntered\x12\x19\n" +
 	"\braw_data\x18\x03 \x01(\fR\arawDataB\xdb\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x1cCardLoadTypeEntryRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x1cCardLoadTypeEntryRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_card_load_type_entry_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_card_load_type_entry_record_proto_goTypes = []any{

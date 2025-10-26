@@ -63,7 +63,8 @@ func (opts MarshalOptions) MarshalPreviousVehicleInfoG2(info *ddv1.PreviousVehic
 
 	// Use raw data painting strategy if available
 	var canvas [lenPreviousVehicleInfo]byte
-	if rawData := info.GetRawData(); len(rawData) > 0 {
+	if info.HasRawData() {
+		rawData := info.GetRawData()
 		if len(rawData) != lenPreviousVehicleInfo {
 			return nil, fmt.Errorf("invalid raw_data length for PreviousVehicleInfoG2: got %d, want %d", len(rawData), lenPreviousVehicleInfo)
 		}

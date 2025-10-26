@@ -38,9 +38,11 @@ const (
 //	}
 type PlaceAuthStatusRecord struct {
 	state                           protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_EntryTime            *timestamppb.Timestamp       `protobuf:"bytes,1,opt,name=entry_time,json=entryTime,proto3"`
-	xxx_hidden_AuthenticationStatus PositionAuthenticationStatus `protobuf:"varint,2,opt,name=authentication_status,json=authenticationStatus,proto3,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
-	xxx_hidden_RawData              []byte                       `protobuf:"bytes,3,opt,name=raw_data,json=rawData,proto3"`
+	xxx_hidden_EntryTime            *timestamppb.Timestamp       `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
+	xxx_hidden_AuthenticationStatus PositionAuthenticationStatus `protobuf:"varint,2,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
+	xxx_hidden_RawData              []byte                       `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
+	XXX_presence                    [1]uint32
 	unknownFields                   protoimpl.UnknownFields
 	sizeCache                       protoimpl.SizeCache
 }
@@ -79,7 +81,9 @@ func (x *PlaceAuthStatusRecord) GetEntryTime() *timestamppb.Timestamp {
 
 func (x *PlaceAuthStatusRecord) GetAuthenticationStatus() PositionAuthenticationStatus {
 	if x != nil {
-		return x.xxx_hidden_AuthenticationStatus
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+			return x.xxx_hidden_AuthenticationStatus
+		}
 	}
 	return PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
 }
@@ -97,6 +101,7 @@ func (x *PlaceAuthStatusRecord) SetEntryTime(v *timestamppb.Timestamp) {
 
 func (x *PlaceAuthStatusRecord) SetAuthenticationStatus(v PositionAuthenticationStatus) {
 	x.xxx_hidden_AuthenticationStatus = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
 func (x *PlaceAuthStatusRecord) SetRawData(v []byte) {
@@ -104,6 +109,7 @@ func (x *PlaceAuthStatusRecord) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *PlaceAuthStatusRecord) HasEntryTime() bool {
@@ -113,8 +119,32 @@ func (x *PlaceAuthStatusRecord) HasEntryTime() bool {
 	return x.xxx_hidden_EntryTime != nil
 }
 
+func (x *PlaceAuthStatusRecord) HasAuthenticationStatus() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *PlaceAuthStatusRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *PlaceAuthStatusRecord) ClearEntryTime() {
 	x.xxx_hidden_EntryTime = nil
+}
+
+func (x *PlaceAuthStatusRecord) ClearAuthenticationStatus() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_AuthenticationStatus = PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
+}
+
+func (x *PlaceAuthStatusRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RawData = nil
 }
 
 type PlaceAuthStatusRecord_builder struct {
@@ -123,7 +153,7 @@ type PlaceAuthStatusRecord_builder struct {
 	// Date and time related to the entry (same as in corresponding PlaceRecord)
 	EntryTime *timestamppb.Timestamp
 	// Authentication status of the recorded GNSS position
-	AuthenticationStatus PositionAuthenticationStatus
+	AuthenticationStatus *PositionAuthenticationStatus
 	// Raw binary data for round-trip fidelity (5 bytes)
 	RawData []byte
 }
@@ -133,8 +163,14 @@ func (b0 PlaceAuthStatusRecord_builder) Build() *PlaceAuthStatusRecord {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_EntryTime = b.EntryTime
-	x.xxx_hidden_AuthenticationStatus = b.AuthenticationStatus
-	x.xxx_hidden_RawData = b.RawData
+	if b.AuthenticationStatus != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_AuthenticationStatus = *b.AuthenticationStatus
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -148,7 +184,7 @@ const file_wayplatform_connect_tachograph_dd_v1_place_auth_status_record_proto_r
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12w\n" +
 	"\x15authentication_status\x18\x02 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatus\x12\x19\n" +
 	"\braw_data\x18\x03 \x01(\fR\arawDataB\xd9\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x1aPlaceAuthStatusRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x1aPlaceAuthStatusRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_place_auth_status_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_place_auth_status_record_proto_goTypes = []any{

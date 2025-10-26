@@ -224,7 +224,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGe
 	result.SetSignature(make([]byte, 128))
 
 	// Clear raw_data to force semantic marshalling
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

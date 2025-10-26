@@ -66,7 +66,8 @@ func (opts MarshalOptions) MarshalCardLoadTypeEntryRecord(record *ddv1.CardLoadT
 
 	// Use raw data painting strategy if available
 	var canvas [lenCardLoadTypeEntryRecord]byte
-	if rawData := record.GetRawData(); len(rawData) > 0 {
+	if record.HasRawData() {
+		rawData := record.GetRawData()
 		if len(rawData) != lenCardLoadTypeEntryRecord {
 			return nil, fmt.Errorf("invalid raw_data length for CardLoadTypeEntryRecord: got %d, want %d", len(rawData), lenCardLoadTypeEntryRecord)
 		}

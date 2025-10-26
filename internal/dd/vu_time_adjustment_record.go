@@ -186,7 +186,7 @@ func (opts AnonymizeOptions) AnonymizeVuTimeAdjustmentRecord(rec *ddv1.VuTimeAdj
 	result.SetWorkshopCardNumber(opts.AnonymizeFullCardNumber(rec.GetWorkshopCardNumber()))
 
 	// Clear raw_data
-	result.SetRawData(nil)
+	result.ClearRawData()
 
 	return result
 }

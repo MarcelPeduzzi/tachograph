@@ -94,3 +94,15 @@ func (opts MarshalOptions) MarshalVehicleRegistrationIdentification(vrn *ddv1.Ve
 
 	return canvas[:], nil
 }
+
+// AnonymizeVehicleRegistrationIdentification anonymizes vehicle registration data.
+func AnonymizeVehicleRegistrationIdentification(vreg *ddv1.VehicleRegistrationIdentification) *ddv1.VehicleRegistrationIdentification {
+	if vreg == nil {
+		return nil
+	}
+
+	result := &ddv1.VehicleRegistrationIdentification{}
+	result.SetNation(ddv1.NationNumeric_FINLAND)
+	result.SetNumber(NewStringValue(ddv1.Encoding_ISO_8859_1, 13, "TEST123"))
+	return result
+}

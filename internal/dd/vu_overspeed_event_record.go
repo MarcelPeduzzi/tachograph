@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -170,4 +171,28 @@ func (opts MarshalOptions) MarshalVuOverspeedEventRecord(record *ddv1.VuOverspee
 	canvas[idxSimilarEventsNumber] = byte(record.GetSimilarEventsNumber())
 
 	return canvas[:], nil
+}
+
+// AnonymizeVuOverspeedEventRecord anonymizes a VU overspeed event record.
+func AnonymizeVuOverspeedEventRecord(rec *ddv1.VuOverspeedEventRecord, opts AnonymizeOptions) *ddv1.VuOverspeedEventRecord {
+	if rec == nil {
+		return nil
+	}
+
+	result := proto.Clone(rec).(*ddv1.VuOverspeedEventRecord)
+
+	// Anonymize timestamps
+	result.SetBeginTime(AnonymizeTimestamp(rec.GetBeginTime(), opts))
+	result.SetEndTime(AnonymizeTimestamp(rec.GetEndTime(), opts))
+
+	// Anonymize card number
+	result.SetCardNumberDriverSlotBegin(AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotBegin()))
+
+	// Speed values are not PII - keep as-is
+	// (max_speed_kmh, average_speed_kmh, similar_events_number are not personally identifiable)
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

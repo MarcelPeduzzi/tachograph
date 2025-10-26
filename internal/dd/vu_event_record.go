@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -203,4 +204,33 @@ func (opts MarshalOptions) MarshalVuEventRecord(record *ddv1.VuEventRecord) ([]b
 	canvas[idxSimilarEventsNumber] = byte(record.GetSimilarEventsNumber())
 
 	return canvas[:], nil
+}
+
+// AnonymizeVuEventRecord anonymizes a VU event record.
+func AnonymizeVuEventRecord(rec *ddv1.VuEventRecord, opts AnonymizeOptions) *ddv1.VuEventRecord {
+	if rec == nil {
+		return nil
+	}
+
+	result := proto.Clone(rec).(*ddv1.VuEventRecord)
+
+	// Anonymize timestamps
+	result.SetBeginTime(AnonymizeTimestamp(rec.GetBeginTime(), opts))
+	result.SetEndTime(AnonymizeTimestamp(rec.GetEndTime(), opts))
+
+	// Anonymize card numbers
+	result.SetCardNumberDriverSlotBegin(AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotBegin()))
+	result.SetCardNumberCodriverSlotBegin(AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotBegin()))
+	result.SetCardNumberDriverSlotEnd(AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotEnd()))
+	result.SetCardNumberCodriverSlotEnd(AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotEnd()))
+
+	// Anonymize similar card (if present)
+	if rec.GetSimilarEventsNumber() > 0 {
+		result.SetSimilarEventsNumber(rec.GetSimilarEventsNumber()) // Not PII
+	}
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

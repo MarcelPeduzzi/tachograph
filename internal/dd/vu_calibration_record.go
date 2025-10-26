@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"encoding/binary"
 	"fmt"
 
@@ -411,4 +412,54 @@ func (opts MarshalOptions) MarshalVuCalibrationRecord(record *ddv1.VuCalibration
 	}
 
 	return canvas[:], nil
+}
+
+// AnonymizeVuCalibrationRecord anonymizes a VU calibration record.
+func AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibrationRecord, opts AnonymizeOptions) *ddv1.VuCalibrationRecord {
+	if rec == nil {
+		return nil
+	}
+
+	result := proto.Clone(rec).(*ddv1.VuCalibrationRecord)
+
+	// Anonymize workshop name (35 bytes)
+	result.SetWorkshopName(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST WORKSHOP"))
+
+	// Anonymize workshop address (35 bytes)
+	result.SetWorkshopAddress(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST ADDRESS, 00000 TEST CITY"))
+
+	// Anonymize workshop card number
+	result.SetWorkshopCardNumber(AnonymizeFullCardNumber(rec.GetWorkshopCardNumber()))
+
+	// Anonymize workshop card expiry date (preserve or anonymize timestamp)
+	if expiryDate := rec.GetWorkshopCardExpiryDate(); expiryDate != nil && !opts.PreserveTimestamps {
+		// Create test expiry date
+		result.SetWorkshopCardExpiryDate(NewDate(2025, 12, 31))
+	}
+
+	// Anonymize VIN (17 bytes IA5String)
+	result.SetVin(NewIa5StringValue(17, "TESTVIN1234567890"))
+
+	// Anonymize vehicle registration
+	vreg := &ddv1.VehicleRegistrationIdentification{}
+	vreg.SetNation(ddv1.NationNumeric_FINLAND)
+	vreg.SetNumber(NewStringValue(ddv1.Encoding_ISO_8859_1, 13, "TEST123"))
+	result.SetVehicleRegistration(vreg)
+
+	// Anonymize odometer values
+	result.SetOldOdometerValueKm(AnonymizeOdometerValue(rec.GetOldOdometerValueKm(), opts))
+	result.SetNewOdometerValueKm(AnonymizeOdometerValue(rec.GetNewOdometerValueKm(), opts))
+
+	// Anonymize timestamps
+	result.SetOldTimeValue(AnonymizeTimestamp(rec.GetOldTimeValue(), opts))
+	result.SetNewTimeValue(AnonymizeTimestamp(rec.GetNewTimeValue(), opts))
+	result.SetNextCalibrationDate(AnonymizeTimestamp(rec.GetNextCalibrationDate(), opts))
+
+	// Keep technical values (not PII): w_vehicle_characteristic_constant,
+	// k_constant_of_recording_equipment, l_tyre_circumference, tyre_size, authorised_speed
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

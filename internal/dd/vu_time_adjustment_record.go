@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -160,4 +161,31 @@ func (opts MarshalOptions) MarshalVuTimeAdjustmentRecord(record *ddv1.VuTimeAdju
 	copy(canvas[idxWorkshopCardNumber:idxWorkshopCardNumber+lenWorkshopCardNumber], workshopCardNumber)
 
 	return canvas[:], nil
+}
+
+// AnonymizeVuTimeAdjustmentRecord anonymizes a VU time adjustment record.
+func AnonymizeVuTimeAdjustmentRecord(rec *ddv1.VuTimeAdjustmentRecord, opts AnonymizeOptions) *ddv1.VuTimeAdjustmentRecord {
+	if rec == nil {
+		return nil
+	}
+
+	result := proto.Clone(rec).(*ddv1.VuTimeAdjustmentRecord)
+
+	// Anonymize timestamps
+	result.SetOldTimeValue(AnonymizeTimestamp(rec.GetOldTimeValue(), opts))
+	result.SetNewTimeValue(AnonymizeTimestamp(rec.GetNewTimeValue(), opts))
+
+	// Anonymize workshop name (35 bytes)
+	result.SetWorkshopName(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST WORKSHOP"))
+
+	// Anonymize workshop address (35 bytes)
+	result.SetWorkshopAddress(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST ADDRESS, 00000 TEST CITY"))
+
+	// Anonymize workshop card number
+	result.SetWorkshopCardNumber(AnonymizeFullCardNumber(rec.GetWorkshopCardNumber()))
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

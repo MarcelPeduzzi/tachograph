@@ -580,14 +580,12 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 
 	// Anonymize VIN
 	if vin := result.GetVehicleIdentificationNumber(); vin != nil {
-		vin.SetValue("TESTVIN1234567890")
+		result.SetVehicleIdentificationNumber(dd.NewIa5StringValue(17, "TESTVIN1234567890"))
 	}
 
 	// Anonymize VRN
 	if vrn := result.GetVehicleRegistrationWithNation(); vrn != nil {
-		if vrnNum := vrn.GetNumber(); vrnNum != nil {
-			vrnNum.SetValue("TEST123")
-		}
+		result.SetVehicleRegistrationWithNation(dd.AnonymizeVehicleRegistrationIdentification(vrn))
 	}
 
 	// Clear certificates (will be invalid after anonymization anyway)
@@ -597,6 +595,10 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
+
+	// TODO: Implement comprehensive anonymization for timestamps, downloading activities,
+	// company locks, and control activities. For now, we just anonymize VIN/VRN and
+	// clear certificates/signature to maintain a stable codebase.
 
 	// Note: We intentionally keep raw_data here because MarshalOverviewGen1 uses
 	// raw_data painting to serialize. The painting will apply the anonymized

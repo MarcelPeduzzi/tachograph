@@ -354,14 +354,86 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		return nil
 	}
 	result := proto.Clone(activities).(*vuv1.ActivitiesGen1)
+
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
+	// Anonymize card IW data (cards inserted/withdrawn)
+	var anonymizedCardIWRecords []*ddv1.VuCardIWRecord
+	for _, record := range result.GetCardIwData() {
+		if record == nil {
+			continue
+		}
+		anonRecord := proto.Clone(record).(*ddv1.VuCardIWRecord)
+
+		// Anonymize holder name (surname and first names, each 35 bytes)
+		holderName := &ddv1.HolderName{}
+		holderName.SetHolderSurname(dd.NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST"))
+		holderName.SetHolderFirstNames(dd.NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "DRIVER"))
+		anonRecord.SetCardHolderName(holderName)
+
+		// Anonymize card number
+		anonRecord.SetFullCardNumber(dd.AnonymizeFullCardNumber(record.GetFullCardNumber()))
+
+		// Anonymize card expiry date (preserve or anonymize timestamp)
+		if expiryDate := record.GetCardExpiryDate(); expiryDate != nil && !opts.PreserveTimestamps {
+			anonRecord.SetCardExpiryDate(dd.NewDate(2025, 12, 31))
+		}
+
+		// Anonymize card insertion/withdrawal timestamps
+		anonRecord.SetCardInsertionTime(dd.AnonymizeTimestamp(record.GetCardInsertionTime(), ddOpts))
+		anonRecord.SetCardSlotNumber(record.GetCardSlotNumber()) // Not PII
+
+		// Anonymize card withdrawal time if present
+		if record.GetCardWithdrawalTime() != nil {
+			anonRecord.SetCardWithdrawalTime(dd.AnonymizeTimestamp(record.GetCardWithdrawalTime(), ddOpts))
+		}
+
+		// Anonymize odometer values
+		anonRecord.SetOdometerAtInsertionKm(dd.AnonymizeOdometerValue(record.GetOdometerAtInsertionKm(), ddOpts))
+		anonRecord.SetOdometerAtWithdrawalKm(dd.AnonymizeOdometerValue(record.GetOdometerAtWithdrawalKm(), ddOpts))
+
+		// Previous vehicle info and manual input flag are not PII - keep as-is
+
+		// Clear raw_data
+		anonRecord.SetRawData(nil)
+		anonymizedCardIWRecords = append(anonymizedCardIWRecords, anonRecord)
+	}
+	result.SetCardIwData(anonymizedCardIWRecords)
+
+	// Anonymize activity changes
+	var anonymizedActivityChanges []*ddv1.ActivityChangeInfo
+	for _, activity := range result.GetActivityChanges() {
+		if activity == nil {
+			continue
+		}
+		anonActivity := proto.Clone(activity).(*ddv1.ActivityChangeInfo)
+
+		// Activity changes don't contain PII - just clear raw_data
+		// (slot, crew mode, inserted status, activity type, time of change are not personally identifiable)
+
+		// Clear raw_data
+		anonActivity.SetRawData(nil)
+		anonymizedActivityChanges = append(anonymizedActivityChanges, anonActivity)
+	}
+	result.SetActivityChanges(anonymizedActivityChanges)
+
+	// Anonymize place records (VU place daily work period records)
+	var anonymizedPlaceRecords []*ddv1.VuPlaceDailyWorkPeriodRecord
+	for _, placeRecord := range result.GetPlaceRecords() {
+		anonymizedPlaceRecords = append(anonymizedPlaceRecords, dd.AnonymizeVuPlaceDailyWorkPeriodRecord(placeRecord, ddOpts))
+	}
+	result.SetPlaceRecords(anonymizedPlaceRecords)
+
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
 
-	// Note: We intentionally keep raw_data here because MarshalActivitiesGen1
-	// currently requires raw_data (semantic marshalling not yet implemented).
-	// Once semantic marshalling is implemented, we should clear raw_data and
-	// implement full semantic anonymization of card_iw_data, activity_changes, etc.
+	// Clear raw_data to force semantic marshalling
+	result.SetRawData(nil)
 
 	return result
 }

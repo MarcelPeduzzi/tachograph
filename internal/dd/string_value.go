@@ -137,3 +137,12 @@ func (opts MarshalOptions) MarshalStringValue(sv *ddv1.StringValue) ([]byte, err
 	// Handle variable-length strings (no padding)
 	return append(result, encoded...), nil
 }
+
+// NewStringValue creates a new StringValue with the given encoding, length, and value.
+func NewStringValue(encoding ddv1.Encoding, length int32, value string) *ddv1.StringValue {
+	sv := &ddv1.StringValue{}
+	sv.SetEncoding(encoding)
+	sv.SetLength(length)
+	sv.SetValue(value)
+	return sv
+}

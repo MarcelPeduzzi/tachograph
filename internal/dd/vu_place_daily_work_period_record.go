@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -91,4 +92,39 @@ func (opts MarshalOptions) MarshalVuPlaceDailyWorkPeriodRecord(record *ddv1.VuPl
 	copy(canvas[offset:offset+10], placeRecordBytes)
 
 	return canvas[:], nil
+}
+
+// AnonymizeVuPlaceDailyWorkPeriodRecord anonymizes a VU place daily work period record.
+func AnonymizeVuPlaceDailyWorkPeriodRecord(rec *ddv1.VuPlaceDailyWorkPeriodRecord, opts AnonymizeOptions) *ddv1.VuPlaceDailyWorkPeriodRecord {
+	if rec == nil {
+		return nil
+	}
+
+	result := proto.Clone(rec).(*ddv1.VuPlaceDailyWorkPeriodRecord)
+
+	// Anonymize card number
+	if cardNumber := result.GetFullCardNumber(); cardNumber != nil {
+		result.SetFullCardNumber(AnonymizeFullCardNumber(cardNumber))
+	}
+
+	// Anonymize place record
+	if place := result.GetPlaceRecord(); place != nil {
+		anonymizedPlace := proto.Clone(place).(*ddv1.PlaceRecord)
+
+		// Anonymize timestamp
+		anonymizedPlace.SetEntryTime(AnonymizeTimestamp(place.GetEntryTime(), opts))
+
+		// Anonymize odometer
+		anonymizedPlace.SetVehicleOdometerKm(AnonymizeOdometerValue(place.GetVehicleOdometerKm(), opts))
+
+		// Clear raw_data
+		anonymizedPlace.SetRawData(nil)
+
+		result.SetPlaceRecord(anonymizedPlace)
+	}
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

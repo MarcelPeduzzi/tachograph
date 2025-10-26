@@ -222,7 +222,6 @@ func (opts MarshalOptions) marshalDetailedSpeedBlock(block *vuv1.DetailedSpeedGe
 	for i, speed := range speeds {
 		canvas[offset+i] = byte(speed)
 	}
-	offset += 60
 
 	return canvas[:], nil
 }
@@ -234,13 +233,40 @@ func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGe
 		return nil
 	}
 	result := proto.Clone(ds).(*vuv1.DetailedSpeedGen1)
+
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
+	// Anonymize blocks (timestamp only - speed values are not PII)
+	var anonymizedBlocks []*vuv1.DetailedSpeedGen1_DetailedSpeedBlock
+	for _, block := range result.GetSpeedBlocks() {
+		if block == nil {
+			continue
+		}
+		anonBlock := proto.Clone(block).(*vuv1.DetailedSpeedGen1_DetailedSpeedBlock)
+
+		// Anonymize begin date
+		anonBlock.SetBeginDate(dd.AnonymizeTimestamp(block.GetBeginDate(), ddOpts))
+
+		// Speed values are not PII - keep as-is
+		// (speeds_kmh array contains actual speed measurements which are not personally identifiable)
+
+		// Clear raw_data
+		anonBlock.SetRawData(nil)
+
+		anonymizedBlocks = append(anonymizedBlocks, anonBlock)
+	}
+	result.SetSpeedBlocks(anonymizedBlocks)
+
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
 
-	// Note: We intentionally keep raw_data here because MarshalDetailedSpeedGen1
-	// currently requires raw_data (semantic marshalling not yet implemented).
-	// Once semantic marshalling is implemented, we should clear raw_data.
+	// Clear raw_data to force semantic marshalling
+	result.SetRawData(nil)
 
 	return result
 }

@@ -195,14 +195,36 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGe
 		return nil
 	}
 	result := proto.Clone(td).(*vuv1.TechnicalDataGen1)
+
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
+	// Anonymize VU identification
+	if vuIdent := result.GetVuIdentification(); vuIdent != nil {
+		result.SetVuIdentification(dd.AnonymizeVuIdentification(vuIdent))
+	}
+
+	// Anonymize paired sensor
+	if sensor := result.GetPairedSensor(); sensor != nil {
+		result.SetPairedSensor(dd.AnonymizeSensorPaired(sensor))
+	}
+
+	// Anonymize calibration records
+	var anonymizedCalibrationRecords []*ddv1.VuCalibrationRecord
+	for _, calibrationRecord := range result.GetCalibrationRecords() {
+		anonymizedCalibrationRecords = append(anonymizedCalibrationRecords, dd.AnonymizeVuCalibrationRecord(calibrationRecord, ddOpts))
+	}
+	result.SetCalibrationRecords(anonymizedCalibrationRecords)
+
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
 
-	// Note: We intentionally keep raw_data here because MarshalTechnicalDataGen1
-	// currently requires raw_data (semantic marshalling not yet implemented).
-	// Once semantic marshalling is implemented, we should clear raw_data and
-	// implement full semantic anonymization of VIN, VRN, sensor data, etc.
+	// Clear raw_data to force semantic marshalling
+	result.SetRawData(nil)
 
 	return result
 }

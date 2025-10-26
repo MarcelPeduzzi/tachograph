@@ -76,3 +76,12 @@ func (opts MarshalOptions) MarshalDate(date *ddv1.Date) ([]byte, error) {
 	canvas[3] = byte((day/10)%10<<4 | day%10)
 	return canvas[:], nil
 }
+
+// NewDate creates a new Date with the given year, month, and day.
+func NewDate(year, month, day int32) *ddv1.Date {
+	d := &ddv1.Date{}
+	d.SetYear(year)
+	d.SetMonth(month)
+	d.SetDay(day)
+	return d
+}

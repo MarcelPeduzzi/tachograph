@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -280,4 +281,46 @@ func (opts MarshalOptions) MarshalVuIdentification(vuIdent *ddv1.VuIdentificatio
 	}
 
 	return canvas, nil
+}
+
+// AnonymizeVuIdentification anonymizes VU identification data.
+func AnonymizeVuIdentification(ident *ddv1.VuIdentification) *ddv1.VuIdentification {
+	if ident == nil {
+		return nil
+	}
+
+	result := proto.Clone(ident).(*ddv1.VuIdentification)
+
+	// Anonymize manufacturer name (35 bytes)
+	result.SetManufacturerName(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST MANUFACTURER"))
+
+	// Anonymize manufacturer address (35 bytes)
+	result.SetManufacturerAddress(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST ADDRESS, 00000 TEST CITY"))
+
+	// Anonymize part number (16 bytes IA5String)
+	result.SetPartNumber(NewIa5StringValue(16, "TESTPART12345678"))
+
+	// Anonymize serial number (ExtendedSerialNumber)
+	serialNum := &ddv1.ExtendedSerialNumber{}
+	serialNum.SetSerialNumber(0)
+	result.SetSerialNumber(serialNum)
+
+	// Anonymize software identification
+	if softwareIdent := result.GetSoftwareIdentification(); softwareIdent != nil {
+		anonymizedSoftware := &ddv1.SoftwareIdentification{}
+		anonymizedSoftware.SetSoftwareVersion(NewIa5StringValue(4, "TEST"))
+		// Keep installation date as-is or anonymize if needed
+		if softwareIdent.GetSoftwareInstallationDate() != nil {
+			anonymizedSoftware.SetSoftwareInstallationDate(softwareIdent.GetSoftwareInstallationDate())
+		}
+		result.SetSoftwareIdentification(anonymizedSoftware)
+	}
+
+	// Anonymize approval number (8 bytes IA5String for Gen1)
+	result.SetApprovalNumber(NewIa5StringValue(8, "TEST0001"))
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

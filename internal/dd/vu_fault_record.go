@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -230,4 +231,28 @@ func (opts MarshalOptions) marshalEventFaultRecordPurpose(purpose ddv1.EventFaul
 		return byte(unrecognized)
 	}
 	return byte(purpose)
+}
+
+// AnonymizeVuFaultRecord anonymizes a VU fault record.
+func AnonymizeVuFaultRecord(rec *ddv1.VuFaultRecord, opts AnonymizeOptions) *ddv1.VuFaultRecord {
+	if rec == nil {
+		return nil
+	}
+
+	result := proto.Clone(rec).(*ddv1.VuFaultRecord)
+
+	// Anonymize timestamps
+	result.SetBeginTime(AnonymizeTimestamp(rec.GetBeginTime(), opts))
+	result.SetEndTime(AnonymizeTimestamp(rec.GetEndTime(), opts))
+
+	// Anonymize card numbers
+	result.SetCardNumberDriverSlotBegin(AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotBegin()))
+	result.SetCardNumberCodriverSlotBegin(AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotBegin()))
+	result.SetCardNumberDriverSlotEnd(AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotEnd()))
+	result.SetCardNumberCodriverSlotEnd(AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotEnd()))
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

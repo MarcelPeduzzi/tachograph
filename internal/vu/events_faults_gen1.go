@@ -284,14 +284,50 @@ func (opts AnonymizeOptions) anonymizeEventsAndFaultsGen1(ef *vuv1.EventsAndFaul
 		return nil
 	}
 	result := proto.Clone(ef).(*vuv1.EventsAndFaultsGen1)
+
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
+	// Anonymize fault records
+	var anonymizedFaults []*ddv1.VuFaultRecord
+	for _, fault := range result.GetFaults() {
+		anonymizedFaults = append(anonymizedFaults, dd.AnonymizeVuFaultRecord(fault, ddOpts))
+	}
+	result.SetFaults(anonymizedFaults)
+
+	// Anonymize event records
+	var anonymizedEvents []*ddv1.VuEventRecord
+	for _, event := range result.GetEvents() {
+		anonymizedEvents = append(anonymizedEvents, dd.AnonymizeVuEventRecord(event, ddOpts))
+	}
+	result.SetEvents(anonymizedEvents)
+
+	// Anonymize overspeed event records
+	var anonymizedOverspeedEvents []*ddv1.VuOverspeedEventRecord
+	for _, overspeedEvent := range result.GetOverspeedingEvents() {
+		anonymizedOverspeedEvents = append(anonymizedOverspeedEvents, dd.AnonymizeVuOverspeedEventRecord(overspeedEvent, ddOpts))
+	}
+	result.SetOverspeedingEvents(anonymizedOverspeedEvents)
+
+	// Anonymize time adjustment records
+	var anonymizedTimeAdjustments []*ddv1.VuTimeAdjustmentRecord
+	for _, timeAdj := range result.GetTimeAdjustments() {
+		anonymizedTimeAdjustments = append(anonymizedTimeAdjustments, dd.AnonymizeVuTimeAdjustmentRecord(timeAdj, ddOpts))
+	}
+	result.SetTimeAdjustments(anonymizedTimeAdjustments)
+
+	// Overspeed control data has no PII - just keep as-is
+	// (It only contains last overspeed control time, max speed, average speed, etc.)
+
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
 
-	// Note: We intentionally keep raw_data here because MarshalEventsAndFaultsGen1
-	// currently requires raw_data (semantic marshalling not yet implemented).
-	// Once semantic marshalling is implemented, we should clear raw_data and
-	// implement full semantic anonymization of event/fault records.
+	// Clear raw_data to force semantic marshalling
+	result.SetRawData(nil)
 
 	return result
 }

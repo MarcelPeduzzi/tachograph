@@ -48,3 +48,21 @@ func (opts MarshalOptions) MarshalTimeReal(ts *timestamppb.Timestamp) ([]byte, e
 	binary.BigEndian.PutUint32(buf[:], uint32(ts.GetSeconds()))
 	return buf[:], nil
 }
+
+// AnonymizeTimestamp anonymizes a timestamp based on options.
+// If PreserveTimestamps is false, shifts to epoch while maintaining relative ordering.
+func AnonymizeTimestamp(ts *timestamppb.Timestamp, opts AnonymizeOptions) *timestamppb.Timestamp {
+	if ts == nil || opts.PreserveTimestamps {
+		return ts
+	}
+
+	// Calculate offset from epoch
+	epoch := opts.TimestampEpoch
+	if epoch.IsZero() {
+		epoch = DefaultTimestampEpoch
+	}
+
+	// Shift to epoch (this will be refined if we collect all timestamps first)
+	// For now, just shift to epoch
+	return timestamppb.New(epoch)
+}

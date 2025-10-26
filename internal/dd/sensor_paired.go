@@ -1,6 +1,7 @@
 package dd
 
 import (
+	"google.golang.org/protobuf/proto"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -168,4 +169,28 @@ func (opts MarshalOptions) MarshalSensorPaired(sensorPaired *ddv1.SensorPaired) 
 	}
 
 	return canvas, nil
+}
+
+// AnonymizeSensorPaired anonymizes sensor paired data.
+func AnonymizeSensorPaired(sensor *ddv1.SensorPaired) *ddv1.SensorPaired {
+	if sensor == nil {
+		return nil
+	}
+
+	result := proto.Clone(sensor).(*ddv1.SensorPaired)
+
+	// Anonymize sensor serial number (ExtendedSerialNumber)
+	serialNum := &ddv1.ExtendedSerialNumber{}
+	serialNum.SetSerialNumber(0)
+	result.SetSerialNumber(serialNum)
+
+	// Anonymize approval number (8 bytes IA5String for Gen1)
+	result.SetApprovalNumber(NewIa5StringValue(8, "SENSOR01"))
+
+	// Keep pairing date as-is (could be anonymized if needed)
+
+	// Clear raw_data
+	result.SetRawData(nil)
+
+	return result
 }

@@ -197,3 +197,25 @@ func (opts MarshalOptions) MarshalFullCardNumberAsString(cardNumber *ddv1.FullCa
 
 	return opts.MarshalStringValue(nil)
 }
+
+// AnonymizeFullCardNumber replaces a card number with test values while preserving structure.
+func AnonymizeFullCardNumber(fc *ddv1.FullCardNumber) *ddv1.FullCardNumber {
+	if fc == nil {
+		return nil
+	}
+
+	result := &ddv1.FullCardNumber{}
+	result.SetCardType(ddv1.EquipmentType_DRIVER_CARD)
+
+	// Use test driver identification
+	driverID := &ddv1.DriverIdentification{}
+	driverID.SetDriverIdentificationNumber(NewIa5StringValue(14, "12345678"))
+	driverID.SetCardReplacementIndex(NewIa5StringValue(1, "0"))
+	driverID.SetCardRenewalIndex(NewIa5StringValue(1, "0"))
+	result.SetDriverIdentification(driverID)
+
+	// Clear raw_data to force semantic marshalling
+	result.SetRawData(nil)
+
+	return result
+}

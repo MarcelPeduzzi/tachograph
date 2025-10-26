@@ -94,3 +94,11 @@ func (opts MarshalOptions) MarshalIa5StringValue(sv *ddv1.Ia5StringValue) ([]byt
 	}
 	return result, nil
 }
+
+// NewIa5StringValue creates a new Ia5StringValue with the given length and value.
+func NewIa5StringValue(length int32, value string) *ddv1.Ia5StringValue {
+	isv := &ddv1.Ia5StringValue{}
+	isv.SetLength(length)
+	isv.SetValue(value)
+	return isv
+}

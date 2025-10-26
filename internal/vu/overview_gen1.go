@@ -138,8 +138,21 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		return nil, fmt.Errorf("insufficient data for CardSlotsStatus")
 	}
 	cardSlotsStatus := value[offset]
-	driverSlot := ddv1.SlotCardType(cardSlotsStatus & 0x0F)
-	coDriverSlot := ddv1.SlotCardType((cardSlotsStatus >> 4) & 0x0F)
+	driverSlotRaw := byte(cardSlotsStatus & 0x0F)
+	coDriverSlotRaw := byte((cardSlotsStatus >> 4) & 0x0F)
+
+	// Use UnmarshalEnum to properly map protocol values to enum values
+	driverSlot, err := dd.UnmarshalEnum[ddv1.SlotCardType](driverSlotRaw)
+	if err != nil {
+		// Unrecognized value - set to UNRECOGNIZED
+		driverSlot = ddv1.SlotCardType_SLOT_CARD_TYPE_UNRECOGNIZED
+	}
+	coDriverSlot, err := dd.UnmarshalEnum[ddv1.SlotCardType](coDriverSlotRaw)
+	if err != nil {
+		// Unrecognized value - set to UNRECOGNIZED
+		coDriverSlot = ddv1.SlotCardType_SLOT_CARD_TYPE_UNRECOGNIZED
+	}
+
 	overview.SetDriverSlotCard(driverSlot)
 	overview.SetCoDriverSlotCard(coDriverSlot)
 	offset += 1
@@ -317,10 +330,10 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 		return nil, fmt.Errorf("overview cannot be nil")
 	}
 
-	// Calculate expected size
+	// Calculate expected size (signature is stored separately in RawVehicleUnitFile_Record)
 	noOfLocks := len(overview.GetCompanyLocks())
 	noOfControls := len(overview.GetControlActivities())
-	expectedSize := 491 + 1 + (noOfLocks * 98) + 1 + (noOfControls * 31) + 128
+	expectedSize := 491 + 1 + (noOfLocks * 98) + 1 + (noOfControls * 31)
 	// 491 = 194 + 194 + 17 + 15 + 4 + 8 + 1 + 58
 
 	// Use raw_data as canvas if available
@@ -397,15 +410,14 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 	}
 
 	// CardSlotsStatus (1 byte)
-	driverSlot, err := dd.MarshalEnum(overview.GetDriverSlotCard())
-	if err != nil {
-		driverSlot = 0
+	// Only overwrite if both values can be marshalled (not UNRECOGNIZED)
+	driverSlot, driverErr := dd.MarshalEnum(overview.GetDriverSlotCard())
+	coDriverSlot, coDriverErr := dd.MarshalEnum(overview.GetCoDriverSlotCard())
+
+	// If both values are recognized, write them; otherwise preserve canvas value (from raw_data)
+	if driverErr == nil && coDriverErr == nil {
+		canvas[offset] = (coDriverSlot << 4) | (driverSlot & 0x0F)
 	}
-	coDriverSlot, err := dd.MarshalEnum(overview.GetCoDriverSlotCard())
-	if err != nil {
-		coDriverSlot = 0
-	}
-	canvas[offset] = (coDriverSlot << 4) | (driverSlot & 0x0F)
 	offset += 1
 
 	// VuDownloadActivityData (58 bytes)
@@ -532,8 +544,7 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 		offset += 4
 	}
 
-	// Signature (128 bytes)
-	copy(canvas[offset:offset+128], overview.GetSignature())
+	// Signature is handled separately in RawVehicleUnitFile_Record, not included in data portion
 
 	return canvas, nil
 }

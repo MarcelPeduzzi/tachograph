@@ -50,6 +50,8 @@ func (opts UnmarshalOptions) UnmarshalDate(input []byte) (*ddv1.Date, error) {
 //   - Day (1 byte): BCD-encoded DD
 func (opts MarshalOptions) MarshalDate(date *ddv1.Date) ([]byte, error) {
 	const lenDatef = 4
+
+	// Use raw data painting strategy if available
 	var canvas [lenDatef]byte
 	if date.HasRawData() {
 		if len(date.GetRawData()) != lenDatef {
@@ -59,7 +61,12 @@ func (opts MarshalOptions) MarshalDate(date *ddv1.Date) ([]byte, error) {
 			)
 		}
 		copy(canvas[:], date.GetRawData())
+		// When raw_data is present, use it as-is for maximum fidelity
+		// This preserves any non-standard encoding or reserved bits
+		return canvas[:], nil
 	}
+
+	// No raw_data available - encode from semantic values
 	year := int(date.GetYear())
 	month := int(date.GetMonth())
 	day := int(date.GetDay())

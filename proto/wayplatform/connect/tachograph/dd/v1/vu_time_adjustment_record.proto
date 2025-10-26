@@ -1,0 +1,77 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+
+// Information, stored in a vehicle unit, related to a time adjustment performed
+// outside the frame of a regular calibration (Generation 1).
+//
+// Binary Layout: 98 bytes (fixed for Gen1)
+//   - oldTimeValue: 4 bytes
+//   - newTimeValue: 4 bytes
+//   - workshopName: 36 bytes (1 byte code page + 35 bytes name)
+//   - workshopAddress: 36 bytes (1 byte code page + 35 bytes address)
+//   - workshopCardNumber: 18 bytes
+//
+// See Data Dictionary, Section 2.232, `VuTimeAdjustmentRecord`.
+//
+// ASN.1 Definition (Gen1):
+//
+//     VuTimeAdjustmentRecord ::= SEQUENCE {
+//         oldTimeValue            TimeReal,
+//         newTimeValue            TimeReal,
+//         workshopName            Name,
+//         workshopAddress         Address,
+//         workshopCardNumber      FullCardNumber
+//     }
+message VuTimeAdjustmentRecord {
+  // The old value of date and time.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp old_time_value = 1;
+
+  // The new value of date and time.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp new_time_value = 2;
+
+  // The workshop name.
+  //
+  // See Data Dictionary, Section 2.99, `Name`.
+  // ASN.1 Definition:
+  //
+  //     Name ::= SEQUENCE {
+  //         codePage    INTEGER(0..255),
+  //         name        OCTET STRING (SIZE (35))
+  //     }
+  StringValue workshop_name = 3;
+
+  // The workshop address.
+  //
+  // See Data Dictionary, Section 2.2, `Address`.
+  // ASN.1 Definition:
+  //
+  //     Address ::= SEQUENCE {
+  //         codePage    INTEGER(0..255),
+  //         address     OCTET STRING (SIZE (35))
+  //     }
+  StringValue workshop_address = 4;
+
+  // Identifies the workshop card used to perform the time adjustment.
+  //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
+  FullCardNumber workshop_card_number = 5;
+
+  // Original encoded bytes from the binary format.
+  //
+  // When present, this is used as a canvas for the "raw data painting" strategy
+  // during marshalling to preserve reserved bits and unknown data. The semantic
+  // fields are encoded and painted over this canvas at their designated offsets.
+  //
+  // Size: 98 bytes (fixed for Gen1).
+  bytes raw_data = 99;
+}
+

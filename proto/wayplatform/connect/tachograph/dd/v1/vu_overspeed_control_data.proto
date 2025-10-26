@@ -1,0 +1,55 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Information, stored in a vehicle unit, related to over speeding events since
+// the last over speeding control (Generation 1).
+//
+// Binary Layout: 9 bytes (fixed for Gen1)
+//   - lastOverspeedControlTime: 4 bytes
+//   - firstOverspeedSince: 4 bytes
+//   - numberOfOverspeedSince: 1 byte
+//
+// See Data Dictionary, Section 2.212, `VuOverSpeedingControlData`.
+//
+// ASN.1 Definition (Gen1):
+//
+//     VuOverSpeedingControlData ::= SEQUENCE {
+//         lastOverspeedControlTime    TimeReal,
+//         firstOverspeedSince         TimeReal,
+//         numberOfOverspeedSince      OverspeedNumber
+//     }
+message VuOverspeedControlData {
+  // The date and time of the last over speeding control.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp last_overspeed_control_time = 1;
+
+  // The date and time of the first over speeding following this over speeding control.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp first_overspeed_since_last_control = 2;
+
+  // The number of over speeding events since the last over speeding control.
+  //
+  // See Data Dictionary, Section 2.116, `OverspeedNumber`.
+  // ASN.1 Definition:
+  //
+  //     OverspeedNumber ::= INTEGER (0..255)
+  //
+  // Value assignment: 0 means no over speeding event has occurred since the last
+  // control, 255 means 255 or more over speeding events have occurred.
+  int32 number_of_overspeed_since_last_control = 3;
+
+  // Original encoded bytes from the binary format.
+  //
+  // When present, this is used as a canvas for the "raw data painting" strategy
+  // during marshalling to preserve reserved bits and unknown data. The semantic
+  // fields are encoded and painted over this canvas at their designated offsets.
+  //
+  // Size: 9 bytes (fixed for Gen1).
+  bytes raw_data = 99;
+}
+

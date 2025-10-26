@@ -33,7 +33,7 @@ const (
 //	}
 type SoftwareIdentification struct {
 	state                               protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_SoftwareVersion          *StringValue           `protobuf:"bytes,1,opt,name=software_version,json=softwareVersion"`
+	xxx_hidden_SoftwareVersion          *Ia5StringValue        `protobuf:"bytes,1,opt,name=software_version,json=softwareVersion"`
 	xxx_hidden_SoftwareInstallationDate *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=software_installation_date,json=softwareInstallationDate"`
 	unknownFields                       protoimpl.UnknownFields
 	sizeCache                           protoimpl.SizeCache
@@ -64,7 +64,7 @@ func (x *SoftwareIdentification) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *SoftwareIdentification) GetSoftwareVersion() *StringValue {
+func (x *SoftwareIdentification) GetSoftwareVersion() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_SoftwareVersion
 	}
@@ -78,7 +78,7 @@ func (x *SoftwareIdentification) GetSoftwareInstallationDate() *timestamppb.Time
 	return nil
 }
 
-func (x *SoftwareIdentification) SetSoftwareVersion(v *StringValue) {
+func (x *SoftwareIdentification) SetSoftwareVersion(v *Ia5StringValue) {
 	x.xxx_hidden_SoftwareVersion = v
 }
 
@@ -118,7 +118,9 @@ type SoftwareIdentification_builder struct {
 	// ASN.1 Definition:
 	//
 	//	VuSoftwareVersion ::= IA5String(SIZE(4))
-	SoftwareVersion *StringValue
+	//
+	// Note: This is an IA5String, so it does not include a code page byte.
+	SoftwareVersion *Ia5StringValue
 	// The installation date of the software.
 	//
 	// See Data Dictionary, Section 2.224, `VuSoftInstallationDate`.
@@ -141,20 +143,20 @@ var File_wayplatform_connect_tachograph_dd_v1_software_identification_proto prot
 
 const file_wayplatform_connect_tachograph_dd_v1_software_identification_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/dd/v1/software_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xd0\x01\n" +
-	"\x16SoftwareIdentification\x12\\\n" +
-	"\x10software_version\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fsoftwareVersion\x12X\n" +
+	"Bwayplatform/connect/tachograph/dd/v1/software_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\xd3\x01\n" +
+	"\x16SoftwareIdentification\x12_\n" +
+	"\x10software_version\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0fsoftwareVersion\x12X\n" +
 	"\x1asoftware_installation_date\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x18softwareInstallationDateB\xda\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x1bSoftwareIdentificationProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_software_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_software_identification_proto_goTypes = []any{
 	(*SoftwareIdentification)(nil), // 0: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
-	(*StringValue)(nil),            // 1: wayplatform.connect.tachograph.dd.v1.StringValue
+	(*Ia5StringValue)(nil),         // 1: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	(*timestamppb.Timestamp)(nil),  // 2: google.protobuf.Timestamp
 }
 var file_wayplatform_connect_tachograph_dd_v1_software_identification_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification.software_version:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	1, // 0: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification.software_version:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	2, // 1: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification.software_installation_date:type_name -> google.protobuf.Timestamp
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
@@ -168,7 +170,7 @@ func file_wayplatform_connect_tachograph_dd_v1_software_identification_proto_ini
 	if File_wayplatform_connect_tachograph_dd_v1_software_identification_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_dd_v1_string_value_proto_init()
+	file_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

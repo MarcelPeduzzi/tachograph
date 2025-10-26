@@ -72,7 +72,7 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	activities.SetRawData(value) // Store complete transfer value for painting
 
 	offset := 0
-	var opts dd.UnmarshalOptions
+	opts := dd.UnmarshalOptions{PreserveRawData: true}
 
 	// TimeReal (4 bytes) - date of day downloaded
 	if offset+4 > len(data) {
@@ -146,33 +146,29 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	activities.SetActivityChanges(activityChanges)
 
 	// VuPlaceDailyWorkPeriodData: 1 byte (noOfPlaceRecords) + (noOfPlaceRecords * 28 bytes)
-	// Note: Each record is 28 bytes (18 FullCardNumber + 10 PlaceRecord)
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for noOfPlaceRecords")
 	}
 	noOfPlaceRecords := data[offset]
 	offset += 1
 
-	// Parse each VuPlaceDailyWorkPeriodRecord using DD type (28 bytes each)
-	// Extract only the PlaceRecord portion (VU records include FullCardNumber which we don't expose)
-	placeRecords := make([]*ddv1.PlaceRecord, noOfPlaceRecords)
+	// Parse each VuPlaceDailyWorkPeriodRecord (28 bytes each)
+	placeRecords := make([]*ddv1.VuPlaceDailyWorkPeriodRecord, noOfPlaceRecords)
 	for i := uint8(0); i < noOfPlaceRecords; i++ {
 		const placeRecordSize = 28 // 18 bytes FullCardNumber + 10 bytes PlaceRecord
 		if offset+placeRecordSize > len(data) {
-			return nil, fmt.Errorf("insufficient data for PlaceRecord %d", i)
+			return nil, fmt.Errorf("insufficient data for VuPlaceDailyWorkPeriodRecord %d", i)
 		}
 
-		// Use DD type to parse the full VuPlaceDailyWorkPeriodRecord
 		vuPlaceRecord, err := opts.UnmarshalVuPlaceDailyWorkPeriodRecord(data[offset : offset+placeRecordSize])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal VuPlaceDailyWorkPeriodRecord %d: %w", i, err)
 		}
 
-		// Extract just the PlaceRecord portion (DD type)
-		placeRecords[i] = vuPlaceRecord.GetPlaceRecord()
+		placeRecords[i] = vuPlaceRecord
 		offset += placeRecordSize
 	}
-	activities.SetPlaces(placeRecords)
+	activities.SetPlaceRecords(placeRecords)
 
 	// VuSpecificConditionData: 2 bytes (noOfSpecificConditionRecords) + (noOfSpecificConditionRecords * 5 bytes)
 	if offset+2 > len(data) {
@@ -219,24 +215,136 @@ func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1
 		return nil, fmt.Errorf("activities cannot be nil")
 	}
 
-	// Use raw_data if available (includes complete transfer with signature)
-	// Full semantic marshalling requires implementing all record types
+	// Calculate expected size (signature is stored separately and appended at the end)
+	noOfIWRecords := len(activities.GetCardIwData())
+	noOfActivityChanges := len(activities.GetActivityChanges())
+	noOfPlaceRecords := len(activities.GetPlaceRecords())
+	noOfSpecificConditions := len(activities.GetSpecificConditions())
+
+	// Fixed header: 4 (TimeReal) + 3 (OdometerShort)
+	// VuCardIWData: 2 (count) + N*129 (records)
+	// VuActivityDailyData: 2 (count) + M*2 (records)
+	// VuPlaceDailyWorkPeriodData: 1 (count) + P*28 (records)
+	// VuSpecificConditionData: 2 (count) + Q*5 (records)
+	const headerSize = 4 + 3
+	dataSize := headerSize + 2 + (noOfIWRecords * 129) + 2 + (noOfActivityChanges * 2) + 1 + (noOfPlaceRecords * 28) + 2 + (noOfSpecificConditions * 5)
+
+	// Use raw_data as canvas if available
+	var canvas []byte
 	raw := activities.GetRawData()
-	if len(raw) > 0 {
-		// raw_data contains complete transfer value (data + signature)
-		return raw, nil
+	if len(raw) == dataSize+128 { // dataSize + 128-byte signature
+		// Extract data portion (without signature) to use as canvas
+		canvas = make([]byte, dataSize)
+		copy(canvas, raw[:dataSize])
+	} else if len(raw) == dataSize {
+		// raw_data is just the data portion without signature
+		canvas = make([]byte, dataSize)
+		copy(canvas, raw)
+	} else {
+		// Create zero-filled canvas
+		canvas = make([]byte, dataSize)
 	}
 
-	// TODO: Implement marshalling from semantic fields
-	// This would require:
-	// 1. Writing TimeReal
-	// 2. Writing OdometerValueMidnight
-	// 3. Writing VuCardIWData (count + records)
-	// 4. Writing VuActivityDailyData (count + records)
-	// 5. Writing VuPlaceDailyWorkPeriodData (count + records)
-	// 6. Writing VuSpecificConditionData (count + records)
-	// 7. Appending Signature
-	return nil, fmt.Errorf("cannot marshal Activities Gen1 without raw_data (semantic marshalling not yet implemented)")
+	offset := 0
+
+	// TimeReal (4 bytes)
+	timeRealBytes, err := opts.MarshalTimeReal(activities.GetDateOfDay())
+	if err != nil {
+		return nil, fmt.Errorf("marshal TimeReal: %w", err)
+	}
+	copy(canvas[offset:offset+4], timeRealBytes)
+	offset += 4
+
+	// OdometerValueMidnight (3 bytes - OdometerShort)
+	odometerBytes, err := opts.MarshalOdometer(activities.GetOdometerMidnightKm())
+	if err != nil {
+		return nil, fmt.Errorf("marshal OdometerValueMidnight: %w", err)
+	}
+	copy(canvas[offset:offset+3], odometerBytes)
+	offset += 3
+
+	// VuCardIWData: 2 bytes (count) + records
+	binary.BigEndian.PutUint16(canvas[offset:offset+2], uint16(noOfIWRecords))
+	offset += 2
+
+	for i, record := range activities.GetCardIwData() {
+		recordBytes, err := opts.MarshalVuCardIWRecord(record)
+		if err != nil {
+			return nil, fmt.Errorf("marshal CardIWRecord %d: %w", i, err)
+		}
+		if len(recordBytes) != 129 {
+			return nil, fmt.Errorf("CardIWRecord %d has invalid length: got %d, want 129", i, len(recordBytes))
+		}
+		copy(canvas[offset:offset+129], recordBytes)
+		offset += 129
+	}
+
+	// VuActivityDailyData: 2 bytes (count) + records
+	binary.BigEndian.PutUint16(canvas[offset:offset+2], uint16(noOfActivityChanges))
+	offset += 2
+
+	for i, activityChange := range activities.GetActivityChanges() {
+		activityBytes, err := opts.MarshalActivityChangeInfo(activityChange)
+		if err != nil {
+			return nil, fmt.Errorf("marshal ActivityChangeInfo %d: %w", i, err)
+		}
+		if len(activityBytes) != 2 {
+			return nil, fmt.Errorf("ActivityChangeInfo %d has invalid length: got %d, want 2", i, len(activityBytes))
+		}
+		copy(canvas[offset:offset+2], activityBytes)
+		offset += 2
+	}
+
+	// VuPlaceDailyWorkPeriodData: 1 byte (count) + records
+	canvas[offset] = byte(noOfPlaceRecords)
+	offset += 1
+
+	// Marshal each VuPlaceDailyWorkPeriodRecord (28 bytes each)
+	for i, placeRecord := range activities.GetPlaceRecords() {
+		recordBytes, err := opts.MarshalVuPlaceDailyWorkPeriodRecord(placeRecord)
+		if err != nil {
+			return nil, fmt.Errorf("marshal VuPlaceDailyWorkPeriodRecord %d: %w", i, err)
+		}
+		if len(recordBytes) != 28 {
+			return nil, fmt.Errorf("VuPlaceDailyWorkPeriodRecord %d has invalid length: got %d, want 28", i, len(recordBytes))
+		}
+		copy(canvas[offset:offset+28], recordBytes)
+		offset += 28
+	}
+
+	// VuSpecificConditionData: 2 bytes (count) + records
+	binary.BigEndian.PutUint16(canvas[offset:offset+2], uint16(noOfSpecificConditions))
+	offset += 2
+
+	for i, specificCondition := range activities.GetSpecificConditions() {
+		specificBytes, err := opts.MarshalSpecificConditionRecord(specificCondition)
+		if err != nil {
+			return nil, fmt.Errorf("marshal SpecificConditionRecord %d: %w", i, err)
+		}
+		if len(specificBytes) != 5 {
+			return nil, fmt.Errorf("SpecificConditionRecord %d has invalid length: got %d, want 5", i, len(specificBytes))
+		}
+		copy(canvas[offset:offset+5], specificBytes)
+		offset += 5
+	}
+
+	// Verify we used exactly the expected amount of data
+	if offset != dataSize {
+		return nil, fmt.Errorf("Activities Gen1 marshalling mismatch: wrote %d bytes, expected %d", offset, dataSize)
+	}
+
+	// Append signature to create complete transfer value
+	signature := activities.GetSignature()
+	if len(signature) == 0 {
+		// Gen1 uses fixed 128-byte RSA-1024 signatures
+		signature = make([]byte, 128)
+	}
+	if len(signature) != 128 {
+		return nil, fmt.Errorf("invalid signature length: got %d, want 128", len(signature))
+	}
+
+	transferValue := append(canvas, signature...)
+	return transferValue, nil
 }
 
 // anonymizeActivitiesGen1 anonymizes Gen1 Activities data.

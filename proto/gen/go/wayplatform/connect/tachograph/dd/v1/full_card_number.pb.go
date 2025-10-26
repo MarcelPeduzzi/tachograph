@@ -49,6 +49,7 @@ type FullCardNumber struct {
 	xxx_hidden_CardIssuingMemberState NationNumeric          `protobuf:"varint,2,opt,name=card_issuing_member_state,json=cardIssuingMemberState,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
 	xxx_hidden_DriverIdentification   *DriverIdentification  `protobuf:"bytes,3,opt,name=driver_identification,json=driverIdentification"`
 	xxx_hidden_OwnerIdentification    *OwnerIdentification   `protobuf:"bytes,4,opt,name=owner_identification,json=ownerIdentification"`
+	xxx_hidden_RawData                []byte                 `protobuf:"bytes,99,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -112,14 +113,21 @@ func (x *FullCardNumber) GetOwnerIdentification() *OwnerIdentification {
 	return nil
 }
 
+func (x *FullCardNumber) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *FullCardNumber) SetCardType(v EquipmentType) {
 	x.xxx_hidden_CardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *FullCardNumber) SetCardIssuingMemberState(v NationNumeric) {
 	x.xxx_hidden_CardIssuingMemberState = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *FullCardNumber) SetDriverIdentification(v *DriverIdentification) {
@@ -128,6 +136,14 @@ func (x *FullCardNumber) SetDriverIdentification(v *DriverIdentification) {
 
 func (x *FullCardNumber) SetOwnerIdentification(v *OwnerIdentification) {
 	x.xxx_hidden_OwnerIdentification = v
+}
+
+func (x *FullCardNumber) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *FullCardNumber) HasCardType() bool {
@@ -158,6 +174,13 @@ func (x *FullCardNumber) HasOwnerIdentification() bool {
 	return x.xxx_hidden_OwnerIdentification != nil
 }
 
+func (x *FullCardNumber) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *FullCardNumber) ClearCardType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CardType = EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
@@ -174,6 +197,11 @@ func (x *FullCardNumber) ClearDriverIdentification() {
 
 func (x *FullCardNumber) ClearOwnerIdentification() {
 	x.xxx_hidden_OwnerIdentification = nil
+}
+
+func (x *FullCardNumber) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_RawData = nil
 }
 
 type FullCardNumber_builder struct {
@@ -198,6 +226,9 @@ type FullCardNumber_builder struct {
 	// This field is part of the `CardNumber` CHOICE.
 	// It is populated when card_type is WORKSHOP_CARD, COMPANY_CARD, or CONTROL_CARD.
 	OwnerIdentification *OwnerIdentification
+	// The raw binary data for this record (for round-trip fidelity).
+	// This preserves the exact bytes including any padding or reserved fields.
+	RawData []byte
 }
 
 func (b0 FullCardNumber_builder) Build() *FullCardNumber {
@@ -205,15 +236,19 @@ func (b0 FullCardNumber_builder) Build() *FullCardNumber {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_CardType = *b.CardType
 	}
 	if b.CardIssuingMemberState != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_CardIssuingMemberState = *b.CardIssuingMemberState
 	}
 	x.xxx_hidden_DriverIdentification = b.DriverIdentification
 	x.xxx_hidden_OwnerIdentification = b.OwnerIdentification
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -221,12 +256,13 @@ var File_wayplatform_connect_tachograph_dd_v1_full_card_number_proto protoreflec
 
 const file_wayplatform_connect_tachograph_dd_v1_full_card_number_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xb1\x03\n" +
+	";wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xcc\x03\n" +
 	"\x0eFullCardNumber\x12P\n" +
 	"\tcard_type\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\bcardType\x12n\n" +
 	"\x19card_issuing_member_state\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16cardIssuingMemberState\x12o\n" +
 	"\x15driver_identification\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.DriverIdentificationR\x14driverIdentification\x12l\n" +
-	"\x14owner_identification\x18\x04 \x01(\v29.wayplatform.connect.tachograph.dd.v1.OwnerIdentificationR\x13ownerIdentificationB\xd2\x02\n" +
+	"\x14owner_identification\x18\x04 \x01(\v29.wayplatform.connect.tachograph.dd.v1.OwnerIdentificationR\x13ownerIdentification\x12\x19\n" +
+	"\braw_data\x18c \x01(\fR\arawDataB\xd2\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x13FullCardNumberProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_full_card_number_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

@@ -57,4 +57,8 @@ message FullCardNumber {
   // This field is part of the `CardNumber` CHOICE.
   // It is populated when card_type is WORKSHOP_CARD, COMPANY_CARD, or CONTROL_CARD.
   OwnerIdentification owner_identification = 4;
+
+  // The raw binary data for this record (for round-trip fidelity).
+  // This preserves the exact bytes including any padding or reserved fields.
+  bytes raw_data = 99;
 }

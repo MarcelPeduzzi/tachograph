@@ -1,0 +1,75 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
+
+option go_package = "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1";
+
+// Information, stored in a vehicle unit, related to the identification of the motion sensor
+// paired with the vehicle unit.
+//
+// See Data Dictionary, Section 2.144, `SensorPaired`.
+//
+// ASN.1 Specification (Generation 1):
+//
+//     SensorPaired ::= SEQUENCE {
+//         sensorSerialNumber SensorSerialNumber,
+//         sensorApprovalNumber SensorApprovalNumber,
+//         sensorPairingDate SensorPairingDate
+//     }
+//
+// Binary Layout (Generation 1, fixed length: 20 bytes):
+//   - Sensor Serial Number (8 bytes): ExtendedSerialNumber
+//   - Sensor Approval Number (8 bytes Gen1, 16 bytes Gen2): IA5String
+//   - Sensor Pairing Date (4 bytes): TimeReal (BCD-encoded timestamp)
+//
+// Note: This data type describes the motion sensor currently paired with the vehicle unit
+// (Annex 1B requirement 079 and Annex 1C requirement 97).
+message SensorPaired {
+  // The serial number of the motion sensor currently paired with the vehicle unit.
+  //
+  // See Data Dictionary, Section 2.148, `SensorSerialNumber`.
+  //
+  // ASN.1 Specification:
+  //
+  //     SensorSerialNumber ::= ExtendedSerialNumber
+  ExtendedSerialNumber serial_number = 1;
+
+  // The approval number of the motion sensor currently paired with the vehicle unit.
+  //
+  // See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
+  //
+  // ASN.1 Specification:
+  //
+  //     Generation 1:
+  //     SensorApprovalNumber ::= IA5String (SIZE(8))
+  //
+  //     Generation 2:
+  //     SensorApprovalNumber ::= IA5String (SIZE(16))
+  //
+  // Note: Generation determines the size (8 bytes for Gen1, 16 bytes for Gen2).
+  // The approval number shall be left-aligned.
+  Ia5StringValue approval_number = 2;
+
+  // The date of the first pairing with a vehicle unit of the motion sensor
+  // currently paired with the vehicle unit.
+  //
+  // See Data Dictionary, Section 2.146, `SensorPairingDate`.
+  //
+  // ASN.1Specification:
+  //
+  //     SensorPairingDate ::= TimeReal
+  //     TimeReal ::= OCTET STRING (SIZE(4))
+  google.protobuf.Timestamp pairing_date = 3;
+
+  // The raw binary data for this sensor paired record (for round-trip fidelity).
+  // This preserves the exact bytes including any padding or reserved fields.
+  //
+  // For Generation 1: 20 bytes
+  // For Generation 2: 28 bytes (approval number is 16 bytes instead of 8)
+  bytes raw_data = 99;
+}
+

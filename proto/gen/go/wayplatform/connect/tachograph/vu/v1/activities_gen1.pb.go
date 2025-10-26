@@ -39,16 +39,16 @@ const (
 //	    signature SignatureFirstGen
 //	}
 type ActivitiesGen1 struct {
-	state                         protoimpl.MessageState         `protogen:"opaque.v1"`
-	xxx_hidden_DateOfDay          *timestamppb.Timestamp         `protobuf:"bytes,1,opt,name=date_of_day,json=dateOfDay"`
-	xxx_hidden_OdometerMidnightKm int32                          `protobuf:"varint,2,opt,name=odometer_midnight_km,json=odometerMidnightKm"`
-	xxx_hidden_CardIwData         *[]*v1.VuCardIWRecord          `protobuf:"bytes,3,rep,name=card_iw_data,json=cardIwData"`
-	xxx_hidden_ActivityChanges    *[]*v1.ActivityChangeInfo      `protobuf:"bytes,4,rep,name=activity_changes,json=activityChanges"`
-	xxx_hidden_Places             *[]*v1.PlaceRecord             `protobuf:"bytes,5,rep,name=places"`
-	xxx_hidden_SpecificConditions *[]*v1.SpecificConditionRecord `protobuf:"bytes,6,rep,name=specific_conditions,json=specificConditions"`
-	xxx_hidden_Signature          []byte                         `protobuf:"bytes,7,opt,name=signature"`
-	xxx_hidden_RawData            []byte                         `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
-	xxx_hidden_Authentication     *v11.Authentication            `protobuf:"bytes,99,opt,name=authentication"`
+	state                         protoimpl.MessageState              `protogen:"opaque.v1"`
+	xxx_hidden_DateOfDay          *timestamppb.Timestamp              `protobuf:"bytes,1,opt,name=date_of_day,json=dateOfDay"`
+	xxx_hidden_OdometerMidnightKm int32                               `protobuf:"varint,2,opt,name=odometer_midnight_km,json=odometerMidnightKm"`
+	xxx_hidden_CardIwData         *[]*v1.VuCardIWRecord               `protobuf:"bytes,3,rep,name=card_iw_data,json=cardIwData"`
+	xxx_hidden_ActivityChanges    *[]*v1.ActivityChangeInfo           `protobuf:"bytes,4,rep,name=activity_changes,json=activityChanges"`
+	xxx_hidden_PlaceRecords       *[]*v1.VuPlaceDailyWorkPeriodRecord `protobuf:"bytes,5,rep,name=place_records,json=placeRecords"`
+	xxx_hidden_SpecificConditions *[]*v1.SpecificConditionRecord      `protobuf:"bytes,6,rep,name=specific_conditions,json=specificConditions"`
+	xxx_hidden_Signature          []byte                              `protobuf:"bytes,7,opt,name=signature"`
+	xxx_hidden_RawData            []byte                              `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Authentication     *v11.Authentication                 `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData        protoimpl.RaceDetectHookData
 	XXX_presence                  [1]uint32
 	unknownFields                 protoimpl.UnknownFields
@@ -112,10 +112,10 @@ func (x *ActivitiesGen1) GetActivityChanges() []*v1.ActivityChangeInfo {
 	return nil
 }
 
-func (x *ActivitiesGen1) GetPlaces() []*v1.PlaceRecord {
+func (x *ActivitiesGen1) GetPlaceRecords() []*v1.VuPlaceDailyWorkPeriodRecord {
 	if x != nil {
-		if x.xxx_hidden_Places != nil {
-			return *x.xxx_hidden_Places
+		if x.xxx_hidden_PlaceRecords != nil {
+			return *x.xxx_hidden_PlaceRecords
 		}
 	}
 	return nil
@@ -168,8 +168,8 @@ func (x *ActivitiesGen1) SetActivityChanges(v []*v1.ActivityChangeInfo) {
 	x.xxx_hidden_ActivityChanges = &v
 }
 
-func (x *ActivitiesGen1) SetPlaces(v []*v1.PlaceRecord) {
-	x.xxx_hidden_Places = &v
+func (x *ActivitiesGen1) SetPlaceRecords(v []*v1.VuPlaceDailyWorkPeriodRecord) {
+	x.xxx_hidden_PlaceRecords = &v
 }
 
 func (x *ActivitiesGen1) SetSpecificConditions(v []*v1.SpecificConditionRecord) {
@@ -276,7 +276,8 @@ type ActivitiesGen1_builder struct {
 	// Daily work period place entries.
 	//
 	// See Data Dictionary, Section 2.218, `VuPlaceDailyWorkPeriodData`.
-	Places []*v1.PlaceRecord
+	// Each record contains both the card number and place information.
+	PlaceRecords []*v1.VuPlaceDailyWorkPeriodRecord
 	// Specific conditions data.
 	//
 	// See Data Dictionary, Section 2.227, `VuSpecificConditionData`.
@@ -305,7 +306,7 @@ func (b0 ActivitiesGen1_builder) Build() *ActivitiesGen1 {
 	}
 	x.xxx_hidden_CardIwData = &b.CardIwData
 	x.xxx_hidden_ActivityChanges = &b.ActivityChanges
-	x.xxx_hidden_Places = &b.Places
+	x.xxx_hidden_PlaceRecords = &b.PlaceRecords
 	x.xxx_hidden_SpecificConditions = &b.SpecificConditions
 	if b.Signature != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
@@ -323,14 +324,14 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto protoreflect
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/vu/v1/activities_gen1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a<wayplatform/connect/tachograph/dd/v1/vu_card_iw_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x93\x05\n" +
+	":wayplatform/connect/tachograph/vu/v1/activities_gen1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a<wayplatform/connect/tachograph/dd/v1/vu_card_iw_record.proto\x1aLwayplatform/connect/tachograph/dd/v1/vu_place_daily_work_period_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xb1\x05\n" +
 	"\x0eActivitiesGen1\x12:\n" +
 	"\vdate_of_day\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tdateOfDay\x120\n" +
 	"\x14odometer_midnight_km\x18\x02 \x01(\x05R\x12odometerMidnightKm\x12V\n" +
 	"\fcard_iw_data\x18\x03 \x03(\v24.wayplatform.connect.tachograph.dd.v1.VuCardIWRecordR\n" +
 	"cardIwData\x12c\n" +
-	"\x10activity_changes\x18\x04 \x03(\v28.wayplatform.connect.tachograph.dd.v1.ActivityChangeInfoR\x0factivityChanges\x12I\n" +
-	"\x06places\x18\x05 \x03(\v21.wayplatform.connect.tachograph.dd.v1.PlaceRecordR\x06places\x12n\n" +
+	"\x10activity_changes\x18\x04 \x03(\v28.wayplatform.connect.tachograph.dd.v1.ActivityChangeInfoR\x0factivityChanges\x12g\n" +
+	"\rplace_records\x18\x05 \x03(\v2B.wayplatform.connect.tachograph.dd.v1.VuPlaceDailyWorkPeriodRecordR\fplaceRecords\x12n\n" +
 	"\x13specific_conditions\x18\x06 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\x12specificConditions\x12\x1c\n" +
 	"\tsignature\x18\a \x01(\fR\tsignature\x12\x19\n" +
 	"\braw_data\x18\b \x01(\fR\arawData\x12b\n" +
@@ -339,19 +340,19 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_rawDesc = 
 
 var file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_goTypes = []any{
-	(*ActivitiesGen1)(nil),             // 0: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1
-	(*timestamppb.Timestamp)(nil),      // 1: google.protobuf.Timestamp
-	(*v1.VuCardIWRecord)(nil),          // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord
-	(*v1.ActivityChangeInfo)(nil),      // 3: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
-	(*v1.PlaceRecord)(nil),             // 4: wayplatform.connect.tachograph.dd.v1.PlaceRecord
-	(*v1.SpecificConditionRecord)(nil), // 5: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
-	(*v11.Authentication)(nil),         // 6: wayplatform.connect.tachograph.security.v1.Authentication
+	(*ActivitiesGen1)(nil),                  // 0: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1
+	(*timestamppb.Timestamp)(nil),           // 1: google.protobuf.Timestamp
+	(*v1.VuCardIWRecord)(nil),               // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord
+	(*v1.ActivityChangeInfo)(nil),           // 3: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
+	(*v1.VuPlaceDailyWorkPeriodRecord)(nil), // 4: wayplatform.connect.tachograph.dd.v1.VuPlaceDailyWorkPeriodRecord
+	(*v1.SpecificConditionRecord)(nil),      // 5: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
+	(*v11.Authentication)(nil),              // 6: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.date_of_day:type_name -> google.protobuf.Timestamp
 	2, // 1: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.card_iw_data:type_name -> wayplatform.connect.tachograph.dd.v1.VuCardIWRecord
 	3, // 2: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.activity_changes:type_name -> wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
-	4, // 3: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.places:type_name -> wayplatform.connect.tachograph.dd.v1.PlaceRecord
+	4, // 3: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.place_records:type_name -> wayplatform.connect.tachograph.dd.v1.VuPlaceDailyWorkPeriodRecord
 	5, // 4: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.specific_conditions:type_name -> wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
 	6, // 5: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
 	6, // [6:6] is the sub-list for method output_type

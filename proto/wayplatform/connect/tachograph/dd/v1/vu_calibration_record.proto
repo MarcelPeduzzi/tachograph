@@ -1,0 +1,223 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+
+option go_package = "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1";
+
+// Information, stored in a vehicle unit, related to a calibration of the recording equipment.
+//
+// See Data Dictionary, Section 2.174, `VuCalibrationRecord`.
+//
+// ASN.1 Specification (Generation 1):
+//
+//     VuCalibrationRecord ::= SEQUENCE {
+//         calibrationPurpose CalibrationPurpose,
+//         workshopName Name,
+//         workshopAddress Address,
+//         workshopCardNumber FullCardNumber,
+//         workshopCardExpiryDate Datef,
+//         vehicleIdentificationNumber VehicleIdentificationNumber,
+//         vehicleRegistrationIdentification VehicleRegistrationIdentification,
+//         wVehicleCharacteristicConstant W-VehicleCharacteristicConstant,
+//         kConstantOfRecordingEquipment K-ConstantOfRecordingEquipment,
+//         lTyreCircumference L-TyreCircumference,
+//         tyreSize TyreSize,
+//         authorisedSpeed SpeedAuthorised,
+//         oldOdometerValue OdometerShort,
+//         newOdometerValue OdometerShort,
+//         oldTimeValue TimeReal,
+//         newTimeValue TimeReal,
+//         nextCalibrationDate TimeReal
+//     }
+//
+// Binary Layout (Generation 1, fixed length: 167 bytes):
+//   - Calibration Purpose (1 byte): CalibrationPurpose
+//   - Workshop Name (36 bytes): StringValue (1 byte code page + 35 bytes data)
+//   - Workshop Address (36 bytes): StringValue (1 byte code page + 35 bytes data)
+//   - Workshop Card Number (18 bytes): FullCardNumber
+//   - Workshop Card Expiry Date (4 bytes): Datef (BCD-encoded date)
+//   - Vehicle Identification Number (17 bytes): IA5String (VIN)
+//   - Vehicle Registration (15 bytes): VehicleRegistrationIdentification
+//   - W-Vehicle Characteristic Constant (2 bytes): uint16
+//   - K-Constant of Recording Equipment (2 bytes): uint16
+//   - L-Tyre Circumference (2 bytes): uint16
+//   - Tyre Size (15 bytes): IA5String
+//   - Authorised Speed (1 byte): Speed
+//   - Old Odometer Value (3 bytes): OdometerShort (24-bit value)
+//   - New Odometer Value (3 bytes): OdometerShort (24-bit value)
+//   - Old Time Value (4 bytes): TimeReal
+//   - New Time Value (4 bytes): TimeReal
+//   - Next Calibration Date (4 bytes): TimeReal
+//
+// Note: Generation 2 adds additional fields (sealDataVu for v1, and sensorSerialNumber,
+// sensorGNSSSerialNumber, rcmSerialNumber, byDefaultLoadType, calibrationCountry,
+// calibrationCountryTimestamp for v2).
+//
+// This data type is related to Annex 1B requirement 098 and Annex 1C requirements 119 and 120.
+message VuCalibrationRecord {
+  // The purpose of the calibration.
+  //
+  // See Data Dictionary, Section 2.8, `CalibrationPurpose`.
+  //
+  // ASN.1 Specification:
+  //
+  //     CalibrationPurpose ::= OCTET STRING (SIZE(1))
+  CalibrationPurpose purpose = 1;
+
+  // Stores the raw protocol value if it's not recognized in the CalibrationPurpose enum.
+  int32 unrecognized_purpose = 2;
+
+  // The workshop name.
+  //
+  // See Data Dictionary, Section 2.99, `Name`.
+  //
+  // ASN.1 Specification:
+  //
+  //     Name ::= SEQUENCE {
+  //         codePage INTEGER(0..255),
+  //         name OCTET STRING (SIZE(35))
+  //     }
+  StringValue workshop_name = 3;
+
+  // The workshop address.
+  //
+  // See Data Dictionary, Section 2.2, `Address`.
+  //
+  // ASN.1 Specification:
+  //
+  //     Address ::= SEQUENCE {
+  //         codePage INTEGER(0..255),
+  //         address OCTET STRING (SIZE(35))
+  //     }
+  StringValue workshop_address = 4;
+
+  // The workshop card used during the calibration.
+  //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
+  FullCardNumber workshop_card_number = 5;
+
+  // The expiry date of the workshop card.
+  //
+  // See Data Dictionary, Section 2.57, `Datef`.
+  //
+  // ASN.1 Specification:
+  //
+  //     Datef ::= OCTET STRING (SIZE(4))
+  Date workshop_card_expiry_date = 6;
+
+  // The Vehicle Identification Number (VIN).
+  //
+  // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
+  Ia5StringValue vin = 7;
+
+  // The vehicle registration identifier (VRN and registering Member State).
+  //
+  // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+  VehicleRegistrationIdentification vehicle_registration = 8;
+
+  // The characteristic coefficient of the vehicle (definition k)).
+  //
+  // See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
+  //
+  // ASN.1 Specification:
+  //
+  //     W-VehicleCharacteristicConstant ::= INTEGER (0..2^16-1)
+  //
+  // Value assignment: Impulses per kilometer in the operating range 0 to 64 255 pulses/km.
+  int32 w_vehicle_characteristic_constant = 9;
+
+  // The constant of the recording equipment (definition m)).
+  //
+  // See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
+  //
+  // ASN.1 Specification:
+  //
+  //     K-ConstantOfRecordingEquipment ::= INTEGER (0..2^16-1)
+  //
+  // Value assignment: Pulses per kilometer in the operating range 0 to 64 255 pulses/km.
+  int32 k_constant_of_recording_equipment = 10;
+
+  // The effective circumference of the wheel tyres (definition u)).
+  //
+  // See Data Dictionary, Section 2.91, `L-TyreCircumference`.
+  //
+  // ASN.1 Specification:
+  //
+  //     L-TyreCircumference ::= INTEGER (0..2^16-1)
+  //
+  // Value assignment: Unsigned binary, value in 1/8 mm in the operating range 0 to 8 031 mm.
+  int32 l_tyre_circumference_eighths_mm = 11;
+
+  // The designation of the dimension of the tyres mounted on the vehicle.
+  //
+  // See Data Dictionary, Section 2.163, `TyreSize`.
+  //
+  // ASN.1 Specification:
+  //
+  //     TyreSize ::= IA5String(SIZE(15))
+  Ia5StringValue tyre_size = 12;
+
+  // The authorised speed of the vehicle (definition hh)).
+  //
+  // See Data Dictionary, Section 2.156, `SpeedAuthorised`.
+  //
+  // ASN.1 Specification:
+  //
+  //     SpeedAuthorised ::= Speed
+  //     Speed ::= OCTET STRING (SIZE(1))
+  //
+  // Value assignment: kilometers per hour in the operational range 0 to 220 km/h.
+  int32 authorised_speed_kmh = 13;
+
+  // The old value of the odometer (before calibration).
+  //
+  // See Data Dictionary, Section 2.113, `OdometerShort`.
+  //
+  // ASN.1 Specification:
+  //
+  //     OdometerShort ::= OCTET STRING (SIZE(3))
+  //
+  // Value assignment: Unsigned binary. Value in km in the operating range 0 to 9 999 999 km.
+  int32 old_odometer_value_km = 14;
+
+  // The new value of the odometer (after calibration).
+  //
+  // See Data Dictionary, Section 2.113, `OdometerShort`.
+  int32 new_odometer_value_km = 15;
+
+  // The old value of date and time (before calibration).
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp old_time_value = 16;
+
+  // The new value of date and time (after calibration).
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp new_time_value = 17;
+
+  // The date of the next calibration of the type specified in CalibrationPurpose
+  // to be carried out by the authorised inspection authority.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp next_calibration_date = 18;
+
+  // The raw binary data for this calibration record (for round-trip fidelity).
+  // This preserves the exact bytes including any padding or reserved fields.
+  //
+  // For Generation 1: 167 bytes
+  // For Generation 2: varies (includes additional fields)
+  bytes raw_data = 99;
+}
+

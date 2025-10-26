@@ -654,8 +654,8 @@ VehicleRegistrationIdentification
 ### 2.17. **CardDriverActivity**
 
 ```
-Information, stored in a driver or a workshop card, related to the 
-activities of the driver (Annex 1C requirements 267, 268, 292, 293, 
+Information, stored in a driver or a workshop card, related to the
+activities of the driver (Annex 1C requirements 267, 268, 292, 293,
 321 and 344).
 ```
 
@@ -782,7 +782,7 @@ Generation 2, version 2:
 Information, stored in a driver or workshop card, related to the load type entries when the card is inserted in a vehicle unit (Annex IC requirements 306j and 356j).
 
 ```
-loadTypeEntryPointerNewestRecord is the index of the last updated 
+loadTypeEntryPointerNewestRecord is the index of the last updated
 card load type entry record.
 ```
 
@@ -3037,8 +3037,8 @@ Information, stored in a motion sensor, related to the identification of the mot
 #### 2.141. **SensorInstallation**
 
 ```
-Information, stored in a motion sensor, related to the installation of 
-the motion sensor (Annex 1B requirement 099 and Annex 1C 
+Information, stored in a motion sensor, related to the installation of
+the motion sensor (Annex 1B requirement 099 and Annex 1C
 requirement 122).
 ```
 
@@ -3164,8 +3164,8 @@ SimilarEventsNumber ::= INTEGER(0..255)
 #### 2.152. **SpecificConditionRecord**
 
 ```
-Information, stored in a driver card, a workshop card or a vehicle unit, 
-related to a specific condition (requirements Annex 1C 130, 276, 301, 
+Information, stored in a driver card, a workshop card or a vehicle unit,
+related to a specific condition (requirements Annex 1C 130, 276, 301,
 328, and 355).
 ```
 
@@ -3456,33 +3456,39 @@ Information, stored in a vehicle unit, related a calibration of the recording eq
 
 Generation 1:
 
-**calibrationPurpose** is the purpose of the calibration.
+**calibrationPurpose** (CalibrationPurpose) is the purpose of the calibration.
 
-**workshopName, workshopAddress** are the workshop name and address.
+**workshopName** (Name) is the workshop name
 
-**workshopCardNumber** identifies the workshop card used during the calibration.
+**workshopAddress** (Address) is the workshop address
 
-**workshopCardExpiryDate** is the card expiry date.
+**workshopCardNumber** (FullCardNumber) identifies the workshop card used during the calibration.
 
-**vehicleIdentificationNumber** is the VIN.
+**workshopCardExpiryDate** (TimeReal) is the card expiry date.
 
-**vehicleRegistrationIdentification** contains the VRN and registering Member State.
+**vehicleIdentificationNumber** (VehicleIdentificationNumber) is the VIN.
 
-**wVehicleCharacteristicConstant** is the characteristic coefficient of the vehicle.
+**vehicleRegistrationIdentification** (VehicleRegistrationIdentification) contains the VRN and registering Member State.
 
-**kConstantOfRecordingEquipment** is the constant of the recording equipment.
+**wVehicleCharacteristicConstant** (W-VehicleCharacteristicConstant) is the characteristic coefficient of the vehicle.
 
-**lTyreCircumference** is the effective circumference of the wheel tyres.
+**kConstantOfRecordingEquipment** (K-ConstantOfRecordingEquipment) is the constant of the recording equipment.
 
-**tyreSize** is the designation of the dimension of the tyres mounted on the vehicle
+**lTyreCircumference** (L-TyreCircumference) is the effective circumference of the wheel tyres.
 
-**authorisedSpeed** is the authorised speed of the vehicle.
+**tyreSize** (TyreSize) is the designation of the dimension of the tyres mounted on the vehicle
 
-**oldOdometerValue, newOdometerValue** are the old and new values of the odometer.
+**authorisedSpeed** (SpeedAuthorised) is the authorised speed of the vehicle.
 
-**oldTimeValue, newTimeValue** are the old and new values of date and time.
+**oldOdometerValue** (OdometerShort) is the old value of the odometer
 
-**nextCalibrationDate** is the date of the next calibration of the type specified in CalibrationPurpose to be carried out by the authorised inspection authority.
+**newOdometerValue** (OdometerShort) is the new value of the odometer
+
+**oldTimeValue** (TimeReal) is the old value of date and time
+
+**newTimeValue** (TimeReal) is the new value of date and time.
+
+**nextCalibrationDate** (TimeReal) is the date of the next calibration of the type specified in CalibrationPurpose to be carried out by the authorised inspection authority.
 
 # **▼M3**
 
@@ -4406,8 +4412,8 @@ VuPartNumber ::= IA5String (SIZE(16))
 Generation 1:
 
 ```
-Information, stored in a vehicle unit, related to places where drivers 
-begin or end a daily work period (Annex 1B requirement 087 and 
+Information, stored in a vehicle unit, related to places where drivers
+begin or end a daily work period (Annex 1B requirement 087 and
 Annex 1C requirement 108 and 110).
 ```
 

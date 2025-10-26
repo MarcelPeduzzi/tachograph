@@ -13,14 +13,18 @@ import (
 // ASN.1 Definition:
 //
 //	driverIdentification SEQUENCE {
-//	    driverIdentificationNumber IA5String(SIZE(14))
+//	    driverIdentificationNumber IA5String(SIZE(14)),
+//	    cardReplacementIndex CardReplacementIndex,
+//	    cardRenewalIndex CardRenewalIndex
 //	}
 //
-// Binary Layout (14 bytes):
+// Binary Layout (16 bytes):
 //   - Driver Identification Number (14 bytes): IA5String
+//   - Card Replacement Index (1 byte): IA5String
+//   - Card Renewal Index (1 byte): IA5String
 func (opts UnmarshalOptions) UnmarshalDriverIdentification(data []byte) (*ddv1.DriverIdentification, error) {
 	const (
-		lenDriverIdentification = 14
+		lenDriverIdentification = 16
 	)
 
 	if len(data) != lenDriverIdentification {
@@ -36,6 +40,20 @@ func (opts UnmarshalOptions) UnmarshalDriverIdentification(data []byte) (*ddv1.D
 	}
 	driverID.SetDriverIdentificationNumber(identificationNumber)
 
+	// Parse card replacement index (1 byte)
+	replacementIndex, err := opts.UnmarshalIa5StringValue(data[14:15])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card replacement index: %w", err)
+	}
+	driverID.SetCardReplacementIndex(replacementIndex)
+
+	// Parse card renewal index (1 byte)
+	renewalIndex, err := opts.UnmarshalIa5StringValue(data[15:16])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card renewal index: %w", err)
+	}
+	driverID.SetCardRenewalIndex(renewalIndex)
+
 	return driverID, nil
 }
 
@@ -46,18 +64,44 @@ func (opts UnmarshalOptions) UnmarshalDriverIdentification(data []byte) (*ddv1.D
 // ASN.1 Definition:
 //
 //	driverIdentification SEQUENCE {
-//	    driverIdentificationNumber IA5String(SIZE(14))
+//	    driverIdentificationNumber IA5String(SIZE(14)),
+//	    cardReplacementIndex CardReplacementIndex,
+//	    cardRenewalIndex CardRenewalIndex
 //	}
 //
-// Binary Layout (14 bytes):
+// Binary Layout (16 bytes):
 //   - Driver Identification Number (14 bytes): IA5String
+//   - Card Replacement Index (1 byte): IA5String
+//   - Card Renewal Index (1 byte): IA5String
 func (opts MarshalOptions) MarshalDriverIdentification(driverID *ddv1.DriverIdentification) ([]byte, error) {
 	if driverID == nil {
 		return nil, fmt.Errorf("driverID cannot be nil")
 	}
 
+	var dst []byte
+
 	// Marshal driver identification number (14 bytes)
-	return opts.MarshalIa5StringValue(driverID.GetDriverIdentificationNumber())
+	idNumberBytes, err := opts.MarshalIa5StringValue(driverID.GetDriverIdentificationNumber())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal driver identification number: %w", err)
+	}
+	dst = append(dst, idNumberBytes...)
+
+	// Marshal card replacement index (1 byte)
+	replacementBytes, err := opts.MarshalIa5StringValue(driverID.GetCardReplacementIndex())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal card replacement index: %w", err)
+	}
+	dst = append(dst, replacementBytes...)
+
+	// Marshal card renewal index (1 byte)
+	renewalBytes, err := opts.MarshalIa5StringValue(driverID.GetCardRenewalIndex())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal card renewal index: %w", err)
+	}
+	dst = append(dst, renewalBytes...)
+
+	return dst, nil
 }
 
 // AnonymizeDriverIdentification creates an anonymized copy of DriverIdentification,

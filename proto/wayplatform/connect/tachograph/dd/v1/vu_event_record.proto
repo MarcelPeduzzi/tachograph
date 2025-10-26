@@ -1,0 +1,104 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+
+// Information, stored in a vehicle unit, related to an event (Generation 1).
+//
+// Binary Layout: 83 bytes (fixed for Gen1)
+//   - eventType: 1 byte
+//   - eventRecordPurpose: 1 byte
+//   - eventBeginTime: 4 bytes
+//   - eventEndTime: 4 bytes
+//   - cardNumberDriverSlotBegin: 18 bytes
+//   - cardNumberCodriverSlotBegin: 18 bytes
+//   - cardNumberDriverSlotEnd: 18 bytes
+//   - cardNumberCodriverSlotEnd: 18 bytes
+//   - similarEventsNumber: 1 byte
+//
+// See Data Dictionary, Section 2.198, `VuEventRecord`.
+//
+// ASN.1 Definition (Gen1):
+//
+//     VuEventRecord ::= SEQUENCE {
+//         eventType                       EventFaultType,
+//         eventRecordPurpose              EventFaultRecordPurpose,
+//         eventBeginTime                  TimeReal,
+//         eventEndTime                    TimeReal,
+//         cardNumberDriverSlotBegin       FullCardNumber,
+//         cardNumberCodriverSlotBegin     FullCardNumber,
+//         cardNumberDriverSlotEnd         FullCardNumber,
+//         cardNumberCodriverSlotEnd       FullCardNumber,
+//         similarEventsNumber             SimilarEventsNumber
+//     }
+message VuEventRecord {
+  // The type of the event.
+  //
+  // See Data Dictionary, Section 2.70, `EventFaultType`.
+  EventFaultType event_type = 1;
+
+  // Stores the raw protocol value when an unrecognized enum value is
+  // encountered during parsing.
+  int32 unrecognized_event_type = 2;
+
+  // The purpose for which this event has been recorded.
+  //
+  // See Data Dictionary, Section 2.69, `EventFaultRecordPurpose`.
+  EventFaultRecordPurpose record_purpose = 3;
+
+  // Stores the raw protocol value when an unrecognized enum value is
+  // encountered during parsing.
+  int32 unrecognized_record_purpose = 4;
+
+  // The date and time of beginning of event.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp begin_time = 5;
+
+  // The date and time of end of event.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp end_time = 6;
+
+  // Identifies the card inserted in the driver slot at the beginning of the event.
+  //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
+  FullCardNumber card_number_driver_slot_begin = 7;
+
+  // Identifies the card inserted in the co-driver slot at the beginning of the event.
+  //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
+  FullCardNumber card_number_codriver_slot_begin = 8;
+
+  // Identifies the card inserted in the driver slot at the end of the event.
+  //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
+  FullCardNumber card_number_driver_slot_end = 9;
+
+  // Identifies the card inserted in the co-driver slot at the end of the event.
+  //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
+  FullCardNumber card_number_codriver_slot_end = 10;
+
+  // The number of similar events that day.
+  //
+  // See Data Dictionary, Section 2.151, `SimilarEventsNumber`.
+  // ASN.1 Definition:
+  //
+  //     SimilarEventsNumber ::= INTEGER(0..255)
+  int32 similar_events_number = 11;
+
+  // Original encoded bytes from the binary format.
+  //
+  // When present, this is used as a canvas for the "raw data painting" strategy
+  // during marshalling to preserve reserved bits and unknown data. The semantic
+  // fields are encoded and painted over this canvas at their designated offsets.
+  //
+  // Size: 83 bytes (fixed for Gen1).
+  bytes raw_data = 99;
+}
+

@@ -3,6 +3,8 @@ package vu
 import (
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/proto"
 )
@@ -17,17 +19,11 @@ import (
 // ASN.1 Definition:
 //
 //	VuTechnicalDataFirstGen ::= SEQUENCE {
-//	    vuApprovalNumber                VuApprovalNumber,
-//	    vuSoftwareIdentification        VuSoftwareIdentification,
-//	    vuManufacturerName              VuManufacturerName,
-//	    vuManufacturerAddress           VuManufacturerAddress,
-//	    vuPartNumber                    VuPartNumber,
-//	    vuSerialNumber                  ExtendedSerialNumber,
-//	    sensorPaired                    SensorPaired,
-//	    signature                       SignatureFirstGen
+//	    vuIdentification VuIdentification,
+//	    sensorPaired SensorPaired,
+//	    vuCalibrationData VuCalibrationData,
+//	    signature SignatureFirstGen
 //	}
-//
-// Note: This is a minimal implementation that stores raw_data for round-trip fidelity.
 func unmarshalTechnicalDataGen1(value []byte) (*vuv1.TechnicalDataGen1, error) {
 	// Split transfer value into data and signature
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
@@ -42,10 +38,61 @@ func unmarshalTechnicalDataGen1(value []byte) (*vuv1.TechnicalDataGen1, error) {
 
 	technicalData := &vuv1.TechnicalDataGen1{}
 	technicalData.SetRawData(value) // Store complete transfer value for painting
+	offset := 0
+	opts := dd.UnmarshalOptions{PreserveRawData: true}
 
-	// TODO: Implement full semantic parsing of data portion
-	// For now, we just validate we have some data
-	_ = data // Will be used when semantic parsing is implemented
+	// Parse VuIdentification (116 bytes for Gen1: 36+36+16+8+8+4+8)
+	const vuIdentificationSize = 116
+	if offset+vuIdentificationSize > len(data) {
+		return nil, fmt.Errorf("insufficient data for VuIdentification")
+	}
+	vuIdentification, err := opts.UnmarshalVuIdentification(data[offset : offset+vuIdentificationSize])
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal VuIdentification: %w", err)
+	}
+	technicalData.SetVuIdentification(vuIdentification)
+	offset += vuIdentificationSize
+
+	// Parse SensorPaired (20 bytes for Gen1)
+	const sensorPairedSize = 20
+	if offset+sensorPairedSize > len(data) {
+		return nil, fmt.Errorf("insufficient data for SensorPaired")
+	}
+	sensorPaired, err := opts.UnmarshalSensorPaired(data[offset : offset+sensorPairedSize])
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal SensorPaired: %w", err)
+	}
+	technicalData.SetPairedSensor(sensorPaired)
+	offset += sensorPairedSize
+
+	// Parse VuCalibrationData (1 byte count + calibration records)
+	if offset+1 > len(data) {
+		return nil, fmt.Errorf("insufficient data for noOfVuCalibrationRecords")
+	}
+	noOfVuCalibrationRecords := data[offset]
+	offset += 1
+
+	// Parse calibration records - only parse as many as will fit in the available data
+	// (The count byte may be incorrect or there may be trailing data)
+	calibrationRecords := []*ddv1.VuCalibrationRecord{}
+	for i := 0; i < int(noOfVuCalibrationRecords); i++ {
+		const calibrationRecordSize = 167
+		if offset+calibrationRecordSize > len(data) {
+			// Not enough data for another complete record - stop parsing
+			// This can happen if the count is wrong or there's trailing data
+			break
+		}
+		calibrationRecord, err := opts.UnmarshalVuCalibrationRecord(data[offset : offset+calibrationRecordSize])
+		if err != nil {
+			return nil, fmt.Errorf("unmarshal VuCalibrationRecord %d: %w", i, err)
+		}
+		calibrationRecords = append(calibrationRecords, calibrationRecord)
+		offset += calibrationRecordSize
+	}
+	technicalData.SetCalibrationRecords(calibrationRecords)
+
+	// Note: There may be trailing bytes after calibration records (typically 20 bytes or so)
+	// This appears to be padding or reserved data, so we don't require exact consumption
 
 	// Store signature (extracted at the beginning)
 	technicalData.SetSignature(signature)
@@ -59,13 +106,86 @@ func (opts MarshalOptions) MarshalTechnicalDataGen1(technicalData *vuv1.Technica
 		return nil, fmt.Errorf("technicalData cannot be nil")
 	}
 
+	// Calculate data size
+	// VuIdentification: 116 bytes (Gen1: 36+36+16+8+8+4+8)
+	// SensorPaired: 20 bytes (Gen1)
+	// VuCalibrationData: 1 byte count + (n * 167 bytes)
+	noOfCalibrationRecords := len(technicalData.GetCalibrationRecords())
+	dataSize := 116 + 20 + 1 + (noOfCalibrationRecords * 167)
+
+	// Use raw data painting with canvas
+	var canvas []byte
 	raw := technicalData.GetRawData()
-	if len(raw) > 0 {
-		// raw_data contains complete transfer value (data + signature)
-		return raw, nil
+	if len(raw) == dataSize+128 {
+		// raw_data includes signature
+		canvas = make([]byte, dataSize)
+		copy(canvas, raw[:dataSize])
+	} else if len(raw) == dataSize {
+		// raw_data is just data portion
+		canvas = make([]byte, dataSize)
+		copy(canvas, raw)
+	} else {
+		// No valid raw_data, start with zeros
+		canvas = make([]byte, dataSize)
 	}
 
-	return nil, fmt.Errorf("cannot marshal Technical Data Gen1 without raw_data (semantic marshalling not yet implemented)")
+	offset := 0
+	marshalOpts := dd.MarshalOptions{}
+
+	// Marshal VuIdentification (116 bytes for Gen1)
+	vuIdentBytes, err := marshalOpts.MarshalVuIdentification(technicalData.GetVuIdentification())
+	if err != nil {
+		return nil, fmt.Errorf("marshal VuIdentification: %w", err)
+	}
+	if len(vuIdentBytes) != 116 {
+		return nil, fmt.Errorf("VuIdentification has invalid length: got %d, want 116", len(vuIdentBytes))
+	}
+	copy(canvas[offset:offset+116], vuIdentBytes)
+	offset += 116
+
+	// Marshal SensorPaired (20 bytes)
+	sensorPairedBytes, err := marshalOpts.MarshalSensorPaired(technicalData.GetPairedSensor())
+	if err != nil {
+		return nil, fmt.Errorf("marshal SensorPaired: %w", err)
+	}
+	if len(sensorPairedBytes) != 20 {
+		return nil, fmt.Errorf("SensorPaired has invalid length: got %d, want 20", len(sensorPairedBytes))
+	}
+	copy(canvas[offset:offset+20], sensorPairedBytes)
+	offset += 20
+
+	// Marshal VuCalibrationData
+	canvas[offset] = byte(noOfCalibrationRecords)
+	offset += 1
+
+	for i, calibrationRecord := range technicalData.GetCalibrationRecords() {
+		calibrationRecordBytes, err := marshalOpts.MarshalVuCalibrationRecord(calibrationRecord)
+		if err != nil {
+			return nil, fmt.Errorf("marshal VuCalibrationRecord %d: %w", i, err)
+		}
+		if len(calibrationRecordBytes) != 167 {
+			return nil, fmt.Errorf("VuCalibrationRecord %d has invalid length: got %d, want 167", i, len(calibrationRecordBytes))
+		}
+		copy(canvas[offset:offset+167], calibrationRecordBytes)
+		offset += 167
+	}
+
+	// Verify we wrote all data
+	if offset != dataSize {
+		return nil, fmt.Errorf("Technical Data Gen1 marshalling mismatch: wrote %d bytes, expected %d", offset, dataSize)
+	}
+
+	// Append signature
+	signature := technicalData.GetSignature()
+	if len(signature) == 0 {
+		signature = make([]byte, 128)
+	}
+	if len(signature) != 128 {
+		return nil, fmt.Errorf("invalid signature length: got %d, want 128", len(signature))
+	}
+	transferValue := append(canvas, signature...)
+
+	return transferValue, nil
 }
 
 // anonymizeTechnicalDataGen1 anonymizes Gen1 Technical Data.

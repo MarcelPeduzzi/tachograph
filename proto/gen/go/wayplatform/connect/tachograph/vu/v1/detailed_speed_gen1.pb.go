@@ -206,11 +206,14 @@ func (b0 DetailedSpeedGen1_builder) Build() *DetailedSpeedGen1 {
 //	    speedsPerSecond SET SIZE(60) OF Speed
 //	}
 type DetailedSpeedGen1_DetailedSpeedBlock struct {
-	state                protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_BeginDate *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=begin_date,json=beginDate"`
-	xxx_hidden_SpeedsKmh []int32                `protobuf:"varint,2,rep,packed,name=speeds_kmh,json=speedsKmh"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_BeginDate   *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=begin_date,json=beginDate"`
+	xxx_hidden_SpeedsKmh   []int32                `protobuf:"varint,2,rep,packed,name=speeds_kmh,json=speedsKmh"`
+	xxx_hidden_RawData     []byte                 `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *DetailedSpeedGen1_DetailedSpeedBlock) Reset() {
@@ -252,12 +255,27 @@ func (x *DetailedSpeedGen1_DetailedSpeedBlock) GetSpeedsKmh() []int32 {
 	return nil
 }
 
+func (x *DetailedSpeedGen1_DetailedSpeedBlock) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *DetailedSpeedGen1_DetailedSpeedBlock) SetBeginDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_BeginDate = v
 }
 
 func (x *DetailedSpeedGen1_DetailedSpeedBlock) SetSpeedsKmh(v []int32) {
 	x.xxx_hidden_SpeedsKmh = v
+}
+
+func (x *DetailedSpeedGen1_DetailedSpeedBlock) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *DetailedSpeedGen1_DetailedSpeedBlock) HasBeginDate() bool {
@@ -267,8 +285,20 @@ func (x *DetailedSpeedGen1_DetailedSpeedBlock) HasBeginDate() bool {
 	return x.xxx_hidden_BeginDate != nil
 }
 
+func (x *DetailedSpeedGen1_DetailedSpeedBlock) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *DetailedSpeedGen1_DetailedSpeedBlock) ClearBeginDate() {
 	x.xxx_hidden_BeginDate = nil
+}
+
+func (x *DetailedSpeedGen1_DetailedSpeedBlock) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RawData = nil
 }
 
 type DetailedSpeedGen1_DetailedSpeedBlock_builder struct {
@@ -282,6 +312,9 @@ type DetailedSpeedGen1_DetailedSpeedBlock_builder struct {
 	//
 	// See Data Dictionary, Section 2.155, `Speed`.
 	SpeedsKmh []int32
+	// The raw binary data for this speed block (for round-trip fidelity).
+	// This field preserves the exact bytes including any reserved bits.
+	RawData []byte
 }
 
 func (b0 DetailedSpeedGen1_DetailedSpeedBlock_builder) Build() *DetailedSpeedGen1_DetailedSpeedBlock {
@@ -290,6 +323,10 @@ func (b0 DetailedSpeedGen1_DetailedSpeedBlock_builder) Build() *DetailedSpeedGen
 	_, _ = b, x
 	x.xxx_hidden_BeginDate = b.BeginDate
 	x.xxx_hidden_SpeedsKmh = b.SpeedsKmh
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -297,17 +334,18 @@ var File_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen1_proto protoref
 
 const file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen1_proto_rawDesc = "" +
 	"\n" +
-	">wayplatform/connect/tachograph/vu/v1/detailed_speed_gen1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x8f\x03\n" +
+	">wayplatform/connect/tachograph/vu/v1/detailed_speed_gen1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xab\x03\n" +
 	"\x11DetailedSpeedGen1\x12m\n" +
 	"\fspeed_blocks\x18\x01 \x03(\v2J.wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen1.DetailedSpeedBlockR\vspeedBlocks\x12\x1c\n" +
 	"\tsignature\x18\x02 \x01(\fR\tsignature\x12\x19\n" +
 	"\braw_data\x18\x03 \x01(\fR\arawData\x12b\n" +
-	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1an\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\x89\x01\n" +
 	"\x12DetailedSpeedBlock\x129\n" +
 	"\n" +
 	"begin_date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tbeginDate\x12\x1d\n" +
 	"\n" +
-	"speeds_kmh\x18\x02 \x03(\x05R\tspeedsKmhB\xd5\x02\n" +
+	"speeds_kmh\x18\x02 \x03(\x05R\tspeedsKmh\x12\x19\n" +
+	"\braw_data\x18\x03 \x01(\fR\arawDataB\xd5\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x16DetailedSpeedGen1ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen1_proto_msgTypes = make([]protoimpl.MessageInfo, 2)

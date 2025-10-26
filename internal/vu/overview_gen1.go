@@ -78,7 +78,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	overview.SetRawData(value) // Store complete transfer value for painting
 
 	offset := 0
-	var opts dd.UnmarshalOptions
+	opts := dd.UnmarshalOptions{PreserveRawData: true}
 
 	// MemberStateCertificate (194 bytes)
 	if offset+194 > len(data) {

@@ -36,10 +36,26 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 
 	cardNumber := &ddv1.FullCardNumber{}
 
+	// Preserve raw data for round-trip fidelity
+	if opts.PreserveRawData {
+		cardNumber.SetRawData(data)
+	}
+
+	// Special case: Various byte patterns indicate "no card inserted" or invalid card data.
+	// Common patterns: 0xFF (255), 0x00 (0), or any unrecognized equipment type
+	// In these cases, we return an empty FullCardNumber with only raw_data preserved.
+	cardTypeByte := data[0]
+	if cardTypeByte == 0xFF || cardTypeByte == 0x00 {
+		// Return empty card number with only raw_data preserved
+		return cardNumber, nil
+	}
+
 	// Parse card type (1 byte)
-	cardType, err := UnmarshalEnum[ddv1.EquipmentType](data[0])
+	// If the card type is unrecognized, treat it as an empty/invalid card
+	cardType, err := UnmarshalEnum[ddv1.EquipmentType](cardTypeByte)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse card type: %w", err)
+		// Unrecognized card type - treat as empty card
+		return cardNumber, nil
 	}
 	cardNumber.SetCardType(cardType)
 
@@ -47,18 +63,18 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 	issuingState := data[1]
 	cardNumber.SetCardIssuingMemberState(ddv1.NationNumeric(issuingState))
 
-	// Parse card number based on card type (16 bytes, may have padding)
+	// Parse card number based on card type (16 bytes)
 	cardNumberData := data[2:18]
 	switch cardType {
 	case ddv1.EquipmentType_DRIVER_CARD:
-		// DriverIdentification is 14 bytes + 2 bytes padding
-		driverID, err := opts.UnmarshalDriverIdentification(cardNumberData[:14])
+		// DriverIdentification is 16 bytes
+		driverID, err := opts.UnmarshalDriverIdentification(cardNumberData)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse driver identification: %w", err)
 		}
 		cardNumber.SetDriverIdentification(driverID)
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
-		// OwnerIdentification is 16 bytes (no padding)
+		// OwnerIdentification is 16 bytes
 		ownerID, err := opts.UnmarshalOwnerIdentification(cardNumberData)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse owner identification: %w", err)
@@ -91,58 +107,73 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 // Binary Layout (fixed length, 18 bytes):
 //   - Card Type (1 byte): EquipmentType
 //   - Issuing Member State (1 byte): NationNumeric
-//   - Card Number (16 bytes): CardNumber CHOICE based on card type (padded to 16 bytes)
+//   - Card Number (16 bytes): CardNumber CHOICE based on card type
 func (opts MarshalOptions) MarshalFullCardNumber(cardNumber *ddv1.FullCardNumber) ([]byte, error) {
 	if cardNumber == nil {
 		return nil, fmt.Errorf("cardNumber cannot be nil")
 	}
 
-	var dst []byte
+	const lenFullCardNumber = 18
 
-	// Marshal card type (1 byte)
+	// Use raw data painting strategy if available
+	var canvas [lenFullCardNumber]byte
+	if rawData := cardNumber.GetRawData(); len(rawData) > 0 {
+		if len(rawData) != lenFullCardNumber {
+			return nil, fmt.Errorf("invalid raw_data length for FullCardNumber: got %d, want %d", len(rawData), lenFullCardNumber)
+		}
+		copy(canvas[:], rawData)
+
+		// Special case: If raw_data starts with 0xFF (no card), return it as-is
+		if rawData[0] == 0xFF {
+			return canvas[:], nil
+		}
+	}
+
+	// Check if this is an empty card number (no card inserted)
+	// This happens when CardType is UNSPECIFIED and there's no driver/owner identification
+	if cardNumber.GetCardType() == ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED &&
+		cardNumber.GetDriverIdentification() == nil &&
+		cardNumber.GetOwnerIdentification() == nil {
+		// Fill with 0xFF to indicate "no card"
+		for i := range canvas {
+			canvas[i] = 0xFF
+		}
+		return canvas[:], nil
+	}
+
+	// Paint card type (1 byte)
 	cardTypeByte, err := MarshalEnum(cardNumber.GetCardType())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card type: %w", err)
 	}
-	dst = append(dst, cardTypeByte)
+	canvas[0] = cardTypeByte
 
-	// Marshal issuing member state (1 byte)
-	dst = append(dst, byte(cardNumber.GetCardIssuingMemberState()))
+	// Paint issuing member state (1 byte)
+	canvas[1] = byte(cardNumber.GetCardIssuingMemberState())
 
-	// Marshal card number based on card type (16 bytes with padding if needed)
+	// Paint card number based on card type (bytes 2-17, 16 bytes total)
 	switch cardNumber.GetCardType() {
 	case ddv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
-			// DriverIdentification is 14 bytes, pad to 16
+			// DriverIdentification is 16 bytes
 			driverBytes, err := opts.MarshalDriverIdentification(driverID)
 			if err != nil {
 				return nil, fmt.Errorf("failed to marshal driver identification: %w", err)
 			}
-			dst = append(dst, driverBytes...)
-			// Add 2 bytes padding
-			dst = append(dst, 0x00, 0x00)
-		} else {
-			// Empty driver ID: 16 zero bytes
-			dst = append(dst, make([]byte, 16)...)
+			copy(canvas[2:18], driverBytes)
 		}
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
-			// OwnerIdentification is 16 bytes (no padding needed)
+			// OwnerIdentification is 16 bytes
 			ownerBytes, err := opts.MarshalOwnerIdentification(ownerID)
 			if err != nil {
 				return nil, fmt.Errorf("failed to marshal owner identification: %w", err)
 			}
-			dst = append(dst, ownerBytes...)
-		} else {
-			// Empty owner ID: 16 zero bytes
-			dst = append(dst, make([]byte, 16)...)
+			copy(canvas[2:18], ownerBytes)
 		}
-	default:
-		// Unknown card type: 16 zero bytes
-		dst = append(dst, make([]byte, 16)...)
 	}
 
-	return dst, nil
+	return canvas[:], nil
 }
 
 // MarshalFullCardNumberAsString marshals a FullCardNumber structure as a string representation.

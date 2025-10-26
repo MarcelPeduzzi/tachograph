@@ -36,6 +36,10 @@ message DetailedSpeedGen1 {
     //
     // See Data Dictionary, Section 2.155, `Speed`.
     repeated int32 speeds_kmh = 2;
+
+    // The raw binary data for this speed block (for round-trip fidelity).
+    // This field preserves the exact bytes including any reserved bits.
+    bytes raw_data = 3;
   }
 
   // All detailed speed stored in the VU.

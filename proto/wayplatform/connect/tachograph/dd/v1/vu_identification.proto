@@ -1,0 +1,124 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+
+option go_package = "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1";
+
+// Information, stored in a vehicle unit, related to the identification of the vehicle unit.
+//
+// See Data Dictionary, Section 2.205, `VuIdentification`.
+//
+// ASN.1 Specification (Generation 1):
+//
+//     VuIdentification ::= SEQUENCE {
+//         vuManufacturerName VuManufacturerName,
+//         vuManufacturerAddress VuManufacturerAddress,
+//         vuPartNumber VuPartNumber,
+//         vuSerialNumber VuSerialNumber,
+//         vuSoftwareIdentification VuSoftwareIdentification,
+//         vuManufacturingDate VuManufacturingDate,
+//         vuApprovalNumber VuApprovalNumber
+//     }
+//
+// Binary Layout (Generation 1, fixed length: 147 bytes):
+//   - VU Manufacturer Name (36 bytes): StringValue (1 byte code page + 35 bytes data)
+//   - VU Manufacturer Address (36 bytes): StringValue (1 byte code page + 35 bytes data)
+//   - VU Part Number (36 bytes): StringValue (1 byte code page + 35 bytes data)
+//   - VU Serial Number (8 bytes): ExtendedSerialNumber
+//   - VU Software Identification (16 bytes): SoftwareIdentification
+//   - VU Manufacturing Date (4 bytes): TimeReal
+//   - VU Approval Number (8 bytes Gen1, 16 bytes Gen2): IA5String
+//
+// Note: Generation 2 adds additional fields (vuGeneration, vuAbility, vuDigitalMapVersion)
+// and uses a 16-byte approval number, resulting in a different size.
+message VuIdentification {
+  // The name of the VU manufacturer.
+  //
+  // See Data Dictionary, Section 2.210, `VuManufacturerName`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuManufacturerName ::= Name
+  //     Name ::= SEQUENCE {
+  //         codePage INTEGER(0..255),
+  //         name OCTET STRING (SIZE(35))
+  //     }
+  StringValue manufacturer_name = 1;
+
+  // The address of the VU manufacturer.
+  //
+  // See Data Dictionary, Section 2.209, `VuManufacturerAddress`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuManufacturerAddress ::= Address
+  //     Address ::= SEQUENCE {
+  //         codePage INTEGER(0..255),
+  //         address OCTET STRING (SIZE(35))
+  //     }
+  StringValue manufacturer_address = 2;
+
+  // The part number of the VU.
+  //
+  // See Data Dictionary, Section 2.217, `VuPartNumber`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuPartNumber ::= IA5String (SIZE(16))
+  //
+  // Note: This is an IA5String, not a Name type, so it does not include a code page byte.
+  Ia5StringValue part_number = 3;
+
+  // The serial number of the VU.
+  //
+  // See Data Dictionary, Section 2.223, `VuSerialNumber`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuSerialNumber ::= ExtendedSerialNumber
+  ExtendedSerialNumber serial_number = 4;
+
+  // The software identification of the VU.
+  //
+  // See Data Dictionary, Section 2.225, `VuSoftwareIdentification`.
+  SoftwareIdentification software_identification = 5;
+
+  // The manufacturing date of the VU.
+  //
+  // See Data Dictionary, Section 2.211, `VuManufacturingDate`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuManufacturingDate ::= TimeReal
+  //     TimeReal ::= OCTET STRING (SIZE(4))
+  google.protobuf.Timestamp manufacturing_date = 6;
+
+  // The approval number of the VU.
+  //
+  // See Data Dictionary, Section 2.172, `VuApprovalNumber`.
+  //
+  // ASN.1 Specification:
+  //
+  //     Generation 1:
+  //     VuApprovalNumber ::= IA5String(SIZE(8))
+  //
+  //     Generation 2:
+  //     VuApprovalNumber ::= IA5String(SIZE(16))
+  //
+  // Note: Generation determines the size (8 bytes for Gen1, 16 bytes for Gen2).
+  Ia5StringValue approval_number = 7;
+
+  // The raw binary data for this identification record (for round-trip fidelity).
+  // This preserves the exact bytes including any padding or reserved fields.
+  //
+  // For Generation 1: 147 bytes
+  // For Generation 2: varies (includes additional fields)
+  bytes raw_data = 99;
+}
+

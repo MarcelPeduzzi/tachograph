@@ -4,9 +4,9 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/activity_change_info.proto";
-import "wayplatform/connect/tachograph/dd/v1/place_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/vu_card_iw_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/vu_place_daily_work_period_record.proto";
 import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Activities data for Generation 1 VU downloads.
@@ -48,7 +48,8 @@ message ActivitiesGen1 {
   // Daily work period place entries.
   //
   // See Data Dictionary, Section 2.218, `VuPlaceDailyWorkPeriodData`.
-  repeated dd.v1.PlaceRecord places = 5;
+  // Each record contains both the card number and place information.
+  repeated dd.v1.VuPlaceDailyWorkPeriodRecord place_records = 5;
 
   // Specific conditions data.
   //

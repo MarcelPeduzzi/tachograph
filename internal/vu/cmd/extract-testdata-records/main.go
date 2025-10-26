@@ -109,7 +109,7 @@ func processVUFile(filePath string, fileIndex int) error {
 	}
 
 	// Unparse back to RawVehicleUnitFile
-	anonRawFile, err := parseOpts.UnparseRawVehicleUnitFile(anonFile)
+	anonRawFile, err := vu.UnparseVehicleUnitFile(anonFile)
 	if err != nil {
 		return fmt.Errorf("failed to unparse anonymized VU file: %w", err)
 	}

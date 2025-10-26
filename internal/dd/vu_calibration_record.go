@@ -1,9 +1,10 @@
 package dd
 
 import (
-	"google.golang.org/protobuf/proto"
 	"encoding/binary"
 	"fmt"
+
+	"google.golang.org/protobuf/proto"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -415,7 +416,7 @@ func (opts MarshalOptions) MarshalVuCalibrationRecord(record *ddv1.VuCalibration
 }
 
 // AnonymizeVuCalibrationRecord anonymizes a VU calibration record.
-func AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibrationRecord, opts AnonymizeOptions) *ddv1.VuCalibrationRecord {
+func (opts AnonymizeOptions) AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibrationRecord) *ddv1.VuCalibrationRecord {
 	if rec == nil {
 		return nil
 	}
@@ -429,7 +430,7 @@ func AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibrationRecord, opts AnonymizeO
 	result.SetWorkshopAddress(NewStringValue(ddv1.Encoding_ISO_8859_1, 35, "TEST ADDRESS, 00000 TEST CITY"))
 
 	// Anonymize workshop card number
-	result.SetWorkshopCardNumber(AnonymizeFullCardNumber(rec.GetWorkshopCardNumber()))
+	result.SetWorkshopCardNumber(opts.AnonymizeFullCardNumber(rec.GetWorkshopCardNumber()))
 
 	// Anonymize workshop card expiry date (preserve or anonymize timestamp)
 	if expiryDate := rec.GetWorkshopCardExpiryDate(); expiryDate != nil && !opts.PreserveTimestamps {
@@ -447,13 +448,13 @@ func AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibrationRecord, opts AnonymizeO
 	result.SetVehicleRegistration(vreg)
 
 	// Anonymize odometer values
-	result.SetOldOdometerValueKm(AnonymizeOdometerValue(rec.GetOldOdometerValueKm(), opts))
-	result.SetNewOdometerValueKm(AnonymizeOdometerValue(rec.GetNewOdometerValueKm(), opts))
+	result.SetOldOdometerValueKm(opts.AnonymizeOdometerValue(rec.GetOldOdometerValueKm()))
+	result.SetNewOdometerValueKm(opts.AnonymizeOdometerValue(rec.GetNewOdometerValueKm()))
 
 	// Anonymize timestamps
-	result.SetOldTimeValue(AnonymizeTimestamp(rec.GetOldTimeValue(), opts))
-	result.SetNewTimeValue(AnonymizeTimestamp(rec.GetNewTimeValue(), opts))
-	result.SetNextCalibrationDate(AnonymizeTimestamp(rec.GetNextCalibrationDate(), opts))
+	result.SetOldTimeValue(opts.AnonymizeTimestamp(rec.GetOldTimeValue()))
+	result.SetNewTimeValue(opts.AnonymizeTimestamp(rec.GetNewTimeValue()))
+	result.SetNextCalibrationDate(opts.AnonymizeTimestamp(rec.GetNextCalibrationDate()))
 
 	// Keep technical values (not PII): w_vehicle_characteristic_constant,
 	// k_constant_of_recording_equipment, l_tyre_circumference, tyre_size, authorised_speed

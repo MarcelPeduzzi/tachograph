@@ -64,7 +64,7 @@ func (opts UnmarshalOptions) UnmarshalActivityChangeInfo(input []byte) (*ddv1.Ac
 //
 // The anonymized time intervals are spaced 30 minutes apart, starting from minute 0.
 // This provides enough granularity to see activity patterns while removing exact timing.
-func AnonymizeActivityChangeInfo(ac *ddv1.ActivityChangeInfo, index int) *ddv1.ActivityChangeInfo {
+func (opts AnonymizeOptions) AnonymizeActivityChangeInfo(ac *ddv1.ActivityChangeInfo, index int) *ddv1.ActivityChangeInfo {
 	if ac == nil {
 		return nil
 	}

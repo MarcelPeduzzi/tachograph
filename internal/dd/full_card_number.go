@@ -199,7 +199,7 @@ func (opts MarshalOptions) MarshalFullCardNumberAsString(cardNumber *ddv1.FullCa
 }
 
 // AnonymizeFullCardNumber replaces a card number with test values while preserving structure.
-func AnonymizeFullCardNumber(fc *ddv1.FullCardNumber) *ddv1.FullCardNumber {
+func (opts AnonymizeOptions) AnonymizeFullCardNumber(fc *ddv1.FullCardNumber) *ddv1.FullCardNumber {
 	if fc == nil {
 		return nil
 	}

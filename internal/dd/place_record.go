@@ -139,7 +139,7 @@ func (opts MarshalOptions) MarshalPlaceRecord(rec *ddv1.PlaceRecord) ([]byte, er
 // - Normalizes country/region to generic values
 // - Rounds odometer to nearest 100km
 // - Preserves entry type (needed for structure testing)
-func AnonymizePlaceRecord(rec *ddv1.PlaceRecord) *ddv1.PlaceRecord {
+func (opts AnonymizeOptions) AnonymizePlaceRecord(rec *ddv1.PlaceRecord) *ddv1.PlaceRecord {
 	if rec == nil {
 		return nil
 	}

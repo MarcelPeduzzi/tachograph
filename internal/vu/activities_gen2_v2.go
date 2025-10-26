@@ -425,6 +425,12 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V2(activities *vuv1.Activiti
 
 	result := &vuv1.ActivitiesGen2V2{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Anonymize date_of_day - use a fixed date (2024-01-01 00:00:00 UTC)
 	baseTime := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
 	result.SetDateOfDay(timestamppb.New(baseTime))
@@ -477,14 +483,14 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V2(activities *vuv1.Activiti
 	// Anonymize activity_changes
 	anonActivityChanges := make([]*ddv1.ActivityChangeInfo, len(activities.GetActivityChanges()))
 	for i, ac := range activities.GetActivityChanges() {
-		anonActivityChanges[i] = dd.AnonymizeActivityChangeInfo(ac, i)
+		anonActivityChanges[i] = ddOpts.AnonymizeActivityChangeInfo(ac, i)
 	}
 	result.SetActivityChanges(anonActivityChanges)
 
 	// Anonymize places (same as V1)
 	anonPlaces := make([]*ddv1.PlaceRecordG2, len(activities.GetPlaces()))
 	for i, place := range activities.GetPlaces() {
-		anonPlaces[i] = dd.AnonymizePlaceRecordG2(place)
+		anonPlaces[i] = ddOpts.AnonymizePlaceRecordG2(place)
 	}
 	result.SetPlaces(anonPlaces)
 

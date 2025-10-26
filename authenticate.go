@@ -10,6 +10,23 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// Authenticate performs cryptographic authentication on a raw file with default options.
+//
+// This is a convenience function that uses default options:
+// - Mutate: false (creates a copy before authenticating)
+// - CertificateResolver: nil (uses default embedded certificate resolver)
+//
+// For custom options, use AuthenticateOptions directly:
+//
+//	opts := AuthenticateOptions{Mutate: true}
+//	authenticatedRaw, err := opts.Authenticate(ctx, rawFile)
+func Authenticate(ctx context.Context, rawFile *tachographv1.RawFile) (*tachographv1.RawFile, error) {
+	opts := AuthenticateOptions{
+		Mutate: false,
+	}
+	return opts.Authenticate(ctx, rawFile)
+}
+
 // AuthenticateOptions configures the signature authentication process.
 type AuthenticateOptions struct {
 	// CertificateResolver is used to resolve CA certificates by their Certificate Authority Reference (CAR).

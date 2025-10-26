@@ -8,6 +8,20 @@ import (
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
 
+// Anonymize creates an anonymized copy of a parsed tachograph file with default options.
+//
+// This is a convenience function that uses default options:
+// - PreserveDistanceAndTrips: false (anonymize distances)
+// - PreserveTimestamps: false (anonymize timestamps)
+//
+// For custom options, use AnonymizeOptions directly:
+//
+//	opts := AnonymizeOptions{PreserveTimestamps: true}
+//	anonFile, err := opts.Anonymize(file)
+func Anonymize(file *tachographv1.File) (*tachographv1.File, error) {
+	return AnonymizeOptions{}.Anonymize(file)
+}
+
 // AnonymizeOptions configures the anonymization process for tachograph files.
 type AnonymizeOptions struct {
 	// PreserveDistanceAndTrips controls whether distance and trip data are preserved.

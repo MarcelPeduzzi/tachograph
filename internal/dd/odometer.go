@@ -48,7 +48,7 @@ func (opts UnmarshalOptions) UnmarshalOdometer(data []byte) (uint32, error) {
 
 // AnonymizeOdometerValue anonymizes odometer values based on options.
 // If PreserveDistanceAndTrips is false, rounds to nearest 1000km.
-func AnonymizeOdometerValue(km int32, opts AnonymizeOptions) int32 {
+func (opts AnonymizeOptions) AnonymizeOdometerValue(km int32) int32 {
 	if opts.PreserveDistanceAndTrips {
 		return km
 	}

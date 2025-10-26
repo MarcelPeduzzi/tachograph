@@ -114,7 +114,7 @@ func processCardFile(filePath string, fileIndex int) error {
 		}
 
 		// Unparse back to RawCardFile
-		anonRawFile, err := parseOpts.UnparseDriverCardFile(anonFile)
+		anonRawFile, err := card.UnparseDriverCardFile(anonFile)
 		if err != nil {
 			return fmt.Errorf("failed to unparse anonymized driver card file: %w", err)
 		}

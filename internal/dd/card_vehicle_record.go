@@ -153,7 +153,7 @@ func (opts MarshalOptions) MarshalCardVehicleRecord(record *ddv1.CardVehicleReco
 // - Odometer readings: Rounded to nearest 1000km
 // - Country: Preserved (structural info)
 // - VU counter: Preserved (structural info)
-func AnonymizeCardVehicleRecord(record *ddv1.CardVehicleRecord, index int) *ddv1.CardVehicleRecord {
+func (opts AnonymizeOptions) AnonymizeCardVehicleRecord(record *ddv1.CardVehicleRecord, index int) *ddv1.CardVehicleRecord {
 	if record == nil {
 		return nil
 	}

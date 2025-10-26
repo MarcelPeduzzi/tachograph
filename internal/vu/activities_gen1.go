@@ -376,7 +376,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		anonRecord.SetCardHolderName(holderName)
 
 		// Anonymize card number
-		anonRecord.SetFullCardNumber(dd.AnonymizeFullCardNumber(record.GetFullCardNumber()))
+		anonRecord.SetFullCardNumber(ddOpts.AnonymizeFullCardNumber(record.GetFullCardNumber()))
 
 		// Anonymize card expiry date (preserve or anonymize timestamp)
 		if expiryDate := record.GetCardExpiryDate(); expiryDate != nil && !opts.PreserveTimestamps {
@@ -384,17 +384,17 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		}
 
 		// Anonymize card insertion/withdrawal timestamps
-		anonRecord.SetCardInsertionTime(dd.AnonymizeTimestamp(record.GetCardInsertionTime(), ddOpts))
+		anonRecord.SetCardInsertionTime(ddOpts.AnonymizeTimestamp(record.GetCardInsertionTime()))
 		anonRecord.SetCardSlotNumber(record.GetCardSlotNumber()) // Not PII
 
 		// Anonymize card withdrawal time if present
 		if record.GetCardWithdrawalTime() != nil {
-			anonRecord.SetCardWithdrawalTime(dd.AnonymizeTimestamp(record.GetCardWithdrawalTime(), ddOpts))
+			anonRecord.SetCardWithdrawalTime(ddOpts.AnonymizeTimestamp(record.GetCardWithdrawalTime()))
 		}
 
 		// Anonymize odometer values
-		anonRecord.SetOdometerAtInsertionKm(dd.AnonymizeOdometerValue(record.GetOdometerAtInsertionKm(), ddOpts))
-		anonRecord.SetOdometerAtWithdrawalKm(dd.AnonymizeOdometerValue(record.GetOdometerAtWithdrawalKm(), ddOpts))
+		anonRecord.SetOdometerAtInsertionKm(ddOpts.AnonymizeOdometerValue(record.GetOdometerAtInsertionKm()))
+		anonRecord.SetOdometerAtWithdrawalKm(ddOpts.AnonymizeOdometerValue(record.GetOdometerAtWithdrawalKm()))
 
 		// Previous vehicle info and manual input flag are not PII - keep as-is
 
@@ -424,7 +424,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 	// Anonymize place records (VU place daily work period records)
 	var anonymizedPlaceRecords []*ddv1.VuPlaceDailyWorkPeriodRecord
 	for _, placeRecord := range result.GetPlaceRecords() {
-		anonymizedPlaceRecords = append(anonymizedPlaceRecords, dd.AnonymizeVuPlaceDailyWorkPeriodRecord(placeRecord, ddOpts))
+		anonymizedPlaceRecords = append(anonymizedPlaceRecords, ddOpts.AnonymizeVuPlaceDailyWorkPeriodRecord(placeRecord))
 	}
 	result.SetPlaceRecords(anonymizedPlaceRecords)
 

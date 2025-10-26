@@ -118,7 +118,7 @@ func (opts MarshalOptions) MarshalGNSSPlaceRecord(record *ddv1.GNSSPlaceRecord) 
 // Note: Timestamp normalization happens at the EF level (PlacesG2), not here.
 //
 // Helsinki coordinates: 60.17°N, 24.94°E
-func AnonymizeGNSSPlaceRecord(record *ddv1.GNSSPlaceRecord) *ddv1.GNSSPlaceRecord {
+func (opts AnonymizeOptions) AnonymizeGNSSPlaceRecord(record *ddv1.GNSSPlaceRecord) *ddv1.GNSSPlaceRecord {
 	if record == nil {
 		return nil
 	}

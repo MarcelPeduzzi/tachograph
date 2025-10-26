@@ -141,13 +141,19 @@ func (opts AnonymizeOptions) anonymizePlacesG2(p *cardv1.PlacesG2) *cardv1.Place
 
 	result := &cardv1.PlacesG2{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Preserve structural metadata
 	result.SetNewestRecordIndex(p.GetNewestRecordIndex())
 
 	// Anonymize each record (timestamps anonymized below)
 	var anonymizedRecords []*ddv1.PlaceRecordG2
 	for _, record := range p.GetRecords() {
-		anonymizedRecords = append(anonymizedRecords, dd.AnonymizePlaceRecordG2(record))
+		anonymizedRecords = append(anonymizedRecords, ddOpts.AnonymizePlaceRecordG2(record))
 	}
 	result.SetRecords(anonymizedRecords)
 

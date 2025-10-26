@@ -578,6 +578,12 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 
 	result := proto.Clone(overview).(*vuv1.OverviewGen1)
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Anonymize VIN
 	if vin := result.GetVehicleIdentificationNumber(); vin != nil {
 		result.SetVehicleIdentificationNumber(dd.NewIa5StringValue(17, "TESTVIN1234567890"))
@@ -585,7 +591,7 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 
 	// Anonymize VRN
 	if vrn := result.GetVehicleRegistrationWithNation(); vrn != nil {
-		result.SetVehicleRegistrationWithNation(dd.AnonymizeVehicleRegistrationIdentification(vrn))
+		result.SetVehicleRegistrationWithNation(ddOpts.AnonymizeVehicleRegistrationIdentification(vrn))
 	}
 
 	// Clear certificates (will be invalid after anonymization anyway)

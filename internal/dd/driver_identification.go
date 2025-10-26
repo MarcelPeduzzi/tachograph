@@ -107,7 +107,7 @@ func (opts MarshalOptions) MarshalDriverIdentification(driverID *ddv1.DriverIden
 // AnonymizeDriverIdentification creates an anonymized copy of DriverIdentification,
 // replacing the driver identification number with a safe, deterministic value while
 // maintaining the correct format and length.
-func AnonymizeDriverIdentification(driverID *ddv1.DriverIdentification) *ddv1.DriverIdentification {
+func (opts AnonymizeOptions) AnonymizeDriverIdentification(driverID *ddv1.DriverIdentification) *ddv1.DriverIdentification {
 	if driverID == nil {
 		return nil
 	}

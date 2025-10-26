@@ -1,8 +1,9 @@
 package dd
 
 import (
-	"google.golang.org/protobuf/proto"
 	"fmt"
+
+	"google.golang.org/protobuf/proto"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -95,7 +96,7 @@ func (opts MarshalOptions) MarshalVuPlaceDailyWorkPeriodRecord(record *ddv1.VuPl
 }
 
 // AnonymizeVuPlaceDailyWorkPeriodRecord anonymizes a VU place daily work period record.
-func AnonymizeVuPlaceDailyWorkPeriodRecord(rec *ddv1.VuPlaceDailyWorkPeriodRecord, opts AnonymizeOptions) *ddv1.VuPlaceDailyWorkPeriodRecord {
+func (opts AnonymizeOptions) AnonymizeVuPlaceDailyWorkPeriodRecord(rec *ddv1.VuPlaceDailyWorkPeriodRecord) *ddv1.VuPlaceDailyWorkPeriodRecord {
 	if rec == nil {
 		return nil
 	}
@@ -104,7 +105,7 @@ func AnonymizeVuPlaceDailyWorkPeriodRecord(rec *ddv1.VuPlaceDailyWorkPeriodRecor
 
 	// Anonymize card number
 	if cardNumber := result.GetFullCardNumber(); cardNumber != nil {
-		result.SetFullCardNumber(AnonymizeFullCardNumber(cardNumber))
+		result.SetFullCardNumber(opts.AnonymizeFullCardNumber(cardNumber))
 	}
 
 	// Anonymize place record
@@ -112,10 +113,10 @@ func AnonymizeVuPlaceDailyWorkPeriodRecord(rec *ddv1.VuPlaceDailyWorkPeriodRecor
 		anonymizedPlace := proto.Clone(place).(*ddv1.PlaceRecord)
 
 		// Anonymize timestamp
-		anonymizedPlace.SetEntryTime(AnonymizeTimestamp(place.GetEntryTime(), opts))
+		anonymizedPlace.SetEntryTime(opts.AnonymizeTimestamp(place.GetEntryTime()))
 
 		// Anonymize odometer
-		anonymizedPlace.SetVehicleOdometerKm(AnonymizeOdometerValue(place.GetVehicleOdometerKm(), opts))
+		anonymizedPlace.SetVehicleOdometerKm(opts.AnonymizeOdometerValue(place.GetVehicleOdometerKm()))
 
 		// Clear raw_data
 		anonymizedPlace.SetRawData(nil)

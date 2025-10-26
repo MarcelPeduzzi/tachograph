@@ -156,7 +156,7 @@ func (opts MarshalOptions) MarshalPlaceRecordG2(rec *ddv1.PlaceRecordG2) ([]byte
 // - Rounds odometer to nearest 100km
 // - Preserves entry type (needed for structure testing)
 // - Anonymizes GNSS coordinates (set to Helsinki, Finland: 60.17°N, 24.94°E)
-func AnonymizePlaceRecordG2(rec *ddv1.PlaceRecordG2) *ddv1.PlaceRecordG2 {
+func (opts AnonymizeOptions) AnonymizePlaceRecordG2(rec *ddv1.PlaceRecordG2) *ddv1.PlaceRecordG2 {
 	if rec == nil {
 		return nil
 	}
@@ -181,7 +181,7 @@ func AnonymizePlaceRecordG2(rec *ddv1.PlaceRecordG2) *ddv1.PlaceRecordG2 {
 	result.SetVehicleOdometerKm(roundedOdometer)
 
 	// Anonymize GNSS coordinates
-	result.SetEntryGnssPlaceRecord(AnonymizeGNSSPlaceRecord(rec.GetEntryGnssPlaceRecord()))
+	result.SetEntryGnssPlaceRecord(opts.AnonymizeGNSSPlaceRecord(rec.GetEntryGnssPlaceRecord()))
 
 	// Don't preserve raw_data - it will be regenerated during marshalling
 

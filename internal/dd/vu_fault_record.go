@@ -1,8 +1,9 @@
 package dd
 
 import (
-	"google.golang.org/protobuf/proto"
 	"fmt"
+
+	"google.golang.org/protobuf/proto"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -234,7 +235,7 @@ func (opts MarshalOptions) marshalEventFaultRecordPurpose(purpose ddv1.EventFaul
 }
 
 // AnonymizeVuFaultRecord anonymizes a VU fault record.
-func AnonymizeVuFaultRecord(rec *ddv1.VuFaultRecord, opts AnonymizeOptions) *ddv1.VuFaultRecord {
+func (opts AnonymizeOptions) AnonymizeVuFaultRecord(rec *ddv1.VuFaultRecord) *ddv1.VuFaultRecord {
 	if rec == nil {
 		return nil
 	}
@@ -242,14 +243,14 @@ func AnonymizeVuFaultRecord(rec *ddv1.VuFaultRecord, opts AnonymizeOptions) *ddv
 	result := proto.Clone(rec).(*ddv1.VuFaultRecord)
 
 	// Anonymize timestamps
-	result.SetBeginTime(AnonymizeTimestamp(rec.GetBeginTime(), opts))
-	result.SetEndTime(AnonymizeTimestamp(rec.GetEndTime(), opts))
+	result.SetBeginTime(opts.AnonymizeTimestamp(rec.GetBeginTime()))
+	result.SetEndTime(opts.AnonymizeTimestamp(rec.GetEndTime()))
 
 	// Anonymize card numbers
-	result.SetCardNumberDriverSlotBegin(AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotBegin()))
-	result.SetCardNumberCodriverSlotBegin(AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotBegin()))
-	result.SetCardNumberDriverSlotEnd(AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotEnd()))
-	result.SetCardNumberCodriverSlotEnd(AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotEnd()))
+	result.SetCardNumberDriverSlotBegin(opts.AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotBegin()))
+	result.SetCardNumberCodriverSlotBegin(opts.AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotBegin()))
+	result.SetCardNumberDriverSlotEnd(opts.AnonymizeFullCardNumber(rec.GetCardNumberDriverSlotEnd()))
+	result.SetCardNumberCodriverSlotEnd(opts.AnonymizeFullCardNumber(rec.GetCardNumberCodriverSlotEnd()))
 
 	// Clear raw_data
 	result.SetRawData(nil)

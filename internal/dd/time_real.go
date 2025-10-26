@@ -51,7 +51,7 @@ func (opts MarshalOptions) MarshalTimeReal(ts *timestamppb.Timestamp) ([]byte, e
 
 // AnonymizeTimestamp anonymizes a timestamp based on options.
 // If PreserveTimestamps is false, shifts to epoch while maintaining relative ordering.
-func AnonymizeTimestamp(ts *timestamppb.Timestamp, opts AnonymizeOptions) *timestamppb.Timestamp {
+func (opts AnonymizeOptions) AnonymizeTimestamp(ts *timestamppb.Timestamp) *timestamppb.Timestamp {
 	if ts == nil || opts.PreserveTimestamps {
 		return ts
 	}

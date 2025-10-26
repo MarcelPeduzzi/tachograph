@@ -138,13 +138,19 @@ func (opts AnonymizeOptions) anonymizeVehiclesUsed(v *cardv1.VehiclesUsed) *card
 
 	result := &cardv1.VehiclesUsed{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Preserve pointer (structural info)
 	result.SetNewestRecordIndex(v.GetNewestRecordIndex())
 
 	// Anonymize records
 	var anonymizedRecords []*ddv1.CardVehicleRecord
 	for i, record := range v.GetRecords() {
-		anonymizedRecord := dd.AnonymizeCardVehicleRecord(record, i)
+		anonymizedRecord := ddOpts.AnonymizeCardVehicleRecord(record, i)
 		anonymizedRecords = append(anonymizedRecords, anonymizedRecord)
 	}
 	result.SetRecords(anonymizedRecords)

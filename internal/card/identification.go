@@ -340,12 +340,18 @@ func (opts AnonymizeOptions) anonymizeDriverCardIdentification(id *cardv1.Driver
 
 	result := &cardv1.DriverCardIdentification{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Preserve country (structural info)
 	result.SetCardIssuingMemberState(id.GetCardIssuingMemberState())
 
 	// Anonymize driver identification
 	if driverID := id.GetDriverIdentification(); driverID != nil {
-		result.SetDriverIdentification(dd.AnonymizeDriverIdentification(driverID))
+		result.SetDriverIdentification(ddOpts.AnonymizeDriverIdentification(driverID))
 	}
 
 	// Anonymize issuing authority (ASCII-only to avoid encoding issues)

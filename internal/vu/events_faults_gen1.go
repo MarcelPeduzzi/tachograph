@@ -294,28 +294,28 @@ func (opts AnonymizeOptions) anonymizeEventsAndFaultsGen1(ef *vuv1.EventsAndFaul
 	// Anonymize fault records
 	var anonymizedFaults []*ddv1.VuFaultRecord
 	for _, fault := range result.GetFaults() {
-		anonymizedFaults = append(anonymizedFaults, dd.AnonymizeVuFaultRecord(fault, ddOpts))
+		anonymizedFaults = append(anonymizedFaults, ddOpts.AnonymizeVuFaultRecord(fault))
 	}
 	result.SetFaults(anonymizedFaults)
 
 	// Anonymize event records
 	var anonymizedEvents []*ddv1.VuEventRecord
 	for _, event := range result.GetEvents() {
-		anonymizedEvents = append(anonymizedEvents, dd.AnonymizeVuEventRecord(event, ddOpts))
+		anonymizedEvents = append(anonymizedEvents, ddOpts.AnonymizeVuEventRecord(event))
 	}
 	result.SetEvents(anonymizedEvents)
 
 	// Anonymize overspeed event records
 	var anonymizedOverspeedEvents []*ddv1.VuOverspeedEventRecord
 	for _, overspeedEvent := range result.GetOverspeedingEvents() {
-		anonymizedOverspeedEvents = append(anonymizedOverspeedEvents, dd.AnonymizeVuOverspeedEventRecord(overspeedEvent, ddOpts))
+		anonymizedOverspeedEvents = append(anonymizedOverspeedEvents, ddOpts.AnonymizeVuOverspeedEventRecord(overspeedEvent))
 	}
 	result.SetOverspeedingEvents(anonymizedOverspeedEvents)
 
 	// Anonymize time adjustment records
 	var anonymizedTimeAdjustments []*ddv1.VuTimeAdjustmentRecord
 	for _, timeAdj := range result.GetTimeAdjustments() {
-		anonymizedTimeAdjustments = append(anonymizedTimeAdjustments, dd.AnonymizeVuTimeAdjustmentRecord(timeAdj, ddOpts))
+		anonymizedTimeAdjustments = append(anonymizedTimeAdjustments, ddOpts.AnonymizeVuTimeAdjustmentRecord(timeAdj))
 	}
 	result.SetTimeAdjustments(anonymizedTimeAdjustments)
 

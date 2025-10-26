@@ -249,7 +249,7 @@ func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGe
 		anonBlock := proto.Clone(block).(*vuv1.DetailedSpeedGen1_DetailedSpeedBlock)
 
 		// Anonymize begin date
-		anonBlock.SetBeginDate(dd.AnonymizeTimestamp(block.GetBeginDate(), ddOpts))
+		anonBlock.SetBeginDate(ddOpts.AnonymizeTimestamp(block.GetBeginDate()))
 
 		// Speed values are not PII - keep as-is
 		// (speeds_kmh array contains actual speed measurements which are not personally identifiable)

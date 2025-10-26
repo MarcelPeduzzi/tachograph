@@ -273,6 +273,12 @@ func (opts AnonymizeOptions) anonymizeGNSSAccumulatedDrivingRecord(record *cardv
 
 	result := &cardv1.GnssPlaces_Record{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Replace outer timestamp with sequential test timestamps
 	// Base: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
 	// Increment by 1 hour per record
@@ -290,7 +296,7 @@ func (opts AnonymizeOptions) anonymizeGNSSAccumulatedDrivingRecord(record *cardv
 	// Anonymize GNSS place record (replaces coordinates with Helsinki)
 	gnssPlaceRecord := record.GetGnssPlaceRecord()
 	if gnssPlaceRecord != nil {
-		anonymizedGnssPlace := dd.AnonymizeGNSSPlaceRecord(gnssPlaceRecord)
+		anonymizedGnssPlace := ddOpts.AnonymizeGNSSPlaceRecord(gnssPlaceRecord)
 		// Update the inner timestamp to match the outer one (for consistency)
 		if result.GetTimestamp() != nil {
 			anonymizedGnssPlace.SetTimestamp(result.GetTimestamp())

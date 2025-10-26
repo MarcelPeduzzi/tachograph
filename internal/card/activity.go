@@ -516,6 +516,12 @@ func (opts AnonymizeOptions) anonymizeDriverActivityData(activity *cardv1.Driver
 
 	anonymized := &cardv1.DriverActivityData{}
 
+	// Create DD anonymize options
+	ddOpts := dd.AnonymizeOptions{
+		PreserveDistanceAndTrips: opts.PreserveDistanceAndTrips,
+		PreserveTimestamps:       opts.PreserveTimestamps,
+	}
+
 	// Note: We do NOT preserve raw_data or the cyclic buffer pointers here, as we're modifying
 	// the semantic fields (dates and activity change times), which means the buffer must be
 	// rebuilt from scratch. The marshaller will recalculate appropriate indices.
@@ -557,7 +563,7 @@ func (opts AnonymizeOptions) anonymizeDriverActivityData(activity *cardv1.Driver
 		if changes := record.GetActivityChangeInfo(); changes != nil {
 			var anonymizedChanges []*ddv1.ActivityChangeInfo
 			for j, change := range changes {
-				anonymizedChange := dd.AnonymizeActivityChangeInfo(change, j)
+				anonymizedChange := ddOpts.AnonymizeActivityChangeInfo(change, j)
 				anonymizedChanges = append(anonymizedChanges, anonymizedChange)
 			}
 			anonymizedRecord.SetActivityChangeInfo(anonymizedChanges)

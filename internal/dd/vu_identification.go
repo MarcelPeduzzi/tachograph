@@ -1,8 +1,9 @@
 package dd
 
 import (
-	"google.golang.org/protobuf/proto"
 	"fmt"
+
+	"google.golang.org/protobuf/proto"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -284,7 +285,7 @@ func (opts MarshalOptions) MarshalVuIdentification(vuIdent *ddv1.VuIdentificatio
 }
 
 // AnonymizeVuIdentification anonymizes VU identification data.
-func AnonymizeVuIdentification(ident *ddv1.VuIdentification) *ddv1.VuIdentification {
+func (opts AnonymizeOptions) AnonymizeVuIdentification(ident *ddv1.VuIdentification) *ddv1.VuIdentification {
 	if ident == nil {
 		return nil
 	}

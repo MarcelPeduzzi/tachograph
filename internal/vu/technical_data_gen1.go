@@ -204,18 +204,18 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGe
 
 	// Anonymize VU identification
 	if vuIdent := result.GetVuIdentification(); vuIdent != nil {
-		result.SetVuIdentification(dd.AnonymizeVuIdentification(vuIdent))
+		result.SetVuIdentification(ddOpts.AnonymizeVuIdentification(vuIdent))
 	}
 
 	// Anonymize paired sensor
 	if sensor := result.GetPairedSensor(); sensor != nil {
-		result.SetPairedSensor(dd.AnonymizeSensorPaired(sensor))
+		result.SetPairedSensor(ddOpts.AnonymizeSensorPaired(sensor))
 	}
 
 	// Anonymize calibration records
 	var anonymizedCalibrationRecords []*ddv1.VuCalibrationRecord
 	for _, calibrationRecord := range result.GetCalibrationRecords() {
-		anonymizedCalibrationRecords = append(anonymizedCalibrationRecords, dd.AnonymizeVuCalibrationRecord(calibrationRecord, ddOpts))
+		anonymizedCalibrationRecords = append(anonymizedCalibrationRecords, ddOpts.AnonymizeVuCalibrationRecord(calibrationRecord))
 	}
 	result.SetCalibrationRecords(anonymizedCalibrationRecords)
 

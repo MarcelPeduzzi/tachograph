@@ -96,7 +96,7 @@ func (opts MarshalOptions) MarshalVehicleRegistrationIdentification(vrn *ddv1.Ve
 }
 
 // AnonymizeVehicleRegistrationIdentification anonymizes vehicle registration data.
-func AnonymizeVehicleRegistrationIdentification(vreg *ddv1.VehicleRegistrationIdentification) *ddv1.VehicleRegistrationIdentification {
+func (opts AnonymizeOptions) AnonymizeVehicleRegistrationIdentification(vreg *ddv1.VehicleRegistrationIdentification) *ddv1.VehicleRegistrationIdentification {
 	if vreg == nil {
 		return nil
 	}

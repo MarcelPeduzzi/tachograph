@@ -1,8 +1,9 @@
 package dd
 
 import (
-	"google.golang.org/protobuf/proto"
 	"fmt"
+
+	"google.golang.org/protobuf/proto"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -172,7 +173,7 @@ func (opts MarshalOptions) MarshalSensorPaired(sensorPaired *ddv1.SensorPaired) 
 }
 
 // AnonymizeSensorPaired anonymizes sensor paired data.
-func AnonymizeSensorPaired(sensor *ddv1.SensorPaired) *ddv1.SensorPaired {
+func (opts AnonymizeOptions) AnonymizeSensorPaired(sensor *ddv1.SensorPaired) *ddv1.SensorPaired {
 	if sensor == nil {
 		return nil
 	}

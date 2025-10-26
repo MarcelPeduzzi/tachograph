@@ -65,7 +65,7 @@ func Diff() error {
 // Generate runs all code generators.
 func Generate() error {
 	return forEachGoMod(func(dir string) error {
-		return cmd(dir, "go", "generate", "-v", "./...").Run()
+		return cmd(dir, "go", "generate", "./...").Run()
 	})
 }
 

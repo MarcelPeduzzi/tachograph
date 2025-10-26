@@ -56,7 +56,7 @@ func newRootCommand() *cobra.Command {
 
 func newParseCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "parse <file1> [file2] [...]",
+		Use:     "parse [file ...]",
 		Short:   "Parse .DDD files",
 		GroupID: "ddd",
 		Args:    cobra.MinimumNArgs(1),

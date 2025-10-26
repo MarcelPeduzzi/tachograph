@@ -66,6 +66,33 @@ if err != nil {
 
 [`tachograph.Marshal`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Marshal) serializes a [`tachographv1.File`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#File) back into the binary `.DDD` format.
 
+## CLI
+
+```bash
+$ tachograph
+
+  Tachograph CLI
+
+  USAGE
+
+    tachograph [command] [--flags]
+
+  .DDD FILES
+
+    parse [file ...] [--flags]  Parse .DDD files
+
+  UTILS
+
+    completion [command]        Generate the autocompletion script for the specified shell
+    help [command]              Help about any command
+
+  FLAGS
+
+    -h --help                   Help for tachograph
+    -v --version                Version for tachograph
+
+```
+
 ## Alternatives
 
 This SDK draws inspiration from other tachograph SDKs, including:

@@ -94,8 +94,8 @@ type RawVehicleUnitFile_Record struct {
 	xxx_hidden_Tag            uint32                 `protobuf:"varint,1,opt,name=tag"`
 	xxx_hidden_Type           TransferType           `protobuf:"varint,2,opt,name=type,enum=wayplatform.connect.tachograph.vu.v1.TransferType"`
 	xxx_hidden_Generation     v1.Generation          `protobuf:"varint,3,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_Data           []byte                 `protobuf:"bytes,4,opt,name=data"`
-	xxx_hidden_Signature      []byte                 `protobuf:"bytes,5,opt,name=signature"`
+	xxx_hidden_Value          []byte                 `protobuf:"bytes,4,opt,name=value"`
+	xxx_hidden_SignatureSize  int32                  `protobuf:"varint,5,opt,name=signature_size,json=signatureSize"`
 	xxx_hidden_Authentication *v11.Authentication    `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
 	XXX_presence              [1]uint32
@@ -153,18 +153,18 @@ func (x *RawVehicleUnitFile_Record) GetGeneration() v1.Generation {
 	return v1.Generation(0)
 }
 
-func (x *RawVehicleUnitFile_Record) GetData() []byte {
+func (x *RawVehicleUnitFile_Record) GetValue() []byte {
 	if x != nil {
-		return x.xxx_hidden_Data
+		return x.xxx_hidden_Value
 	}
 	return nil
 }
 
-func (x *RawVehicleUnitFile_Record) GetSignature() []byte {
+func (x *RawVehicleUnitFile_Record) GetSignatureSize() int32 {
 	if x != nil {
-		return x.xxx_hidden_Signature
+		return x.xxx_hidden_SignatureSize
 	}
-	return nil
+	return 0
 }
 
 func (x *RawVehicleUnitFile_Record) GetAuthentication() *v11.Authentication {
@@ -189,19 +189,16 @@ func (x *RawVehicleUnitFile_Record) SetGeneration(v v1.Generation) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
-func (x *RawVehicleUnitFile_Record) SetData(v []byte) {
+func (x *RawVehicleUnitFile_Record) SetValue(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_Data = v
+	x.xxx_hidden_Value = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
 }
 
-func (x *RawVehicleUnitFile_Record) SetSignature(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
-	x.xxx_hidden_Signature = v
+func (x *RawVehicleUnitFile_Record) SetSignatureSize(v int32) {
+	x.xxx_hidden_SignatureSize = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
 }
 
@@ -230,14 +227,14 @@ func (x *RawVehicleUnitFile_Record) HasGeneration() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *RawVehicleUnitFile_Record) HasData() bool {
+func (x *RawVehicleUnitFile_Record) HasValue() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *RawVehicleUnitFile_Record) HasSignature() bool {
+func (x *RawVehicleUnitFile_Record) HasSignatureSize() bool {
 	if x == nil {
 		return false
 	}
@@ -266,14 +263,14 @@ func (x *RawVehicleUnitFile_Record) ClearGeneration() {
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
 }
 
-func (x *RawVehicleUnitFile_Record) ClearData() {
+func (x *RawVehicleUnitFile_Record) ClearValue() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_Data = nil
+	x.xxx_hidden_Value = nil
 }
 
-func (x *RawVehicleUnitFile_Record) ClearSignature() {
+func (x *RawVehicleUnitFile_Record) ClearSignatureSize() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_Signature = nil
+	x.xxx_hidden_SignatureSize = 0
 }
 
 func (x *RawVehicleUnitFile_Record) ClearAuthentication() {
@@ -289,13 +286,19 @@ type RawVehicleUnitFile_Record_builder struct {
 	Type *TransferType
 	// The application generation (Gen1 or Gen2), inferred from the tag.
 	Generation *v1.Generation
-	// The data portion of the record (signature removed).
-	// This is the content that was signed.
-	Data []byte
-	// The signature bytes extracted from the end of the value.
-	// Generation 1: 128 bytes (RSA-1024 signature using PKCS#1 v1.5 with SHA-1)
-	// Generation 2: Variable length (ECDSA signature in plain format)
-	Signature []byte
+	// The complete value portion of the TV record, including the embedded signature.
+	// To separate data and signature, use the splitTransferValue helper function
+	// which uses the signature_size field to determine the split point.
+	//
+	// Generation 1: Value ends with 128-byte RSA-1024 signature
+	// Generation 2: Value ends with variable-length ECDSA signature
+	Value []byte
+	// Size of the signature portion within value (last N bytes).
+	// This is computed once during unmarshal and stored for efficient access.
+	//
+	// Generation 1: Always 128 (RSA-1024 signature)
+	// Generation 2: Variable length (ECDSA signature, determined by sizeOf functions)
+	SignatureSize *int32
 	// Result of cryptographic signature authentication for this record.
 	// Present when signature verification has been performed.
 	Authentication *v11.Authentication
@@ -317,13 +320,13 @@ func (b0 RawVehicleUnitFile_Record_builder) Build() *RawVehicleUnitFile_Record {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
 		x.xxx_hidden_Generation = *b.Generation
 	}
-	if b.Data != nil {
+	if b.Value != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
-		x.xxx_hidden_Data = b.Data
+		x.xxx_hidden_Value = b.Value
 	}
-	if b.Signature != nil {
+	if b.SignatureSize != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
-		x.xxx_hidden_Signature = b.Signature
+		x.xxx_hidden_SignatureSize = *b.SignatureSize
 	}
 	x.xxx_hidden_Authentication = b.Authentication
 	return m0
@@ -333,17 +336,17 @@ var File_wayplatform_connect_tachograph_vu_v1_raw_vehicle_unit_file_proto protor
 
 const file_wayplatform_connect_tachograph_vu_v1_raw_vehicle_unit_file_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/vu/v1/raw_vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\"\xbc\x03\n" +
+	"@wayplatform/connect/tachograph/vu/v1/raw_vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\"\xc7\x03\n" +
 	"\x12RawVehicleUnitFile\x12Y\n" +
-	"\arecords\x18\x01 \x03(\v2?.wayplatform.connect.tachograph.vu.v1.RawVehicleUnitFile.RecordR\arecords\x1a\xca\x02\n" +
+	"\arecords\x18\x01 \x03(\v2?.wayplatform.connect.tachograph.vu.v1.RawVehicleUnitFile.RecordR\arecords\x1a\xd5\x02\n" +
 	"\x06Record\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\rR\x03tag\x12F\n" +
 	"\x04type\x18\x02 \x01(\x0e22.wayplatform.connect.tachograph.vu.v1.TransferTypeR\x04type\x12P\n" +
 	"\n" +
 	"generation\x18\x03 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
-	"generation\x12\x12\n" +
-	"\x04data\x18\x04 \x01(\fR\x04data\x12\x1c\n" +
-	"\tsignature\x18\x05 \x01(\fR\tsignature\x12b\n" +
+	"generation\x12\x14\n" +
+	"\x05value\x18\x04 \x01(\fR\x05value\x12%\n" +
+	"\x0esignature_size\x18\x05 \x01(\x05R\rsignatureSize\x12b\n" +
 	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xd6\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x17RawVehicleUnitFileProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 

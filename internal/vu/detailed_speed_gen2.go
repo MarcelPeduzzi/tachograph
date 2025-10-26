@@ -9,18 +9,36 @@ import (
 
 // unmarshalDetailedSpeedGen2 parses Gen2 Detailed Speed data from the complete transfer value.
 //
+// This function accepts the complete transfer value including the signature appended
+// at the end, as specified in Appendix 7, Section 2.2.6.
+//
 // Gen2 Detailed Speed structure uses RecordArray format.
 //
 // Note: This is a minimal implementation that stores raw_data for round-trip fidelity.
 // Gen2 has no V2 variant - both V1 and V2 use the same structure.
 func unmarshalDetailedSpeedGen2(value []byte) (*vuv1.DetailedSpeedGen2, error) {
+	// Split transfer value into data and signature
+	// Gen2 uses variable-length ECDSA signatures stored as SignatureRecordArray
+	// We use the sizeOf function to determine where to split
+	totalSize, signatureSize, err := sizeOfDetailedSpeedGen2(value)
+	if err != nil {
+		return nil, fmt.Errorf("failed to calculate size: %w", err)
+	}
+	if totalSize != len(value) {
+		return nil, fmt.Errorf("size mismatch: calculated %d, got %d", totalSize, len(value))
+	}
+
+	dataSize := totalSize - signatureSize
+	data := value[:dataSize]
+	signature := value[dataSize:]
+
 	detailedSpeed := &vuv1.DetailedSpeedGen2{}
-	detailedSpeed.SetRawData(value)
+	detailedSpeed.SetRawData(value) // Store complete transfer value for painting
 
 	// Validate structure by skipping through all record arrays
 	offset := 0
 	skipRecordArray := func(name string) error {
-		size, err := sizeOfRecordArray(value, offset)
+		size, err := sizeOfRecordArray(data, offset)
 		if err != nil {
 			return fmt.Errorf("%s: %w", name, err)
 		}
@@ -33,10 +51,11 @@ func unmarshalDetailedSpeedGen2(value []byte) (*vuv1.DetailedSpeedGen2, error) {
 		return nil, err
 	}
 
-	// SignatureRecordArray is now handled separately in raw parsing, not part of value
+	// Store signature (extracted at the beginning)
+	detailedSpeed.SetSignature(signature)
 
-	if offset != len(value) {
-		return nil, fmt.Errorf("Detailed Speed Gen2 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
+	if offset != len(data) {
+		return nil, fmt.Errorf("Detailed Speed Gen2 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
 	}
 
 	return detailedSpeed, nil
@@ -50,6 +69,7 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen2(detailedSpeed *vuv1.Detailed
 
 	raw := detailedSpeed.GetRawData()
 	if len(raw) > 0 {
+		// raw_data contains complete transfer value (data + signature)
 		return raw, nil
 	}
 
@@ -57,7 +77,7 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen2(detailedSpeed *vuv1.Detailed
 }
 
 // anonymizeDetailedSpeedGen2 anonymizes Gen2 Detailed Speed data.
-// TODO: Implement full anonymization logic for Gen2 detailed speed.
+// TODO: Implement full semantic anonymization (anonymize speed records if needed).
 func (opts AnonymizeOptions) anonymizeDetailedSpeedGen2(ds *vuv1.DetailedSpeedGen2) *vuv1.DetailedSpeedGen2 {
 	if ds == nil {
 		return nil
@@ -66,6 +86,9 @@ func (opts AnonymizeOptions) anonymizeDetailedSpeedGen2(ds *vuv1.DetailedSpeedGe
 	// Set signature to empty bytes (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
 	result.SetSignature([]byte{})
-	result.SetRawData(nil)
+
+	// Note: We intentionally keep raw_data here because MarshalDetailedSpeedGen2
+	// currently requires raw_data (semantic marshalling not yet implemented).
+
 	return result
 }

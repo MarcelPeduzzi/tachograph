@@ -9,6 +9,26 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// splitTransferValue splits a record's value into data and signature portions.
+// The signature size was computed once during unmarshal and stored in the record,
+// making this operation a simple slice operation with no complex size calculations.
+//
+// Returns:
+//   - data: The data portion (everything except the signature)
+//   - signature: The signature portion (last N bytes)
+//   - error: If the value is too short for the stored signature size
+func splitTransferValue(record *vuv1.RawVehicleUnitFile_Record) (data, signature []byte, err error) {
+	value := record.GetValue()
+	sigSize := int(record.GetSignatureSize())
+
+	if len(value) < sigSize {
+		return nil, nil, fmt.Errorf("value too short for signature: got %d bytes, need at least %d", len(value), sigSize)
+	}
+
+	dataSize := len(value) - sigSize
+	return value[:dataSize], value[dataSize:], nil
+}
+
 // UnmarshalRawVehicleUnitFile performs the first parsing pass, identifying TV record
 // boundaries and extracting complete values including embedded signatures.
 //
@@ -53,25 +73,20 @@ func (opts UnmarshalOptions) UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.Raw
 			return nil, fmt.Errorf("sizeOf failed for %v at offset %d: %w", transferType, offset, err)
 		}
 
-		// Extract value bytes
+		// Extract complete value (includes signature)
 		if offset+totalSize > len(data) {
 			return nil, fmt.Errorf("insufficient data for %v value: need %d bytes, have %d", transferType, totalSize, len(data)-offset)
 		}
 		value := data[offset : offset+totalSize]
 		offset += totalSize
 
-		// Split data and signature
-		dataSize := totalSize - sigSize
-		recordData := value[:dataSize]
-		recordSignature := value[dataSize:]
-
-		// Create record
+		// Create record with complete transfer value
 		record := &vuv1.RawVehicleUnitFile_Record{}
 		record.SetTag(uint32(tag))
 		record.SetType(transferType)
 		record.SetGeneration(generationFromTransferType(transferType))
-		record.SetData(recordData)
-		record.SetSignature(recordSignature)
+		record.SetValue(value)                  // Store complete value
+		record.SetSignatureSize(int32(sigSize)) // Store signature size for efficient splitting
 
 		rawFile.SetRecords(append(rawFile.GetRecords(), record))
 	}

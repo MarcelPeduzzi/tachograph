@@ -25,14 +25,20 @@ message RawVehicleUnitFile {
     // The application generation (Gen1 or Gen2), inferred from the tag.
     dd.v1.Generation generation = 3;
 
-    // The data portion of the record (signature removed).
-    // This is the content that was signed.
-    bytes data = 4;
+    // The complete value portion of the TV record, including the embedded signature.
+    // To separate data and signature, use the splitTransferValue helper function
+    // which uses the signature_size field to determine the split point.
+    //
+    // Generation 1: Value ends with 128-byte RSA-1024 signature
+    // Generation 2: Value ends with variable-length ECDSA signature
+    bytes value = 4;
 
-    // The signature bytes extracted from the end of the value.
-    // Generation 1: 128 bytes (RSA-1024 signature using PKCS#1 v1.5 with SHA-1)
-    // Generation 2: Variable length (ECDSA signature in plain format)
-    bytes signature = 5;
+    // Size of the signature portion within value (last N bytes).
+    // This is computed once during unmarshal and stored for efficient access.
+    //
+    // Generation 1: Always 128 (RSA-1024 signature)
+    // Generation 2: Variable length (ECDSA signature, determined by sizeOf functions)
+    int32 signature_size = 5;
 
     // Result of cryptographic signature authentication for this record.
     // Present when signature verification has been performed.

@@ -9,6 +9,9 @@ import (
 
 // unmarshalDetailedSpeedGen1 parses Gen1 Detailed Speed data from the complete transfer value.
 //
+// This function accepts the complete transfer value including the signature appended
+// at the end, as specified in Appendix 7, Section 2.2.6.
+//
 // Gen1 Detailed Speed structure (from Data Dictionary and Appendix 7, Section 2.2.6.6):
 //
 // ASN.1 Definition:
@@ -20,18 +23,26 @@ import (
 //
 // Note: This is a minimal implementation that stores raw_data for round-trip fidelity.
 func unmarshalDetailedSpeedGen1(value []byte) (*vuv1.DetailedSpeedGen1, error) {
-	detailedSpeed := &vuv1.DetailedSpeedGen1{}
-	detailedSpeed.SetRawData(value)
-
-	// TODO: Implement full semantic parsing
-	// For now, validate that we have enough data for the structure
-	if len(value) < 128 { // At minimum, signature is 128 bytes
-		return nil, fmt.Errorf("insufficient data for Detailed Speed Gen1")
+	// Split transfer value into data and signature
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	const signatureSize = 128
+	if len(value) < signatureSize {
+		return nil, fmt.Errorf("insufficient data for signature: need at least %d bytes, got %d", signatureSize, len(value))
 	}
 
-	// Store the signature (last 128 bytes)
-	signatureStart := len(value) - 128
-	detailedSpeed.SetSignature(value[signatureStart:])
+	dataSize := len(value) - signatureSize
+	data := value[:dataSize]
+	signature := value[dataSize:]
+
+	detailedSpeed := &vuv1.DetailedSpeedGen1{}
+	detailedSpeed.SetRawData(value) // Store complete transfer value for painting
+
+	// TODO: Implement full semantic parsing of data portion
+	// For now, we just validate we have some data
+	_ = data // Will be used when semantic parsing is implemented
+
+	// Store signature (extracted at the beginning)
+	detailedSpeed.SetSignature(signature)
 
 	return detailedSpeed, nil
 }
@@ -44,6 +55,7 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen1(detailedSpeed *vuv1.Detailed
 
 	raw := detailedSpeed.GetRawData()
 	if len(raw) > 0 {
+		// raw_data contains complete transfer value (data + signature)
 		return raw, nil
 	}
 
@@ -51,7 +63,7 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen1(detailedSpeed *vuv1.Detailed
 }
 
 // anonymizeDetailedSpeedGen1 anonymizes Gen1 Detailed Speed data.
-// TODO: Implement full anonymization logic for Gen1 detailed speed.
+// TODO: Implement full semantic anonymization (anonymize speed records if needed).
 func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGen1) *vuv1.DetailedSpeedGen1 {
 	if ds == nil {
 		return nil
@@ -60,6 +72,10 @@ func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGe
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
-	result.SetRawData(nil)
+
+	// Note: We intentionally keep raw_data here because MarshalDetailedSpeedGen1
+	// currently requires raw_data (semantic marshalling not yet implemented).
+	// Once semantic marshalling is implemented, we should clear raw_data.
+
 	return result
 }

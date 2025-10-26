@@ -9,6 +9,9 @@ import (
 
 // unmarshalOverviewGen2V2 parses Gen2 V2 Overview data from the complete transfer value.
 //
+// This function accepts the complete transfer value including the signature appended
+// at the end, as specified in Appendix 7, Section 2.2.6.
+//
 // Gen2 V2 Overview structure is identical to Gen2 V1 with one addition:
 // VehicleRegistrationNumberRecordArray is inserted between VehicleIdentificationNumberRecordArray
 // and CurrentDateTimeRecordArray.
@@ -36,15 +39,30 @@ import (
 // Note: This is a minimal implementation that stores raw_data for round-trip fidelity.
 // Full semantic parsing of all RecordArrays is TODO.
 func unmarshalOverviewGen2V2(value []byte) (*vuv1.OverviewGen2V2, error) {
+	// Split transfer value into data and signature
+	// Gen2 uses variable-length ECDSA signatures stored as SignatureRecordArray
+	// We use the sizeOf function to determine where to split
+	totalSize, signatureSize, err := sizeOfOverviewGen2V2(value)
+	if err != nil {
+		return nil, fmt.Errorf("failed to calculate size: %w", err)
+	}
+	if totalSize != len(value) {
+		return nil, fmt.Errorf("size mismatch: calculated %d, got %d", totalSize, len(value))
+	}
+
+	dataSize := totalSize - signatureSize
+	data := value[:dataSize]
+	signature := value[dataSize:]
+
 	overview := &vuv1.OverviewGen2V2{}
-	overview.SetRawData(value)
+	overview.SetRawData(value) // Store complete transfer value for painting
 
 	// For now, store the raw data and validate structure by skipping through all record arrays
 	offset := 0
 
 	// Helper to skip a RecordArray
 	skipRecordArray := func(name string) error {
-		size, err := sizeOfRecordArray(value, offset)
+		size, err := sizeOfRecordArray(data, offset)
 		if err != nil {
 			return fmt.Errorf("%s: %w", name, err)
 		}
@@ -102,11 +120,12 @@ func unmarshalOverviewGen2V2(value []byte) (*vuv1.OverviewGen2V2, error) {
 		return nil, err
 	}
 
-	// SignatureRecordArray is now handled separately in raw parsing, not part of value
+	// Store signature (extracted at the beginning)
+	overview.SetSignature(signature)
 
 	// Verify we consumed exactly the right amount of data
-	if offset != len(value) {
-		return nil, fmt.Errorf("Overview Gen2 V2 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
+	if offset != len(data) {
+		return nil, fmt.Errorf("Overview Gen2 V2 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
 	}
 
 	// TODO: Implement full semantic parsing of all record arrays
@@ -129,6 +148,7 @@ func (opts MarshalOptions) MarshalOverviewGen2V2(overview *vuv1.OverviewGen2V2) 
 	// we use the raw_data if available
 	raw := overview.GetRawData()
 	if len(raw) > 0 {
+		// raw_data contains complete transfer value (data + signature)
 		return raw, nil
 	}
 
@@ -158,7 +178,9 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V2(overview *vuv1.OverviewGen2
 	// Set signature to empty bytes (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
 	result.SetSignature([]byte{})
-	result.SetRawData(nil)
+
+	// Note: We intentionally keep raw_data here because MarshalOverviewGen2V2
+	// currently requires raw_data (semantic marshalling not yet implemented).
 
 	return result
 }

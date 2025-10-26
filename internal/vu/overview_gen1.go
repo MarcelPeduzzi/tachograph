@@ -11,6 +11,9 @@ import (
 
 // unmarshalOverviewGen1 parses Gen1 Overview data from the complete transfer value.
 //
+// This function accepts the complete transfer value including the signature appended
+// at the end, as specified in Appendix 7, Section 2.2.6.
+//
 // Gen1 Overview structure (from Data Dictionary and Appendix 7, Section 2.2.6.2):
 //
 // ASN.1 Definition:
@@ -58,33 +61,44 @@ import (
 //   - DownloadPeriodBeginTime: 4 bytes
 //   - DownloadPeriodEndTime: 4 bytes
 //
-// - Signature: 128 bytes (RSA)
+// - Signature: 128 bytes (RSA-1024)
 func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
+	// Split transfer value into data and signature
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	const signatureSize = 128
+	if len(value) < signatureSize {
+		return nil, fmt.Errorf("insufficient data for signature: need at least %d bytes, got %d", signatureSize, len(value))
+	}
+
+	dataSize := len(value) - signatureSize
+	data := value[:dataSize]
+	signature := value[dataSize:]
+
 	overview := &vuv1.OverviewGen1{}
-	overview.SetRawData(value)
+	overview.SetRawData(value) // Store complete transfer value for painting
 
 	offset := 0
 	var opts dd.UnmarshalOptions
 
 	// MemberStateCertificate (194 bytes)
-	if offset+194 > len(value) {
+	if offset+194 > len(data) {
 		return nil, fmt.Errorf("insufficient data for MemberStateCertificate")
 	}
-	overview.SetMemberStateCertificate(value[offset : offset+194])
+	overview.SetMemberStateCertificate(data[offset : offset+194])
 	offset += 194
 
 	// VuCertificate (194 bytes)
-	if offset+194 > len(value) {
+	if offset+194 > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuCertificate")
 	}
-	overview.SetVuCertificate(value[offset : offset+194])
+	overview.SetVuCertificate(data[offset : offset+194])
 	offset += 194
 
 	// VehicleIdentificationNumber (17 bytes)
-	if offset+17 > len(value) {
+	if offset+17 > len(data) {
 		return nil, fmt.Errorf("insufficient data for VehicleIdentificationNumber")
 	}
-	vin, err := opts.UnmarshalIa5StringValue(value[offset : offset+17])
+	vin, err := opts.UnmarshalIa5StringValue(data[offset : offset+17])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal VIN: %w", err)
 	}
@@ -92,10 +106,10 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 17
 
 	// VehicleRegistrationIdentification (15 bytes)
-	if offset+15 > len(value) {
+	if offset+15 > len(data) {
 		return nil, fmt.Errorf("insufficient data for VehicleRegistrationIdentification")
 	}
-	vrn, err := opts.UnmarshalVehicleRegistration(value[offset : offset+15])
+	vrn, err := opts.UnmarshalVehicleRegistration(data[offset : offset+15])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal VehicleRegistrationIdentification: %w", err)
 	}
@@ -103,10 +117,10 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 15
 
 	// CurrentDateTime (4 bytes)
-	if offset+4 > len(value) {
+	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for CurrentDateTime")
 	}
-	currentTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+	currentTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal CurrentDateTime: %w", err)
 	}
@@ -114,14 +128,14 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 4
 
 	// VuDownloadablePeriod (8 bytes: 2 x TimeReal)
-	if offset+8 > len(value) {
+	if offset+8 > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuDownloadablePeriod")
 	}
-	minTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+	minTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal DownloadablePeriod minTime: %w", err)
 	}
-	maxTime, err := opts.UnmarshalTimeReal(value[offset+4 : offset+8])
+	maxTime, err := opts.UnmarshalTimeReal(data[offset+4 : offset+8])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal DownloadablePeriod maxTime: %w", err)
 	}
@@ -134,10 +148,10 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	// CardSlotsStatus (1 byte)
 	// Lower 4 bits (0-3): driver slot
 	// Upper 4 bits (4-7): co-driver slot
-	if offset+1 > len(value) {
+	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for CardSlotsStatus")
 	}
-	cardSlotsStatus := value[offset]
+	cardSlotsStatus := data[offset]
 	driverSlotRaw := byte(cardSlotsStatus & 0x0F)
 	coDriverSlotRaw := byte((cardSlotsStatus >> 4) & 0x0F)
 
@@ -158,14 +172,14 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 1
 
 	// VuDownloadActivityData (58 bytes: 4 + 18 + 36)
-	if offset+58 > len(value) {
+	if offset+58 > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuDownloadActivityData")
 	}
 
 	downloadActivity := &vuv1.OverviewGen1_DownloadActivity{}
 
 	// DownloadingTime (4 bytes)
-	downloadingTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+	downloadingTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal downloading time: %w", err)
 	}
@@ -173,7 +187,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 4
 
 	// FullCardNumber (18 bytes)
-	fullCardNumber, err := opts.UnmarshalFullCardNumber(value[offset : offset+18])
+	fullCardNumber, err := opts.UnmarshalFullCardNumber(data[offset : offset+18])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal full card number: %w", err)
 	}
@@ -181,7 +195,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 18
 
 	// CompanyOrWorkshopName (36 bytes: 1 code page + 35 name)
-	companyName, err := opts.UnmarshalStringValue(value[offset : offset+36])
+	companyName, err := opts.UnmarshalStringValue(data[offset : offset+36])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal company name: %w", err)
 	}
@@ -191,14 +205,14 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	overview.SetDownloadActivities([]*vuv1.OverviewGen1_DownloadActivity{downloadActivity})
 
 	// VuCompanyLocksData: 1 byte (noOfLocks) + (noOfLocks * 98 bytes per record)
-	if offset+1 > len(value) {
+	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuCompanyLocksData noOfLocks")
 	}
-	noOfLocks := value[offset]
+	noOfLocks := data[offset]
 	offset += 1
 
 	const companyLockRecordSize = 98 // 4 + 4 + 36 + 36 + 18
-	if offset+int(noOfLocks)*companyLockRecordSize > len(value) {
+	if offset+int(noOfLocks)*companyLockRecordSize > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuCompanyLocksData records")
 	}
 
@@ -207,7 +221,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		lock := &vuv1.OverviewGen1_CompanyLock{}
 
 		// LockInTime (4 bytes)
-		lockInTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+		lockInTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal lockInTime: %w", err)
 		}
@@ -215,7 +229,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 4
 
 		// LockOutTime (4 bytes)
-		lockOutTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+		lockOutTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal lockOutTime: %w", err)
 		}
@@ -223,7 +237,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 4
 
 		// CompanyName (36 bytes)
-		companyName, err := opts.UnmarshalStringValue(value[offset : offset+36])
+		companyName, err := opts.UnmarshalStringValue(data[offset : offset+36])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal company name: %w", err)
 		}
@@ -231,7 +245,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 36
 
 		// CompanyAddress (36 bytes)
-		companyAddress, err := opts.UnmarshalStringValue(value[offset : offset+36])
+		companyAddress, err := opts.UnmarshalStringValue(data[offset : offset+36])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal company address: %w", err)
 		}
@@ -239,7 +253,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 36
 
 		// CompanyCardNumber (18 bytes)
-		companyCardNumber, err := opts.UnmarshalFullCardNumber(value[offset : offset+18])
+		companyCardNumber, err := opts.UnmarshalFullCardNumber(data[offset : offset+18])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal company card number: %w", err)
 		}
@@ -251,14 +265,14 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	overview.SetCompanyLocks(companyLocks)
 
 	// VuControlActivityData: 1 byte (noOfControls) + (noOfControls * 31 bytes per record)
-	if offset+1 > len(value) {
+	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuControlActivityData noOfControls")
 	}
-	noOfControls := value[offset]
+	noOfControls := data[offset]
 	offset += 1
 
 	const controlActivityRecordSize = 31 // 1 + 4 + 18 + 4 + 4
-	if offset+int(noOfControls)*controlActivityRecordSize > len(value) {
+	if offset+int(noOfControls)*controlActivityRecordSize > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuControlActivityData records")
 	}
 
@@ -267,7 +281,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		control := &vuv1.OverviewGen1_ControlActivity{}
 
 		// ControlType (1 byte)
-		controlType, err := opts.UnmarshalControlType(value[offset : offset+1])
+		controlType, err := opts.UnmarshalControlType(data[offset : offset+1])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal control type: %w", err)
 		}
@@ -275,7 +289,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 1
 
 		// ControlTime (4 bytes)
-		controlTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+		controlTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal control time: %w", err)
 		}
@@ -283,7 +297,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 4
 
 		// ControlCardNumber (18 bytes)
-		controlCardNumber, err := opts.UnmarshalFullCardNumber(value[offset : offset+18])
+		controlCardNumber, err := opts.UnmarshalFullCardNumber(data[offset : offset+18])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal control card number: %w", err)
 		}
@@ -291,7 +305,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 18
 
 		// DownloadPeriodBeginTime (4 bytes)
-		downloadPeriodBeginTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+		downloadPeriodBeginTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal download period begin time: %w", err)
 		}
@@ -299,7 +313,7 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 		offset += 4
 
 		// DownloadPeriodEndTime (4 bytes)
-		downloadPeriodEndTime, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+		downloadPeriodEndTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal download period end time: %w", err)
 		}
@@ -310,11 +324,12 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	}
 	overview.SetControlActivities(controlActivities)
 
-	// Signature is now handled separately in raw parsing, not part of value
+	// Store signature (extracted at the beginning)
+	overview.SetSignature(signature)
 
 	// Verify we consumed exactly the right amount of data
-	if offset != len(value) {
-		return nil, fmt.Errorf("Overview Gen1 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
+	if offset != len(data) {
+		return nil, fmt.Errorf("Overview Gen1 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
 	}
 
 	return overview, nil
@@ -544,9 +559,15 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 		offset += 4
 	}
 
-	// Signature is handled separately in RawVehicleUnitFile_Record, not included in data portion
+	// Append signature to create complete transfer value
+	signature := overview.GetSignature()
+	if len(signature) == 0 {
+		// Gen1 uses fixed 128-byte RSA-1024 signatures
+		signature = make([]byte, 128)
+	}
+	transferValue := append(canvas, signature...)
 
-	return canvas, nil
+	return transferValue, nil
 }
 
 // anonymizeOverviewGen1 anonymizes Gen1 Overview data.
@@ -576,7 +597,11 @@ func (opts AnonymizeOptions) anonymizeOverviewGen1(overview *vuv1.OverviewGen1) 
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
-	result.SetRawData(nil)
+
+	// Note: We intentionally keep raw_data here because MarshalOverviewGen1 uses
+	// raw_data painting to serialize. The painting will apply the anonymized
+	// semantic values (VIN, VRN) over the raw_data canvas during marshalling.
+	// This is the recommended approach per the raw data painting policy.
 
 	return result
 }

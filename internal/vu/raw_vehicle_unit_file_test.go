@@ -108,7 +108,7 @@ func TestRawVehicleUnitFileGolden(t *testing.T) {
 					record.GetType().String(),
 					record.GetTag(),
 					record.GetGeneration().String(),
-					len(record.GetData()))
+					len(record.GetValue()))
 			}
 		})
 	}
@@ -147,9 +147,8 @@ func TestRawVehicleUnitFileRoundTrip(t *testing.T) {
 				// Append 2-byte tag (big-endian)
 				tag := uint16(record.GetTag())
 				reconstructed = append(reconstructed, byte(tag>>8), byte(tag))
-				// Append value (data + signature to match original format)
-				reconstructed = append(reconstructed, record.GetData()...)
-				reconstructed = append(reconstructed, record.GetSignature()...)
+				// Append complete value (already includes signature)
+				reconstructed = append(reconstructed, record.GetValue()...)
 			}
 
 			// Compare binary data

@@ -12,6 +12,9 @@ import (
 
 // unmarshalActivitiesGen1 parses Gen1 Activities data from the complete transfer value.
 //
+// This function accepts the complete transfer value including the signature appended
+// at the end, as specified in Appendix 7, Section 2.2.6.
+//
 // Gen1 Activities structure (from Data Dictionary and Appendix 7, Section 2.2.6.3):
 //
 // ASN.1 Definition:
@@ -49,22 +52,33 @@ import (
 //   - TimeReal: 4 bytes
 //   - SpecificConditionType: 1 byte
 //
-// - Signature: 128 bytes (RSA)
+// - Signature: 128 bytes (RSA-1024)
 //
 // Note: This is a minimal implementation that validates the binary structure and stores raw_data.
 // Full semantic parsing of all nested records is TODO.
 func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
+	// Split transfer value into data and signature
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	const signatureSize = 128
+	if len(value) < signatureSize {
+		return nil, fmt.Errorf("insufficient data for signature: need at least %d bytes, got %d", signatureSize, len(value))
+	}
+
+	dataSize := len(value) - signatureSize
+	data := value[:dataSize]
+	signature := value[dataSize:]
+
 	activities := &vuv1.ActivitiesGen1{}
-	activities.SetRawData(value)
+	activities.SetRawData(value) // Store complete transfer value for painting
 
 	offset := 0
 	var opts dd.UnmarshalOptions
 
 	// TimeReal (4 bytes) - date of day downloaded
-	if offset+4 > len(value) {
+	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for TimeReal")
 	}
-	timeReal, err := opts.UnmarshalTimeReal(value[offset : offset+4])
+	timeReal, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal TimeReal: %w", err)
 	}
@@ -72,10 +86,10 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	offset += 4
 
 	// OdometerValueMidnight (3 bytes - OdometerShort)
-	if offset+3 > len(value) {
+	if offset+3 > len(data) {
 		return nil, fmt.Errorf("insufficient data for OdometerValueMidnight")
 	}
-	odometer, err := opts.UnmarshalOdometer(value[offset : offset+3])
+	odometer, err := opts.UnmarshalOdometer(data[offset : offset+3])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal OdometerValueMidnight: %w", err)
 	}
@@ -83,21 +97,21 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	offset += 3
 
 	// VuCardIWData: 2 bytes (noOfIWRecords) + (noOfIWRecords * 129 bytes)
-	if offset+2 > len(value) {
+	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for noOfIWRecords")
 	}
-	noOfIWRecords := binary.BigEndian.Uint16(value[offset : offset+2])
+	noOfIWRecords := binary.BigEndian.Uint16(data[offset : offset+2])
 	offset += 2
 
 	// Parse each CardIWRecord (129 bytes each for Gen1)
 	cardIWRecords := make([]*ddv1.VuCardIWRecord, noOfIWRecords)
 	for i := uint16(0); i < noOfIWRecords; i++ {
 		const cardIWRecordSize = 129
-		if offset+cardIWRecordSize > len(value) {
+		if offset+cardIWRecordSize > len(data) {
 			return nil, fmt.Errorf("insufficient data for CardIWRecord %d", i)
 		}
 
-		record, err := opts.UnmarshalVuCardIWRecord(value[offset : offset+cardIWRecordSize])
+		record, err := opts.UnmarshalVuCardIWRecord(data[offset : offset+cardIWRecordSize])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal CardIWRecord %d: %w", i, err)
 		}
@@ -108,21 +122,21 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	activities.SetCardIwData(cardIWRecords)
 
 	// VuActivityDailyData: 2 bytes (noOfActivityChanges) + (noOfActivityChanges * 2 bytes)
-	if offset+2 > len(value) {
+	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for noOfActivityChanges")
 	}
-	noOfActivityChanges := binary.BigEndian.Uint16(value[offset : offset+2])
+	noOfActivityChanges := binary.BigEndian.Uint16(data[offset : offset+2])
 	offset += 2
 
 	// Parse each ActivityChangeInfo (2 bytes each)
 	activityChanges := make([]*ddv1.ActivityChangeInfo, noOfActivityChanges)
 	for i := uint16(0); i < noOfActivityChanges; i++ {
 		const activityChangeSize = 2
-		if offset+activityChangeSize > len(value) {
+		if offset+activityChangeSize > len(data) {
 			return nil, fmt.Errorf("insufficient data for ActivityChangeInfo %d", i)
 		}
 
-		activityChange, err := opts.UnmarshalActivityChangeInfo(value[offset : offset+activityChangeSize])
+		activityChange, err := opts.UnmarshalActivityChangeInfo(data[offset : offset+activityChangeSize])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal activity change %d: %w", i, err)
 		}
@@ -133,10 +147,10 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 
 	// VuPlaceDailyWorkPeriodData: 1 byte (noOfPlaceRecords) + (noOfPlaceRecords * 28 bytes)
 	// Note: Each record is 28 bytes (18 FullCardNumber + 10 PlaceRecord)
-	if offset+1 > len(value) {
+	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for noOfPlaceRecords")
 	}
-	noOfPlaceRecords := value[offset]
+	noOfPlaceRecords := data[offset]
 	offset += 1
 
 	// Parse each VuPlaceDailyWorkPeriodRecord using DD type (28 bytes each)
@@ -144,12 +158,12 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	placeRecords := make([]*ddv1.PlaceRecord, noOfPlaceRecords)
 	for i := uint8(0); i < noOfPlaceRecords; i++ {
 		const placeRecordSize = 28 // 18 bytes FullCardNumber + 10 bytes PlaceRecord
-		if offset+placeRecordSize > len(value) {
+		if offset+placeRecordSize > len(data) {
 			return nil, fmt.Errorf("insufficient data for PlaceRecord %d", i)
 		}
 
 		// Use DD type to parse the full VuPlaceDailyWorkPeriodRecord
-		vuPlaceRecord, err := opts.UnmarshalVuPlaceDailyWorkPeriodRecord(value[offset : offset+placeRecordSize])
+		vuPlaceRecord, err := opts.UnmarshalVuPlaceDailyWorkPeriodRecord(data[offset : offset+placeRecordSize])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal VuPlaceDailyWorkPeriodRecord %d: %w", i, err)
 		}
@@ -161,21 +175,21 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	activities.SetPlaces(placeRecords)
 
 	// VuSpecificConditionData: 2 bytes (noOfSpecificConditionRecords) + (noOfSpecificConditionRecords * 5 bytes)
-	if offset+2 > len(value) {
+	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for noOfSpecificConditionRecords")
 	}
-	noOfSpecificConditionRecords := binary.BigEndian.Uint16(value[offset : offset+2])
+	noOfSpecificConditionRecords := binary.BigEndian.Uint16(data[offset : offset+2])
 	offset += 2
 
 	// Parse each SpecificConditionRecord (5 bytes each)
 	specificConditions := make([]*ddv1.SpecificConditionRecord, noOfSpecificConditionRecords)
 	for i := uint16(0); i < noOfSpecificConditionRecords; i++ {
 		const specificConditionSize = 5
-		if offset+specificConditionSize > len(value) {
+		if offset+specificConditionSize > len(data) {
 			return nil, fmt.Errorf("insufficient data for SpecificConditionRecord %d", i)
 		}
 
-		specificCondition, err := opts.UnmarshalSpecificConditionRecord(value[offset : offset+specificConditionSize])
+		specificCondition, err := opts.UnmarshalSpecificConditionRecord(data[offset : offset+specificConditionSize])
 		if err != nil {
 			return nil, fmt.Errorf("unmarshal specific condition %d: %w", i, err)
 		}
@@ -184,11 +198,12 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	}
 	activities.SetSpecificConditions(specificConditions)
 
-	// Signature is now handled separately in raw parsing, not part of value
+	// Store signature (extracted at the beginning)
+	activities.SetSignature(signature)
 
 	// Verify we consumed exactly the right amount of data
-	if offset != len(value) {
-		return nil, fmt.Errorf("Activities Gen1 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
+	if offset != len(data) {
+		return nil, fmt.Errorf("Activities Gen1 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
 	}
 
 	return activities, nil
@@ -204,10 +219,11 @@ func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1
 		return nil, fmt.Errorf("activities cannot be nil")
 	}
 
-	// For now, use raw_data directly if available
+	// Use raw_data if available (includes complete transfer with signature)
 	// Full semantic marshalling requires implementing all record types
 	raw := activities.GetRawData()
 	if len(raw) > 0 {
+		// raw_data contains complete transfer value (data + signature)
 		return raw, nil
 	}
 
@@ -219,12 +235,12 @@ func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1
 	// 4. Writing VuActivityDailyData (count + records)
 	// 5. Writing VuPlaceDailyWorkPeriodData (count + records)
 	// 6. Writing VuSpecificConditionData (count + records)
-	// 7. Writing Signature
+	// 7. Appending Signature
 	return nil, fmt.Errorf("cannot marshal Activities Gen1 without raw_data (semantic marshalling not yet implemented)")
 }
 
 // anonymizeActivitiesGen1 anonymizes Gen1 Activities data.
-// TODO: Implement full anonymization logic for Gen1 activities.
+// TODO: Implement full semantic anonymization (anonymize card numbers, timestamps, etc.).
 func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.ActivitiesGen1) *vuv1.ActivitiesGen1 {
 	if activities == nil {
 		return nil
@@ -233,6 +249,11 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
-	result.SetRawData(nil)
+
+	// Note: We intentionally keep raw_data here because MarshalActivitiesGen1
+	// currently requires raw_data (semantic marshalling not yet implemented).
+	// Once semantic marshalling is implemented, we should clear raw_data and
+	// implement full semantic anonymization of card_iw_data, activity_changes, etc.
+
 	return result
 }

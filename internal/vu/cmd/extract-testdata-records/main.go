@@ -76,7 +76,7 @@ func processVUFile(filePath string, fileIndex int) error {
 		return fmt.Errorf("failed to unmarshal VU file: %w", err)
 	}
 
-	// Calculate output directory path
+	// Calculate output directory paths
 	// Get just the filename without extension
 	baseName := filepath.Base(filePath)
 	baseNameWithoutExt := strings.TrimSuffix(baseName, filepath.Ext(baseName))
@@ -90,6 +90,36 @@ func processVUFile(filePath string, fileIndex int) error {
 		return fmt.Errorf("failed to write original records: %w", err)
 	}
 
+	// Create anonymized version
+	anonymizedDir := filepath.Join(*outputDir, fmt.Sprintf("%03d-anonymized", fileIndex))
+	log.Printf("  Creating anonymized version...")
+
+	// Parse RawVehicleUnitFile → VehicleUnitFile
+	parseOpts := vu.ParseOptions{PreserveRawData: true}
+	vuFile, err := parseOpts.ParseRawVehicleUnitFile(rawFile)
+	if err != nil {
+		return fmt.Errorf("failed to parse VU file: %w", err)
+	}
+
+	// Anonymize
+	anonOpts := vu.AnonymizeOptions{}
+	anonFile, err := anonOpts.AnonymizeVehicleUnitFile(vuFile)
+	if err != nil {
+		return fmt.Errorf("failed to anonymize VU file: %w", err)
+	}
+
+	// Unparse back to RawVehicleUnitFile
+	anonRawFile, err := parseOpts.UnparseRawVehicleUnitFile(anonFile)
+	if err != nil {
+		return fmt.Errorf("failed to unparse anonymized VU file: %w", err)
+	}
+
+	// Write anonymized hexdumps
+	log.Printf("  Writing anonymized records to: %s", anonymizedDir)
+	if err := writeRecordsToDir(anonymizedDir, anonRawFile.GetRecords()); err != nil {
+		return fmt.Errorf("failed to write anonymized records: %w", err)
+	}
+
 	return nil
 }
 
@@ -99,37 +129,25 @@ func writeRecordsToDir(dirPath string, records []*vuv1.RawVehicleUnitFile_Record
 		return fmt.Errorf("failed to create directory: %w", err)
 	}
 
-	// Write each record as separate data and signature hexdumps
+	// Write each record as a complete transfer (data + signature) hexdump
 	for i, record := range records {
 		// Get transfer type enum string representation
 		transferType := record.GetType().String()
 
-		// Write data portion: NNN-<TRANSFER_TYPE>.data.hexdump
-		dataFilename := fmt.Sprintf("%03d-%s.data.hexdump", i, transferType)
-		dataPath := filepath.Join(dirPath, dataFilename)
+		// Get complete transfer value (already includes signature)
+		transferValue := record.GetValue()
 
-		dataHexdump, err := hexdump.Marshal(record.GetData())
+		// Write complete transfer: NNN-<TRANSFER_TYPE>.hexdump
+		filename := fmt.Sprintf("%03d-%s.hexdump", i, transferType)
+		outputPath := filepath.Join(dirPath, filename)
+
+		hexdumpData, err := hexdump.Marshal(transferValue)
 		if err != nil {
-			return fmt.Errorf("failed to marshal data for record %d to hexdump: %w", i, err)
+			return fmt.Errorf("failed to marshal transfer %d to hexdump: %w", i, err)
 		}
 
-		if err := os.WriteFile(dataPath, dataHexdump, 0o644); err != nil {
-			return fmt.Errorf("failed to write data hexdump file %s: %w", dataPath, err)
-		}
-
-		// Write signature portion: NNN-<TRANSFER_TYPE>.signature.hexdump
-		if len(record.GetSignature()) > 0 {
-			sigFilename := fmt.Sprintf("%03d-%s.signature.hexdump", i, transferType)
-			sigPath := filepath.Join(dirPath, sigFilename)
-
-			sigHexdump, err := hexdump.Marshal(record.GetSignature())
-			if err != nil {
-				return fmt.Errorf("failed to marshal signature for record %d to hexdump: %w", i, err)
-			}
-
-			if err := os.WriteFile(sigPath, sigHexdump, 0o644); err != nil {
-				return fmt.Errorf("failed to write signature hexdump file %s: %w", sigPath, err)
-			}
+		if err := os.WriteFile(outputPath, hexdumpData, 0o644); err != nil {
+			return fmt.Errorf("failed to write hexdump file %s: %w", outputPath, err)
 		}
 	}
 

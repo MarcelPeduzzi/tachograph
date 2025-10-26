@@ -171,7 +171,10 @@ func (opts AuthenticateOptions) findGen2OverviewRecord(records []*vuv1.RawVehicl
 
 // extractGen2Certificates extracts the VU and MSCA ECC certificates from a Gen2 Overview record.
 func (opts AuthenticateOptions) extractGen2Certificates(overviewRecord *vuv1.RawVehicleUnitFile_Record) (*securityv1.EccCertificate, *securityv1.EccCertificate, error) {
-	data := overviewRecord.GetData()
+	data, _, err := splitTransferValue(overviewRecord)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to split Overview transfer value: %w", err)
+	}
 
 	// Gen2 Overview structure (from regulation):
 	// Both V1 and V2 start with RecordArray structures for certificates:
@@ -262,8 +265,11 @@ func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, 
 
 // verifyGen2DataSignature verifies the ECDSA signature on the data portion of a Gen2 record.
 func (opts AuthenticateOptions) verifyGen2DataSignature(record *vuv1.RawVehicleUnitFile_Record, vuCert *securityv1.EccCertificate, auth *securityv1.Authentication) error {
-	data := record.GetData()
-	signature := record.GetSignature()
+	data, signature, err := splitTransferValue(record)
+	if err != nil {
+		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
+		return fmt.Errorf("failed to split transfer value: %w", err)
+	}
 
 	if len(signature) == 0 {
 		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
@@ -293,7 +299,10 @@ func (opts AuthenticateOptions) findOverviewRecord(records []*vuv1.RawVehicleUni
 
 // extractGen1Certificates extracts the VU and MSCA certificates from a Gen1 Overview record.
 func (opts AuthenticateOptions) extractGen1Certificates(overviewRecord *vuv1.RawVehicleUnitFile_Record) (*securityv1.RsaCertificate, *securityv1.RsaCertificate, error) {
-	data := overviewRecord.GetData()
+	data, _, err := splitTransferValue(overviewRecord)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to split Overview transfer value: %w", err)
+	}
 
 	// Gen1 Overview structure (from regulation):
 	// - MemberStateCertificate: 194 bytes
@@ -354,8 +363,11 @@ func (opts AuthenticateOptions) verifyGen1CertificateChain(ctx context.Context, 
 
 // verifyGen1DataSignature verifies the RSA signature on the data portion of a Gen1 record.
 func (opts AuthenticateOptions) verifyGen1DataSignature(record *vuv1.RawVehicleUnitFile_Record, vuCert *securityv1.RsaCertificate, auth *securityv1.Authentication) error {
-	allData := record.GetData()
-	signature := record.GetSignature()
+	allData, signature, err := splitTransferValue(record)
+	if err != nil {
+		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
+		return fmt.Errorf("failed to split transfer value: %w", err)
+	}
 
 	// Gen1 uses RSA-1024 with 128-byte signatures
 	const lenRsaSignature = 128

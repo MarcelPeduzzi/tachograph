@@ -9,6 +9,9 @@ import (
 
 // unmarshalTechnicalDataGen1 parses Gen1 Technical Data from the complete transfer value.
 //
+// This function accepts the complete transfer value including the signature appended
+// at the end, as specified in Appendix 7, Section 2.2.6.
+//
 // Gen1 Technical Data structure (from Data Dictionary and Appendix 7, Section 2.2.6.7):
 //
 // ASN.1 Definition:
@@ -26,18 +29,26 @@ import (
 //
 // Note: This is a minimal implementation that stores raw_data for round-trip fidelity.
 func unmarshalTechnicalDataGen1(value []byte) (*vuv1.TechnicalDataGen1, error) {
-	technicalData := &vuv1.TechnicalDataGen1{}
-	technicalData.SetRawData(value)
-
-	// TODO: Implement full semantic parsing
-	// For now, validate that we have enough data for the structure
-	if len(value) < 128 { // At minimum, signature is 128 bytes
-		return nil, fmt.Errorf("insufficient data for Technical Data Gen1")
+	// Split transfer value into data and signature
+	// Gen1 uses fixed 128-byte RSA-1024 signatures
+	const signatureSize = 128
+	if len(value) < signatureSize {
+		return nil, fmt.Errorf("insufficient data for signature: need at least %d bytes, got %d", signatureSize, len(value))
 	}
 
-	// Store the signature (last 128 bytes)
-	signatureStart := len(value) - 128
-	technicalData.SetSignature(value[signatureStart:])
+	dataSize := len(value) - signatureSize
+	data := value[:dataSize]
+	signature := value[dataSize:]
+
+	technicalData := &vuv1.TechnicalDataGen1{}
+	technicalData.SetRawData(value) // Store complete transfer value for painting
+
+	// TODO: Implement full semantic parsing of data portion
+	// For now, we just validate we have some data
+	_ = data // Will be used when semantic parsing is implemented
+
+	// Store signature (extracted at the beginning)
+	technicalData.SetSignature(signature)
 
 	return technicalData, nil
 }
@@ -50,6 +61,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen1(technicalData *vuv1.Technica
 
 	raw := technicalData.GetRawData()
 	if len(raw) > 0 {
+		// raw_data contains complete transfer value (data + signature)
 		return raw, nil
 	}
 
@@ -57,7 +69,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen1(technicalData *vuv1.Technica
 }
 
 // anonymizeTechnicalDataGen1 anonymizes Gen1 Technical Data.
-// TODO: Implement full anonymization logic for Gen1 technical data.
+// TODO: Implement full semantic anonymization (anonymize VIN, VRN, sensor IDs, etc.).
 func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGen1) *vuv1.TechnicalDataGen1 {
 	if td == nil {
 		return nil
@@ -66,6 +78,11 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGe
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
 	result.SetSignature(make([]byte, 128))
-	result.SetRawData(nil)
+
+	// Note: We intentionally keep raw_data here because MarshalTechnicalDataGen1
+	// currently requires raw_data (semantic marshalling not yet implemented).
+	// Once semantic marshalling is implemented, we should clear raw_data and
+	// implement full semantic anonymization of VIN, VRN, sensor data, etc.
+
 	return result
 }

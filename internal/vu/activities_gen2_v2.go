@@ -33,13 +33,28 @@ import (
 //
 //	recordType (1 byte) + recordSize (2 bytes, big-endian) + noOfRecords (2 bytes, big-endian)
 func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
+	// Split transfer value into data and signature
+	// Gen2 uses variable-length ECDSA signatures stored as SignatureRecordArray
+	// We use the sizeOf function to determine where to split
+	totalSize, signatureSize, err := sizeOfActivitiesGen2V2(value)
+	if err != nil {
+		return nil, fmt.Errorf("failed to calculate size: %w", err)
+	}
+	if totalSize != len(value) {
+		return nil, fmt.Errorf("size mismatch: calculated %d, got %d", totalSize, len(value))
+	}
+
+	dataSize := totalSize - signatureSize
+	data := value[:dataSize]
+	signature := value[dataSize:]
+
 	activities := &vuv1.ActivitiesGen2V2{}
-	activities.SetRawData(value)
+	activities.SetRawData(value) // Store complete transfer value for painting
 
 	offset := 0
 
 	// TimeRealRecordArray
-	dateOfDay, bytesRead, err := parseTimeRealRecordArray(value, offset)
+	dateOfDay, bytesRead, err := parseTimeRealRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse TimeRealRecordArray: %w", err)
 	}
@@ -47,7 +62,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	offset += bytesRead
 
 	// OdometerValueMidnightRecordArray
-	odometerMidnightKm, bytesRead, err := parseOdometerValueMidnightRecordArray(value, offset)
+	odometerMidnightKm, bytesRead, err := parseOdometerValueMidnightRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse OdometerValueMidnightRecordArray: %w", err)
 	}
@@ -55,7 +70,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	offset += bytesRead
 
 	// VuCardIWRecordArray (Gen2 - 132 bytes per record, same as V1)
-	cardIWRecords, bytesRead, err := parseVuCardIWRecordArrayG2(value, offset)
+	cardIWRecords, bytesRead, err := parseVuCardIWRecordArrayG2(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuCardIWRecordArray: %w", err)
 	}
@@ -63,7 +78,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	offset += bytesRead
 
 	// VuActivityDailyRecordArray
-	activityChanges, bytesRead, err := parseVuActivityDailyRecordArray(value, offset)
+	activityChanges, bytesRead, err := parseVuActivityDailyRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuActivityDailyRecordArray: %w", err)
 	}
@@ -72,7 +87,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 
 	// VuPlaceDailyWorkPeriodRecordArray (Gen2v1 format - 41 bytes per record)
 	// Note: Gen2v2 may eventually use PlaceAuthRecord (42 bytes), but currently using Gen2v1 format
-	vuPlaceRecords, bytesRead, err := parseVuPlaceDailyWorkPeriodRecordArrayG2(value, offset)
+	vuPlaceRecords, bytesRead, err := parseVuPlaceDailyWorkPeriodRecordArrayG2(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuPlaceDailyWorkPeriodRecordArray: %w", err)
 	}
@@ -85,7 +100,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	offset += bytesRead
 
 	// VuGNSSADRecordArray (Gen2v2 - 59 bytes per record with authentication)
-	gnssADRecords, bytesRead, err := parseVuGNSSADRecordArrayG2(value, offset)
+	gnssADRecords, bytesRead, err := parseVuGNSSADRecordArrayG2(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuGNSSADRecordArray: %w", err)
 	}
@@ -93,7 +108,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	offset += bytesRead
 
 	// VuSpecificConditionRecordArray
-	specificConditions, bytesRead, err := parseVuSpecificConditionRecordArray(value, offset)
+	specificConditions, bytesRead, err := parseVuSpecificConditionRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuSpecificConditionRecordArray: %w", err)
 	}
@@ -101,7 +116,7 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	offset += bytesRead
 
 	// VuBorderCrossingRecordArray (Gen2v2 - 57 bytes per record)
-	borderCrossings, bytesRead, err := parseVuBorderCrossingRecordArray(value, offset)
+	borderCrossings, bytesRead, err := parseVuBorderCrossingRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuBorderCrossingRecordArray: %w", err)
 	}
@@ -109,18 +124,19 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	offset += bytesRead
 
 	// VuLoadUnloadRecordArray (Gen2v2 - 60 bytes per record)
-	loadUnloadRecs, bytesRead, err := parseVuLoadUnloadRecordArray(value, offset)
+	loadUnloadRecs, bytesRead, err := parseVuLoadUnloadRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuLoadUnloadRecordArray: %w", err)
 	}
 	activities.SetLoadUnloadOperations(loadUnloadRecs)
 	offset += bytesRead
 
-	// SignatureRecordArray is now handled separately in raw parsing, not part of value
+	// Store signature (extracted at the beginning)
+	activities.SetSignature(signature)
 
 	// Verify we consumed exactly the right amount of data
-	if offset != len(value) {
-		return nil, fmt.Errorf("Activities Gen2 V2 parsing mismatch: parsed %d bytes, expected %d", offset, len(value))
+	if offset != len(data) {
+		return nil, fmt.Errorf("Activities Gen2 V2 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
 	}
 
 	return activities, nil
@@ -138,6 +154,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	// For Gen2 structures with RecordArrays, raw data painting is straightforward
 	raw := activities.GetRawData()
 	if len(raw) > 0 {
+		// raw_data contains complete transfer value (data + signature)
 		return raw, nil
 	}
 

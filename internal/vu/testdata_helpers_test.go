@@ -33,11 +33,11 @@ func readHexdump(path string) ([]byte, error) {
 }
 
 // goldenJSONPath converts a hexdump file path to its corresponding golden JSON path.
-// Example: "testdata/records/000-14___FMS-379_.../000-OVERVIEW_GEN1.data.hexdump"
+// Example: "testdata/records/000-14___FMS-379_.../000-OVERVIEW_GEN1.hexdump"
 //
 //	-> "testdata/records/000-14___FMS-379_.../000-OVERVIEW_GEN1.golden.json"
 func goldenJSONPath(hexdumpPath string) string {
-	return strings.TrimSuffix(hexdumpPath, ".data.hexdump") + ".golden.json"
+	return strings.TrimSuffix(hexdumpPath, ".hexdump") + ".golden.json"
 }
 
 // loadOrCreateGolden loads golden JSON for comparison or creates it in update mode.
@@ -86,17 +86,17 @@ func loadOrCreateGolden(t *testing.T, message proto.Message, goldenPath string) 
 // Returns an error if the search fails, but returns an empty slice if no files match (caller should validate).
 //
 // VU hexdump files use the naming pattern:
-// "NNN-<TRANSFER_TYPE>.data.hexdump" (e.g., "000-OVERVIEW_GEN1.data.hexdump")
+// "NNN-<TRANSFER_TYPE>.hexdump" (e.g., "000-OVERVIEW_GEN1.hexdump")
 // where the transfer type name already encodes the generation.
 //
-// Signature files are separate: "NNN-<TRANSFER_TYPE>.signature.hexdump"
+// Hexdump files contain complete transfer values (data + signature).
 func findHexdumpFiles(transferType vuv1.TransferType) ([]string, error) {
 	// Convert enum to its string name
 	transferTypeName := transferType.String()
 
-	// Build the pattern we're looking for (data files only)
-	// Example: "*-OVERVIEW_GEN1.data.hexdump"
-	pattern := fmt.Sprintf("-%s.data.hexdump", transferTypeName)
+	// Build the pattern we're looking for
+	// Example: "*-OVERVIEW_GEN1.hexdump"
+	pattern := fmt.Sprintf("-%s.hexdump", transferTypeName)
 
 	var matches []string
 

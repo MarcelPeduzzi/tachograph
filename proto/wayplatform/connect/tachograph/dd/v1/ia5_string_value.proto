@@ -3,7 +3,6 @@ edition = "2023";
 package wayplatform.connect.tachograph.dd.v1;
 
 import "buf/validate/validate.proto";
-import "wayplatform/connect/tachograph/dd/v1/encoding.proto";
 
 // Ia5StringValue provides a canonical representation for IA5String types
 // found in the tachograph regulations.

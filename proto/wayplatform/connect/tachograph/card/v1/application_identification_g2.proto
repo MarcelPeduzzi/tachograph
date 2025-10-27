@@ -2,10 +2,10 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_structure_version.proto";
 import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents data from EF_Application_Identification for Generation 2.
 //

@@ -102,4 +102,3 @@ message VuOverspeedEventRecord {
   // Size: 31 bytes (fixed for Gen1).
   bytes raw_data = 99;
 }
-

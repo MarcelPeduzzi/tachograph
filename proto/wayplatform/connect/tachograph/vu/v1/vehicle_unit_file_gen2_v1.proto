@@ -41,5 +41,3 @@ message VehicleUnitFileGen2V1 {
   // See Appendix 7, Section 2.2.6.6 (TREP 25 Hex).
   repeated TechnicalDataGen2V1 technical_data = 5;
 }
-
-

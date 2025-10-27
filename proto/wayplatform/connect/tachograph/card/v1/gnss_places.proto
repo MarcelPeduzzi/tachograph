@@ -3,8 +3,8 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_GNSS_Places file, containing GNSS position records for
 // accumulated driving periods.

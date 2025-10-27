@@ -3,9 +3,9 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_Events_Data file, which contains a log of
 // events related to the tachograph system.

@@ -101,4 +101,3 @@ message VuEventRecord {
   // Size: 83 bytes (fixed for Gen1).
   bytes raw_data = 99;
 }
-

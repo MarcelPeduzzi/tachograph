@@ -74,4 +74,3 @@ message VuTimeAdjustmentRecord {
   // Size: 98 bytes (fixed for Gen1).
   bytes raw_data = 99;
 }
-

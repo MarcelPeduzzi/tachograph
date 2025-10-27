@@ -5,7 +5,6 @@ package wayplatform.connect.tachograph.vu.v1;
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/control_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/downloadable_period.proto";
-import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";

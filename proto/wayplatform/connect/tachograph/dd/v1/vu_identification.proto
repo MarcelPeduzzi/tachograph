@@ -8,8 +8,6 @@ import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 
-option go_package = "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1";
-
 // Information, stored in a vehicle unit, related to the identification of the vehicle unit.
 //
 // See Data Dictionary, Section 2.205, `VuIdentification`.
@@ -121,4 +119,3 @@ message VuIdentification {
   // For Generation 2: varies (includes additional fields)
   bytes raw_data = 99;
 }
-

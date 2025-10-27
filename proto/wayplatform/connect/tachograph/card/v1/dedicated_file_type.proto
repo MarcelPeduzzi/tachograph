@@ -2,8 +2,6 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "google/protobuf/descriptor.proto";
-
 // DedicatedFileType represents the types of dedicated files (DFs) that can be found on a tachograph card.
 // These correspond to the standardized DF names defined in the tachograph regulation's
 // file structure specifications (e.g., Appendix 2). This enum does not have a direct

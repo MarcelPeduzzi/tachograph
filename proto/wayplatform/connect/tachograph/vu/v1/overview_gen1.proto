@@ -220,5 +220,3 @@ message OverviewGen1 {
   // Present when signature verification has been performed.
   tachograph.security.v1.Authentication authentication = 99;
 }
-
-

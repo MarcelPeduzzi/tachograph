@@ -3,11 +3,10 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/control_type.proto";
-import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_Control_Activity_Data file, which logs details
 // about the last control session performed on the driver.

@@ -47,5 +47,3 @@ message VehicleUnitFileGen2V2 {
   // See Appendix 7, Section 2.2.6.6 (TREP 35 Hex).
   repeated TechnicalDataGen2V2 technical_data = 6;
 }
-
-

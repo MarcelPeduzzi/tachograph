@@ -2,8 +2,8 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
-import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/vu/v1/transfer_type.proto";
 
 // Intermediate format for VU file parsing that preserves exact binary boundaries.
@@ -47,5 +47,3 @@ message RawVehicleUnitFile {
 
   repeated Record records = 1;
 }
-
-

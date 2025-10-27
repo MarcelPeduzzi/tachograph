@@ -2,8 +2,8 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_Specific_Conditions file for Generation 2.
 //

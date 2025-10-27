@@ -91,4 +91,3 @@ message VuFaultRecord {
   // Size: 82 bytes (fixed for Gen1).
   bytes raw_data = 99;
 }
-

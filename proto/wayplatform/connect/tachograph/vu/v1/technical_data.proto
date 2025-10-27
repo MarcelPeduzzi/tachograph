@@ -8,17 +8,13 @@ import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_structure_version.proto";
 import "wayplatform/connect/tachograph/dd/v1/date.proto";
 import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
-import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
-import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
-import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
-import "wayplatform/connect/tachograph/dd/v1/version.proto";
 
 // Represents the consolidated data structure for a Technical Data transfer.
 //

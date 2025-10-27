@@ -252,7 +252,7 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto pro
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto_rawDesc = "" +
 	"\n" +
-	"Cwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\xbc\x02\n" +
+	"Cwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xbc\x02\n" +
 	"\x14SpecificConditionsG2\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12W\n" +
 	"\arecords\x18\x02 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x19\n" +

@@ -950,7 +950,7 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_v2_pr
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_rawDesc = "" +
 	"\n" +
-	"Jwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\"\xaa\f\n" +
+	"Jwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xaa\f\n" +
 	"\x1bApplicationIdentificationV2\x12M\n" +
 	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12b\n" +
 	"\x06driver\x18\x02 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.DriverR\x06driver\x12h\n" +

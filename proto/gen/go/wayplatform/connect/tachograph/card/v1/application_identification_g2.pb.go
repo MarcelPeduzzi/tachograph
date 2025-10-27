@@ -1121,7 +1121,7 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_g2_pr
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_g2_proto_rawDesc = "" +
 	"\n" +
-	"Jwayplatform/connect/tachograph/card/v1/application_identification_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\xd3\x0e\n" +
+	"Jwayplatform/connect/tachograph/card/v1/application_identification_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xd3\x0e\n" +
 	"\x1bApplicationIdentificationG2\x12M\n" +
 	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12o\n" +
 	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\x16typeOfTachographCardId\x12p\n" +

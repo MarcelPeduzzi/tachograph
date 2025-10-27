@@ -268,7 +268,7 @@ var File_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xfa\x03\n" +
+	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xfa\x03\n" +
 	"\x12DrivingLicenceInfo\x12|\n" +
 	"!driving_licence_issuing_authority\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1edrivingLicenceIssuingAuthority\x12x\n" +
 	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12j\n" +

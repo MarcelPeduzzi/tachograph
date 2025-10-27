@@ -225,7 +225,7 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_proto protor
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\x8a\x02\n" +
+	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x8a\x02\n" +
 	"\x12SpecificConditions\x12W\n" +
 	"\arecords\x18\x01 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x19\n" +
 	"\braw_data\x18\x02 \x01(\fR\arawData\x12\x1c\n" +

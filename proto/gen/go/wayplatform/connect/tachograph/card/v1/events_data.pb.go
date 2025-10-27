@@ -440,7 +440,7 @@ var File_wayplatform_connect_tachograph_card_v1_events_data_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_events_data_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x82\x05\n" +
+	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x82\x05\n" +
 	"\n" +
 	"EventsData\x12Q\n" +
 	"\x06events\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x06events\x12\x1c\n" +

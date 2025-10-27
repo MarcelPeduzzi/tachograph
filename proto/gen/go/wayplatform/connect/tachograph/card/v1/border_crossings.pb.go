@@ -10,7 +10,6 @@ import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -339,7 +338,7 @@ var File_wayplatform_connect_tachograph_card_v1_border_crossings_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\"\xfe\x03\n" +
+	"=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\"\xfe\x03\n" +
 	"\x0fBorderCrossings\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12X\n" +
 	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.BorderCrossings.RecordR\arecords\x1a\xe0\x02\n" +

@@ -414,7 +414,7 @@ var File_wayplatform_connect_tachograph_card_v1_control_activity_data_proto prot
 
 const file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x96\x06\n" +
+	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x96\x06\n" +
 	"\x13ControlActivityData\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12T\n" +
 	"\fcontrol_type\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.ControlTypeR\vcontrolType\x12=\n" +

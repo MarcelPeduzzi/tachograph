@@ -216,7 +216,7 @@ var File_wayplatform_connect_tachograph_card_v1_current_usage_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_current_usage_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xd3\x02\n" +
+	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xd3\x02\n" +
 	"\fCurrentUsage\x12F\n" +
 	"\x11session_open_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fsessionOpenTime\x12y\n" +
 	"\x14session_open_vehicle\x18\x02 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x12sessionOpenVehicle\x12\x1c\n" +

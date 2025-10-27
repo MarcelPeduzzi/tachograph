@@ -540,7 +540,7 @@ var File_wayplatform_connect_tachograph_card_v1_workshop_card_identification_pro
 
 const file_wayplatform_connect_tachograph_card_v1_workshop_card_identification_proto_rawDesc = "" +
 	"\n" +
-	"Iwayplatform/connect/tachograph/card/v1/workshop_card_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xc2\t\n" +
+	"Iwayplatform/connect/tachograph/card/v1/workshop_card_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xc2\t\n" +
 	"\x1aWorkshopCardIdentification\x12n\n" +
 	"\x19card_issuing_member_state\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16cardIssuingMemberState\x12l\n" +
 	"\x14owner_identification\x18\x02 \x01(\v29.wayplatform.connect.tachograph.dd.v1.OwnerIdentificationR\x13ownerIdentification\x12p\n" +

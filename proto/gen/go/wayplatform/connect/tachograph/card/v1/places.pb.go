@@ -259,7 +259,7 @@ var File_wayplatform_connect_tachograph_card_v1_places_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\"\xa2\x02\n" +
+	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xa2\x02\n" +
 	"\x06Places\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12K\n" +
 	"\arecords\x18\x02 \x03(\v21.wayplatform.connect.tachograph.dd.v1.PlaceRecordR\arecords\x12\x19\n" +

@@ -373,7 +373,7 @@ var File_wayplatform_connect_tachograph_card_v1_gnss_places_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a<wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto\"\xeb\x03\n" +
+	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a<wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xeb\x03\n" +
 	"\n" +
 	"GnssPlaces\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +

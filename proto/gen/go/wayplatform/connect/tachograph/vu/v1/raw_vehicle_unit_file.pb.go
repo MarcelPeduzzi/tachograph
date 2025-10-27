@@ -336,7 +336,7 @@ var File_wayplatform_connect_tachograph_vu_v1_raw_vehicle_unit_file_proto protor
 
 const file_wayplatform_connect_tachograph_vu_v1_raw_vehicle_unit_file_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/vu/v1/raw_vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\"\xc7\x03\n" +
+	"@wayplatform/connect/tachograph/vu/v1/raw_vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\"\xc7\x03\n" +
 	"\x12RawVehicleUnitFile\x12Y\n" +
 	"\arecords\x18\x01 \x03(\v2?.wayplatform.connect.tachograph.vu.v1.RawVehicleUnitFile.RecordR\arecords\x1a\xd5\x02\n" +
 	"\x06Record\x12\x10\n" +

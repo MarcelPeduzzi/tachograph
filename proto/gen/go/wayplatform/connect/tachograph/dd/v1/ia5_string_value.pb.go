@@ -187,7 +187,7 @@ var File_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto protoreflec
 
 const file_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1bbuf/validate/validate.proto\x1a3wayplatform/connect/tachograph/dd/v1/encoding.proto\"\xa7\x03\n" +
+	";wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1bbuf/validate/validate.proto\"\xa7\x03\n" +
 	"\x0eIa5StringValue\x12\"\n" +
 	"\x06length\x18\x01 \x01(\x05B\n" +
 	"\xbaH\a\xc8\x01\x01\x1a\x02 \x00R\x06length\x12\x1c\n" +
@@ -214,7 +214,6 @@ func file_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto_init() {
 	if File_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_dd_v1_encoding_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

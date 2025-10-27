@@ -608,7 +608,7 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xb0\a\n" +
+	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xb0\a\n" +
 	"\x12DriverActivityData\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12k\n" +

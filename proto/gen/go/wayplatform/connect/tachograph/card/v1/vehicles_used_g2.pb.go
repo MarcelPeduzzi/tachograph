@@ -255,7 +255,7 @@ var File_wayplatform_connect_tachograph_card_v1_vehicles_used_g2_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_vehicles_used_g2_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_vehicle_record_g2.proto\"\xb2\x02\n" +
+	"=wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1aAwayplatform/connect/tachograph/dd/v1/card_vehicle_record_g2.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xb2\x02\n" +
 	"\x0eVehiclesUsedG2\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +
 	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.dd.v1.CardVehicleRecordG2R\arecords\x12\x19\n" +

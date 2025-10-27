@@ -256,7 +256,7 @@ var File_wayplatform_connect_tachograph_dd_v1_full_card_number_proto protoreflec
 
 const file_wayplatform_connect_tachograph_dd_v1_full_card_number_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xcc\x03\n" +
+	";wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\"\xcc\x03\n" +
 	"\x0eFullCardNumber\x12P\n" +
 	"\tcard_type\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\bcardType\x12n\n" +
 	"\x19card_issuing_member_state\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16cardIssuingMemberState\x12o\n" +
@@ -294,7 +294,6 @@ func file_wayplatform_connect_tachograph_dd_v1_full_card_number_proto_init() {
 	file_wayplatform_connect_tachograph_dd_v1_equipment_type_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_nation_numeric_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_owner_identification_proto_init()
-	file_wayplatform_connect_tachograph_dd_v1_string_value_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

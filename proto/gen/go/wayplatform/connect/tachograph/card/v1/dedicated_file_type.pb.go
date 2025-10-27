@@ -9,7 +9,6 @@ package cardv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/descriptorpb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -80,7 +79,7 @@ var File_wayplatform_connect_tachograph_card_v1_dedicated_file_type_proto protor
 
 const file_wayplatform_connect_tachograph_card_v1_dedicated_file_type_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/dedicated_file_type.proto\x12&wayplatform.connect.tachograph.card.v1\x1a google/protobuf/descriptor.proto*w\n" +
+	"@wayplatform/connect/tachograph/card/v1/dedicated_file_type.proto\x12&wayplatform.connect.tachograph.card.v1*w\n" +
 	"\x11DedicatedFileType\x12#\n" +
 	"\x1fDEDICATED_FILE_TYPE_UNSPECIFIED\x10\x00\x12\x11\n" +
 	"\rDF_TACHOGRAPH\x10\x01\x12\x14\n" +

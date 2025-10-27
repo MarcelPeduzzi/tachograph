@@ -382,7 +382,7 @@ var File_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto p
 
 const file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x8e\x06\n" +
+	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x8e\x06\n" +
 	"\x16ControllerActivityData\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12_\n" +
 	"\arecords\x18\x02 \x03(\v2E.wayplatform.connect.tachograph.card.v1.ControllerActivityData.RecordR\arecords\x1a\xe2\x04\n" +

@@ -7,9 +7,11 @@ managed:
   disable:
     - module: buf.build/bufbuild/protovalidate
       file_option: go_package
+    - module: buf.build/bufbuild/protovalidate
+      file_option: csharp_namespace
   override:
-    - file_option: go_package_prefix
-      value: github.com/way-platform/tachograph-go/proto/gen/go
+    - file_option: csharp_namespace
+      value: Tachograph.Proto
 
 inputs:
   - directory: "."
@@ -17,8 +19,8 @@ inputs:
       - wayplatform
 
 plugins:
-  - local: ["go", "tool", "-modfile", "../tools/go.mod", "protoc-gen-go"]
-    out: gen/go
+  # C# code generation
+  - protoc_builtin: csharp
+    out: gen/csharp
     opt:
-      - module=github.com/way-platform/tachograph-go/proto/gen/go
-      - default_api_level=API_OPAQUE
+      - base_namespace=Tachograph.Proto

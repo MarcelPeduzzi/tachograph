@@ -14,4 +14,16 @@
     </PackageReference>
   </ItemGroup>
 
+  <!-- Protobuf compilation is disabled until buf dependencies are resolved -->
+  <!-- See proto/README.md for instructions on generating C# code from .proto files -->
+  <!--
+  <ItemGroup>
+    <Protobuf Include="..\..\proto\wayplatform\**\*.proto" 
+              ProtoRoot="..\..\proto" 
+              OutputDir="Proto\Generated"
+              CompileOutputs="false"
+              GrpcServices="None" />
+  </ItemGroup>
+  -->
+
 </Project>

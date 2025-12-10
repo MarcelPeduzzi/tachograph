@@ -1,10 +1,8 @@
-# Tachograph Go
+# Tachograph
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/way-platform/tachograph-go)](https://pkg.go.dev/github.com/way-platform/tachograph-go)
-[![GoReportCard](https://goreportcard.com/badge/github.com/way-platform/tachograph-go)](https://goreportcard.com/report/github.com/way-platform/tachograph-go)
-[![CI](https://github.com/way-platform/tachograph-go/actions/workflows/release.yaml/badge.svg)](https://github.com/way-platform/tachograph-go/actions/workflows/release.yaml)
+[![CI](https://github.com/MarcelPeduzzi/tachograph/actions/workflows/release.yaml/badge.svg)](https://github.com/MarcelPeduzzi/tachograph/actions/workflows/release.yaml)
 
-A Go SDK and CLI tool for working with Tachograph data (.DDD files).
+A .NET 10 SDK for working with Tachograph data (.DDD files).
 
 ## Specification
 
@@ -14,84 +12,123 @@ This SDK implements parsing of downloaded tachograph data, according to [the req
 
 This library provides a comprehensive set of tools for working with Tachograph data, from raw binary parsing to anonymization and serialization.
 
-```go
+```csharp
 // 1. Unmarshal the raw .DDD file content into a RawFile object.
-rawFile, err := tachograph.Unmarshal(dddBytes)
-if err != nil {
-    log.Fatalf("failed to unmarshal: %v", err)
-}
+var rawFile = Tachograph.Unmarshal(dddBytes);
 
 // 2. Authenticate the signatures within the RawFile.
-authenticatedRawFile, err := tachograph.Authenticate(context.Background(), rawFile)
-if err != nil {
-    log.Fatalf("failed to authenticate: %v", err)
-}
+var authenticatedRawFile = await Tachograph.AuthenticateAsync(rawFile);
 
 // 3. Parse the authenticated RawFile into a File.
-parsedFile, err := tachograph.Parse(authenticatedRawFile)
-if err != nil {
-    log.Fatalf("failed to parse: %v", err)
-}
+var parsedFile = Tachograph.Parse(authenticatedRawFile);
 
 // 4. Anonymize personal data in the parsed File.
-anonymizedFile, err := tachograph.Anonymize(parsedFile)
-if err != nil {
-    log.Fatalf("failed to anonymize: %v", err)
-}
+var anonymizedFile = Tachograph.Anonymize(parsedFile);
 
 // 5. Marshal the file back into the binary .DDD format.
-marshalledBytes, err := tachograph.Marshal(anonymizedFile)
-if err != nil {
-    log.Fatalf("failed to marshal: %v", err)
-}
+var marshalledBytes = Tachograph.Marshal(anonymizedFile);
 ```
 
 ### Unmarshalling
 
-[`tachograph.Unmarshal`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Unmarshal) parses raw `.DDD` byte arrays into a [`tachographv1.RawFile`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#RawFile) object.
+`Tachograph.Unmarshal` parses raw `.DDD` byte arrays into a `RawFile` object.
+
+```csharp
+var rawFile = Tachograph.Unmarshal(dddBytes);
+```
+
+Or with custom options:
+
+```csharp
+var opts = new UnmarshalOptions { Strict = false };
+var rawFile = opts.Unmarshal(dddBytes);
+```
 
 ### Authenticating
 
-[`tachograph.Authenticate`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Authenticate) cryptographically verifies the signatures within a [`tachographv1.RawFile`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#RawFile).
+`Tachograph.AuthenticateAsync` cryptographically verifies the signatures within a `RawFile`.
+
+```csharp
+var authenticatedRawFile = await Tachograph.AuthenticateAsync(rawFile);
+```
+
+Or with custom options:
+
+```csharp
+var opts = new AuthenticateOptions { Mutate = true };
+var authenticatedRawFile = await opts.AuthenticateAsync(rawFile);
+```
 
 ### Parsing
 
-[`tachograph.Parse`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Parse) turns a [`tachographv1.RawFile`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#RawFile) into a [`tachographv1.File`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#File), with meaningful, high-level structures like driver activities and events, making the data easy to analyze.
+`Tachograph.Parse` turns a `RawFile` into a `File`, with meaningful, high-level structures like driver activities and events, making the data easy to analyze.
+
+```csharp
+var parsedFile = Tachograph.Parse(authenticatedRawFile);
+```
+
+Or with custom options:
+
+```csharp
+var opts = new ParseOptions { PreserveRawData = false };
+var parsedFile = opts.Parse(authenticatedRawFile);
+```
 
 ### Anonymizing
 
-[`tachograph.Anonymize`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Anonymize) removes or obscures personal data from a [`tachographv1.File`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#File) - making the data usable for unit testing
+`Tachograph.Anonymize` removes or obscures personal data from a `File` - making the data usable for unit testing.
+
+```csharp
+var anonymizedFile = Tachograph.Anonymize(parsedFile);
+```
+
+Or with custom options:
+
+```csharp
+var opts = new AnonymizeOptions 
+{ 
+    PreserveTimestamps = true,
+    PreserveDistanceAndTrips = true
+};
+var anonymizedFile = opts.Anonymize(parsedFile);
+```
 
 ### Marshalling
 
-[`tachograph.Marshal`](https://pkg.go.dev/github.com/way-platform/tachograph-go#Marshal) serializes a [`tachographv1.File`](https://pkg.go.dev/github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1#File) back into the binary `.DDD` format.
+`Tachograph.Marshal` serializes a `File` back into the binary `.DDD` format.
 
-## CLI
+```csharp
+var marshalledBytes = Tachograph.Marshal(anonymizedFile);
+```
+
+Or with custom options:
+
+```csharp
+var opts = new MarshalOptions { UseRawData = false };
+var marshalledBytes = opts.Marshal(anonymizedFile);
+```
+
+## Installation
 
 ```bash
-$ tachograph
-
-  Tachograph CLI
-
-  USAGE
-
-    tachograph [command] [--flags]
-
-  .DDD FILES
-
-    parse [file ...] [--flags]  Parse .DDD files
-
-  UTILS
-
-    completion [command]        Generate the autocompletion script for the specified shell
-    help [command]              Help about any command
-
-  FLAGS
-
-    -h --help                   Help for tachograph
-    -v --version                Version for tachograph
-
+dotnet add package Tachograph
 ```
+
+## Building
+
+```bash
+dotnet build
+```
+
+## Testing
+
+```bash
+dotnet test
+```
+
+## Requirements
+
+- .NET 10.0 or later
 
 ## Alternatives
 
@@ -99,3 +136,4 @@ This SDK draws inspiration from other tachograph SDKs, including:
 
 - [traconiq/tachoparser](https://github.com/traconiq/tachoparser)
 - [jugglingcats/tachograph-reader](https://github.com/jugglingcats/tachograph-reader)
+- [way-platform/tachograph-go](https://github.com/way-platform/tachograph-go)

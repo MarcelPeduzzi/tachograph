@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.33.2" />
+    <PackageReference Include="Grpc.Tools" Version="2.76.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Protobuf compilation is disabled until buf dependencies are resolved -->
+  <!-- See proto/README.md for instructions on generating C# code from .proto files -->
+  <!--
+  <ItemGroup>
+    <Protobuf Include="..\..\proto\wayplatform\**\*.proto" 
+              ProtoRoot="..\..\proto" 
+              OutputDir="Proto\Generated"
+              CompileOutputs="false"
+              GrpcServices="None" />
+  </ItemGroup>
+  -->
+
+</Project>

@@ -11,3 +11,24 @@ tools/cmd/fetch-certs/fetch-certs
 
 # Ignore all testdata directories
 testdata/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.nupkg
+*.snupkg
+.vscode/
+.idea/

@@ -7,6 +7,7 @@ This document describes the migration of the Tachograph SDK from Go to .NET 10 C
 ### 1. .NET 10 Solution Structure ✅
 - Created `Tachograph.sln` solution file
 - Created `src/Tachograph` library project targeting .NET 10
+- Created `src/Tachograph.CLI` console application for command-line interface
 - Created `tests/Tachograph.Tests` test project using NUnit
 - Added project references and NuGet packages:
   - Google.Protobuf (3.33.2)
@@ -54,13 +55,47 @@ Static methods providing the core functionality:
 - Added installation, building, and testing instructions
 - Referenced the original Go implementation as an alternative
 
-### 5. CI/CD Updates ✅
+### 5. Command-Line Interface ✅
+- Created `src/Tachograph.CLI` console application
+- Implemented `parse` command with options:
+  - `--raw`: Output raw intermediate format
+  - `--authenticate`: Authenticate signatures and certificates
+  - `--strict` / `--no-strict`: Control strict parsing mode
+  - `--preserve-raw-data`: Store raw bytes for round-trip fidelity
+- Command mirrors the functionality of the original Go CLI
+
+### 6. Internal Package Structure ✅
+Created C# equivalents of internal packages with placeholder implementations:
+- `Internal/Card/CardProcessor.cs` - Card file processing utilities
+  - TLV (Tag-Length-Value) structure parsing
+  - DF/EF hierarchy handling
+  - Generation-specific patterns (Gen1/Gen2)
+- `Internal/VU/VUProcessor.cs` - Vehicle unit file processing
+  - TV (Tag-Value) structure parsing
+  - TREP format handling
+  - Generation-specific implementations
+- `Internal/DD/DataDictionary.cs` - Data dictionary utilities
+  - Binary parsing logic for ~80+ data types
+  - Time/date parsing, string encoding/decoding
+  - Activity records, GNSS data, etc.
+- `Internal/Cert/CertificateCache.cs` - Certificate handling
+  - Embedded certificate cache (Gen1/Gen2 root certs)
+  - Certificate chain validation
+  - Certificate Authority Reference (CAR) resolution
+- `Internal/Security/CryptoUtils.cs` - Cryptographic utilities
+  - RSA and ECDSA signature verification
+  - Authentication result propagation
+- `Internal/Brainpool/BrainpoolCurves.cs` - Brainpool elliptic curves
+  - Support for Gen2 tachograph signatures
+- `Internal/Hexdump/HexDump.cs` - Hexdump utilities for debugging
+
+### 7. CI/CD Updates ✅
 - Replaced Go-based workflows with .NET workflows
 - Updated `.github/workflows/ci.yaml` for PR builds
 - Updated `.github/workflows/release.yaml` for releases
 - Both workflows now use `actions/setup-dotnet@v4` with .NET 10
 
-### 6. Cleanup ✅
+### 8. Cleanup ✅
 - Removed all 376 Go source files (*.go)
 - Removed `go.mod` and `go.sum` files
 - Removed Go-specific build tools (mage)
